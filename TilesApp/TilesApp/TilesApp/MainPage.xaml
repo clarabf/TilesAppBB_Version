@@ -4,7 +4,7 @@
              xmlns:local="clr-namespace:TilesApp"
              x:Class="TilesApp.MainPage">
 
-    <StackLayout>
+    <StackLayout BackgroundColor="Aquamarine">
         <!-- Place new controls here -->
         <Label Text="Welcome to Xamarin.Forms!" 
            HorizontalOptions="Center"

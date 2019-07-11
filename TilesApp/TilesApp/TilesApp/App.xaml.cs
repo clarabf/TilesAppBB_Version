@@ -9,9 +9,9 @@ namespace TilesApp
     {
         public App()
         {
-            InitializeComponent();
-
-            MainPage = new MainPage();
+            //InitializeComponent();
+            //MainPage = new MainPage();
+            MainPage = new HybridWebViewPage();
         }
 
         protected override void OnStart()
