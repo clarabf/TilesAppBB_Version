@@ -34,7 +34,7 @@ namespace TilesApp.Droid
                 {
                     var webView = new Android.Webkit.WebView(_context);
                     webView.Settings.JavaScriptEnabled = true;
-                    webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavascriptFunction}"));
+                    webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavascriptFunction}", (Application.Current as App).qrScanned));
                     //webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavascriptFunctionTest}"));
                     SetNativeControl(webView);
                 }

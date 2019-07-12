@@ -1,14 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:TilesApp"
              x:Class="TilesApp.MainPage">
-
-    <StackLayout BackgroundColor="Aquamarine">
-        <!-- Place new controls here -->
-        <Label Text="Welcome to Xamarin.Forms!" 
-           HorizontalOptions="Center"
-           VerticalOptions="CenterAndExpand" />
-    </StackLayout>
-
+    <ContentPage.Content>
+        <Grid BackgroundColor="Aqua">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Label x:Name="labelIni"
+                    Text="TILES APP" 
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Start"/>
+            <Button x:Name="cameraMain"
+                    Text="Go to scan!"
+                    BorderColor="Azure"
+                    BackgroundColor="Aqua"
+                    WidthRequest="100" 
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Grid.Row="1"
+                    Clicked="GoToScan"/>
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>

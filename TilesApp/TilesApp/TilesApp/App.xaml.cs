@@ -1,4 +1,4 @@
-﻿using System;
+﻿using Android.Media;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -7,11 +7,14 @@ namespace TilesApp
 {
     public partial class App : Application
     {
+        public MediaPlayer player = new MediaPlayer();
+        public string qrScanned;
+
         public App()
         {
-            //InitializeComponent();
-            //MainPage = new MainPage();
-            MainPage = new HybridWebViewPage();
+            InitializeComponent();
+            MainPage = new NavigationPage(new MainPage());
+            NavigationPage.SetHasNavigationBar(this, false);
         }
 
         protected override void OnStart()

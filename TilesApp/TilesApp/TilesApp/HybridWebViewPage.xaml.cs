@@ -1,20 +1,20 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace TilesApp
 {
 	public partial class HybridWebViewPage : ContentPage
 	{
-		public HybridWebViewPage ()
+		public HybridWebViewPage (string qrScanned)
 		{
 			InitializeComponent ();
+            (Application.Current as App).qrScanned = qrScanned;
             hybridWebView.RegisterActionS(data => test(data));
         }
 
         private void test(string data)
         {
-            if (data=="clara") DisplayAlert("Alert", "Hello " + data, "OK");
-            else DisplayAlert("Alert", "A ver qué paza aquí" + data, "OK");
+            DisplayAlert("Alert", "QR: " + data, "OK");
+            
         }
     }
 }

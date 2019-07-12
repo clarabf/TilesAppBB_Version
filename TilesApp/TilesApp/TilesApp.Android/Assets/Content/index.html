@@ -1,7 +1,6 @@
 <html>
 <body>
-
-    <h1>HybridWebView Test</h1>
+    <h1 id="title">HybridWebView Test</h1>
     <br />
     Enter name: <input type="text" id="name">
     <br />
@@ -25,7 +24,7 @@
             }
         }
         function test(data) {
-            console.log("laaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: " + data)
+            $('#title').text(data);
         }
     </script>
 </body>
