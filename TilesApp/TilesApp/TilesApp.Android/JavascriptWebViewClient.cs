@@ -5,12 +5,10 @@ namespace TilesApp.Droid
 {
     public class JavascriptWebViewClient : WebViewClient
     {
-        string _javascript;
         string _qr;
 
-        public JavascriptWebViewClient(string javascript, string qr)
+        public JavascriptWebViewClient(string qr)
         {
-            _javascript = javascript;
             _qr = qr;
         }
 
@@ -18,7 +16,8 @@ namespace TilesApp.Droid
         {
             base.OnPageFinished(view, url);
             (Application.Current as App).webView = view;
-            view.EvaluateJavascript(_javascript, null);
+            view.EvaluateJavascript("javascript:function invokeCSharpAction(data){jsBridge.invokeAction(data);}", null);
+            view.EvaluateJavascript("javascript:function invokeVoidCSharpAction(){jsBridge.invokeVoidAction();}", null);
         }
     }
 }

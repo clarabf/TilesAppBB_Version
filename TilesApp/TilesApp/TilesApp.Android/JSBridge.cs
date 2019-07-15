@@ -25,5 +25,17 @@ namespace TilesApp.Droid
             }
         }
 
+        [JavascriptInterface]
+        [Export("invokeVoidAction")]
+        public void InvokeVoidAction()
+        {
+            HybridWebViewRenderer hybridRenderer;
+
+            if (hybridWebViewRenderer != null && hybridWebViewRenderer.TryGetTarget(out hybridRenderer))
+            {
+                hybridRenderer.Element.InvokeVoidAction();
+            }
+        }
+
     }
 }

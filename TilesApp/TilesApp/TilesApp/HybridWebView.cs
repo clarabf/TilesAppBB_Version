@@ -5,7 +5,7 @@ namespace TilesApp
 {
     public class HybridWebView : View
     {
-        Action<string> action;
+        Action<string> actionS;
         Action actionV;
 
         public static readonly BindableProperty UriProperty = BindableProperty.Create(
@@ -20,33 +20,34 @@ namespace TilesApp
             set { SetValue(UriProperty, value); }
         }
 
+        public void RegisterActionS(Action<string> callback)
+        {
+            actionS = callback;
+        }
+
         public void RegisterActionV(Action callback)
         {
             actionV = callback;
         }
 
-        public void RegisterActionS(Action<string> callback)
-        {
-            action = callback;
-        }
-
         public void Cleanup()
         {
-            action = null;
+            actionS = null;
+            actionV = null;
         }
 
         public void InvokeAction(string data)
         {
-            if (action == null || data == null)
+            if (actionS == null || data == null)
             {
                 return;
             }
-            action.Invoke(data);
+            actionS.Invoke(data);
         }
 
         public void InvokeVoidAction()
         {
-            if (action == null)
+            if (actionV == null)
             {
                 return;
             }

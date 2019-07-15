@@ -8,23 +8,22 @@ namespace TilesApp
 		{
 			InitializeComponent ();
             (Application.Current as App).qrScanned = qrScanned;
-            hybridWebView.RegisterActionS(data => csharpFunction(data));
+            hybridWebView.RegisterActionS(data => showAlert(data));
+            hybridWebView.RegisterActionV(scanQR);
         }
 
-        private void csharpFunction(string data)
+        private void showAlert(string data)
         {
-            if (data!="")
+            DisplayAlert("Alert", "Hello " + data + "!", "OK");
+        }
+
+        private void scanQR()
+        {
+            Device.BeginInvokeOnMainThread(() =>
             {
-                DisplayAlert("Alert", "Hello " + data + "!", "OK");
-            }
-            else
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new ScanView((Application.Current as App).webView));
-                });
-            }
+                Navigation.PopModalAsync(true);
+                Navigation.PushModalAsync(new ScanView((Application.Current as App).webView));
+            });
         }
     }
 }
