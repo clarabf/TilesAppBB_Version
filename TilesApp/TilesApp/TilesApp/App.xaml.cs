@@ -9,11 +9,13 @@ namespace TilesApp
     {
         public MediaPlayer player = new MediaPlayer();
         public string qrScanned;
+        public Android.Webkit.WebView webView;
 
         public App()
         {
             InitializeComponent();
-            MainPage = new NavigationPage(new MainPage());
+            //MainPage = new NavigationPage(new MainPage());
+            MainPage = new NavigationPage(new HybridWebViewPage("FIRST TITLE"));
             NavigationPage.SetHasNavigationBar(this, false);
         }
 

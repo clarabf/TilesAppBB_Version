@@ -6,6 +6,7 @@ namespace TilesApp
     public class HybridWebView : View
     {
         Action<string> action;
+        Action actionV;
 
         public static readonly BindableProperty UriProperty = BindableProperty.Create(
             propertyName: "Uri",
@@ -17,6 +18,11 @@ namespace TilesApp
         {
             get { return (string)GetValue(UriProperty); }
             set { SetValue(UriProperty, value); }
+        }
+
+        public void RegisterActionV(Action callback)
+        {
+            actionV = callback;
         }
 
         public void RegisterActionS(Action<string> callback)
@@ -36,6 +42,15 @@ namespace TilesApp
                 return;
             }
             action.Invoke(data);
+        }
+
+        public void InvokeVoidAction()
+        {
+            if (action == null)
+            {
+                return;
+            }
+            actionV.Invoke();
         }
     }
 }

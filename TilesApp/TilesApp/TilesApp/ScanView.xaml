@@ -16,7 +16,6 @@
                     BottomText="" 
                     ShowFlashButton="False"/>
             </Grid>
-            <Grid x:Name="addButton"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

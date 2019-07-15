@@ -5,7 +5,6 @@ namespace TilesApp
 {
     public partial class MainPage : ContentPage
     {
-
         public MainPage()
         {
             InitializeComponent();
@@ -14,8 +13,7 @@ namespace TilesApp
 
         private async void GoToScan(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new ScanView());
+            await Navigation.PushModalAsync(new ScanView((Application.Current as App).webView));
         }
-
     }
 }

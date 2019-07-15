@@ -5,7 +5,10 @@
     Enter name: <input type="text" id="name">
     <br />
     <br />
-    <button type="button" onclick="javascript: invokeCSCode($('#name').val());">Invoke C# Code</button>
+    <button type="button" onclick="javascript: showDisplay($('#name').val());">Show Display</button>
+    <br />
+    <br />
+    <button type="button" onclick="javascript: goToScan();">Activate Scanner</button>
     <br />
     <p id="result">Result:</p>
     <script type="text/javascript" src="js/plugins/jquery.min.js"></script>
@@ -13,7 +16,15 @@
         function log(str) {
             $('#result').text($('#result').text() + " " + str);
         }
-        function invokeCSCode(data) {
+        function goToScan() {
+            try {
+                invokeCSharpAction("");
+            }
+            catch (err) {
+                log(err);
+            }
+        }
+        function showDisplay(data) {
             console.log(data)
             try {
                 log("Sending Data:" + data);

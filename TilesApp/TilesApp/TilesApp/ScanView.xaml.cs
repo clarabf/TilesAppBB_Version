@@ -5,10 +5,13 @@ namespace TilesApp
 {
     public partial class ScanView : ContentPage
     {
-        
-        public ScanView()
+
+        Android.Webkit.WebView mainPage;
+
+        public ScanView(Android.Webkit.WebView webView)
         {
             InitializeComponent();
+            mainPage = webView;
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
@@ -27,13 +30,10 @@ namespace TilesApp
 
             Device.BeginInvokeOnMainThread(() =>
             {
+                mainPage.EvaluateJavascript("changeTitle('" + qrScanned + "')", null);
                 Navigation.PopModalAsync(true);
-                Navigation.PushModalAsync(new HybridWebViewPage(qrScanned));
             });
-
         }
-
     }
-
 }
 

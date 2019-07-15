@@ -1,4 +1,5 @@
 ﻿using Android.Webkit;
+using Xamarin.Forms;
 
 namespace TilesApp.Droid
 {
@@ -13,12 +14,11 @@ namespace TilesApp.Droid
             _qr = qr;
         }
 
-        public override void OnPageFinished(WebView view, string url)
+        public override void OnPageFinished(Android.Webkit.WebView view, string url)
         {
             base.OnPageFinished(view, url);
+            (Application.Current as App).webView = view;
             view.EvaluateJavascript(_javascript, null);
-            string command = "changeTitle('" + _qr + "')";
-            view.EvaluateJavascript(command, null);
         }
     }
 }
