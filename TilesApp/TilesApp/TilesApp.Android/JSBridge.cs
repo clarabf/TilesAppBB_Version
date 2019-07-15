@@ -25,16 +25,5 @@ namespace TilesApp.Droid
             }
         }
 
-        [JavascriptInterface]
-        [Export("test")]
-        public void Test(int num)
-        {
-            HybridWebViewRenderer hybridRenderer;
-
-            if (hybridWebViewRenderer != null && hybridWebViewRenderer.TryGetTarget(out hybridRenderer))
-            {
-                hybridRenderer.Element.Test(num);
-            }
-        }
     }
 }

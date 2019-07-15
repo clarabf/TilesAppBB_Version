@@ -8,13 +8,12 @@ namespace TilesApp
 		{
 			InitializeComponent ();
             (Application.Current as App).qrScanned = qrScanned;
-            hybridWebView.RegisterActionS(data => test(data));
+            hybridWebView.RegisterActionS(data => showDisplayAlert(data));
         }
 
-        private void test(string data)
+        private void showDisplayAlert(string data)
         {
             DisplayAlert("Alert", "QR: " + data, "OK");
-            
         }
     }
 }

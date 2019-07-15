@@ -17,7 +17,7 @@ namespace TilesApp.Droid
         {
             base.OnPageFinished(view, url);
             view.EvaluateJavascript(_javascript, null);
-            string command = "test('" + _qr + "')";
+            string command = "changeTitle('" + _qr + "')";
             view.EvaluateJavascript(command, null);
         }
     }

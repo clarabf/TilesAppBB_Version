@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TilesApp.MainPage">
     <ContentPage.Content>
-        <Grid BackgroundColor="Aqua">
+        <Grid BackgroundColor="MediumAquamarine">
             <Grid.RowDefinitions>
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
@@ -17,7 +17,6 @@
             <Button x:Name="cameraMain"
                     Text="Go to scan!"
                     BorderColor="Azure"
-                    BackgroundColor="Aqua"
                     WidthRequest="100" 
                     HeightRequest="100"
                     HorizontalOptions="Center"

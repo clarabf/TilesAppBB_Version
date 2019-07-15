@@ -10,7 +10,6 @@ namespace TilesApp.Droid
     public class HybridWebViewRenderer : ViewRenderer<HybridWebView, Android.Webkit.WebView>
     {
         const string JavascriptFunction = "function invokeCSharpAction(data){jsBridge.invokeAction(data);}";
-        //const string JavascriptFunctionTest = "function testCSharp(num){jsBridge.test(num);}";
         Context _context;
 
         public HybridWebViewRenderer(Context context) : base(context)
@@ -35,7 +34,6 @@ namespace TilesApp.Droid
                     var webView = new Android.Webkit.WebView(_context);
                     webView.Settings.JavaScriptEnabled = true;
                     webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavascriptFunction}", (Application.Current as App).qrScanned));
-                    //webView.SetWebViewClient(new JavascriptWebViewClient($"javascript: {JavascriptFunctionTest}"));
                     SetNativeControl(webView);
                 }
                 Control.AddJavascriptInterface(new JSBridge(this), "jsBridge");

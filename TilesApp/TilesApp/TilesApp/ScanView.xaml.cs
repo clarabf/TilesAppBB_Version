@@ -10,7 +10,6 @@ namespace TilesApp
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-
         }
 
         private async void ZXingScannerView_OnOnScanResult(Result result)
