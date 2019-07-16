@@ -32,8 +32,9 @@ namespace TilesApp.Droid
                 {
                     var webView = new Android.Webkit.WebView(_context);
                     webView.Settings.JavaScriptEnabled = true;
-                    webView.SetWebViewClient(new JavascriptWebViewClient((Application.Current as App).qrScanned));
+                    webView.SetWebViewClient(new JavascriptWebViewClient());
                     SetNativeControl(webView);
+                    //SetWebContentsDebuggingEnabled(true);
                 }
                 Control.AddJavascriptInterface(new JSBridge(this), "jsBridge");
                 Control.LoadUrl($"file:///android_asset/Content/{Element.Uri}");

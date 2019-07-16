@@ -4,10 +4,9 @@ namespace TilesApp
 {
 	public partial class HybridWebViewPage : ContentPage
 	{
-		public HybridWebViewPage (string qrScanned)
+		public HybridWebViewPage ()
 		{
 			InitializeComponent ();
-            (Application.Current as App).qrScanned = qrScanned;
             hybridWebView.RegisterActionS(data => showAlert(data));
             hybridWebView.RegisterActionV(scanQR);
         }

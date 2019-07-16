@@ -5,13 +5,6 @@ namespace TilesApp.Droid
 {
     public class JavascriptWebViewClient : WebViewClient
     {
-        string _qr;
-
-        public JavascriptWebViewClient(string qr)
-        {
-            _qr = qr;
-        }
-
         public override void OnPageFinished(Android.Webkit.WebView view, string url)
         {
             base.OnPageFinished(view, url);
