@@ -1,0 +1,42 @@
+<html>
+<body>
+    <h1 id="title">HybridWebView Test</h1>
+    <br />
+    Enter name: <input type="text" id="name">
+    <br />
+    <br />
+    <button type="button" onclick="javascript: showDisplay($('#name').val());">Show Display</button>
+    <br />
+    <br />
+    <button type="button" onclick="javascript: goToScan();">Activate Scanner</button>
+    <br />
+    <p id="result">Result:</p>
+    <script type="text/javascript" src="js/plugins/jquery.min.js"></script>
+    <script>
+        function log(str) {
+            $('#result').text($('#result').text() + " " + str);
+        }
+        function goToScan() {
+            try {
+                invokeVoidCSharpAction();
+            }
+            catch (err) {
+                log(err);
+            }
+        }
+        function showDisplay(data) {
+            console.log(data)
+            try {
+                log("Sending Data:" + data);
+                invokeCSharpAction(data);
+            }
+            catch (err) {
+                log(err);
+            }
+        }
+        function changeTitle(data) {
+            $('#title').text(data);
+        }
+    </script>
+</body>
+</html>

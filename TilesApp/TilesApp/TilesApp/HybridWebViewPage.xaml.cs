@@ -7,6 +7,7 @@ namespace TilesApp
 		public HybridWebViewPage (string qrScanned)
 		{
 			InitializeComponent ();
+            NavigationPage.SetHasNavigationBar(this, false);
             (Application.Current as App).qrScanned = qrScanned;
             hybridWebView.RegisterActionS(data => showAlert(data));
             hybridWebView.RegisterActionV(scanQR);

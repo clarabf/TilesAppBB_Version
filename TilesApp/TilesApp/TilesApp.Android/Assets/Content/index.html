@@ -1,42 +1,79 @@
-<html>
-<body>
-    <h1 id="title">HybridWebView Test</h1>
-    <br />
-    Enter name: <input type="text" id="name">
-    <br />
-    <br />
-    <button type="button" onclick="javascript: showDisplay($('#name').val());">Show Display</button>
-    <br />
-    <br />
-    <button type="button" onclick="javascript: goToScan();">Activate Scanner</button>
-    <br />
-    <p id="result">Result:</p>
-    <script type="text/javascript" src="js/plugins/jquery.min.js"></script>
-    <script>
-        function log(str) {
-            $('#result').text($('#result').text() + " " + str);
-        }
-        function goToScan() {
-            try {
-                invokeVoidCSharpAction();
-            }
-            catch (err) {
-                log(err);
-            }
-        }
-        function showDisplay(data) {
-            console.log(data)
-            try {
-                log("Sending Data:" + data);
-                invokeCSharpAction(data);
-            }
-            catch (err) {
-                log(err);
-            }
-        }
-        function changeTitle(data) {
-            $('#title').text(data);
-        }
-    </script>
+﻿<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up Form</title>
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/font-awesome.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/overlayScrollbars.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/bootstrap-select.min.css">
+    <link rel="stylesheet" href="assets/css/plugins/sweetalert2.min.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body style="background: #ff000000;">
+
+    <div class="main">
+        <div class="containe">
+            <div class="signup-content" style="height: inherit;">
+                <div class="signup-desc">
+                    <div class="signup-desc-content">
+                        <img class="" alt="SACO Technologies Inc"
+                             src="http://saco.com/wp-content/uploads/2016/05/SACO-Logo-White.png" style="height: 25px;" />
+                    </div>
+                </div>
+                <div class="signup-form-content w-100">
+                    <form method="POST" id="signup-form" class="signup-form" enctype="multipart/form-data">
+                        <h3></h3>
+                        <fieldset>
+                            <span class="step-current">Step 1 / 4</span>
+                            <div class="form-group">
+                                <input type="text" name="your_name" id="your_name" required=required />
+                                <label for="your_name">Your Name</label>
+                            </div>
+                        </fieldset>
+
+                        <h3></h3>
+                        <fieldset>
+                            <span class="step-current">Step 2 / 4</span>
+                            <div class="form-group">
+                                <input type="text" name="email" id="email" required=required />
+                                <label for="email">Your Email</label>
+                            </div>
+                        </fieldset>
+
+                        <h3></h3>
+                        <fieldset>
+                            <span class="step-current">Step 3 / 4</span>
+                            <div class="form-group">
+                                <input type="text" name="your_password" id="your_password" required=required />
+                                <label for="your_password">Your Password</label>
+                                <span toggle="#your_password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                            </div>
+                        </fieldset>
+
+                        <h3></h3>
+                        <fieldset>
+                            <span class="step-current">Step 4 / 4</span>
+                            <div class="form-group">
+                                <input type="text" name="confirm_password" id="confirm_password" required=required />
+                                <label for="confirm_password">Confirm your password</label>
+                                <span toggle="#confirm_password" class="zmdi zmdi-eye field-icon toggle-password"></span>
+                            </div>
+                        </fieldset>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/plugins/jquery.min.js"></script>
+    <script src="assets/js/plugins/popper.min.js"></script>
+    <script src="assets/js/plugins/bootstrap.min.js"></script>
+    <script src="assets/js/plugins/jquery.steps.min.js"></script>
+    <script src="assets/js/plugins/overlayScrollbars.min.js"></script>
+    <script src="assets/js/plugins/bootstrap-select.min.js"></script>
+    <script src="assets/js/plugins/sweetalert2.min.js"></script>
+    <script src="assets/js/scripts.js"></script>
 </body>
 </html>

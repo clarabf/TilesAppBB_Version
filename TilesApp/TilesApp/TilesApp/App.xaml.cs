@@ -15,7 +15,7 @@ namespace TilesApp
         {
             InitializeComponent();
             //MainPage = new NavigationPage(new MainPage());
-            MainPage = new NavigationPage(new HybridWebViewPage("FIRST TITLE"));
+            MainPage = new NavigationPage(new HybridWebViewPage("TILE APP"));
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
