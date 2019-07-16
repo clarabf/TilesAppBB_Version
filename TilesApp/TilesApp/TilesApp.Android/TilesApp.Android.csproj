@@ -72,6 +72,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-brands-400.woff" />
+    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-brands-400.woff2" />
+    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-regular-400.woff" />
+    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-regular-400.woff2" />
+    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-solid-900.woff" />
+    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-solid-900.woff2" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -108,22 +114,55 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\index.html" />
+    <AndroidAsset Include="Assets\Content\index_.html" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\js\plugins\bootstrap.min.js" />
+    <AndroidAsset Include="Assets\Content\assets\js\plugins\bootstrap.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\js\plugins\jquery.min.js" />
+    <AndroidAsset Include="Assets\Content\assets\js\plugins\jquery.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\js\plugins\popper.min.js" />
+    <AndroidAsset Include="Assets\Content\assets\js\plugins\popper.min.js" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\js\scripts.js" />
+    <AndroidAsset Include="Assets\Content\assets\js\scripts.js" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\qrsound.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\index.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\css\styles.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\css\plugins\bootstrap.min.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\css\plugins\bootstrap-select.min.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\css\plugins\font-awesome.min.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\css\plugins\overlayScrollbars.min.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\css\plugins\sweetalert2.min.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\js\plugins\bootstrap-select.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\js\plugins\overlayScrollbars.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\js\plugins\sweetalert2.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\Content\assets\js\plugins\jquery.steps.min.js" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
