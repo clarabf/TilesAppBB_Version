@@ -15,7 +15,7 @@ $(document).ready(function () {
         },
         titleTemplate: '<h3 class="title">#title#</h3>',
         onFinished: function (event, currentIndex) {
-            alert('Sumited');
+            //alert('Sumited');
         },
     });
     $(".toggle-password").on('click', function () {
@@ -40,9 +40,7 @@ $(document).ready(function () {
         $('.tab__qr,.signup-form').removeClass('d-none')
     });
 
-
-
-})
+ })
 
 let setStep = (step) => {
     $('#signup-form-t-' + (step - 1)).click()
