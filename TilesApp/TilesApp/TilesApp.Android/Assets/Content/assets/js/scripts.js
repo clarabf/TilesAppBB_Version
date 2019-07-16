@@ -31,6 +31,19 @@ $(document).ready(function () {
         $(this).parent().addClass('checked');
         $(this).parent().prevAll().addClass('checked');
         $(this).parent().nextAll().removeClass('checked');
-    });  
+    });
 
-});
+
+    $(document).on('click', '.qr__button', function () {
+        invokeVoidCSharpAction();
+        $('.qr:not(.tab__qr)').addClass('d-none')
+        $('.tab__qr,.signup-form').removeClass('d-none')
+    });
+
+
+
+})
+
+let setStep = (step) => {
+    $('#signup-form-t-' + (step - 1)).click()
+};

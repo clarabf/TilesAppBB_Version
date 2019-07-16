@@ -30,7 +30,7 @@ namespace TilesApp
 
             Device.BeginInvokeOnMainThread(() =>
             {
-                mainPage.EvaluateJavascript("changeTitle('" + qrScanned + "')", null);
+                mainPage.EvaluateJavascript("setStep('" + qrScanned + "')", null);
                 Navigation.PopModalAsync(true);
             });
         }

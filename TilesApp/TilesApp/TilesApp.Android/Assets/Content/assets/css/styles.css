@@ -1,9 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
 
-* {
-    font-family: 'Montserrat'
-}
-
 display-flex, .signup-content, .actions ul, .actions ul li a {
     display: flex;
     display: -webkit-flex
@@ -77,6 +73,11 @@ input, select, textarea {
         background-color: transparent !important
     }
 
+.btn.focus, .btn:focus {
+    outline: 0;
+    box-shadow: none;
+}
+
 .clear {
     clear: both
 }
@@ -99,15 +100,14 @@ body {
     line-height: 1.6;
     color: #222;
     font-weight: 400;
-    font-family: poppins;
+    font-family: 'Montserrat';
     /* height: 184vh; */
     margin: 0;
     /* background:#222; */
 }
 
 .main {
-    height: 100vh;
-    /* padding:50px 0 */
+    height: -webkit-fill-available;
 }
 
 .containe {
@@ -154,9 +154,12 @@ fieldset {
     padding: 45px 55px
 }
 
-
 .signup-form {
-    padding: 55px 110px 0 110px;
+    padding: 55px 50px 0 50px;
+}
+
+.signup-form-content {
+    transition: all .7s ease;
 }
 
 input {
@@ -219,7 +222,7 @@ input {
 }
 
 .content {
-    padding: 500px 0 55px;
+    padding: 250px 0 55px;
     position: relative
 }
 
@@ -260,23 +263,17 @@ input {
         }
 
         .actions ul li a {
-            width: 140px;
-            height: 50px;
+            width: 90px;
+            height: 40px;
             color: red;
             font-family: montserrat;
             font-size: 13px;
             font-weight: 700;
             background: black;
             align-items: center;
-            -moz-align-items: center;
             -webkit-align-items: center;
-            -o-align-items: center;
-            -ms-align-items: center;
             justify-content: center;
-            -moz-justify-content: center;
             -webkit-justify-content: center;
-            -o-justify-content: center;
-            -ms-justify-content: center;
             text-decoration: none;
         }
 
@@ -288,7 +285,10 @@ input {
         list-style: none;
     }
 
+
+/*  landscape    */
 @media screen and (max-width: 992px) {
+    
     .container {
         width: calc(100% - 40px);
         max-width: 100%
@@ -299,7 +299,7 @@ input {
     }
 
     .signup-desc {
-        width: 465px
+        width: 235px
     }
 
     .signup-img {
@@ -307,6 +307,7 @@ input {
     }
 }
 
+/*  portrait    */
 @media screen and (max-width: 768px) {
     .steps ul, .signup-content {
         flex-direction: column;
