@@ -34,7 +34,6 @@ namespace TilesApp.Droid
                     webView.Settings.JavaScriptEnabled = true;
                     webView.SetWebViewClient(new JavascriptWebViewClient());
                     SetNativeControl(webView);
-                    //SetWebContentsDebuggingEnabled(true);
                 }
                 Control.AddJavascriptInterface(new JSBridge(this), "jsBridge");
                 Control.LoadUrl($"file:///android_asset/Content/{Element.Uri}");
