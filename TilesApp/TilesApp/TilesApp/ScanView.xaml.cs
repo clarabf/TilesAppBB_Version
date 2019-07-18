@@ -16,7 +16,8 @@ namespace TilesApp
         {
             public string Laststep { get; set; }    
             public int Maxsteps { get; set; }      
-            public string Category { get; set; } 
+            public int Category { get; set; }
+            public string Pdf { get; set; }
         }
 
         public ScanView(Android.Webkit.WebView webView)
@@ -38,7 +39,6 @@ namespace TilesApp
             player.Play();
 
             string qrScanned = result.Text.ToString();
-            string responseString = "Error...Connect wifi for tests.";
 
             HttpClient client = new HttpClient();
             DataReceived dataReceived = null;
@@ -56,14 +56,34 @@ namespace TilesApp
                 else
                 {
                     postData.Add(new KeyValuePair<string, string>("type", "update-user"));
-                    postData.Add(new KeyValuePair<string, string>("id", "4"));
-                    postData.Add(new KeyValuePair<string, string>("user", "cbonillo"));
+                    postData.Add(new KeyValuePair<string, string>("id", "3"));
+                    postData.Add(new KeyValuePair<string, string>("user", "usertest"));
                 }
                 
                 var content = new FormUrlEncodedContent(postData);
                 var postResponse = await client.PostAsync("http://172.16.4.175/webservice/connect.php", content);
                 var data = await postResponse.Content.ReadAsStringAsync();
-                dataReceived = JsonConvert.DeserializeObject<DataReceived>(data);
+                string url;
+                if (qrScanned.Length == 1)
+                {
+                    dataReceived = JsonConvert.DeserializeObject<DataReceived>(data);
+                    if (dataReceived.Pdf == "")
+                    {
+                        postData = new List<KeyValuePair<string, string>>();
+                        postData.Add(new KeyValuePair<string, string>("type", "pdf-info"));
+                        postData.Add(new KeyValuePair<string, string>("id", dataReceived.Category.ToString()));
+                        content = new FormUrlEncodedContent(postData);
+                        postResponse = await client.PostAsync("http://172.16.4.175/webservice/connect.php", content);
+                        url = await postResponse.Content.ReadAsStringAsync();
+                        postData = new List<KeyValuePair<string, string>>();
+                        postData.Add(new KeyValuePair<string, string>("type", "update-url"));
+                        postData.Add(new KeyValuePair<string, string>("id", qrScanned));
+                        postData.Add(new KeyValuePair<string, string>("pdf", url));
+                        content = new FormUrlEncodedContent(postData);
+                        postResponse = await client.PostAsync("http://172.16.4.175/webservice/connect.php", content);
+                    }
+                    else url = dataReceived.Pdf;
+                }
             }
             catch (Exception ex)
             {
