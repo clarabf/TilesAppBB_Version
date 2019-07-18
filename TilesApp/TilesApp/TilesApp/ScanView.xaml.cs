@@ -14,7 +14,7 @@ namespace TilesApp
 
         private class DataReceived
         {
-            public string Laststep { get; set; }    
+            public int Laststep { get; set; }    
             public int Maxsteps { get; set; }      
             public int Category { get; set; }
             public string Pdf { get; set; }
@@ -64,9 +64,11 @@ namespace TilesApp
                 var postResponse = await client.PostAsync("http://172.16.4.175/webservice/connect.php", content);
                 var data = await postResponse.Content.ReadAsStringAsync();
                 string url;
+                string dataTileJs;
                 if (qrScanned.Length == 1)
                 {
                     dataReceived = JsonConvert.DeserializeObject<DataReceived>(data);
+                    // If the pdf has never been consulted before, it is searched in the pdf table to store its url in the tile
                     if (dataReceived.Pdf == "")
                     {
                         postData = new List<KeyValuePair<string, string>>();
@@ -83,6 +85,15 @@ namespace TilesApp
                         postResponse = await client.PostAsync("http://172.16.4.175/webservice/connect.php", content);
                     }
                     else url = dataReceived.Pdf;
+
+                    string url_step = url.Replace(".pdf", "_" + dataReceived.Laststep + ".pdf");
+                    var jsData = new Dictionary<string, object>();
+                    jsData.Add("id", qrScanned);
+                    jsData.Add("url", url_step);
+                    jsData.Add("category", dataReceived.Category);
+                    jsData.Add("step", dataReceived.Laststep);
+                    jsData.Add("maxsteps", dataReceived.Maxsteps);
+                    dataTileJs = JsonConvert.SerializeObject(jsData);
                 }
             }
             catch (Exception ex)
