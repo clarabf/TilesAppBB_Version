@@ -61,7 +61,7 @@ namespace TilesApp
                 }
                 
                 var content = new FormUrlEncodedContent(postData);
-                var postResponse = await client.PostAsync("http://172.16.4.175/webservice/connect.php", content);
+                var postResponse = await client.PostAsync("http://oboria.net/qr/connect.php", content);
                 var data = await postResponse.Content.ReadAsStringAsync();
                 string url;
                 string dataTileJs;
@@ -75,14 +75,14 @@ namespace TilesApp
                         postData.Add(new KeyValuePair<string, string>("type", "pdf-info"));
                         postData.Add(new KeyValuePair<string, string>("id", dataReceived.Category.ToString()));
                         content = new FormUrlEncodedContent(postData);
-                        postResponse = await client.PostAsync("http://172.16.4.175/webservice/connect.php", content);
+                        postResponse = await client.PostAsync("http://oboria.net/qr/connect.php", content);
                         url = await postResponse.Content.ReadAsStringAsync();
                         postData = new List<KeyValuePair<string, string>>();
                         postData.Add(new KeyValuePair<string, string>("type", "update-url"));
                         postData.Add(new KeyValuePair<string, string>("id", qrScanned));
                         postData.Add(new KeyValuePair<string, string>("pdf", url));
                         content = new FormUrlEncodedContent(postData);
-                        postResponse = await client.PostAsync("http://172.16.4.175/webservice/connect.php", content);
+                        postResponse = await client.PostAsync("http://oboria.net/qr/connect.php", content);
                     }
                     else url = dataReceived.Pdf;
 
