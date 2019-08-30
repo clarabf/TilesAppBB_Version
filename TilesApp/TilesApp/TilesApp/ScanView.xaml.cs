@@ -10,7 +10,6 @@ namespace TilesApp
 {
     public partial class ScanView : ContentPage
     {
-
         Android.Webkit.WebView mainPage;
 
         private class DataReceived
@@ -39,74 +38,45 @@ namespace TilesApp
             player.Load("qrsound.mp3");
             player.Play();
 
+            // We scan the tile id
             string qrScanned = result.Text.ToString();
 
             HttpClient client = new HttpClient();
-            DataReceived dataReceived = null;
+            DataReceived tileInformation = null;
 
             try
             {
-                var postData = new List<KeyValuePair<string, string>>();
-
-                /////////////////////////////////////TESTS/////////////////////////////
-                if (qrScanned.Length==1)
-                {
-                    postData.Add(new KeyValuePair<string, string>("type", "tile-info"));
-                    postData.Add(new KeyValuePair<string, string>("id", qrScanned));
-                }
-                else
-                {
-                    postData.Add(new KeyValuePair<string, string>("type", "update-user"));
-                    postData.Add(new KeyValuePair<string, string>("id", "3"));
-                    postData.Add(new KeyValuePair<string, string>("user", "usertest"));
-                }
-
-                var postDataB = new List<KeyValuePair<string, int>>();
-                postDataB.Add(new KeyValuePair<string, int>("id", 1));
-
-                var content = new FormUrlEncodedContent(postData);
-
+                // Getting tile information
                 var dict = new Dictionary<string, int>();
                 dict.Add("id", int.Parse(qrScanned));
-                var contentB = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
+                var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
+                var postResponse = await client.PostAsync("https://blackboxerpapi.azurewebsites.net/api/GetTile/", content);
+                var tile_info = await postResponse.Content.ReadAsStringAsync();
 
-                //string s = "{\"id\":1}";
-                //contentB = new StringContent(s, Encoding.UTF8, "application/json");
-
-                //var postResponse = await client.PostAsync("http://oboria.net/qr/connect.php", content);
-                var postResponse = await client.PostAsync("https://blackboxerpapi.azurewebsites.net/api/GetTile/", contentB);
-
-                var data = await postResponse.Content.ReadAsStringAsync();
-                string url;
                 string dataTileJs;
+
+                // For testing, we assume that tiles id is a number (1-9)
                 if (qrScanned.Length == 1)
                 {
-                    dataReceived = JsonConvert.DeserializeObject<DataReceived>(data);
-                    // If the pdf has never been consulted before, it is searched in the pdf table to store its url in the tile
-                    if (dataReceived.Pdf == "")
-                    {
-                        postData = new List<KeyValuePair<string, string>>();
-                        postData.Add(new KeyValuePair<string, string>("type", "pdf-info"));
-                        postData.Add(new KeyValuePair<string, string>("id", dataReceived.Category.ToString()));
-                        content = new FormUrlEncodedContent(postData);
-                        postResponse = await client.PostAsync("http://oboria.net/qr/connect.php", content);
-                        url = await postResponse.Content.ReadAsStringAsync();
-                        postData = new List<KeyValuePair<string, string>>();
-                        postData.Add(new KeyValuePair<string, string>("type", "update-url"));
-                        postData.Add(new KeyValuePair<string, string>("id", qrScanned));
-                        postData.Add(new KeyValuePair<string, string>("pdf", url));
-                        content = new FormUrlEncodedContent(postData);
-                        postResponse = await client.PostAsync("http://oboria.net/qr/connect.php", content);
-                    }
-                    else url = dataReceived.Pdf;
+                    tileInformation = JsonConvert.DeserializeObject<DataReceived>(tile_info);
 
-                    string url_step = url.Replace(".pdf", "_" + dataReceived.Laststep + ".pdf");
+                    // Getting the pdf url associated to the tile category
+                    dict = new Dictionary<string, int>();
+                    dict.Add("tile", tileInformation.Category);
+                    content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
+                    postResponse = await client.PostAsync("https://blackboxerpapi.azurewebsites.net/api/GetPdf/", content);
+                    var url = await postResponse.Content.ReadAsStringAsync();
+
+                    // Getting the pdf url of the last step
+                    string url_step = url.Replace(".pdf", "_" + tileInformation.Laststep + ".pdf");
+
+                    // Json to send to the front
                     var jsData = new Dictionary<string, object>();
                     jsData.Add("id", qrScanned);
                     jsData.Add("url", url_step);
-                    jsData.Add("category", dataReceived.Category);
-                    jsData.Add("step", dataReceived.Laststep);
-                    jsData.Add("maxsteps", dataReceived.Maxsteps);
+                    jsData.Add("category", tileInformation.Category);
+                    jsData.Add("step", tileInformation.Laststep);
+                    jsData.Add("maxsteps", tileInformation.Maxsteps);
                     dataTileJs = JsonConvert.SerializeObject(jsData);
                 }
             }
@@ -117,7 +87,8 @@ namespace TilesApp
 
             Device.BeginInvokeOnMainThread(() =>
             {
-                if (qrScanned.Length == 1) mainPage.EvaluateJavascript("setStep('" + dataReceived.Laststep + "')", null);
+                // JS function to load page in the correct step
+                if (qrScanned.Length == 1) mainPage.EvaluateJavascript("setStep('" + tileInformation.Laststep + "')", null);
                 Navigation.PopModalAsync(true);
             });
         }

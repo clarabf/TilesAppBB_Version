@@ -8,6 +8,7 @@ namespace TilesApp
 		{
 			InitializeComponent ();
             NavigationPage.SetHasNavigationBar(this, false);
+            //Register the actions for the JavascriptWebViewClient
             hybridWebView.RegisterActionS(data => showAlert(data));
             hybridWebView.RegisterActionV(scanQR);
         }
