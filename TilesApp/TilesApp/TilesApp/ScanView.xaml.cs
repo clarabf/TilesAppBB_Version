@@ -4,6 +4,7 @@ using System.Net.Http;
 using Xamarin.Forms;
 using ZXing;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace TilesApp
 {
@@ -59,9 +60,22 @@ namespace TilesApp
                     postData.Add(new KeyValuePair<string, string>("id", "3"));
                     postData.Add(new KeyValuePair<string, string>("user", "usertest"));
                 }
-                
+
+                var postDataB = new List<KeyValuePair<string, int>>();
+                postDataB.Add(new KeyValuePair<string, int>("id", 1));
+
                 var content = new FormUrlEncodedContent(postData);
-                var postResponse = await client.PostAsync("http://oboria.net/qr/connect.php", content);
+
+                var dict = new Dictionary<string, int>();
+                dict.Add("id", int.Parse(qrScanned));
+                var contentB = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
+
+                //string s = "{\"id\":1}";
+                //contentB = new StringContent(s, Encoding.UTF8, "application/json");
+
+                //var postResponse = await client.PostAsync("http://oboria.net/qr/connect.php", content);
+                var postResponse = await client.PostAsync("https://blackboxerpapi.azurewebsites.net/api/GetTile/", contentB);
+
                 var data = await postResponse.Content.ReadAsStringAsync();
                 string url;
                 string dataTileJs;

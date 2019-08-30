@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesApp.iOS", "TilesApp\Ti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesApp.UWP", "TilesApp\TilesApp.UWP\TilesApp.UWP.csproj", "{7F538A22-5BDD-47BC-BB5B-39E8EAF2F247}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TilesApp", "TilesApp\TilesApp\TilesApp.csproj", "{8E9C7AE2-58A8-4728-9837-105F8A64193E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TilesApp", "TilesApp\TilesApp\TilesApp.csproj", "{8E9C7AE2-58A8-4728-9837-105F8A64193E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
