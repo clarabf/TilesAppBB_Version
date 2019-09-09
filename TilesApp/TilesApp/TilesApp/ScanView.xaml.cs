@@ -55,6 +55,15 @@ namespace TilesApp
 
                 string dataTileJs;
 
+                //var dataTile = new Dictionary<string, object>();
+                //dataTile.Add("id", 0);
+                //dataTile.Add("work_order_id", 1);
+                //dataTile.Add("tile_type", 12);
+                //dataTile.Add("frame_code", "123abc");
+                //content = new StringContent(JsonConvert.SerializeObject(dataTile), Encoding.UTF8, "application/json");
+                //postResponse = await client.PostAsync("https://blackboxerpapi.azurewebsites.net/api/SetTile/", content);
+                //var id_tile = await postResponse.Content.ReadAsStringAsync();
+
                 // For testing, we assume that tiles id is a number (1-9)
                 if (qrScanned.Length == 1)
                 {
