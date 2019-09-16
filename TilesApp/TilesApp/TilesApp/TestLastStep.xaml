@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TilesApp.TestFirstStep">
+             x:Class="TilesApp.TestLastStep">
     <ContentPage.Content>
         <Grid BackgroundColor="MediumAquamarine">
             <Grid.RowDefinitions>
@@ -9,14 +9,7 @@
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Button x:Name="scanFrame"
-                    Text="Scan Frame code"
-                    BorderColor="Azure"
-                    WidthRequest="100" 
-                    HeightRequest="100"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    Clicked="GoToScan"/>
+            <Picker x:Name="pickerDynamicData" Title="Select Task" HorizontalOptions="FillAndExpand" SelectedItem="{Binding Name}" SelectedIndexChanged="PickerSelection" HeightRequest="50" TextColor="Blue"/>
             <Label  x:Name="pdfLabel"
                     Text="PDF IS HERE"
                     HorizontalOptions="Center"
@@ -25,15 +18,15 @@
                     HeightRequest="200"
                     Grid.Row="1"
                     VerticalOptions="Center"/>
-            <Button x:Name="nextStep"
-                    Text="NEXT"
+            <Button x:Name="finish"
+                    Text="FINISH"
                     BorderColor="Azure"
                     WidthRequest="100" 
                     HeightRequest="100"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
                     Grid.Row="2"
-                    Clicked="GoToNextStep"/>
+                    Clicked="FinishWorkOrder"/>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

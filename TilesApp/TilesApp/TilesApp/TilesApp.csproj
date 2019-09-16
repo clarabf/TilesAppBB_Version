@@ -24,6 +24,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="TestLastStep.xaml.cs">
+      <DependentUpon>TestLastStep.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="TestGeneralStep.xaml.cs">
+      <DependentUpon>TestGeneralStep.xaml</DependentUpon>
+    </Compile>
     <Compile Update="TestScanView.xaml.cs">
       <DependentUpon>TestScanView.xaml</DependentUpon>
     </Compile>

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TilesApp.TestFirstStep">
+             x:Class="TilesApp.TestGeneralStep">
     <ContentPage.Content>
         <Grid BackgroundColor="MediumAquamarine">
             <Grid.RowDefinitions>
@@ -9,14 +9,15 @@
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Button x:Name="scanFrame"
-                    Text="Scan Frame code"
+            <Button x:Name="skip"
+                    Text="SKIP STEP"
                     BorderColor="Azure"
+                    BackgroundColor="Red"
                     WidthRequest="100" 
                     HeightRequest="100"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Clicked="GoToScan"/>
+                    Clicked="GoToNextStep"/>
             <Label  x:Name="pdfLabel"
                     Text="PDF IS HERE"
                     HorizontalOptions="Center"
