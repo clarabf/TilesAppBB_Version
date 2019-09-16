@@ -1,28 +1,20 @@
 ﻿using System;
 using Xamarin.Forms;
-using System.Collections.ObjectModel;
+using System.Net.Http;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Text;
+using TilesApp.Models;
 
 namespace TilesApp
 {
     public partial class TestWorkOrder : ContentPage
     {
 
-        public class PickerItems
-        {
-            public string Name { get; set; }
-        }
-
         public TestWorkOrder()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-        }
-
-        private void PickerSelection(object sender, EventArgs e)
-        {
-            var picker = (Picker)sender;
-            int selectedIndex = picker.SelectedIndex;
-            //put your code here
         }
 
         private async void SelectWork(object sender, EventArgs args)
@@ -31,13 +23,34 @@ namespace TilesApp
             int wo;
             if (b.Text == "Work Order 1") wo = 1;
             else wo = 2;
-            //CALL GetTilesOfWorkOrder(id)
-            Console.WriteLine(wo);
-            Device.BeginInvokeOnMainThread(() =>
+            
+            HttpClient client = new HttpClient();
+            Tile tileInformation = null;
+
+            try
             {
-                Navigation.PopModalAsync(true);
-                Navigation.PushModalAsync(new TestTiles());
-            });
+                var dict = new Dictionary<string, int>();
+                dict.Add("work_order_id", wo);
+                var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
+                //var postResponse = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTilesOfWorkOrder?work_order_id=1");
+                var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTile?id=1");
+                var tile_info = await response.Content.ReadAsStringAsync();
+
+                //List<Tile> listTiles = new List<Tile>();
+                //listTiles = JsonConvert.DeserializeObject<List<Tile>>(tile_info);
+
+                Tile t = JsonConvert.DeserializeObject<Tile>(tile_info);
+
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new TestTiles());
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 }

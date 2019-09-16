@@ -138,12 +138,7 @@ namespace TilesApp
                 // Last step
                 case 2:
                     //List<TileTask> listSkipped = GetSkippedTasks(current_tile)
-
                     List<string> listSkipped = new List<string>();
-                    listSkipped.Add("Task 3");
-                    listSkipped.Add("Task 7");
-                    listSkipped.Add("Task 11");
-
                     task_id = 1;
                     max_steps = 12;
                     worker = "cbonillo";

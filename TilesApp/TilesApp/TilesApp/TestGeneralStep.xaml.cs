@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace TilesApp
@@ -43,16 +44,20 @@ namespace TilesApp
             // string next_step_url = next_step.url;
 
             //////////////////////////////////// TESTS /////////////////////////////////
-            int next_step_order = 9;
-            string next_step_url = "http://step.9.test.com/";
+            int next_step_order = 12;
+            string next_step_url = "http://step.12.test.com/";
             int new_task_id = 3;
             
             if (next_step_order == max_steps)
             {
+                List<string> listSkipped = new List<string>();
+                listSkipped.Add("Task 2");
+                listSkipped.Add("Task 6");
+                listSkipped.Add("Task 10");
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);
-                    //Navigation.PushModalAsync(new TestLastStep(tile_id, max_steps));
+                    Navigation.PushModalAsync(new TestLastStep(listSkipped, tile_id, new_task_id, max_steps, worker, next_step_url));
                 });
             }
             else {
