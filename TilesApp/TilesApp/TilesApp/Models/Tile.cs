@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TilesApp.Models
 {
-    class Tile
+    public class Tile
     {
         public int id { get; set; }
         public int work_order_id { get; set; }

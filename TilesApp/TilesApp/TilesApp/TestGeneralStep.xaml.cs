@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TilesApp.Models;
 using Xamarin.Forms;
 
 namespace TilesApp
@@ -50,10 +51,7 @@ namespace TilesApp
             
             if (next_step_order == max_steps)
             {
-                List<string> listSkipped = new List<string>();
-                listSkipped.Add("Task 2");
-                listSkipped.Add("Task 6");
-                listSkipped.Add("Task 10");
+                List<TileTask> listSkipped = new List<TileTask>();
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);

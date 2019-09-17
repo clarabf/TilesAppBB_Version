@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TilesApp.Models;
 using Xamarin.Forms;
 
 namespace TilesApp
@@ -8,7 +9,7 @@ namespace TilesApp
     public partial class TestLastStep : ContentPage
     {
 
-        List<string> listSkipped = new List<string>();
+        List<TileTask> listSkipped = new List<TileTask>();
         int tile_id;
         int task_id;
         int max_steps;
@@ -20,7 +21,7 @@ namespace TilesApp
             public string Name { get; set; }
         }
 
-        public TestLastStep(List<string> l, int tile, int t_id, int m_steps, string wor, string url)
+        public TestLastStep(List<TileTask> l, int tile, int t_id, int m_steps, string wor, string url)
         {
             InitializeComponent();
             listSkipped = l;
@@ -36,7 +37,7 @@ namespace TilesApp
 
             if (listSkipped.Count != 0)
             {
-                foreach (var s in listSkipped) objClassList.Add(new PickerItems { Name = s });
+                foreach (var s in listSkipped) objClassList.Add(new PickerItems { Name = "Task" + s.id });
                 foreach (var item in objClassList) objStringList.Add(item.Name);
                 pickerDynamicData.ItemsSource = objStringList;
                 finish.IsEnabled = false;

@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using TilesApp.Models;
 using Xamarin.Forms;
 
 namespace TilesApp
@@ -9,7 +12,7 @@ namespace TilesApp
         int current_tile;
 
         //Argument will be List<Tile>
-        public TestTiles()
+        public TestTiles(List<Tile> listTiles)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -43,33 +46,36 @@ namespace TilesApp
             ViewCell viewCell;
             // Adding first row of the table
             section.Add(new ViewCell() { View = layout });
-            
+            string code;
+
             // Scan the tiles table
-            for (int i = 0; i < 3; i++)
+            foreach (Tile t in listTiles)
             {
                 // Format tiles information
                 layout = new StackLayout() { Orientation = StackOrientation.Horizontal };
+                if (t.frame_code == "") code = "SCAN";
+                else code = t.frame_code;
                 layout.Children.Add(new Label()
                 {
-                    Text = i.ToString(),
+                    Text = t.tile_type.ToString(),
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.StartAndExpand
                 });
                 layout.Children.Add(new Label()
                 {
-                    Text = "Code" + i,
+                    Text = code,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.CenterAndExpand
                 });
                 layout.Children.Add(new Label()
                 {
-                    Text = "Step" + i,
+                    Text = "--",
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.EndAndExpand
                 });
                 viewCell = new ViewCell();
                 // Store tile_id (not showing in the table)
-                viewCell.ClassId = i.ToString();
+                viewCell.ClassId = t.id.ToString();
 
                 viewCell.Tapped += TileSelected;
                 viewCell.View = layout;
@@ -83,73 +89,72 @@ namespace TilesApp
         private async void TileSelected(object sender, EventArgs args)
         {
             ViewCell vc = (ViewCell)sender;
-            Console.WriteLine(vc.ClassId);
+            current_tile = int.Parse(vc.ClassId);
+            HttpClient client = new HttpClient();
 
-            //Guardar tile_id
-            // current_tile = vc.ClassId;
+            try {
+                var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTile?id=" + current_tile);
+                var tile_info = await response.Content.ReadAsStringAsync();
+                Tile newT = JsonConvert.DeserializeObject<Tile>(tile_info);
 
-            //if !frame_code => SCANVIEW
+                if (newT.frame_code != "" && newT.frame_code.Length!=1)
+                {
+                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStepsCount?tile_type=" + newT.tile_type);
+                    var maxS = await response.Content.ReadAsStringAsync();
+                    int max_steps = int.Parse(maxS);
 
-            // else 
-            // int max_steps = GetStepsCount(tile_id)
-            // int task_id = GetNextTask(tile_id)
-            // Step next_step = GetStep(step_id)
-            // int next_step_order = next_step.order;
-            // string next_step_url = next_step.url;
-            // if (next_step.order == 0) TestFirstStep();
-            // else if (next_step.order == max_steps) TestLastStep();
-            // else TestGeneralStep()
+                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + newT.id);
+                    var taskS = await response.Content.ReadAsStringAsync();
+                    TileTask task = JsonConvert.DeserializeObject<TileTask>(taskS);
 
-            //////////////////////////////////// TESTS /////////////////////////////////
-            current_tile = 1;
-            int max_steps;
-            int task_id;
-            string worker;
-            string next_step_url; 
-            int next_step_order;
+                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + task.step_id);
+                    var stepS = await response.Content.ReadAsStringAsync();
+                    Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
 
-            switch (int.Parse(vc.ClassId))
+                    int next_step_order = next_step.step_order;
+                    string next_step_url = next_step.url;
+
+                    next_step_order = 1;
+                    if (next_step_order == 1)
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Navigation.PopModalAsync(true);
+                            Navigation.PushModalAsync(new TestFirstStep(newT, task.id, max_steps, "cbonillo", next_step_url));
+                        });
+                    }
+                    else if (next_step_order == max_steps)
+                    {
+                        response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetSkippedTasks?tile_id=" + newT.id);
+                        var skippedS = await response.Content.ReadAsStringAsync();
+                        List<TileTask> listSkipped = JsonConvert.DeserializeObject<List<TileTask>>(skippedS);
+
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Navigation.PopModalAsync(true);
+                            Navigation.PushModalAsync(new TestLastStep(listSkipped, current_tile, task.id, max_steps, "cbonillo", next_step_url));
+                        });
+                    }
+                    else {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Navigation.PopModalAsync(true);
+                            Navigation.PushModalAsync(new TestGeneralStep(current_tile, task.id, max_steps, next_step_order, "dsparda", next_step_url));
+                        });
+                    }
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new TestScanView(newT));
+                    });
+                }
+            }
+            catch (Exception ex)
             {
-                // First Step
-                case 0:
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        task_id = 1;
-                        max_steps = 12;
-                        worker = "cbonillo";
-                        next_step_url = "http://step.1.test.com/";
-                        Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestFirstStep(current_tile, task_id, max_steps, worker, next_step_url));
-                    });
-                    break;
-                // Steps 2 - [n-1]
-                case 1:
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        task_id = 1;
-                        max_steps = 12;
-                        worker = "cbonillo";
-                        next_step_order = 5;
-                        next_step_url = "http://step.5.test.com/";
-                        Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestGeneralStep(current_tile, task_id, max_steps, next_step_order, worker, next_step_url));
-                    });
-                    break;
-                // Last step
-                case 2:
-                    //List<TileTask> listSkipped = GetSkippedTasks(current_tile)
-                    List<string> listSkipped = new List<string>();
-                    task_id = 1;
-                    max_steps = 12;
-                    worker = "cbonillo";
-                    next_step_url = "http://step.12.test.com/";
-
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestLastStep(listSkipped, current_tile, task_id, max_steps, worker, next_step_url));
-                    });
-                    break;
+                Console.WriteLine(ex.ToString());
             }
         }
     }
