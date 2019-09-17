@@ -30,7 +30,8 @@ namespace TilesApp
             max_steps = m_steps;
             worker = wor;
             pdf = url;
-            pdfLabel.Text = "Task: " + task_id + "\nWorker: " + worker + "\nMaxSteps: " + max_steps + "\nList count: " + listSkipped.Count + "\nUrl: " + pdf;
+            //pdfLabel.Text = "Task: " + task_id + "\nWorker: " + worker + "\nMaxSteps: " + max_steps + "\nList count: " + listSkipped.Count + "\nUrl: " + pdf;
+            pdfViewer.Source = "http://docs.google.com/viewer?url=" + url;
 
             ObservableCollection<string> objStringList = new ObservableCollection<string>();
             ObservableCollection<PickerItems> objClassList = new ObservableCollection<PickerItems>();

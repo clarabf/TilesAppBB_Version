@@ -114,7 +114,6 @@ namespace TilesApp
                     int next_step_order = next_step.step_order;
                     string next_step_url = next_step.url;
 
-                    next_step_order = 1;
                     if (next_step_order == 1)
                     {
                         Device.BeginInvokeOnMainThread(() =>

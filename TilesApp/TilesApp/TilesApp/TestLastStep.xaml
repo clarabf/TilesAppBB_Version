@@ -10,14 +10,11 @@
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Picker x:Name="pickerDynamicData" Title="Select Task" HorizontalOptions="FillAndExpand" SelectedItem="{Binding Name}" SelectedIndexChanged="PickerSelection" HeightRequest="50" TextColor="Blue"/>
-            <Label  x:Name="pdfLabel"
-                    Text="PDF IS HERE"
-                    HorizontalOptions="Center"
-                    BackgroundColor="White"
-                    WidthRequest="200"
-                    HeightRequest="200"
-                    Grid.Row="1"
-                    VerticalOptions="Center"/>
+            <WebView x:Name="pdfViewer" 
+                     HorizontalOptions="FillAndExpand"
+                     WidthRequest="200" 
+                     HeightRequest="200"
+                     Grid.Row="1"/>
             <Button x:Name="finish"
                     Text="FINISH"
                     BorderColor="Azure"
