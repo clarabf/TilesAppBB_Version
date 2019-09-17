@@ -13,9 +13,10 @@ namespace TilesApp
         public App()
         {
             InitializeComponent();
+            // OLD HybridWebView
             //MainPage = new NavigationPage(new HybridWebViewPage());
-            // FOR TESTS
             MainPage = new NavigationPage(new TestWorkOrder());
+            //MainPage = new NavigationPage(new TestPDFViewer("http://docs.google.com/viewer?url=http://oboria.net/docs/pdf/ftp/Tile-420.pdf"));
             NavigationPage.SetHasNavigationBar(this, false);
         }
 

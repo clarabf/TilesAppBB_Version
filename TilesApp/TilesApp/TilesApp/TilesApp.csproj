@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="TestPDFViewer.xaml.cs">
+      <DependentUpon>TestPDFViewer.xaml</DependentUpon>
+    </Compile>
     <Compile Update="TestLastStep.xaml.cs">
       <DependentUpon>TestLastStep.xaml</DependentUpon>
     </Compile>

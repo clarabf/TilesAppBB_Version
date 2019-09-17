@@ -32,14 +32,12 @@ namespace TilesApp
                 var dict = new Dictionary<string, int>();
                 dict.Add("work_order_id", wo);
                 var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
-                //var postResponse = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTilesOfWorkOrder?work_order_id=1");
-                var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTile?id=1");
+                var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTilesOfWorkOrder?work_order_id=1");
+                //var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTile?id=1");
                 var tile_info = await response.Content.ReadAsStringAsync();
 
-                //List<Tile> listTiles = new List<Tile>();
-                //listTiles = JsonConvert.DeserializeObject<List<Tile>>(tile_info);
-
-                Tile t = JsonConvert.DeserializeObject<Tile>(tile_info);
+                List<Tile> listTiles = JsonConvert.DeserializeObject<List<Tile>>(tile_info);
+                //Tile newT = JsonConvert.DeserializeObject<Tile>(tile_info);
 
                 Device.BeginInvokeOnMainThread(() =>
                 {
