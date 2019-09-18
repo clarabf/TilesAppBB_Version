@@ -1,5 +1,4 @@
-﻿using Android.Media;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -7,7 +6,6 @@ namespace TilesApp
 {
     public partial class App : Application
     {
-        public MediaPlayer player = new MediaPlayer();
         public Android.Webkit.WebView webView;
 
         public App()

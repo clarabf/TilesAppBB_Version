@@ -19,26 +19,32 @@ namespace TilesApp
 
             // Create table with first row (etiquettes)
             var table = new TableView();
-            table.BackgroundColor = Color.MediumAquamarine;
             table.Intent = TableIntent.Settings;
+            table.Margin = 10;
             var layout = new StackLayout() { Orientation = StackOrientation.Horizontal };
             layout.Children.Add(new Label()
             {
                 Text = "Tile type",
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.StartAndExpand
+                HorizontalOptions = LayoutOptions.StartAndExpand,
+                TextColor = Color.FromHex("#757575"),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             });
             layout.Children.Add(new Label()
             {
                 Text = "Frame code",
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.CenterAndExpand
+                HorizontalOptions = LayoutOptions.CenterAndExpand,
+                TextColor = Color.FromHex("#757575"),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             });
             layout.Children.Add(new Label()
             {
                 Text = "Current step",
                 VerticalOptions = LayoutOptions.Center,
-                HorizontalOptions = LayoutOptions.EndAndExpand
+                HorizontalOptions = LayoutOptions.EndAndExpand,
+                TextColor = Color.FromHex("#757575"),
+                FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             });
 
             TableRoot troot = new TableRoot();
@@ -59,19 +65,25 @@ namespace TilesApp
                 {
                     Text = t.tile_type.ToString(),
                     VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.StartAndExpand
+                    HorizontalOptions = LayoutOptions.StartAndExpand,
+                    TextColor = Color.FromHex("#757575"),
+                    FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
                 });
                 layout.Children.Add(new Label()
                 {
                     Text = code,
                     VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.CenterAndExpand
+                    HorizontalOptions = LayoutOptions.CenterAndExpand,
+                    TextColor = Color.FromHex("#757575"),
+                    FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
                 });
                 layout.Children.Add(new Label()
                 {
                     Text = "--",
                     VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.EndAndExpand
+                    HorizontalOptions = LayoutOptions.EndAndExpand,
+                    TextColor = Color.FromHex("#757575"),
+                    FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
                 });
                 viewCell = new ViewCell();
                 // Store tile_id (not showing in the table)

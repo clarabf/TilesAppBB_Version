@@ -1,0 +1,34 @@
+﻿^Grid {
+    background-color: white;
+}
+^Button {
+    border-radius: 10px;
+    background-color: #448AFF;
+    box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
+    color: white;
+}
+#skip, #nextStep {
+    border-radius: 10px;
+    background-color: #0288D1;
+    box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
+    color: #B3E5FC;
+}
+#finish {
+    border-radius: 10px;
+    background-color: #4CAF50;
+    box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
+    color: #B3E5FC;
+}
+
+^TableView {
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: #757575;
+}
+^Label {
+    padding: 5px;
+    font-size: 14px;
+    color: #757575;
+    background-color: red;
+}

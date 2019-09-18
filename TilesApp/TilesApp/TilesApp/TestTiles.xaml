@@ -2,8 +2,15 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TilesApp.TestTiles">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="baseStyle" TargetType="TableView">                
+            </Style>
+            <StyleSheet Source="Assets/style.css"/>
+        </ResourceDictionary>        
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid BackgroundColor="MediumAquamarine">
+        <Grid>
            
         </Grid>
     </ContentPage.Content>

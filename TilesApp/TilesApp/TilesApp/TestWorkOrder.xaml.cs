@@ -21,8 +21,13 @@ namespace TilesApp
             Button b = (Button)sender;
             int wo;
             if (b.Text == "Work Order 1") wo = 1;
-            else wo = 2;
-            
+            else if (b.Text == "Work Order 2") wo = 2;
+            else if (b.Text == "Work Order 3") wo = 3;
+            else if (b.Text == "Work Order 4") wo = 4;
+            else if (b.Text == "Work Order 5") wo = 5;
+            else wo = 6;
+
+
             HttpClient client = new HttpClient();
 
             try

@@ -2,12 +2,22 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TilesApp.TestWorkOrder">
+    <ContentPage.Resources>
+        <StyleSheet  Source="Assets/style.css"/>
+    </ContentPage.Resources>
+
     <ContentPage.Content>
-        <Grid BackgroundColor="MediumAquamarine">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+
             <Button x:Name="work1"
                     Text="Work Order 1"
                     BorderColor="Azure"
@@ -15,6 +25,8 @@
                     HeightRequest="100"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
+                    Grid.Row="0"
+                    Grid.Column="0"
                     Clicked="SelectWork"/>
             <Button x:Name="work2"
                     Text="Work Order 2"
@@ -23,8 +35,52 @@
                     HeightRequest="100"
                     HorizontalOptions="Center"
                     VerticalOptions="Center"
-                    Grid.Row="1"
+                    Grid.Row="0"
+                    Grid.Column="1"
                     Clicked="SelectWork"/>
+            <Button x:Name="work3"
+                    Text="Work Order 3"
+                    BorderColor="Azure"
+                    WidthRequest="100" 
+                    HeightRequest="100"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Clicked="SelectWork"/>
+            <Button x:Name="work4"
+                        Text="Work Order 4"
+                        BorderColor="Azure"
+                        WidthRequest="100" 
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Clicked="SelectWork"
+                        />
+            <Button x:Name="work5"
+                        Text="Work Order 5"
+                        BorderColor="Azure"
+                        WidthRequest="100" 
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Clicked="SelectWork"
+                        />
+            <Button x:Name="work6"
+                        Text="Work Order 6"
+                        BorderColor="Azure"
+                        WidthRequest="100" 
+                        HeightRequest="100"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Clicked="SelectWork"
+                       />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
