@@ -129,7 +129,7 @@ namespace TilesApp
                     //////TEST (discomment the one you want to visualize)
                     //next_step_order = 1; // visualize page 1
                     //next_step_order = 3; // visualize general page
-                    //next_step_order = 5; // visualize last page
+                   // next_step_order = 5; // visualize last page
 
                     if (next_step_order == 1)
                     {
