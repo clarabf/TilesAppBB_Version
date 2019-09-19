@@ -126,6 +126,11 @@ namespace TilesApp
                     int next_step_order = next_step.step_order;
                     string next_step_url = next_step.url;
 
+                    //////TEST (discomment the one you want to visualize)
+                    //next_step_order = 1; // visualize page 1
+                    //next_step_order = 3; // visualize general page
+                    //next_step_order = 5; // visualize last page
+
                     if (next_step_order == 1)
                     {
                         Device.BeginInvokeOnMainThread(() =>

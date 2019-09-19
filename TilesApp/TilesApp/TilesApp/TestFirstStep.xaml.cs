@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using TilesApp.Models;
 using Xamarin.Forms;
 
@@ -12,7 +15,6 @@ namespace TilesApp
         int task_id;
         int max_steps;
         string worker;
-        string pdf;
 
         public TestFirstStep(Tile t, int t_id, int m_steps, string wor, string url)
         {
@@ -21,7 +23,6 @@ namespace TilesApp
             task_id = t_id;
             max_steps = m_steps;
             worker = wor;
-            pdf = url;
             //pdfLabel.Text = "Task: " + task_id + "\nWorker: " + worker + "\nMaxSteps: " + max_steps + "\nUrl: " +  pdf;
             pdfViewer.Source = "http://docs.google.com/viewer?url=" + url;
             NavigationPage.SetHasNavigationBar(this, false);
@@ -36,35 +37,56 @@ namespace TilesApp
         private async void GoToNextStep( object sender, EventArgs args)
         {
 
-            // SetTaskStatus(task_id, worker,"done")
-            // int new_task_id = GetNextTask(tile_id)
-            // Step next_step = GetStep(step_id)
-            // int next_step_order = next_step.order;
-            // string next_step_url = next_step.url;
+            HttpClient client = new HttpClient();
 
-            //////////////////////////////////// TESTS /////////////////////////////////
-            int next_step_order = 7;
-            string next_step_url;
-            int new_task_id = 2;
-
-            if (next_step_order == max_steps)
+            try
             {
-                Device.BeginInvokeOnMainThread(() =>
+                // Update task information
+                var dict = new Dictionary<string, object>();
+                dict.Add("task_id", task_id);
+                dict.Add("worker", worker);
+                dict.Add("current_status", 3);
+                var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
+                var response = await client.PutAsync("https://blackboxerpapi.azurewebsites.net/api/SetTaskStatus/", content);
+                var successS = await response.Content.ReadAsStringAsync();
+                bool success = bool.Parse(successS);
+
+                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + tile.id);
+                var taskS = await response.Content.ReadAsStringAsync();
+                TileTask new_task = JsonConvert.DeserializeObject<TileTask>(taskS);
+
+                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + new_task.step_id);
+                var stepS = await response.Content.ReadAsStringAsync();
+                Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
+
+                int next_step_order = next_step.step_order;
+                string next_step_url = next_step.url;
+
+                if (next_step_order == max_steps)
                 {
-                    List<TileTask> listSkipped = new List<TileTask>();
-                    next_step_url = "http://step.12.test.com/";
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new TestLastStep(listSkipped, tile.id, new_task_id, max_steps, worker, next_step_url));
-                });
-            }
-            else {
-                Device.BeginInvokeOnMainThread(() =>
+                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetSkippedTasks?tile_id=" + tile.id);
+                    var skippedS = await response.Content.ReadAsStringAsync();
+                    List<TileTask> listSkipped = JsonConvert.DeserializeObject<List<TileTask>>(skippedS);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new TestLastStep(listSkipped, tile.id, new_task.id, max_steps, worker, next_step_url));
+                    });
+                }
+                else
                 {
-                    next_step_url = "http://step.7.test.com/";
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new TestGeneralStep(tile.id, new_task_id, max_steps, next_step_order, worker, next_step_url));
-                });
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new TestGeneralStep(tile.id, new_task.id, max_steps, next_step_order, worker, next_step_url));
+                    });
+                }
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
+            
         }
     }
 }

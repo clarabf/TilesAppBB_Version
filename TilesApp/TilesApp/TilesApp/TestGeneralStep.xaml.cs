@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text;
 using TilesApp.Models;
 using Xamarin.Forms;
 
@@ -33,38 +36,60 @@ namespace TilesApp
         private async void GoToNextStep( object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            string status;
+            int status;
 
-            if (b.Text == "SKIP STEP") status = "skipped";
-            else status = "done";
+            if (b.Text == "SKIP STEP") status = 2;
+            else status = 3;
             Console.WriteLine(status);
 
-            // SetTaskStatus(task_id, worker,status)
-            // int new_task_id = GetNextTask(tile_id)
-            // Step next_step = GetStep(step_id)
-            // int next_step_order = next_step.order;
-            // string next_step_url = next_step.url;
+            HttpClient client = new HttpClient();
 
-            //////////////////////////////////// TESTS /////////////////////////////////
-            int next_step_order = 12;
-            string next_step_url = "http://step.12.test.com/";
-            int new_task_id = 3;
-            
-            if (next_step_order == max_steps)
+            try
             {
-                List<TileTask> listSkipped = new List<TileTask>();
-                Device.BeginInvokeOnMainThread(() =>
+                // Update task information
+                var dict = new Dictionary<string, object>();
+                dict.Add("task_id", task_id);
+                dict.Add("worker", worker);
+                dict.Add("current_status", status);
+                var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
+                var response = await client.PutAsync("https://blackboxerpapi.azurewebsites.net/api/SetTaskStatus/", content);
+                var successS = await response.Content.ReadAsStringAsync();
+                bool success = bool.Parse(successS);
+
+                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + tile_id);
+                var taskS = await response.Content.ReadAsStringAsync();
+                TileTask new_task = JsonConvert.DeserializeObject<TileTask>(taskS);
+
+                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + new_task.step_id);
+                var stepS = await response.Content.ReadAsStringAsync();
+                Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
+
+                int next_step_order = next_step.step_order;
+                string next_step_url = next_step.url;
+
+                if (next_step_order == max_steps)
                 {
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new TestLastStep(listSkipped, tile_id, new_task_id, max_steps, worker, next_step_url));
-                });
+                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetSkippedTasks?tile_id=" + tile_id);
+                    var skippedS = await response.Content.ReadAsStringAsync();
+                    List<TileTask> listSkipped = JsonConvert.DeserializeObject<List<TileTask>>(skippedS);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new TestLastStep(listSkipped, tile_id, new_task.id, max_steps, worker, next_step_url));
+                    });
+                }
+                else
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new TestGeneralStep(tile_id, new_task.id, max_steps, next_step_order, worker, next_step_url));
+                    });
+                }
             }
-            else {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new TestGeneralStep(tile_id, new_task_id, max_steps, next_step_order, worker, next_step_url));
-                });
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
     }
