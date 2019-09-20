@@ -118,25 +118,38 @@ namespace TilesApp
                     response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + newT.id);
                     var taskS = await response.Content.ReadAsStringAsync();
                     TileTask task = JsonConvert.DeserializeObject<TileTask>(taskS);
+                    int next_step_order;
+                    string next_step_url;
+                    int task_id;
 
-                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + task.step_id);
-                    var stepS = await response.Content.ReadAsStringAsync();
-                    Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
+                    if (task!=null)
+                    {
+                        response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + task.step_id);
+                        var stepS = await response.Content.ReadAsStringAsync();
+                        Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
 
-                    int next_step_order = next_step.step_order;
-                    string next_step_url = next_step.url;
-
+                        next_step_order = next_step.step_order;
+                        next_step_url = next_step.url;
+                        task_id = task.id;
+                    }
+                    else
+                    {
+                        next_step_order = 5;
+                        next_step_url = "http://oboria.net/docs/pdf/ftp/1/1.PDF";
+                        task_id = 1;
+                    }
+                    
                     //////TEST (discomment the one you want to visualize)
                     //next_step_order = 1; // visualize page 1
                     //next_step_order = 3; // visualize general page
-                   // next_step_order = 5; // visualize last page
+                    //next_step_order = 5; // visualize last page
 
                     if (next_step_order == 1)
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Navigation.PopModalAsync(true);
-                            Navigation.PushModalAsync(new TestFirstStep(newT, task.id, max_steps, "cbonillo", next_step_url));
+                            Navigation.PushModalAsync(new TestFirstStep(newT, task_id, max_steps, "cbonillo", next_step_url));
                         });
                     }
                     else if (next_step_order == max_steps)
@@ -148,14 +161,14 @@ namespace TilesApp
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Navigation.PopModalAsync(true);
-                            Navigation.PushModalAsync(new TestLastStep(listSkipped, current_tile, task.id, max_steps, "cbonillo", next_step_url));
+                            Navigation.PushModalAsync(new TestLastStep(listSkipped, current_tile, task_id, max_steps, "cbonillo", next_step_url));
                         });
                     }
                     else {
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Navigation.PopModalAsync(true);
-                            Navigation.PushModalAsync(new TestGeneralStep(current_tile, task.id, max_steps, next_step_order, "dsparda", next_step_url));
+                            Navigation.PushModalAsync(new TestGeneralStep(current_tile, task_id, max_steps, next_step_order, "dsparda", next_step_url));
                         });
                     }
                 }

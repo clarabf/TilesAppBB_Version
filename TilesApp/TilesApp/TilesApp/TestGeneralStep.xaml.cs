@@ -28,7 +28,7 @@ namespace TilesApp
             worker = wor;
             pdf = url;
             //pdfLabel.Text = "Task: " + task_id + "\nWorker: " + worker + "\nMaxSteps: " + max_steps + "\nStep: " + current_step + "\nUrl: " + pdf;
-            pdfViewer.Source = "http://docs.google.com/viewer?url=" + url;
+            pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
             NavigationPage.SetHasNavigationBar(this, false);
             
         }
