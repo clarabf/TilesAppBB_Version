@@ -32,7 +32,7 @@ namespace TilesApp
 
             try
             {
-                var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTilesOfWorkOrder?work_order_id" + wo);
+                var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTilesOfWorkOrder?work_order_id=" + wo);
                 var tile_info = await response.Content.ReadAsStringAsync();
                 List<Tile> listTiles = JsonConvert.DeserializeObject<List<Tile>>(tile_info);
 

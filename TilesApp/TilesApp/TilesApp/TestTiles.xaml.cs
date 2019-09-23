@@ -10,6 +10,7 @@ namespace TilesApp
     public partial class TestTiles : ContentPage
     {
         int current_tile;
+        List<Tile> listTiles = new List<Tile>(new Tile[10]);
 
         //Argument will be List<Tile>
         public TestTiles(List<Tile> listTiles)
@@ -27,7 +28,7 @@ namespace TilesApp
                 Text = "Tile type",
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.StartAndExpand,
-                TextColor = Color.FromHex("#757575"),
+                TextColor = Color.FromHex("#FF5252"),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             });
             layout.Children.Add(new Label()
@@ -35,7 +36,7 @@ namespace TilesApp
                 Text = "Frame code",
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.CenterAndExpand,
-                TextColor = Color.FromHex("#757575"),
+                TextColor = Color.FromHex("#FF5252"),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             });
             layout.Children.Add(new Label()
@@ -43,7 +44,7 @@ namespace TilesApp
                 Text = "Current step",
                 VerticalOptions = LayoutOptions.Center,
                 HorizontalOptions = LayoutOptions.EndAndExpand,
-                TextColor = Color.FromHex("#757575"),
+                TextColor = Color.FromHex("#FF5252"),
                 FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
             });
 
@@ -66,7 +67,7 @@ namespace TilesApp
                     Text = t.tile_type.ToString(),
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.StartAndExpand,
-                    TextColor = Color.FromHex("#757575"),
+                    TextColor = Color.FromHex("#FF5252"),
                     FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
                 });
                 layout.Children.Add(new Label()
@@ -74,7 +75,7 @@ namespace TilesApp
                     Text = code,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    TextColor = Color.FromHex("#757575"),
+                    TextColor = Color.FromHex("#FF5252"),
                     FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
                 });
                 layout.Children.Add(new Label()
@@ -82,7 +83,7 @@ namespace TilesApp
                     Text = "--",
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.EndAndExpand,
-                    TextColor = Color.FromHex("#757575"),
+                    TextColor = Color.FromHex("#FF5252"),
                     FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
                 });
                 viewCell = new ViewCell();
@@ -140,7 +141,7 @@ namespace TilesApp
                     }
                     
                     //////TEST (discomment the one you want to visualize)
-                    //next_step_order = 1; // visualize page 1
+                    next_step_order = 1; // visualize page 1
                     //next_step_order = 3; // visualize general page
                     //next_step_order = 5; // visualize last page
 

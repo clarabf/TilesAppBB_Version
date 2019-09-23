@@ -61,4 +61,37 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="HybridWebViewPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="ScanView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="TestFirstStep.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="TestGeneralStep.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="TestLastStep.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="TestPDFViewer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="TestScanView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="TestTiles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="TestWorkOrder.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </None>
+  </ItemGroup>
 </Project>

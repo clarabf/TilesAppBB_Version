@@ -9,25 +9,28 @@ Button {
 }
 #nextStep {
     border-radius: 10px;
-    background-color: #0288D1;
+    background-color: #00b8d4;
     box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
-    color: #B3E5FC;
+    color: #e0f7fa;
+}
+#scanFrame {
+    background-color: #f44336;
+    color: #ffebee;
 }
 #skip {
-    background-color: lightgray;
+    background-color: #bdbdbd;
     box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
-    color: white;
+    color: #fafafa;
 }
 #finish {
-    border-radius: 10px;
-    background-color: #4CAF50;
-    box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
-    color: white;
+    border-radius: 10;
+    background-color: #43a047;
+    color: #e8f5e9;
 }
 
 TableView {
     padding: 5px;
-    font-size: 14px;
+    font-size: 14;
     font-weight: 700;
     color: #757575;
 }
