@@ -24,6 +24,11 @@
                     TextColor="Red"
                     Grid.Row="0"
                     Grid.Column="0"/>
+            <!--<WebView x:Name="pdfViewer" 
+                     VerticalOptions="FillAndExpand"
+                     HorizontalOptions="Center"
+                     HeightRequest="100" 
+                     Grid.Row="1"/>-->
             <Button x:Name="finish"
                     Text="FINISH"
                     BorderColor="Azure"

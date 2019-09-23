@@ -21,6 +21,13 @@ namespace TilesApp
             public string Name { get; set; }
         }
 
+        public TestLastStep()
+        {
+            InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+        }
+
+
         public TestLastStep(List<TileTask> l, int tile, int t_id, int m_steps, string wor, string url)
         {
             InitializeComponent();
@@ -30,8 +37,7 @@ namespace TilesApp
             max_steps = m_steps;
             worker = wor;
             pdf = url;
-            //pdfLabel.Text = "Task: " + task_id + "\nWorker: " + worker + "\nMaxSteps: " + max_steps + "\nList count: " + listSkipped.Count + "\nUrl: " + pdf;
-            pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
+            //pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
             
             ObservableCollection<string> objStringList = new ObservableCollection<string>();
             ObservableCollection<PickerItems> objClassList = new ObservableCollection<PickerItems>();
