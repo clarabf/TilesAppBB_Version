@@ -16,6 +16,13 @@ namespace TilesApp
         int max_steps;
         string worker;
 
+        public TestFirstStep()
+        {
+            InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+
+        }
+
         public TestFirstStep(Tile t, int t_id, int m_steps, string wor, string url)
         {
             InitializeComponent();
@@ -23,10 +30,9 @@ namespace TilesApp
             task_id = t_id;
             max_steps = m_steps;
             worker = wor;
-            //pdfLabel.Text = "Task: " + task_id + "\nWorker: " + worker + "\nMaxSteps: " + max_steps + "\nUrl: " +  pdf;
-            pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
+            //pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
             NavigationPage.SetHasNavigationBar(this, false);
-            
+
         }
 
         private async void GoToScan(object sender, EventArgs args)
@@ -86,7 +92,7 @@ namespace TilesApp
             {
                 Console.WriteLine(ex.ToString());
             }
-            
+
         }
     }
 }

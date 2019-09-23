@@ -24,11 +24,11 @@
                     VerticalOptions="Center"
                     Grid.Row="0"
                     Clicked="GoToScan"/>
-            <WebView x:Name="pdfViewer" 
+            <!--<WebView x:Name="pdfViewer" 
                      VerticalOptions="FillAndExpand"
                      HorizontalOptions="Center"
                      HeightRequest="100" 
-                     Grid.Row="1"/>
+                     Grid.Row="1"/>-->
             <Button x:Name="nextStep"
                     Text="NEXT"
                     BorderColor="Azure"

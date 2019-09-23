@@ -18,6 +18,13 @@ namespace TilesApp
         string worker;
         string pdf;
 
+        public TestGeneralStep()
+        {
+            InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+
+        }
+
         public TestGeneralStep(int tile, int t_id, int m_steps, int c_step, string wor, string url)
         {
             InitializeComponent();
@@ -27,8 +34,7 @@ namespace TilesApp
             current_step = c_step;
             worker = wor;
             pdf = url;
-            //pdfLabel.Text = "Task: " + task_id + "\nWorker: " + worker + "\nMaxSteps: " + max_steps + "\nStep: " + current_step + "\nUrl: " + pdf;
-            pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
+            //pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
             NavigationPage.SetHasNavigationBar(this, false);
             
         }
