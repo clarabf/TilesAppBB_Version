@@ -35,8 +35,6 @@ TableView {
     color: #757575;
 }
 Label {
-    padding: 5px;
-    font-size: 14px;
-    color: #757575;
-    background-color: red;
+    font-size: 18;
+    color: #212121;
 }

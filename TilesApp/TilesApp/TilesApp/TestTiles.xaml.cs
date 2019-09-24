@@ -67,24 +67,24 @@ namespace TilesApp
                     Text = t.tile_type.ToString(),
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.StartAndExpand,
-                    TextColor = Color.FromHex("#FF5252"),
-                    FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                    TextColor = Color.FromHex("#757575"),
+                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
                 });
                 layout.Children.Add(new Label()
                 {
                     Text = code,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.CenterAndExpand,
-                    TextColor = Color.FromHex("#FF5252"),
-                    FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                    TextColor = Color.FromHex("#757575"),
+                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
                 });
                 layout.Children.Add(new Label()
                 {
                     Text = "--",
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.EndAndExpand,
-                    TextColor = Color.FromHex("#FF5252"),
-                    FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label))
+                    TextColor = Color.FromHex("#757575"),
+                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label))
                 });
                 viewCell = new ViewCell();
                 // Store tile_id (not showing in the table)
