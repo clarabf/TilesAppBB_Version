@@ -37,9 +37,6 @@
                     HorizontalOptions="FillAndExpand"
                     Grid.Row="1"
                     Grid.ColumnSpan="2"/>-->
-          
-          
-           
         </Grid>
     </ContentPage.Content>
 </ContentPage>

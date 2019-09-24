@@ -11,7 +11,7 @@ namespace TilesApp
     public partial class TestGeneralStep : ContentPage
     {
 
-        int tile_id;
+        Tile tile;
         int task_id;
         int max_steps;
         int current_step;
@@ -25,16 +25,19 @@ namespace TilesApp
 
         }
 
-        public TestGeneralStep(int tile, int t_id, int m_steps, int c_step, string wor, string url)
+        public TestGeneralStep(Tile t, int t_id, int m_steps, int c_step, string wor, string url, int s_order)
         {
             InitializeComponent();
-            tile_id = tile;
+            tile = t;
             task_id = t_id;
             max_steps = m_steps;
             current_step = c_step;
             worker = wor;
             pdf = url;
-            //pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
+            //Device.BeginInvokeOnMainThread(() =>
+            //{
+            //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
+            //});
             NavigationPage.SetHasNavigationBar(this, false);
             
         }
@@ -62,7 +65,7 @@ namespace TilesApp
                 var successS = await response.Content.ReadAsStringAsync();
                 bool success = bool.Parse(successS);
 
-                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + tile_id);
+                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + tile.id);
                 var taskS = await response.Content.ReadAsStringAsync();
                 TileTask new_task = JsonConvert.DeserializeObject<TileTask>(taskS);
 
@@ -75,13 +78,13 @@ namespace TilesApp
 
                 if (next_step_order == max_steps)
                 {
-                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetSkippedTasks?tile_id=" + tile_id);
+                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetSkippedTasks?tile_id=" + tile.id);
                     var skippedS = await response.Content.ReadAsStringAsync();
                     List<TileTask> listSkipped = JsonConvert.DeserializeObject<List<TileTask>>(skippedS);
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestLastStep(listSkipped, tile_id, new_task.id, max_steps, worker, next_step_url));
+                        Navigation.PushModalAsync(new TestLastStep(listSkipped, tile, new_task.id, max_steps, worker, next_step_url, next_step_order));
                     });
                 }
                 else
@@ -89,7 +92,7 @@ namespace TilesApp
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestGeneralStep(tile_id, new_task.id, max_steps, next_step_order, worker, next_step_url));
+                        Navigation.PushModalAsync(new TestGeneralStep(tile, new_task.id, max_steps, next_step_order, worker, next_step_url, next_step_order));
                     });
                 }
             }

@@ -23,14 +23,17 @@ namespace TilesApp
 
         }
 
-        public TestFirstStep(Tile t, int t_id, int m_steps, string wor, string url)
+        public TestFirstStep(Tile t, int t_id, int m_steps, string wor, string url, int s_order)
         {
             InitializeComponent();
             tile = t;
             task_id = t_id;
             max_steps = m_steps;
             worker = wor;
-            //pdfViewer.Source = "http://docs.google.com/viewer?embedded=true&url=" + url;
+            //Device.BeginInvokeOnMainThread(() =>
+            //{
+            //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
+            //});
             NavigationPage.SetHasNavigationBar(this, false);
 
         }
@@ -61,12 +64,26 @@ namespace TilesApp
                 var taskS = await response.Content.ReadAsStringAsync();
                 TileTask new_task = JsonConvert.DeserializeObject<TileTask>(taskS);
 
-                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + new_task.step_id);
-                var stepS = await response.Content.ReadAsStringAsync();
-                Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
+                int next_step_order;
+                int new_task_id;
+                string next_step_url;
 
-                int next_step_order = next_step.step_order;
-                string next_step_url = next_step.url;
+                if (new_task != null)
+                {
+                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + new_task.step_id);
+                    var stepS = await response.Content.ReadAsStringAsync();
+                    Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
+
+                    next_step_order = next_step.step_order;
+                    next_step_url = next_step.url;
+                    new_task_id = new_task.id;
+                }
+                else
+                {
+                    next_step_order = max_steps;
+                    next_step_url = "http://oboria.net/docs/pdf/ftp/1/1.PDF";
+                    new_task_id = 1;
+                }
 
                 if (next_step_order == max_steps)
                 {
@@ -76,7 +93,7 @@ namespace TilesApp
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestLastStep(listSkipped, tile.id, new_task.id, max_steps, worker, next_step_url));
+                        Navigation.PushModalAsync(new TestLastStep(listSkipped, tile, new_task_id, max_steps, worker, next_step_url, next_step_order));
                     });
                 }
                 else
@@ -84,7 +101,7 @@ namespace TilesApp
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestGeneralStep(tile.id, new_task.id, max_steps, next_step_order, worker, next_step_url));
+                        Navigation.PushModalAsync(new TestGeneralStep(tile, new_task_id, max_steps, next_step_order, worker, next_step_url, next_step_order));
                     });
                 }
             }

@@ -141,16 +141,16 @@ namespace TilesApp
                     }
                     
                     //////TEST (discomment the one you want to visualize)
-                    next_step_order = 1; // visualize page 1
+                    //next_step_order = 1; // visualize page 1
                     //next_step_order = 3; // visualize general page
-                    //next_step_order = 5; // visualize last page
+                    next_step_order = 5; // visualize last page
 
                     if (next_step_order == 1)
                     {
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Navigation.PopModalAsync(true);
-                            Navigation.PushModalAsync(new TestFirstStep(newT, task_id, max_steps, "cbonillo", next_step_url));
+                            Navigation.PushModalAsync(new TestFirstStep(newT, task_id, max_steps, "cbonillo", next_step_url, next_step_order));
                         });
                     }
                     else if (next_step_order == max_steps)
@@ -162,14 +162,14 @@ namespace TilesApp
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Navigation.PopModalAsync(true);
-                            Navigation.PushModalAsync(new TestLastStep(listSkipped, current_tile, task_id, max_steps, "cbonillo", next_step_url));
+                            Navigation.PushModalAsync(new TestLastStep(listSkipped, newT, task_id, max_steps, "cbonillo", next_step_url, next_step_order));
                         });
                     }
                     else {
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Navigation.PopModalAsync(true);
-                            Navigation.PushModalAsync(new TestGeneralStep(current_tile, task_id, max_steps, next_step_order, "dsparda", next_step_url));
+                            Navigation.PushModalAsync(new TestGeneralStep(newT, task_id, max_steps, next_step_order, "dsparda", next_step_url, next_step_order));
                         });
                     }
                 }
