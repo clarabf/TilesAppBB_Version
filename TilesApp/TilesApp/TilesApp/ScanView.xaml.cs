@@ -97,7 +97,7 @@ namespace TilesApp
             Device.BeginInvokeOnMainThread(() =>
             {
                 // JS function to load page in the correct step
-                if (qrScanned.Length == 1) mainPage.EvaluateJavascript("setStep('" + tileInformation.Laststep + "')", null);
+                //if (qrScanned.Length == 1) mainPage.EvaluateJavascript("setStep('" + tileInformation.Laststep + "')", null);
                 Navigation.PopModalAsync(true);
             });
         }

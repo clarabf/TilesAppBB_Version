@@ -39,6 +39,7 @@ namespace TilesApp
             max_steps = m_steps;
             worker = wor;
             pdf = url;
+            skiplabel.Text = "Step " + s_order + "/" + max_steps;
             //Device.BeginInvokeOnMainThread(() =>
             //{
             //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
@@ -70,7 +71,7 @@ namespace TilesApp
 
             TileTask task = listSkipped.Find(selection => selection.id == int.Parse(selectedItem));
 
-            HttpClient client = new System.Net.Http.HttpClient();
+            HttpClient client = new HttpClient();
 
             try
             {

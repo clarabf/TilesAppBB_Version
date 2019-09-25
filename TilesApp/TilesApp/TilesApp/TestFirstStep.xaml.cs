@@ -30,6 +30,9 @@ namespace TilesApp
             task_id = t_id;
             max_steps = m_steps;
             worker = wor;
+            stepBar.Steps = max_steps;
+            stepBar.StepSelected = s_order;
+            skiplabel.Text = "Step " + s_order + "/" + max_steps;
             //Device.BeginInvokeOnMainThread(() =>
             //{
             //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
@@ -81,7 +84,7 @@ namespace TilesApp
                 else
                 {
                     next_step_order = max_steps;
-                    next_step_url = "http://oboria.net/docs/pdf/ftp/1/1.PDF";
+                    next_step_url = "http://oboria.net/docs/pdf/ftp/2/5.PDF";
                     new_task_id = 1;
                 }
 

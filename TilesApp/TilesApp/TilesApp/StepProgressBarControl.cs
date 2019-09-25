@@ -29,7 +29,6 @@ namespace TilesApp
             set { SetValue(StepSelectedProperty, value); }
         }
 
-
         public StepProgressBarControl()
         {
             Orientation = StackOrientation.Horizontal;
@@ -37,7 +36,6 @@ namespace TilesApp
             Padding = new Thickness(10, 0);
             Spacing = 0;
             AddStyles();
-
         }
 
         protected override void OnPropertyChanged(string propertyName = null)
@@ -71,17 +69,21 @@ namespace TilesApp
                         this.Children.Add(separatorLine);
                     }
                 }
-            }else if(propertyName == StepSelectedProperty.PropertyName){
+            }
+            else if(propertyName == StepSelectedProperty.PropertyName){
                 var children= this.Children.First(p => (!string.IsNullOrEmpty(p.ClassId) && Convert.ToInt32(p.ClassId) == StepSelected));
                 if(children != null) SelectElement(children as Button);
                
-            }else if(propertyName == StepColorProperty.PropertyName){
+            }
+            else if(propertyName == StepColorProperty.PropertyName){
                 AddStyles();
             }
         }
+
         void Handle_Clicked(object sender, System.EventArgs e)
         {
             SelectElement(sender as Button);
+            Console.WriteLine(_lastStepSelected.Text);
         }
 
         void SelectElement(Button elementSelected){
@@ -103,10 +105,10 @@ namespace TilesApp
 					new Setter { Property = Button.BorderColorProperty,   Value = StepColor },
 					new Setter { Property = Button.TextColorProperty,   Value = StepColor },
 					new Setter { Property = Button.BorderWidthProperty,   Value = 0.5 },
-					new Setter { Property = Button.BorderRadiusProperty,   Value = 20 },
+					new Setter { Property = Button.CornerRadiusProperty,   Value = 20 },
 					new Setter { Property = HeightRequestProperty,   Value = 40 },
 					new Setter { Property = WidthRequestProperty,   Value = 40 }
-			}
+			    }
 			};
 
 			var selectedStyle = new Style(typeof(Button))
@@ -116,14 +118,14 @@ namespace TilesApp
 					new Setter { Property = Button.TextColorProperty, Value = Color.White },
 					new Setter { Property = Button.BorderColorProperty, Value = StepColor },
 					new Setter { Property = Button.BorderWidthProperty,   Value = 0.5 },
-					new Setter { Property = Button.BorderRadiusProperty,   Value = 20 },
+					new Setter { Property = Button.CornerRadiusProperty,   Value = 20 },
 					new Setter { Property = HeightRequestProperty,   Value = 40 },
 					new Setter { Property = WidthRequestProperty,   Value = 40 },
                     new Setter { Property = Button.FontAttributesProperty,   Value = FontAttributes.Bold }
-			}
+			    }
 			};
 
-			Resources = new ResourceDictionary();
+            Resources = new ResourceDictionary();
 			Resources.Add("unSelectedStyle", unselectedStyle);
 			Resources.Add("selectedStyle", selectedStyle);
         }

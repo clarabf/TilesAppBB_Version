@@ -136,7 +136,7 @@ namespace TilesApp
                     else
                     {
                         next_step_order = 5;
-                        next_step_url = "http://oboria.net/docs/pdf/ftp/1/1.PDF";
+                        next_step_url = "http://oboria.net/docs/pdf/ftp/2/5.PDF";
                         task_id = 1;
                     }
                     

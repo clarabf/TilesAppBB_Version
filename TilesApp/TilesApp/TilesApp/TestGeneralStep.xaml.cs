@@ -34,6 +34,9 @@ namespace TilesApp
             current_step = c_step;
             worker = wor;
             pdf = url;
+            stepBar.Steps = max_steps;
+            stepBar.StepSelected = s_order;
+            skiplabel.Text = "Step " + s_order + "/" + max_steps;
             //Device.BeginInvokeOnMainThread(() =>
             //{
             //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };

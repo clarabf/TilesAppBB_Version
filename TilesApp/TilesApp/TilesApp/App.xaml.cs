@@ -14,11 +14,13 @@ namespace TilesApp
             // OLD HybridWebView
             //MainPage = new NavigationPage(new HybridWebViewPage());
 
-           // this For Progressbar steps
-          //  MainPage = new MainPage();
+            // this for Progressbar steps
+            //MainPage = new NavigationPage(new MainPage()); ;
+
+            // this for PDFViewer test
+            //MainPage = new NavigationPage(new TestPDFViewer("http://docs.google.com/viewer?url=http://oboria.net/docs/pdf/ftp/Tile-420.pdf"));
 
             MainPage = new NavigationPage(new TestWorkOrder());
-            //MainPage = new NavigationPage(new TestPDFViewer("http://docs.google.com/viewer?url=http://oboria.net/docs/pdf/ftp/Tile-420.pdf"));
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
