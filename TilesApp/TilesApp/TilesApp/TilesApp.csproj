@@ -24,6 +24,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="StepProgressBarControl.xaml.cs">
+      <DependentUpon>StepProgressBarControl.xaml</DependentUpon>
+    </Compile>
     <Compile Update="TestPDFViewer.xaml.cs">
       <DependentUpon>TestPDFViewer.xaml</DependentUpon>
     </Compile>
@@ -53,6 +56,12 @@
   <ItemGroup>
     <EmbeddedResource Update="HybridWebViewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="StepProgressBarControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="StepProgressBarControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="TestScanView.xaml">
       <Generator>MSBuild:Compile</Generator>

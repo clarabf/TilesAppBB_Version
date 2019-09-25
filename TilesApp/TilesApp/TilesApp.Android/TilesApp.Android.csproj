@@ -67,6 +67,7 @@
     <Compile Include="HybridWebViewRenderer.cs" />
     <Compile Include="JavascriptWebViewClient.cs" />
     <Compile Include="JSBridge.cs" />
+    <Compile Include="CustomButton.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
