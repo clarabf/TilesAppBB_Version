@@ -48,7 +48,8 @@ namespace TilesApp
                 {
                     var button = new Button()
                     {
-                        Text = $"{i + 1}", ClassId= $"{i + 1}",
+                        Text = $"{i + 1}",
+                        ClassId = $"{i + 1}",
                         Style = Resources["unSelectedStyle"] as Style
                     };
 
@@ -62,7 +63,7 @@ namespace TilesApp
                         {
                             BackgroundColor = Color.Silver,
                             HeightRequest = 1,
-                            WidthRequest=5,
+                            WidthRequest = 5,
                             VerticalOptions = LayoutOptions.Center,
                             HorizontalOptions = LayoutOptions.FillAndExpand
                         };
@@ -84,6 +85,7 @@ namespace TilesApp
         {
             SelectElement(sender as Button);
             Console.WriteLine(_lastStepSelected.Text);
+
         }
 
         void SelectElement(Button elementSelected){

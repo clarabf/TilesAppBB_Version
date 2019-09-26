@@ -15,12 +15,12 @@ namespace TilesApp
         int task_id;
         int max_steps;
         string worker;
+        Styles styles = new Styles();
 
         public TestFirstStep()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-
         }
 
         public TestFirstStep(Tile t, int t_id, int m_steps, string wor, string url, int s_order)
@@ -30,8 +30,39 @@ namespace TilesApp
             task_id = t_id;
             max_steps = m_steps;
             worker = wor;
-            stepBar.Steps = max_steps;
-            stepBar.StepSelected = s_order;
+                       
+            for (int i = 0; i < m_steps; i++)
+            {
+
+                Style s;
+                if (i == (s_order - 1)) s = styles.selectedStyle;
+                else s = styles.unselectedStyle;
+
+                var button = new Button()
+                {
+                    Text = $"{i + 1}",
+                    ClassId = $"{i + 1}",
+                    Style = s
+                };
+
+                button.Clicked += Handle_Clicked;
+
+                stepBar.Children.Add(button);
+
+                if (i < m_steps - 1)
+                {
+                    var separatorLine = new BoxView()
+                    {
+                        BackgroundColor = Color.Silver,
+                        HeightRequest = 1,
+                        WidthRequest = 5,
+                        VerticalOptions = LayoutOptions.Center,
+                        HorizontalOptions = LayoutOptions.FillAndExpand
+                    };
+                    stepBar.Children.Add(separatorLine);
+                }
+            }
+
             skiplabel.Text = "Step " + s_order + "/" + max_steps;
             //Device.BeginInvokeOnMainThread(() =>
             //{
@@ -39,6 +70,24 @@ namespace TilesApp
             //});
             NavigationPage.SetHasNavigationBar(this, false);
 
+        }
+
+        private void Handle_Clicked(object sender, EventArgs e)
+        {
+            Button b = (Button)sender;
+                        
+            ////////// TEST
+            Tile t = new Tile();
+            t.id = 2;
+            t.tile_type = 3;
+            b.Style = styles.selectedStyle;
+            string next_step_url = "http://oboria.net/docs/pdf/ftp/3/" + b.Text + ".PDF";
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Navigation.PopModalAsync(true);
+                Navigation.PushModalAsync(new TestGeneralStep(t, task_id, max_steps, "cbonillo", next_step_url, int.Parse(b.Text)));
+            });
         }
 
         private async void GoToScan(object sender, EventArgs args)
@@ -104,7 +153,7 @@ namespace TilesApp
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestGeneralStep(tile, new_task_id, max_steps, next_step_order, worker, next_step_url, next_step_order));
+                        Navigation.PushModalAsync(new TestGeneralStep(tile, new_task_id, max_steps, worker, next_step_url, next_step_order));
                     });
                 }
             }

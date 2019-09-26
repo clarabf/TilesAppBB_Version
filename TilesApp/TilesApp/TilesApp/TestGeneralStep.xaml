@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TilesApp.TestGeneralStep"
-             xmlns:local="clr-namespace:TilesApp">
+             x:Class="TilesApp.TestGeneralStep">
     <ContentPage.Resources>
         <StyleSheet  Source="Assets/style.css"/>
     </ContentPage.Resources>
@@ -40,10 +39,10 @@
                     Grid.Row="0"
                     Grid.Column="2"
                     Clicked="GoToNextStep"/>
-            <local:StepProgressBarControl  
-                   StepColor="Red"
-                   Steps="5"
-                   x:Name="stepBar" 
+            <StackLayout x:Name="stepBar"
+                   Orientation = "Horizontal"
+                   HorizontalOptions = "FillAndExpand"
+                   Spacing = "0"
                    Grid.Row="1"
                    Grid.ColumnSpan="3"/>
             <!--<WebView x:Name="pdfViewer" 

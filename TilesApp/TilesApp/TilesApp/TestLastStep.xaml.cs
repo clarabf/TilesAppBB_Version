@@ -107,7 +107,7 @@ namespace TilesApp
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestGeneralStep(tile, task_id, max_steps, next_step_order, "cbonillo", next_step_url, next_step_order));
+                        Navigation.PushModalAsync(new TestGeneralStep(tile, task_id, max_steps, "cbonillo", next_step_url, next_step_order));
                     });
                 }
             }
