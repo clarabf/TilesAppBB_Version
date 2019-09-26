@@ -1,12 +1,6 @@
 ﻿Grid {
     background-color: white;
 }
-Button {
-    border-radius: 10px;
-    background-color: #448AFF;
-    box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
-    color: white;
-}
 #nextStep {
     border-radius: 10px;
     background-color: #00b8d4;
