@@ -5,7 +5,7 @@
              xmlns:local="clr-namespace:TilesApp" >
 	<ContentPage.Content>
         <StackLayout Padding="10,40" >
-          <local:StepProgressBarControl  StepColor="Red" Steps="5" StepSelected="3" x:Name="stepBar"/>
+            <local:StepProgressBarControl  StepColor="#FF0039" Steps="5" StepSelected="3" x:Name="stepBar"/>
           <Label BindingContext="{x:Reference stepBar}"
                Text="{Binding StepSelected, StringFormat='Welcome at TilesApp &#x0a; Step Selected is {0}'}"
                FontAttributes="Bold"

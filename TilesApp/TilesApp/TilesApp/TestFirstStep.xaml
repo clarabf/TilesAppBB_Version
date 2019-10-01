@@ -37,6 +37,7 @@
                     BorderColor="Azure"
                     HorizontalOptions="End"
                     VerticalOptions="Center"
+                    class="btn-primary"
                     Grid.Row="0"
                     Grid.Column="2"
                     Clicked="GoToNextStep"/>

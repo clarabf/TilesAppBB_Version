@@ -39,6 +39,7 @@
                     Grid.Row="0"
                     Grid.Column="2"
                     TextColor="White"
+                    class="btn-success"
                     Clicked="FinishWorkOrder"/>
             <!--<WebView x:Name="pdfViewer" 
                     VerticalOptions="FillAndExpand"

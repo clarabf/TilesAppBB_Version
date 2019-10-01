@@ -1,26 +1,6 @@
 ﻿Grid {
     background-color: white;
 }
-#nextStep {
-    border-radius: 10px;
-    background-color: #00b8d4;
-    box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
-    color: #e0f7fa;
-}
-#scanFrame {
-    background-color: #f44336;
-    color: #ffebee;
-}
-#skip {
-    background-color: #bdbdbd;
-    box-shadow: rgba(0,0,0,0.4) 10px 10px inset;
-    color: #fafafa;
-}
-#finish {
-    border-radius: 10;
-    background-color: #43a047;
-    color: #e8f5e9;
-}
 
 TableView {
     padding: 5px;
@@ -31,4 +11,24 @@ TableView {
 Label {
     font-size: 18;
     color: #212121;
+}
+.btn-primary {
+    background-color: #2780E3;
+    color: white;
+}
+.btn-gray {
+    background-color: #868e96;
+    color: white;
+}
+.btn-secondary {
+    background-color: #373a3c;
+    color: white;
+}
+.btn-danger {
+    background-color: #FF0039;
+    color: white;
+}
+.btn-success {
+    background-color: #3FB618;
+    color: white;
 }
