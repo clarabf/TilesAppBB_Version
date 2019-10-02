@@ -54,7 +54,7 @@ namespace TilesApp
 
                 stepBar.Children.Add(button);
 
-                if (i < m_steps)
+                if (i < m_steps - 1)
                 {
                     var separatorLine = new BoxView()
                     {
@@ -88,6 +88,7 @@ namespace TilesApp
 
             b.Style = styles.selectedStyle;
             string next_step_url = "http://oboria.net/docs/pdf/ftp/3/" + b.Text + ".PDF";
+            skiplabel.Text = "Step " + b.Text + "/" + max_steps;
             //pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
         }
 
