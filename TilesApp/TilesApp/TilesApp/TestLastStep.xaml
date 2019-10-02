@@ -36,6 +36,7 @@
                     Text="FINISH"
                     HorizontalOptions="End"
                     VerticalOptions="Center"
+                    BorderRadius="10"
                     Grid.Row="0"
                     Grid.Column="2"
                     TextColor="White"

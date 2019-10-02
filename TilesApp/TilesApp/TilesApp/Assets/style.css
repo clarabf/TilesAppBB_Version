@@ -32,3 +32,17 @@ Label {
     background-color: #3FB618;
     color: white;
 }
+.btn-warning {
+    background-color: #f0ad4e;
+    color: white;
+}
+.btn-default {
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;
+}
+.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}

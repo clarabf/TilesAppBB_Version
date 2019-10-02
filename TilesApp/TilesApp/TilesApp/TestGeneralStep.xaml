@@ -19,7 +19,7 @@
             </Grid.ColumnDefinitions>
             <Button x:Name="skip"
                     Text="SKIP STEP"
-                    BorderColor="#0288D1"
+                    BorderRadius="10"
                     HorizontalOptions="Start"
                     VerticalOptions="Center"
                     Grid.Row="0"
@@ -35,6 +35,7 @@
                     Grid.Column="1"/>
             <Button x:Name="nextStep"
                     Text="NEXT"
+                    BorderRadius="10"
                     HorizontalOptions="End"
                     VerticalOptions="Center"
                     class="btn-primary"
