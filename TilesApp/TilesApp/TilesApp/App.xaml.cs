@@ -10,9 +10,7 @@ namespace TilesApp
 
         public App()
         {
-            new Syncfusion.XForms.ProgressBar.SfLinearProgressBar();
-            new Syncfusion.XForms.ProgressBar.SfCircularProgressBar();
-
+           
             InitializeComponent();
             // OLD HybridWebView
             //MainPage = new NavigationPage(new HybridWebViewPage());

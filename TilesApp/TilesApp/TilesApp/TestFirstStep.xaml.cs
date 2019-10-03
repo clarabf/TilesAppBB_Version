@@ -19,8 +19,6 @@ namespace TilesApp
 
         public TestFirstStep()
         {
-            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("YOUR LICENSE KEY");
-
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
         }

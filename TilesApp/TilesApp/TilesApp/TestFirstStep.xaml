@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:progressBar="clr-namespace:Syncfusion.XForms.ProgressBar;assembly=Syncfusion.SfProgressBar.XForms"
              x:Class="TilesApp.TestFirstStep">
     <ContentPage.Resources>
         <StyleSheet Source="Assets/style.css"/>
@@ -45,8 +44,11 @@
                     Grid.Row="0"
                     Grid.Column="2"
                     Clicked="GoToNextStep"/>
-            <progressBar:SfLinearProgressBar  Progress="25" SecondaryProgress="75" Grid.Row="1"
-                    Grid.ColumnSpan="3"></progressBar:SfLinearProgressBar>
+          <ProgressBar  x:Name="progressBar"
+                        Progress= "0.2"
+                        ProgressColor="red"
+                        Grid.Row="1"
+                        Grid.ColumnSpan="3"/>
 
             <StackLayout x:Name="stepBar"
                    Orientation = "Horizontal"
