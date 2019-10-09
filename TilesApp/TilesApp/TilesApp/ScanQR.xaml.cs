@@ -9,12 +9,12 @@ using TilesApp.Models;
 
 namespace TilesApp
 {
-    public partial class TestScanView : ContentPage
+    public partial class ScanQR : ContentPage
     {
 
         Tile current_tile;
 
-        public TestScanView(Tile t)
+        public ScanQR(Tile t)
         {
             current_tile = t;
             InitializeComponent();
@@ -61,7 +61,7 @@ namespace TilesApp
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new TestTiles(listTiles));
+                        //Navigation.PushModalAsync(new TestTiles(listTiles));
                     });
                 }
                 catch (Exception ex)

@@ -1,13 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TilesApp.TestTiles">
+             x:Class="TilesApp.V1.TestTiles">
     <ContentPage.Resources>
-        <StyleSheet Source="Assets/style.css"/>
+        <StyleSheet Source="../Assets/style.css"/>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid Padding="10,10,10,10" ColumnSpacing="5">
-           
         </Grid>
     </ContentPage.Content>
 </ContentPage>

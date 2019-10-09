@@ -24,37 +24,46 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
     <Compile Update="StepProgressBarControl.xaml.cs">
       <DependentUpon>StepProgressBarControl.xaml</DependentUpon>
     </Compile>
-    <Compile Update="TestPDFViewer.xaml.cs">
+    <Compile Update="ElementsTest\TestPDFViewer.xaml.cs">
       <DependentUpon>TestPDFViewer.xaml</DependentUpon>
     </Compile>
-    <Compile Update="TestLastStep.xaml.cs">
+    <Compile Update="StepsPage.xaml.cs">
+      <DependentUpon>StepsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="ScanQR.xaml.cs">
+      <DependentUpon>ScanQR.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="V1\TestLastStep.xaml.cs">
       <DependentUpon>TestLastStep.xaml</DependentUpon>
     </Compile>
-    <Compile Update="TestGeneralStep.xaml.cs">
+    <Compile Update="V1\TestGeneralStep.xaml.cs">
       <DependentUpon>TestGeneralStep.xaml</DependentUpon>
     </Compile>
-    <Compile Update="TestScanView.xaml.cs">
+    <Compile Update="V1\TestScanView.xaml.cs">
       <DependentUpon>TestScanView.xaml</DependentUpon>
     </Compile>
-    <Compile Update="TestFirstStep.xaml.cs">
+    <Compile Update="V1\TestFirstStep.xaml.cs">
       <DependentUpon>TestFirstStep.xaml</DependentUpon>
     </Compile>
-    <Compile Update="TestTiles.xaml.cs">
+    <Compile Update="V1\TestTiles.xaml.cs">
       <DependentUpon>TestTiles.xaml</DependentUpon>
     </Compile>
-    <Compile Update="TestWorkOrder.xaml.cs">
+    <Compile Update="V1\TestWorkOrder.xaml.cs">
       <DependentUpon>TestWorkOrder.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ScanView.xaml.cs">
+    <Compile Update="HWV\ScanView.xaml.cs">
       <DependentUpon>ScanView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="HybridWebViewPage.xaml">
+    <EmbeddedResource Update="HWV\HybridWebViewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="StepProgressBarControl.xaml">
@@ -63,10 +72,13 @@
     <EmbeddedResource Update="StepProgressBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="TestScanView.xaml">
+    <EmbeddedResource Update="ScanQR.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="ScanView.xaml">
+    <EmbeddedResource Update="V1\TestScanView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="HWV\ScanView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

@@ -6,7 +6,7 @@ using System.Text;
 using TilesApp.Models;
 using Xamarin.Forms;
 
-namespace TilesApp
+namespace TilesApp.V1
 {
     public partial class TestGeneralStep : ContentPage
     {
@@ -69,10 +69,10 @@ namespace TilesApp
             }
 
             skiplabel.Text = "Step " + s_order + "/" + max_steps;
-            //Device.BeginInvokeOnMainThread(() =>
-            //{
-            //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
-            //});
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
+            });
             NavigationPage.SetHasNavigationBar(this, false);
  
         }
@@ -89,7 +89,7 @@ namespace TilesApp
             b.Style = styles.selectedStyle;
             string next_step_url = "http://oboria.net/docs/pdf/ftp/3/" + b.Text + ".PDF";
             skiplabel.Text = "Step " + b.Text + "/" + max_steps;
-            //pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
+            pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
         }
 
         private async void GoToNextStep( object sender, EventArgs args)

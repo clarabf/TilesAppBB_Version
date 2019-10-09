@@ -6,7 +6,7 @@ using System.Text;
 using TilesApp.Models;
 using Xamarin.Forms;
 
-namespace TilesApp
+namespace TilesApp.V1
 {
     public partial class TestFirstStep : ContentPage
     {
@@ -64,10 +64,10 @@ namespace TilesApp
             }
 
             skiplabel.Text = "Step " + s_order + "/" + max_steps;
-            //Device.BeginInvokeOnMainThread(() =>
-            //{
-            //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
-            //});
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
+            });
             NavigationPage.SetHasNavigationBar(this, false);
 
         }

@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TilesApp.V1.TestLastStep">
+    <ContentPage.Resources>
+        <StyleSheet  Source="../Assets/style.css"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid Padding="10,10,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="5*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1.2*" />
+            </Grid.ColumnDefinitions>
+            <Picker x:Name="pickerDynamicData" Title="Pending Tasks"                   
+                    SelectedItem="{Binding Name}" 
+                    VerticalOptions="Center"
+                    HorizontalOptions="StartAndExpand" 
+                    SelectedIndexChanged="PickerSelection" 
+                    TextColor="Red"
+                    WidthRequest="200"
+                    Grid.Row="0"
+                    Grid.Column="0"/>
+            <Label  x:Name="skiplabel"
+                    Text="STEP X"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    FontAttributes="Bold"
+                    Grid.Row="0"
+                    Grid.Column="1"/>
+            <Button x:Name="finish"
+                    Text="FINISH"
+                    HorizontalOptions="End"
+                    VerticalOptions="Center"
+                    BorderRadius="10"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    TextColor="White"
+                    class="btn-success"
+                    Clicked="FinishWorkOrder"/>
+            <WebView x:Name="pdfViewer" 
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="3"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

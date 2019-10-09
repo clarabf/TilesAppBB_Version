@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TilesApp.TestGeneralStep">
+             x:Class="TilesApp.V1.TestGeneralStep">
     <ContentPage.Resources>
-        <StyleSheet  Source="Assets/style.css"/>
+        <StyleSheet  Source="../Assets/style.css"/>
     </ContentPage.Resources>
     <ContentPage.Content>
         <Grid Padding="10,10,10,10">
@@ -48,11 +48,11 @@
                    Spacing = "0"
                    Grid.Row="1"
                    Grid.ColumnSpan="3"/>
-            <!--<WebView x:Name="pdfViewer" 
+            <WebView x:Name="pdfViewer" 
                     VerticalOptions="FillAndExpand"
                     HorizontalOptions="FillAndExpand"
                     Grid.Row="2"
-                    Grid.ColumnSpan="3" />-->
+                    Grid.ColumnSpan="3" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

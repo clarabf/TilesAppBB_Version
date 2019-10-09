@@ -6,7 +6,7 @@ using System.Net.Http;
 using TilesApp.Models;
 using Xamarin.Forms;
 
-namespace TilesApp
+namespace TilesApp.V1
 {
     public partial class TestLastStep : ContentPage
     {
@@ -40,10 +40,10 @@ namespace TilesApp
             worker = wor;
             pdf = url;
             skiplabel.Text = "Step " + s_order + "/" + max_steps;
-            //Device.BeginInvokeOnMainThread(() =>
-            //{
-            //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
-            //});
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
+            });
 
             ObservableCollection<string> objStringList = new ObservableCollection<string>();
             ObservableCollection<PickerItems> objClassList = new ObservableCollection<PickerItems>();

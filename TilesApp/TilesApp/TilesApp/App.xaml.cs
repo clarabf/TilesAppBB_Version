@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using TilesApp.Models;
+using TilesApp.V1;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -16,12 +18,21 @@ namespace TilesApp
             //MainPage = new NavigationPage(new HybridWebViewPage());
 
             // this for Progressbar steps
-            //MainPage = new NavigationPage(new MainPage()); ;
+            //MainPage = new NavigationPage(new MainPage());
 
             // this for PDFViewer test
             //MainPage = new NavigationPage(new TestPDFViewer("http://docs.google.com/viewer?url=http://oboria.net/docs/pdf/ftp/Tile-420.pdf"));
 
-            MainPage = new NavigationPage(new TestWorkOrder());
+            // this for the first version of the app
+            //MainPage = new NavigationPage(new TestWorkOrder());
+
+            // this for the new version
+            ////testing login
+            MainPage = new NavigationPage(new Login());
+            ////testing login steps
+            //Tile t = new Tile(); t.id = 2;
+            //MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
+
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
