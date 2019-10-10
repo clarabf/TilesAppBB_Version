@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TilesApp.V1.TestTableOrder">
+    <ContentPage.Resources>
+        <StyleSheet  Source="../Assets/style.css"/>
+    </ContentPage.Resources>
+    <ContentPage.Content Padding="10">
+        <Grid Padding="10,10,10,10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="7*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
+            <Image Source="/Assets/logo.png"
+                   HeightRequest="300" 
+                   WidthRequest="300"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"/>
+            <Label  
+                    Text="YOUR WORK ORDERS"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    FontAttributes="Bold"
+                    FontSize="Small"
+                    Grid.Row="0"
+                    Grid.Column="1"/>            
+            <Label  
+                    HorizontalOptions="EndAndExpand"
+                    VerticalOptions="Center"
+                    Grid.Row="0"
+                    FontSize="Small"
+                    Grid.Column="2">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="Welcome" /> <Span FontSize="Micro" FontAttributes="Bold" Text=" Trump, D" />
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <TableView Intent="Form" Grid.Row="1" Grid.ColumnSpan="3" >
+                <TableRoot>
+                    <TableSection>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Label x:Name="Date1"
+                                       FontAttributes="Bold"
+                                       FontSize="Small"
+                                       Grid.Row="0"
+                                       Grid.Column="0"
+                                       Text="Date"/>                                <Label x:Name="WorkOrderID"
+                                       FontAttributes="Bold"
+                                       FontSize="Small"
+                                       Grid.Row="0"
+                                       Grid.Column="1"
+                                       Text="Work Order ID"/>                                <Label x:Name="CurrentProgress"
+                                       FontAttributes="Bold"
+                                       FontSize="Small"
+                                       Grid.Row="0"
+                                       Grid.Column="2"
+                                       Text="Current Progress"/>                                <Label x:Name="Options"
+                                       FontAttributes="Bold"
+                                       FontSize="Small"
+                                       Grid.Row="0"
+                                       Grid.Column="3"
+                                       Text="Options"/>
+                            </Grid>
+                        </ViewCell>
+
+                    </TableSection>
+                    <TableSection>
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+                                <Label     FontAttributes="Bold"
+                                       FontSize="Small"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="0"
+                                       Text="Oct. 10th 2019"/>
+                                <Label     FontAttributes="Bold"
+                                       FontSize="Small"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="1"
+                                       Text="3251353"/>                                <ProgressBar x:Name="pb_ProgressBar" 
+                                         Progress="0.6" 
+                                         class="btn-danger"
+                                         Grid.RowSpan="2"
+                                         Grid.Column="2"/>                                <Button x:Name="SHOWINFO"
+                                    Text="SHOW INFO"
+                                    FontSize="Small"
+                                    BorderRadius="5"
+                                    HorizontalOptions="Start"
+                                    VerticalOptions="StartAndExpand"
+                                    class="btn-secondary"
+                                    Grid.Row="0"
+                                    Grid.Column="3"/>                                <Button x:Name="CONTINUE"
+                                    Text="CONTINUE"
+                                    FontSize="Small"
+                                    BorderRadius="5"
+                                    HeightRequest="100"
+                                    HorizontalOptions="End"
+                                    BackgroundColor="Red"
+                                    VerticalOptions="EndAndExpand"
+                                    Grid.Row="1"
+                                    Grid.Column="3"/>
+                            </Grid>
+                        </ViewCell>
+                    </TableSection>
+                </TableRoot>
+            </TableView>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

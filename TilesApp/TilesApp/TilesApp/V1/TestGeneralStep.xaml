@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TilesApp"
              x:Class="TilesApp.V1.TestGeneralStep">
     <ContentPage.Resources>
         <StyleSheet  Source="../Assets/style.css"/>
@@ -33,12 +34,13 @@
                     FontAttributes="Bold"
                     Grid.Row="0"
                     Grid.Column="1"/>
+            
             <Button x:Name="nextStep"
-                    Text="NEXT"
+                    Text="PAUSE"
                     BorderRadius="10"
                     HorizontalOptions="End"
                     VerticalOptions="Center"
-                    class="btn-primary"
+                    class="btn-danger"
                     Grid.Row="0"
                     Grid.Column="2"
                     Clicked="GoToNextStep"/>
@@ -48,11 +50,19 @@
                    Spacing = "0"
                    Grid.Row="1"
                    Grid.ColumnSpan="3"/>
+            <local:FontAwesomeIcon 
+            Text="{x:Static local:Icon.FAGlass}"
+                Grid.Row="2"
+                    Grid.Column="1"
+                TextColor="Black"
+                WidthRequest="4"
+                BackgroundColor="Red"/>
+
             <WebView x:Name="pdfViewer" 
                     VerticalOptions="FillAndExpand"
                     HorizontalOptions="FillAndExpand"
                     Grid.Row="2"
-                    Grid.ColumnSpan="3" />
+                    Grid.Column="3" />
         </Grid>
     </ContentPage.Content>
 </ContentPage>

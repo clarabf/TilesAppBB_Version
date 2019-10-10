@@ -54,6 +54,9 @@
     <Compile Update="V1\TestTiles.xaml.cs">
       <DependentUpon>TestTiles.xaml</DependentUpon>
     </Compile>
+    <Compile Update="V1\TestTableOrder.xaml.cs">
+      <DependentUpon>TestTableOrder.xaml</DependentUpon>
+    </Compile>
     <Compile Update="V1\TestWorkOrder.xaml.cs">
       <DependentUpon>TestWorkOrder.xaml</DependentUpon>
     </Compile>
@@ -86,6 +89,15 @@
   <ItemGroup>
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Assets\CameraLens.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\fa-solid-900.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Card.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="HybridWebViewPage.xaml">
       <Generator>MSBuild:Compile</Generator>

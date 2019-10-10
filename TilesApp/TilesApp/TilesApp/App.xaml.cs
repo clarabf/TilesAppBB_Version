@@ -14,6 +14,7 @@ namespace TilesApp
         {
            
             InitializeComponent();
+
             // OLD HybridWebView
             //MainPage = new NavigationPage(new HybridWebViewPage());
 
@@ -28,9 +29,9 @@ namespace TilesApp
 
             // this for the new version
             ////testing login
-            MainPage = new NavigationPage(new Login());
+            MainPage = new NavigationPage(new TestTableOrder());
             ////testing login steps
-            //Tile t = new Tile(); t.id = 2;
+            Tile t = new Tile(); t.id = 2;
             //MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
 
             NavigationPage.SetHasNavigationBar(this, false);

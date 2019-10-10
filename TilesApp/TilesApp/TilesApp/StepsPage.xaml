@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TilesApp"
              x:Class="TilesApp.StepsPage">
     <ContentPage.Resources>
         <StyleSheet  Source="../Assets/style.css"/>
@@ -17,15 +18,14 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button x:Name="skip"
-                    Text="SKIP STEP"
-                    BorderRadius="10"
-                    HorizontalOptions="Start"
-                    VerticalOptions="Center"
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    class="btn-secondary"
-                    Clicked="GoToNextStep"/>
+            <Image Source="../Assets/logo.png"
+                   HeightRequest="300" 
+                   WidthRequest="300"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"/>
+            
             <Label  x:Name="skiplabel"
                     Text="STEP X"
                     HorizontalOptions="Center"
@@ -33,21 +33,25 @@
                     FontAttributes="Bold"
                     Grid.Row="0"
                     Grid.Column="1"/>
+          
             <Button x:Name="nextStep"
-                    Text="NEXT"
+                    Text="PAUSE ||"
                     BorderRadius="10"
                     HorizontalOptions="End"
                     VerticalOptions="Center"
-                    class="btn-primary"
+                    class="btn-danger"
                     Grid.Row="0"
                     Grid.Column="2"
                     Clicked="GoToNextStep"/>
+            
             <StackLayout x:Name="stepBar"
                    Orientation = "Horizontal"
                    HorizontalOptions = "FillAndExpand"
                    Spacing = "0"
                    Grid.Row="1"
                    Grid.ColumnSpan="3"/>
+
+          
             <!--<WebView x:Name="pdfViewer" 
                     VerticalOptions="FillAndExpand"
                     HorizontalOptions="FillAndExpand"

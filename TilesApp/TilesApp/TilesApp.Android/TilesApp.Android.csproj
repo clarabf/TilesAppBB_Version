@@ -67,6 +67,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FontAwesomeIconRenderer.cs" />
     <Compile Include="HybridWebViewRenderer.cs" />
     <Compile Include="JavascriptWebViewClient.cs" />
     <Compile Include="JSBridge.cs" />
@@ -84,6 +85,12 @@
     <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-solid-900.woff2" />
     <AndroidAsset Include="Assets\Content\assets\docs\pdf\1.pdf" />
     <AndroidAsset Include="Assets\Content\assets\docs\pdf\20190606_BlackBox_Rev04.pdf" />
+    <AndroidAsset Include="Assets\fa-solid-900.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
+    <AndroidAsset Include="Assets\FontAwesome.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </AndroidAsset>
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -111,7 +118,6 @@
     <Folder Include="Resources\drawable-xhdpi\" />
     <Folder Include="Resources\drawable-xxhdpi\" />
     <Folder Include="Resources\drawable-xxxhdpi\" />
-    <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TilesApp\TilesApp.csproj">
@@ -175,6 +181,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="connect.php" />
+    <None Include="Resources\drawable\Card.png" />
+    <None Include="Resources\drawable\CameraLens.png" />
+    <None Include="Resources\drawable\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
