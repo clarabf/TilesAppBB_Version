@@ -8,6 +8,7 @@
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="0.8*" />
                 <RowDefinition Height="0.8*" />
+                <RowDefinition Height="0.5*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -20,13 +21,12 @@
                    Grid.ColumnSpan="2"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"/>
-            <Image Source="../Assets/Card.png"
-                   HeightRequest="200" 
-                   WidthRequest="200"
+            <Image Source="Card.png"
                    Grid.Row="1"
+                   Grid.RowSpan="3"
                    Grid.Column="0"
-                   HorizontalOptions="Start"
-                   VerticalOptions="Center"/>
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="StartAndExpand"/>
             <Label 
                Text="SCAN YOUR &#x0a; CARD TO ACCESS"
                FontAttributes="Bold"
@@ -35,21 +35,23 @@
                HorizontalTextAlignment="End"
                Grid.Row="1"
                Grid.Column="1"
-               HorizontalOptions="Center"
+               HorizontalOptions="EndAndExpand"
                VerticalOptions="CenterAndExpand" />
-           <Button 
-               Text="GO TO &#x0a; SCANNER"
+            <Button 
                FontAttributes="Bold"
                FontSize="Medium"
+                WidthRequest="200"
+               Text="GO TO &#x0a; SCANNER"
                class="btn-gray"
                Padding="4"
                BorderRadius="10"
                Grid.Row="2"
                Grid.Column="1"
-               Image="CameraLens.png" 
-               HorizontalOptions="EndAndExpand"
+               HorizontalOptions="End"
                VerticalOptions="CenterAndExpand"
-               Clicked="GoToScan"/>
+               Clicked="GoToScan">
+            </Button>
+
         </Grid>
 	</ContentPage.Content>
 </ContentPage>

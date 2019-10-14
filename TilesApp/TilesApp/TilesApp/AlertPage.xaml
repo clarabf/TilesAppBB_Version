@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+			 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TilesApp"
+             x:Class="TilesApp.AlertPage">
+    <ContentPage.Resources>
+        <StyleSheet  Source="Assets/style.css"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <AbsoluteLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <StackLayout BackgroundColor="Azure" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+                <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" >
+                    <Label Text="Attention Popup Message" HorizontalOptions="Center" FontAttributes="Bold" FontSize="Medium"></Label>
+                    <Button HorizontalOptions="Center" VerticalOptions="Center" Clicked="btnPopupButton_Clicked" Text="Show Popup"></Button>
+                </StackLayout>
+            </StackLayout>
+            <!--Popup Area-->
+            <ContentView x:Name="popupLoadingView" BackgroundColor="#C0808080" Padding="10, 0" IsVisible="false" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <StackLayout Orientation="Vertical" HeightRequest="150" WidthRequest="200" BackgroundColor="White">
+                        <ActivityIndicator x:Name="activityIndicator" Margin="0,50,0,0" VerticalOptions="Center" HorizontalOptions="Center" Color="Black" WidthRequest="30" HeightRequest="30" ></ActivityIndicator>
+                        <Label x:Name="lblLoadingText" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center" VerticalTextAlignment="Center" Text="Loading..."></Label>
+                    </StackLayout>
+                </StackLayout>
+            </ContentView>
+           
+            
+            <ContentView x:Name="popupImageView" BackgroundColor="#C0808080" Padding="10, 0" IsVisible="false" AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                    <StackLayout Orientation="Vertical" HeightRequest="200" WidthRequest="300" BackgroundColor="White">
+                        <Grid Padding="10,10,10,10" RowSpacing="1" ColumnSpacing="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="0.05*" />
+                                <RowDefinition Height="1.5*" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="1.4*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Label  
+                                HorizontalOptions="CenterAndExpand"
+                                VerticalOptions="Center"
+                                Grid.Row="0"
+                                FontSize="Medium">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span FontAttributes="Bold" Text=" ATTENTION!" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+                            <BoxView HeightRequest="1" Grid.Row="1" WidthRequest="1" Color="Black"/>
+
+                            <local:FontAwesomeIcon 
+                                Text="{x:Static local:Icon.FAExclamation}"
+                                   FontSize="40"
+                                    FontAttributes="Bold"
+                                    VerticalOptions="CenterAndExpand"
+                                    HorizontalOptions="CenterAndExpand"
+                                    Grid.Row="2"
+                                    TextColor="Red"/>
+
+                            <Label  
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Grid.Row="3"
+                                XAlign="Center"
+                            Grid.RowSpan="2"
+                            FontSize="Micro">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span  Text="YOU ARE INTERRUPTING A WORK ORDER &#x0a; &#x0a;" ></Span>
+
+                                            <Span Text="HAVE YOU COMPLETED ALL STEPS BEFORE STEP 2/21 (CURRENT)  &#x0a; " FontAttributes="Bold" ></Span>
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+                            </Label>
+
+                            <Button x:Name="Cancel"
+                            Text="No"
+                            FontSize="Small"
+                            BorderRadius="5"
+                            HorizontalOptions="EndAndExpand"
+                            VerticalOptions="CenterAndExpand"
+                            class="btn-danger"
+                            Grid.Row="5"/>
+
+                            <Button x:Name="Confirm"
+                            Text="Yes"
+                            FontSize="Small"
+                            BorderRadius="5"
+                            HorizontalOptions="StartAndExpand"
+                            VerticalOptions="CenterAndExpand"
+                            class="btn-secondary"
+                            Grid.Row="5"/>
+                            
+                           
+                        </Grid>
+                    </StackLayout>
+                </StackLayout>
+            </ContentView>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>
+
+

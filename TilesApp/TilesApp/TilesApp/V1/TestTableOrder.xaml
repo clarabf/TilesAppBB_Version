@@ -12,13 +12,13 @@
                 <RowDefinition Height="7*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1.2*" />
+                <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
-            <Image Source="/Assets/logo.png"
-                   HeightRequest="300" 
-                   WidthRequest="300"
+            <Image Source="logo.png"
+                   HeightRequest="200" 
+                   WidthRequest="200"
                    Grid.Row="0"
                    Grid.Column="0"
                    HorizontalOptions="Start"
@@ -40,7 +40,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <FormattedString.Spans>
-                            <Span Text="Welcome" /> <Span FontSize="Micro" FontAttributes="Bold" Text=" Trump, D" />
+                            <Span FontSize="Micro" Text="Welcome" /> <Span FontAttributes="Bold" Text=" Trump, D" />
                         </FormattedString.Spans>
                     </FormattedString>
                 </Label.FormattedText>
@@ -59,22 +59,26 @@
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
-                                <Label x:Name="Date1"
+
+                                <Label x:Name="Date1"
                                        FontAttributes="Bold"
                                        FontSize="Small"
                                        Grid.Row="0"
                                        Grid.Column="0"
-                                       Text="Date"/>                                <Label x:Name="WorkOrderID"
+                                       Text="Date"/>
+                                <Label x:Name="WorkOrderID"
                                        FontAttributes="Bold"
                                        FontSize="Small"
                                        Grid.Row="0"
                                        Grid.Column="1"
-                                       Text="Work Order ID"/>                                <Label x:Name="CurrentProgress"
+                                       Text="Work Order ID"/>
+                                <Label x:Name="CurrentProgress"
                                        FontAttributes="Bold"
                                        FontSize="Small"
                                        Grid.Row="0"
                                        Grid.Column="2"
-                                       Text="Current Progress"/>                                <Label x:Name="Options"
+                                       Text="Current Progress"/>
+                                <Label x:Name="Options"
                                        FontAttributes="Bold"
                                        FontSize="Small"
                                        Grid.Row="0"
@@ -88,46 +92,61 @@
                         <ViewCell>
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="1*" />
-                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="2*" />
+                                    <RowDefinition Height="2*" />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
                                     <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
+                                </Grid.ColumnDefinitions>
+
                                 <Label     FontAttributes="Bold"
                                        FontSize="Small"
                                        Grid.RowSpan="2"
                                        Grid.Column="0"
+                                           HorizontalOptions="StartAndExpand"
+                                        VerticalOptions="CenterAndExpand"
                                        Text="Oct. 10th 2019"/>
                                 <Label     FontAttributes="Bold"
                                        FontSize="Small"
                                        Grid.RowSpan="2"
                                        Grid.Column="1"
-                                       Text="3251353"/>                                <ProgressBar x:Name="pb_ProgressBar" 
+                                        HorizontalOptions="StartAndExpand"
+                                        VerticalOptions="CenterAndExpand"
+                                       Text="3251353"/>
+                                <ProgressBar x:Name="pb_ProgressBar" 
                                          Progress="0.6" 
+                                         WidthRequest="100"
                                          class="btn-danger"
+                                         HorizontalOptions="StartAndExpand"
+                                         VerticalOptions="CenterAndExpand"
                                          Grid.RowSpan="2"
-                                         Grid.Column="2"/>                                <Button x:Name="SHOWINFO"
+                                         Grid.Column="2"/>
+                                <Button x:Name="SHOWINFO"
                                     Text="SHOW INFO"
-                                    FontSize="Small"
+                                    FontSize="Micro"
                                     BorderRadius="5"
-                                    HorizontalOptions="Start"
+                                    HorizontalOptions="StartAndExpand"
                                     VerticalOptions="StartAndExpand"
-                                    class="btn-secondary"
+                                    BackgroundColor="gray"
+                                    TextColor="White"
                                     Grid.Row="0"
-                                    Grid.Column="3"/>                                <Button x:Name="CONTINUE"
+                                         Padding="0"
+                                    Grid.Column="3"/>
+                                <Button x:Name="CONTINUE"
                                     Text="CONTINUE"
-                                    FontSize="Small"
+                                    FontSize="Micro"
+                                        Padding="0"
                                     BorderRadius="5"
-                                    HeightRequest="100"
-                                    HorizontalOptions="End"
+                                    HorizontalOptions="StartAndExpand"
                                     BackgroundColor="Red"
-                                    VerticalOptions="EndAndExpand"
+                                    TextColor="White"
+                                    VerticalOptions="StartAndExpand"
                                     Grid.Row="1"
-                                    Grid.Column="3"/>
+                                    Grid.Column="3"/>
+
                             </Grid>
                         </ViewCell>
                     </TableSection>

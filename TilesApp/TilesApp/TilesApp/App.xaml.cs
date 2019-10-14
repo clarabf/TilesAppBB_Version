@@ -28,11 +28,14 @@ namespace TilesApp
             //MainPage = new NavigationPage(new TestWorkOrder());
 
             // this for the new version
+            // PopUpMessage
+           // MainPage = new NavigationPage(new AlertPage());
             ////testing login
-            MainPage = new NavigationPage(new TestTableOrder());
+            //MainPage = new NavigationPage(new Login());
+             MainPage = new NavigationPage(new TestTableOrder());
             ////testing login steps
-            Tile t = new Tile(); t.id = 2;
-            //MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
+            // Tile t = new Tile(); t.id = 2;
+            // MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
 
             NavigationPage.SetHasNavigationBar(this, false);
         }
