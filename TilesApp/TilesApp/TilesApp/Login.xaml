@@ -27,31 +27,28 @@
                    Grid.Column="0"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="StartAndExpand"/>
-            <Label 
-               Text="SCAN YOUR &#x0a; CARD TO ACCESS"
-               FontAttributes="Bold"
-               FontSize="Medium"
-               TextColor="White"
-               HorizontalTextAlignment="End"
-               Grid.Row="1"
-               Grid.Column="1"
-               HorizontalOptions="EndAndExpand"
-               VerticalOptions="CenterAndExpand" />
-            <Button 
-               FontAttributes="Bold"
-               FontSize="Medium"
-                WidthRequest="200"
-               Text="GO TO &#x0a; SCANNER"
-               class="btn-gray"
-               Padding="4"
-               BorderRadius="10"
-               Grid.Row="2"
-               Grid.Column="1"
-               HorizontalOptions="End"
-               VerticalOptions="CenterAndExpand"
-               Clicked="GoToScan">
+            <Label Text="SCAN YOUR &#x0a; CARD TO ACCESS"
+                   FontAttributes="Bold"
+                   FontSize="Medium"
+                   TextColor="White"
+                   HorizontalTextAlignment="End"
+                   Grid.Row="1"
+                   Grid.Column="1"
+                   HorizontalOptions="EndAndExpand"
+                   VerticalOptions="CenterAndExpand" />
+            <Button FontAttributes="Bold"
+                    FontSize="Medium"
+                    WidthRequest="200"
+                    Text="GO TO &#x0a; SCANNER"
+                    class="btn-gray"
+                    Padding="4"
+                    BorderRadius="10"
+                    Grid.Row="2"
+                    Grid.Column="1"
+                    HorizontalOptions="End"
+                    VerticalOptions="CenterAndExpand"
+                    Clicked="GoToScan">
             </Button>
-
         </Grid>
 	</ContentPage.Content>
 </ContentPage>

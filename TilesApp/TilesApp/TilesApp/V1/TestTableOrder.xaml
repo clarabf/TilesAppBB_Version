@@ -23,20 +23,18 @@
                    Grid.Column="0"
                    HorizontalOptions="Start"
                    VerticalOptions="Center"/>
-            <Label  
-                    Text="YOUR WORK ORDERS"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    FontAttributes="Bold"
-                    FontSize="Small"
-                    Grid.Row="0"
-                    Grid.Column="1"/>            
-            <Label  
-                    HorizontalOptions="EndAndExpand"
-                    VerticalOptions="Center"
-                    Grid.Row="0"
-                    FontSize="Small"
-                    Grid.Column="2">
+            <Label Text="YOUR WORK ORDERS"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   FontAttributes="Bold"
+                   FontSize="Small"
+                   Grid.Row="0"
+                   Grid.Column="1"/>            
+            <Label HorizontalOptions="EndAndExpand"
+                   VerticalOptions="Center"
+                   Grid.Row="0"
+                   FontSize="Small"
+                   Grid.Column="2">
                 <Label.FormattedText>
                     <FormattedString>
                         <FormattedString.Spans>
@@ -102,51 +100,51 @@
                                     <ColumnDefinition Width="1*" />
                                 </Grid.ColumnDefinitions>
 
-                                <Label     FontAttributes="Bold"
+                                <Label FontAttributes="Bold"
                                        FontSize="Small"
                                        Grid.RowSpan="2"
                                        Grid.Column="0"
-                                           HorizontalOptions="StartAndExpand"
-                                        VerticalOptions="CenterAndExpand"
+                                       HorizontalOptions="StartAndExpand"
+                                       VerticalOptions="CenterAndExpand"
                                        Text="Oct. 10th 2019"/>
-                                <Label     FontAttributes="Bold"
+                                <Label FontAttributes="Bold"
                                        FontSize="Small"
                                        Grid.RowSpan="2"
                                        Grid.Column="1"
-                                        HorizontalOptions="StartAndExpand"
-                                        VerticalOptions="CenterAndExpand"
+                                       HorizontalOptions="StartAndExpand"
+                                       VerticalOptions="CenterAndExpand"
                                        Text="3251353"/>
                                 <ProgressBar x:Name="pb_ProgressBar" 
-                                         Progress="0.6" 
-                                         WidthRequest="100"
-                                         class="btn-danger"
-                                         HorizontalOptions="StartAndExpand"
-                                         VerticalOptions="CenterAndExpand"
-                                         Grid.RowSpan="2"
-                                         Grid.Column="2"/>
+                                       Progress="0.6" 
+                                       WidthRequest="100"
+                                       class="btn-danger"
+                                       HorizontalOptions="StartAndExpand"
+                                       VerticalOptions="CenterAndExpand"
+                                       Grid.RowSpan="2"
+                                       Grid.Column="2"/>
                                 <Button x:Name="SHOWINFO"
-                                    Text="SHOW INFO"
-                                    FontSize="Micro"
-                                    BorderRadius="5"
-                                    HorizontalOptions="StartAndExpand"
-                                    VerticalOptions="StartAndExpand"
-                                    BackgroundColor="gray"
-                                    TextColor="White"
-                                    Grid.Row="0"
-                                         Padding="0"
-                                    Grid.Column="3"/>
+                                       Text="SHOW INFO"
+                                       FontSize="Micro"
+                                       BorderRadius="5"
+                                       HorizontalOptions="StartAndExpand"
+                                       VerticalOptions="StartAndExpand"
+                                       BackgroundColor="gray"
+                                       TextColor="White"
+                                       Grid.Row="0"
+                                       Padding="0"
+                                       Grid.Column="3"/>
                                 <Button x:Name="CONTINUE"
-                                    Text="CONTINUE"
-                                    FontSize="Micro"
-                                        Padding="0"
-                                    BorderRadius="5"
-                                    HorizontalOptions="StartAndExpand"
-                                    BackgroundColor="Red"
-                                    TextColor="White"
-                                    VerticalOptions="StartAndExpand"
-                                    Grid.Row="1"
-                                    Grid.Column="3"/>
-
+                                       Text="CONTINUE"
+                                       FontSize="Micro"
+                                       Padding="0"
+                                       BorderRadius="5"
+                                       HorizontalOptions="StartAndExpand"
+                                       BackgroundColor="Red"
+                                       TextColor="White"
+                                       VerticalOptions="StartAndExpand"
+                                       Clicked="GoToStep"
+                                       Grid.Row="1"
+                                       Grid.Column="3"/>
                             </Grid>
                         </ViewCell>
                     </TableSection>

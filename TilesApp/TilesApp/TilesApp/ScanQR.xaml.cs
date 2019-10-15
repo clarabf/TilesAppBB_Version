@@ -6,6 +6,7 @@ using ZXing;
 using Newtonsoft.Json;
 using System.Text;
 using TilesApp.Models;
+using TilesApp.V1;
 
 namespace TilesApp
 {
@@ -36,15 +37,15 @@ namespace TilesApp
             string qrScanned = result.Text.ToString();
 
             HttpClient client = new HttpClient();
-            string success = "false";
+            string success = "true";
             try
             {
                 var dict = new Dictionary<string, object>();
                 dict.Add("id", current_tile.id);
                 dict.Add("frame_code", qrScanned);
                 var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
-                var response = await client.PutAsync("https://blackboxerpapi.azurewebsites.net/api/SetFrameCode/", content);
-                success = await response.Content.ReadAsStringAsync();
+                //var response = await client.PutAsync("https://blackboxerpapi.azurewebsites.net/api/SetFrameCode/", content);
+                //success = await response.Content.ReadAsStringAsync();
             }
             catch (Exception ex)
             {
@@ -55,13 +56,14 @@ namespace TilesApp
             {
                 try
                 {
-                    var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTilesOfWorkOrder?work_order_id=" + current_tile.work_order_id);
-                    var tile_info = await response.Content.ReadAsStringAsync();
-                    List<Tile> listTiles = JsonConvert.DeserializeObject<List<Tile>>(tile_info);
+                    //var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTilesOfWorkOrder?work_order_id=" + current_tile.work_order_id);
+                    //var tile_info = await response.Content.ReadAsStringAsync();
+                    //List<Tile> listTiles = JsonConvert.DeserializeObject<List<Tile>>(tile_info);
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
                         //Navigation.PushModalAsync(new TestTiles(listTiles));
+                        Navigation.PushModalAsync(new TestTableOrder());
                     });
                 }
                 catch (Exception ex)

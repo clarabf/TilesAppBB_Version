@@ -25,7 +25,6 @@
                    Grid.Column="0"
                    HorizontalOptions="Start"
                    VerticalOptions="Center"/>
-            
             <Label  x:Name="skiplabel"
                     Text="STEP X"
                     HorizontalOptions="Center"
@@ -33,7 +32,6 @@
                     FontAttributes="Bold"
                     Grid.Row="0"
                     Grid.Column="1"/>
-          
             <Button x:Name="nextStep"
                     Text="PAUSE ||"
                     BorderRadius="10"
@@ -42,16 +40,13 @@
                     class="btn-danger"
                     Grid.Row="0"
                     Grid.Column="2"
-                    Clicked="GoToNextStep"/>
-            
+                    Clicked="PausePressed"/>
             <StackLayout x:Name="stepBar"
                    Orientation = "Horizontal"
                    HorizontalOptions = "FillAndExpand"
                    Spacing = "0"
                    Grid.Row="1"
                    Grid.ColumnSpan="3"/>
-
-          
             <!--<WebView x:Name="pdfViewer" 
                     VerticalOptions="FillAndExpand"
                     HorizontalOptions="FillAndExpand"

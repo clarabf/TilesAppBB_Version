@@ -92,7 +92,7 @@ namespace TilesApp
             //pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
         }
 
-        private async void GoToNextStep( object sender, EventArgs args)
+        private async void PausePressed( object sender, EventArgs args)
         {
             Button b = (Button)sender;
             int status;
@@ -142,7 +142,8 @@ namespace TilesApp
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new StepsPage(tile, new_task.id, max_steps, worker, next_step_url, next_step_order));
+                        //Navigation.PushModalAsync(new StepsPage(tile, new_task.id, max_steps, worker, next_step_url, next_step_order));
+                        Navigation.PushModalAsync(new AlertPage());
                     });
                 }
             }
