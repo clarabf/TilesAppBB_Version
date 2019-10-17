@@ -1,9 +1,14 @@
-﻿using TilesApp.Models;
+﻿using Android.Content.Res;
+using System;
+using System.IO;
+using TilesApp.Models;
 using TilesApp.V1;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using XmlRpc;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
+
 namespace TilesApp
 {
     public partial class App : Application
@@ -12,7 +17,7 @@ namespace TilesApp
 
         public App()
         {
-           
+
             InitializeComponent();
 
             // OLD HybridWebView
@@ -33,14 +38,19 @@ namespace TilesApp
             //MainPage = new NavigationPage(new AlertPage());
 
             ////testing login
-           // MainPage = new NavigationPage(new Login());
+            MainPage = new NavigationPage(new Login());
 
             ////testing table
-            MainPage = new NavigationPage(new TestTableOrder());
-            
+            //MainPage = new NavigationPage(new TestTableOrder());
+
             ////testing steps
             //Tile t = new Tile(); t.id = 2;
             //MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
+
+            ////testing connection to Odoo
+            TestClass tc = new TestClass();
+            //tc.TestCreateRecord();
+            //tc.TestSearchReadRecords("Jr");
 
             NavigationPage.SetHasNavigationBar(this, false);
         }
