@@ -106,29 +106,32 @@ namespace TilesApp
             try
             {
                 // Update task information
-                var dict = new Dictionary<string, object>();
-                dict.Add("task_id", task_id);
-                dict.Add("worker", worker);
-                dict.Add("current_status", status);
-                var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
-                var response = await client.PutAsync("https://blackboxerpapi.azurewebsites.net/api/SetTaskStatus/", content);
-                var successS = await response.Content.ReadAsStringAsync();
-                bool success = bool.Parse(successS);
+                //var dict = new Dictionary<string, object>();
+                //dict.Add("task_id", task_id);
+                //dict.Add("worker", worker);
+                //dict.Add("current_status", status);
+                //var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
+                //var response = await client.PutAsync("https://blackboxerpapi.azurewebsites.net/api/SetTaskStatus/", content);
+                //var successS = await response.Content.ReadAsStringAsync();
+                //bool success = bool.Parse(successS);
 
-                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + tile.id);
-                var taskS = await response.Content.ReadAsStringAsync();
-                TileTask new_task = JsonConvert.DeserializeObject<TileTask>(taskS);
+                //response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + tile.id);
+                //var taskS = await response.Content.ReadAsStringAsync();
+                //TileTask new_task = JsonConvert.DeserializeObject<TileTask>(taskS);
 
-                response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + new_task.step_id);
-                var stepS = await response.Content.ReadAsStringAsync();
-                Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
+                //response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + new_task.step_id);
+                //var stepS = await response.Content.ReadAsStringAsync();
+                //Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
 
-                int next_step_order = next_step.step_order;
-                string next_step_url = next_step.url;
+                //int next_step_order = next_step.step_order;
+                //string next_step_url = next_step.url;
+
+                //////// TEST
+                int next_step_order = 1;
 
                 if (next_step_order == max_steps)
                 {
-                    response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetSkippedTasks?tile_id=" + tile.id);
+                    var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetSkippedTasks?tile_id=" + tile.id);
                     var skippedS = await response.Content.ReadAsStringAsync();
                     List<TileTask> listSkipped = JsonConvert.DeserializeObject<List<TileTask>>(skippedS);
                     //Device.BeginInvokeOnMainThread(() =>
