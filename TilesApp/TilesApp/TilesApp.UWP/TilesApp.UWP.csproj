@@ -103,6 +103,9 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Camera.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\CameraLens.png" />
     <Content Include="Assets\Card.png" />
     <Content Include="Assets\LargeTile.scale-100.png" />

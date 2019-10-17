@@ -33,10 +33,10 @@ namespace TilesApp
             //MainPage = new NavigationPage(new AlertPage());
 
             ////testing login
-            MainPage = new NavigationPage(new Login());
+           // MainPage = new NavigationPage(new Login());
 
             ////testing table
-            //MainPage = new NavigationPage(new TestTableOrder());
+            MainPage = new NavigationPage(new TestTableOrder());
             
             ////testing steps
             //Tile t = new Tile(); t.id = 2;

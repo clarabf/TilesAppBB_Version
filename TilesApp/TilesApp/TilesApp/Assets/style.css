@@ -21,7 +21,7 @@ Label {
     color: white;
 }
 .btn-secondary {
-    background-color: #373a3c;
+    background-color: #6C757D;
     color: white;
 }
 .btn-danger {
@@ -45,4 +45,9 @@ Label {
     color: #fff;
     background-color: #5bc0de;
     border-color: #46b8da;
+}
+
+#GoToScanbtn.btn-secondary {
+    text-align: right;
+    color: black;
 }

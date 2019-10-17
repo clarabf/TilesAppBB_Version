@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\Cameral.png" />
     <None Remove="Assets\Card.png" />
   </ItemGroup>
 
@@ -22,6 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Include="Assets\Cameral.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Page>
     <Page Include="Assets\Card.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
@@ -34,6 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="App - Copy.xaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
     <Compile Update="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -105,6 +112,9 @@
   <ItemGroup>
     <None Update="App.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </None>
+    <None Update="Assets\Camera.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Assets\CameraLens.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

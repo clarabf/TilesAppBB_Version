@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:Controls="clr-namespace:TilesApp"
              x:Class="TilesApp.Login">
-	<ContentPage.Content>
-        <Grid Padding="20" BackgroundColor="#2A2A2A" >
+    <ContentPage.Resources>
+        <StyleSheet  Source="../Assets/style.css"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid Padding="20"  BackgroundColor="#3D3D3D">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="1.3*" />
                 <RowDefinition Height="0.8*" />
                 <RowDefinition Height="0.8*" />
                 <RowDefinition Height="0.5*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.02*" />
+                <ColumnDefinition Width="1.3*" />
                 <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="0.01*" />
             </Grid.ColumnDefinitions>
             <Image Source="logo.png"
-                   HeightRequest="200" 
-                   WidthRequest="200"
+                   HeightRequest="280" 
+                   WidthRequest="280"
                    Grid.Row="0"
-                   Grid.ColumnSpan="2"
+                   Grid.ColumnSpan="4"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"/>
             <Image Source="Card.png"
+                   WidthRequest="250"
+                   HeightRequest="400"
                    Grid.Row="1"
                    Grid.RowSpan="3"
-                   Grid.Column="0"
+                   Grid.Column="1"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="StartAndExpand"/>
             <Label Text="SCAN YOUR &#x0a; CARD TO ACCESS"
@@ -33,22 +41,32 @@
                    TextColor="White"
                    HorizontalTextAlignment="End"
                    Grid.Row="1"
-                   Grid.Column="1"
-                   HorizontalOptions="EndAndExpand"
+                   Grid.Column="2"
+                   HorizontalOptions="End"
                    VerticalOptions="CenterAndExpand" />
-            <Button FontAttributes="Bold"
-                    FontSize="Medium"
+            
+            <AbsoluteLayout  Grid.Row="2" 
+                             Grid.Column="2" WidthRequest="200" HorizontalOptions="End" 
+                             VerticalOptions="FillAndExpand" HeightRequest="200">
+
+                <Button  x:Name="GoToScanbtn" FontAttributes="Bold"
+                    FontSize="Small"
                     WidthRequest="200"
                     Text="GO TO &#x0a; SCANNER"
-                    class="btn-gray"
-                    Padding="4"
-                    BorderRadius="10"
-                    Grid.Row="2"
-                    Grid.Column="1"
-                    HorizontalOptions="End"
+                    Padding="6"
+                     BorderRadius="8"
+                     AbsoluteLayout.LayoutBounds="1,10,1.05,60" AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
+                    HorizontalOptions="End" 
                     VerticalOptions="CenterAndExpand"
-                    Clicked="GoToScan">
-            </Button>
+                    Clicked="GoToScan"/>
+                <Image Source="Cameral.png" 
+                   VerticalOptions="Center"  
+                    WidthRequest="30" 
+                   HeightRequest="30"
+                    AbsoluteLayout.LayoutBounds="0.05,20,0.5,40" AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
+                    HorizontalOptions="Start"/>
+            </AbsoluteLayout>
+            
         </Grid>
 	</ContentPage.Content>
 </ContentPage>
