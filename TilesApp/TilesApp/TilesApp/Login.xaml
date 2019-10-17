@@ -44,29 +44,32 @@
                    Grid.Column="2"
                    HorizontalOptions="End"
                    VerticalOptions="CenterAndExpand" />
-            
-            <AbsoluteLayout  Grid.Row="2" 
-                             Grid.Column="2" WidthRequest="200" HorizontalOptions="End" 
-                             VerticalOptions="FillAndExpand" HeightRequest="200">
-
+            <AbsoluteLayout  
+                   Grid.Row="2" 
+                   Grid.Column="2" 
+                   WidthRequest="200" 
+                   HorizontalOptions="End" 
+                   VerticalOptions="FillAndExpand" 
+                   HeightRequest="200">
                 <Button  x:Name="GoToScanbtn" FontAttributes="Bold"
                     FontSize="Small"
                     WidthRequest="200"
                     Text="GO TO &#x0a; SCANNER"
                     Padding="6"
-                     BorderRadius="8"
-                     AbsoluteLayout.LayoutBounds="1,10,1.05,60" AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
+                    BorderRadius="8"
+                    AbsoluteLayout.LayoutBounds="1,10,1.05,60" 
+                    AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
                     HorizontalOptions="End" 
                     VerticalOptions="CenterAndExpand"
                     Clicked="GoToScan"/>
                 <Image Source="Cameral.png" 
-                   VerticalOptions="Center"  
+                    VerticalOptions="Center"  
                     WidthRequest="30" 
-                   HeightRequest="30"
-                    AbsoluteLayout.LayoutBounds="0.05,20,0.5,40" AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
+                    HeightRequest="30"
+                    AbsoluteLayout.LayoutBounds="0.05,20,0.5,40" 
+                    AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
                     HorizontalOptions="Start"/>
             </AbsoluteLayout>
-            
         </Grid>
 	</ContentPage.Content>
 </ContentPage>
