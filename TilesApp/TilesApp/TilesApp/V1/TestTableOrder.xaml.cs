@@ -10,9 +10,10 @@ namespace TilesApp.V1
     public partial class TestTableOrder : ContentPage
     {
 
-        public TestTableOrder()
+        public TestTableOrder(string user_name)
         {
             InitializeComponent();
+            user.Text = user_name;
             NavigationPage.SetHasNavigationBar(this, false);
         }
 

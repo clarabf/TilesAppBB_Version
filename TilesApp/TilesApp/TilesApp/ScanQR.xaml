@@ -12,7 +12,7 @@
                     IsScanning = "true"
                     OnScanResult="ZXingScannerView_OnOnScanResult" />
                 <zxing:ZXingDefaultOverlay x:Name="overlay"
-                    TopText="SCANTEST" 
+                    TopText="SCAN YOUR EMPLOYEE CARD" 
                     BottomText="" 
                     ShowFlashButton="False"/>
             </Grid>

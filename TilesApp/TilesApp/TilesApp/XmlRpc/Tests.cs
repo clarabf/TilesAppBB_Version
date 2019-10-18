@@ -200,19 +200,19 @@ namespace XmlRpc {
             // SEARCH
             client.Path = "/xmlrpc/2/object";
 
-            XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "res.partner", "search_read",
-                XmlRpcParameter.AsArray(
-                    XmlRpcParameter.AsArray(
-                        // XmlRpcParameter.AsArray("is_company", "=", true), XmlRpcRequest.AsArray("customer", "=", true)
-                        XmlRpcParameter.AsArray("name", "ilike", condition)
-                    )
-                ),
-                XmlRpcParameter.AsStruct(
-                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "email"))
-                // ,XmlRpcParameter.AsMember("limit", 2)
-                )
-            );
+            //XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
+            //requestSearch.AddParams(db, responseLogin.GetInt(), pass, "res.partner", "search_read",
+            //    XmlRpcParameter.AsArray(
+            //        XmlRpcParameter.AsArray(
+            //            // XmlRpcParameter.AsArray("is_company", "=", true), XmlRpcRequest.AsArray("customer", "=", true)
+            //            XmlRpcParameter.AsArray("name", "ilike", condition)
+            //        )
+            //    ),
+            //    XmlRpcParameter.AsStruct(
+            //        XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "email"))
+            //    // ,XmlRpcParameter.AsMember("limit", 2)
+            //    )
+            //);
             //XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
             //requestSearch.AddParams(db, responseLogin.GetInt(), pass, "mrp.workcenter", "search_read",
             //    XmlRpcParameter.AsArray(
@@ -226,6 +226,19 @@ namespace XmlRpc {
             //    // ,XmlRpcParameter.AsMember("limit", 2)
             //    )
             //);
+            XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
+            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "product.template", "search_read",
+                XmlRpcParameter.AsArray(
+                    XmlRpcParameter.AsArray(
+                        // XmlRpcParameter.AsArray("is_company", "=", true), XmlRpcRequest.AsArray("customer", "=", true)
+                        XmlRpcParameter.AsArray("name", "ilike", condition)
+                    )
+                ),
+                XmlRpcParameter.AsStruct(
+                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "bom_count"))
+                // ,XmlRpcParameter.AsMember("limit", 2)
+                )
+            );
 
             XmlRpcResponse responseSearch = client.Execute(requestSearch);
 

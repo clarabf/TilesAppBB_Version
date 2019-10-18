@@ -40,8 +40,8 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <FormattedString.Spans>
-                            <Span FontSize="20" Text="Welcome" />
-                            <Span FontSize="20" FontAttributes="Bold" Text=" Trump, D" />
+                            <Span FontSize="20" Text="Welcome " />
+                            <Span x:Name="user" FontSize="20" FontAttributes="Bold" Text="Trump, D." />
                         </FormattedString.Spans>
                     </FormattedString>
                 </Label.FormattedText>

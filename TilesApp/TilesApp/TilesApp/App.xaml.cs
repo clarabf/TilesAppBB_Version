@@ -41,7 +41,7 @@ namespace TilesApp
             MainPage = new NavigationPage(new Login());
 
             ////testing table
-            //MainPage = new NavigationPage(new TestTableOrder());
+            //MainPage = new NavigationPage(new TestTableOrder("Bacall, L."));
 
             ////testing steps
             //Tile t = new Tile(); t.id = 2;
@@ -50,7 +50,7 @@ namespace TilesApp
             ////testing connection to Odoo
             TestClass tc = new TestClass();
             //tc.TestCreateRecord();
-            //tc.TestSearchReadRecords("Jr");
+            tc.TestSearchReadRecords("SPA_Tile100");
 
             NavigationPage.SetHasNavigationBar(this, false);
         }
