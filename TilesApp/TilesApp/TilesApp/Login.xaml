@@ -7,27 +7,29 @@
         <StyleSheet  Source="../Assets/style.css"/>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid Padding="20"  BackgroundColor="#3D3D3D">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1.3*" />
-                <RowDefinition Height="0.8*" />
-                <RowDefinition Height="0.8*" />
-                <RowDefinition Height="0.5*" />
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.02*" />
-                <ColumnDefinition Width="1.3*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="0.01*" />
-            </Grid.ColumnDefinitions>
-            <Image Source="logo.png"
+        <StackLayout  Orientation="Vertical"
+        x:Name="outerStack">
+            <Grid Padding="20"  BackgroundColor="#3D3D3D" x:Name="innerGrid">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1.3*" />
+                    <RowDefinition Height="0.8*" />
+                    <RowDefinition Height="0.8*" />
+                    <RowDefinition Height="0.5*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Image Source="logo.png"
                    HeightRequest="280" 
                    WidthRequest="280"
                    Grid.Row="0"
                    Grid.ColumnSpan="4"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"/>
-            <Image Source="Card.png"
+                <Image Source="Card.png"
                    WidthRequest="250"
                    HeightRequest="400"
                    Grid.Row="1"
@@ -35,41 +37,43 @@
                    Grid.Column="1"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="StartAndExpand"/>
-            <Label Text="SCAN YOUR &#x0a; CARD TO ACCESS"
+                <Label Text="SCAN YOUR &#x0a; CARD TO ACCESS"
                    FontAttributes="Bold"
-                   FontSize="Medium"
+                   FontSize="16"
                    TextColor="White"
                    HorizontalTextAlignment="End"
                    Grid.Row="1"
                    Grid.Column="2"
                    HorizontalOptions="End"
                    VerticalOptions="CenterAndExpand" />
-            <AbsoluteLayout  
+                <AbsoluteLayout  
                    Grid.Row="2" 
                    Grid.Column="2" 
                    WidthRequest="200" 
                    HorizontalOptions="End" 
                    VerticalOptions="FillAndExpand" 
                    HeightRequest="200">
-                <Button  x:Name="GoToScanbtn" FontAttributes="Bold"
+                    <Button  x:Name="GoToScanbtn" FontAttributes="Bold"
                     FontSize="Small"
                     WidthRequest="200"
                     Text="GO TO &#x0a; SCANNER"
-                    Padding="6"
+                    Padding="4"
                     BorderRadius="8"
                     AbsoluteLayout.LayoutBounds="1,10,1.05,60" 
                     AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
                     HorizontalOptions="End" 
                     VerticalOptions="CenterAndExpand"
                     Clicked="GoToScan"/>
-                <Image Source="Cameral.png" 
+                    <Image Source="Cameral.png" 
                     VerticalOptions="Center"  
                     WidthRequest="30" 
                     HeightRequest="30"
                     AbsoluteLayout.LayoutBounds="0.05,20,0.5,40" 
                     AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
                     HorizontalOptions="Start"/>
-            </AbsoluteLayout>
-        </Grid>
-	</ContentPage.Content>
+                </AbsoluteLayout>
+            </Grid>
+        </StackLayout>
+        
+    </ContentPage.Content>
 </ContentPage>

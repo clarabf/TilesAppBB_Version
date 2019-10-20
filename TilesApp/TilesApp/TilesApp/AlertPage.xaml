@@ -112,7 +112,7 @@
                                         BorderRadius="5"
                                         HorizontalOptions="CenterAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        class="btn-secondary"
+                                        class="btn-dark"
                                         ClassId="warning"
                                         Grid.Column="1"
                                         Grid.Row="4"
@@ -151,11 +151,11 @@
                                         Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
-                                        FontSize="Medium">
+                                        >
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span FontAttributes="Bold" Text=" PAUSE " />
+                                                    <Span FontSize="Medium" FontAttributes="Bold" Text=" PAUSE " />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -198,7 +198,7 @@
                                         HorizontalOptions="CenterAndExpand"
                                         VerticalOptions="CenterAndExpand"
                                         WidthRequest="200"
-                                        class="btn-secondary"
+                                        class="btn-dark"
                                         ClassId="pause"
                                         HeightRequest="100"
                                         Grid.Column="1"
@@ -225,7 +225,7 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="0.8*" />
                                         <RowDefinition Height="0.03*" />
-                                        <RowDefinition Height="2*" />
+                                        <RowDefinition Height="2.1*" />
                                         <RowDefinition Height="0.8*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -238,11 +238,11 @@
                                         Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
-                                        FontSize="Medium">
+                                      >
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span FontAttributes="Bold" Text=" COMPLETED! " />
+                                                    <Span FontSize="Medium" FontAttributes="Bold" Text=" COMPLETED! " />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -259,7 +259,7 @@
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span FontSize="Micro"  Text="&#x0a; YOU HAVE GONE THROUGH ALL STEPS  &#x0a; &#x0a;" ></Span>
+                                                    <Span FontSize="Micro"  Text="&#x0a;  &#x0a; YOU HAVE GONE THROUGH ALL STEPS  &#x0a; &#x0a;" ></Span>
                                                     <Span FontSize="Micro" Text="HAVE YOU COMPLETED &#x0a; " FontAttributes="Bold" ></Span>
                                                     <Span FontSize="Micro" Text="YOUR WORK ORDER? " FontAttributes="Bold" ></Span>
                                                 </FormattedString.Spans>
@@ -283,7 +283,7 @@
                                         BorderRadius="5"
                                         HorizontalOptions="CenterAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        class="btn-secondary"
+                                        class="btn-dark"
                                         ClassId="completed"
                                         Grid.Column="1"
                                         Grid.Row="4"
@@ -309,7 +309,7 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="0.8*" />
                                         <RowDefinition Height="0.03*" />
-                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="2*" />
                                         <RowDefinition Height="0.8*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
@@ -322,11 +322,11 @@
                                         Grid.Row="0"
                                         Grid.Column="0"
                                         Grid.ColumnSpan="2"
-                                        FontSize="Medium">  
+                                        >  
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span FontAttributes="Bold" Text=" LOGOUT " />
+                                                    <Span FontSize="Medium" FontAttributes="Bold" Text=" LOGOUT " />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -366,7 +366,7 @@
                                         BorderRadius="5"
                                         HorizontalOptions="CenterAndExpand"
                                         VerticalOptions="CenterAndExpand"
-                                        class="btn-secondary"
+                                        class="btn-dark"
                                         ClassId="logout"
                                         Grid.Column="1"
                                         Grid.Row="4"
@@ -506,7 +506,7 @@
                                         BorderRadius="5"
                                         HorizontalOptions="Center"
                                         VerticalOptions="Center"
-                                        class="btn-secondary"
+                                        class="btn-dark"
                                         ClassId="continuation"
                                         Grid.Row="3"
                                         Clicked="Hide"/>
@@ -544,7 +544,7 @@
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>
-                                                    <Span  FontSize="Medium" FontAttributes="Bold" Text=" TAG SCANNED SUCCESFULLY! " />
+                                                    <Span  FontSize="Small" FontAttributes="Bold" Text=" TAG SCANNED SUCCESFULLY! " />
                                                 </FormattedString.Spans>
                                             </FormattedString>
                                         </Label.FormattedText>
@@ -570,7 +570,7 @@
                                         BorderRadius="5"
                                         HorizontalOptions="Center"
                                         VerticalOptions="Center"
-                                        class="btn-secondary"
+                                        class="btn-dark"
                                         ClassId="scanned"
                                         Grid.Row="3"
                                         Clicked="Hide"/>      
