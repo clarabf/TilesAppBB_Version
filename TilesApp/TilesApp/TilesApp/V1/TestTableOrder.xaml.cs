@@ -55,63 +55,76 @@ namespace TilesApp.V1
                 HorizontalOptions = LayoutOptions.CenterAndExpand
 
             };
+            title.FontSize = 9;
             grid.Children.Add(title, 0, 0);
             Grid.SetColumnSpan(title, 4);
-            grid.Children.Add(new Label
+            Label Ref = new Label
             {
                 Text = "SACO Product Ref. Nr.",
                 FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 HorizontalOptions = LayoutOptions.StartAndExpand
-            }, 0, 1);
-
-            grid.Children.Add(new Label
+            };
+            grid.Children.Add(Ref, 0, 1);
+            Ref.FontSize = 8;
+            Label Sales = new Label
             {
                 Text = "SACO Product Sales R",
                 FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 HorizontalOptions = LayoutOptions.StartAndExpand
-            }, 0, 2);
-
-            grid.Children.Add(new Label
+            };
+            grid.Children.Add(Sales, 0, 2);
+            Sales.FontSize = 8;
+            Label Manufacture = new Label
             {
                 Text = "Qty. to Manufacture",
                 FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 HorizontalOptions = LayoutOptions.StartAndExpand
-            }, 2, 1);
-            grid.Children.Add(new Label
+            };
+            grid.Children.Add(Manufacture, 2, 1);
+            Manufacture.FontSize = 8;
+            Label Steps = new Label
             {
                 Text = "Steps:",
                 FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 HorizontalOptions = LayoutOptions.StartAndExpand
-            }, 2, 2);
-            grid.Children.Add(new Label
+            };
+            grid.Children.Add(Steps, 2, 2);
+            Steps.FontSize = 8;
+            Label Value1 = new Label
             {
                 Text = "23412",
                 FontAttributes = FontAttributes.Bold,
                 FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 HorizontalOptions = LayoutOptions.StartAndExpand
-            }, 1, 1);
-
-            grid.Children.Add(new Label
+            };
+            grid.Children.Add(Value1, 1, 1);
+            Value1.FontSize = 8;
+            Label Value2 = new Label
             {
                 Text = "Tile Type 00000/00000/03/00/00/00/00000/00000",
                 FontAttributes = FontAttributes.Bold,
                 FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 HorizontalOptions = LayoutOptions.StartAndExpand
-            }, 1, 2);
-            grid.Children.Add(new Label
+            };
+            grid.Children.Add(Value2, 1, 2);
+            Value2.FontSize = 9;
+            Label Value3 = new Label
             {
                 Text = "16 u",
                 FontAttributes = FontAttributes.Bold,
-                FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 HorizontalOptions = LayoutOptions.StartAndExpand
-            }, 3, 1);
-            grid.Children.Add(new Label
+            };
+            grid.Children.Add(Value3, 3, 1);
+            Value3.FontSize = 8;
+            Label Value4 = new Label
             {
                 Text = "1 to",
                 FontAttributes = FontAttributes.Bold,
                 FontSize = Device.GetNamedSize(NamedSize.Micro, typeof(Label)),
                 HorizontalOptions = LayoutOptions.StartAndExpand
-            }, 3, 2);
+            };
+            grid.Children.Add(Value4, 3, 2);
+            Value4.FontSize = 8;
             layout.Children.Add(grid);
             // Adding first row of the table
 
