@@ -148,7 +148,7 @@
                                        FontSize="9"
                                        BorderRadius="5"
                                        HorizontalOptions="StartAndExpand"
-                                       VerticalOptions="End"
+                                       VerticalOptions="Center"
                                        BackgroundColor="gray"
                                        TextColor="White"
                                        HeightRequest="20"
@@ -161,7 +161,7 @@
                                        HeightRequest="20"
                                        Padding="0"
                                        BorderRadius="5"
-                                       HorizontalOptions="EndAndExpand"
+                                       HorizontalOptions="StartAndExpand"
                                        BackgroundColor="Red"
                                        TextColor="White"
                                        VerticalOptions="Center"
@@ -169,17 +169,17 @@
                                        Grid.Row="1"
                                        Grid.Column="3"/>
                                 </Grid>
-                                <Grid IsVisible="{Binding IsVisible}" BackgroundColor="#fbfbfb">
+                                <Grid  RowSpacing="0" IsVisible="{Binding IsVisible}" BackgroundColor="#fbfbfb">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="0.8*" />
                                         <RowDefinition Height="1*" />
-                                        <RowDefinition Height="1*" />
-                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="1.1*" />
                                         <RowDefinition Height="1*" />
                                         <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2.5*" />
-                                        <ColumnDefinition Width="4.5*" />
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="2*" />
                                     </Grid.ColumnDefinitions>
                                     <Label  
                                        FontSize="10"
