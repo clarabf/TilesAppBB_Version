@@ -49,17 +49,14 @@
                 </Label.FormattedText>
             </Label>
             <BoxView HeightRequest="1" 
-                     Grid.Row="1" 
-                     Grid.ColumnSpan="3" 
-                     WidthRequest="1"
-                     VerticalOptions="End"  
-                     HorizontalOptions="FillAndExpand"
-                     Color="Black" 
-                     Margin="0,0,0,1"/>
-            
+                Grid.Row="1" 
+                Grid.ColumnSpan="3" 
+                WidthRequest="1"
+                VerticalOptions="End"  
+                HorizontalOptions="FillAndExpand"
+                Color="Black" 
+                Margin="0,0,0,1"/>
             <!-- content -->
-
-
             <Grid Grid.Row="2" Grid.ColumnSpan="3" >
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
@@ -71,42 +68,45 @@
                     <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
                 <Label x:Name="Date1"
-                                       FontAttributes="Bold"
-                                       FontSize="11"
-                                       Grid.Row="0"
-                                       Grid.Column="0"
-                                       Text="Date"/>
+                    FontAttributes="Bold"
+                    FontSize="11"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="Date"/>
                 <Label x:Name="WorkOrderID"
-                                       FontAttributes="Bold"
-                                       FontSize="11"
-                                       Grid.Row="0"
-                                       Grid.Column="1"
-                                       Text="Work Order ID"/>
+                    FontAttributes="Bold"
+                    FontSize="11"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalOptions="CenterAndExpand"
+                    Text="Work Order ID"/>
                 <Label x:Name="CurrentProgress"
-                                       FontAttributes="Bold"
-                                       FontSize="11"
-                                       Grid.Row="0"
-                                       Grid.Column="2"
-                                       Text="Current Progress"/>
+                    FontAttributes="Bold"
+                    FontSize="11"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    HorizontalOptions="CenterAndExpand"
+                    Text="Current Progress"/>
                 <Label x:Name="Options"
-                                       FontAttributes="Bold"
-                                       FontSize="11"
-                                       Grid.Row="0"
-                                       Grid.Column="3"
-                                       Text="Options"/>
+                    FontAttributes="Bold"
+                    FontSize="11"
+                    Grid.Row="0"
+                    Grid.Column="3"
+                    HorizontalOptions="EndAndExpand"
+                    Text="Options"/>
             </Grid>
-
-            <ListView Grid.Row="3" Grid.ColumnSpan="3" VerticalOptions="Start"
-                      ItemsSource="{Binding ItemsList}"
-                      CachingStrategy="RecycleElement"
-                      HasUnevenRows="True"
-                      SelectedItem="{Binding SelectedItem}">
-
+            <ListView Grid.Row="3" 
+                Grid.ColumnSpan="3" 
+                VerticalOptions="Start"
+                ItemsSource="{Binding ItemsList}"
+                CachingStrategy="RecycleElement"
+                HasUnevenRows="True"
+                SelectedItem="{Binding SelectedItem}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Padding="0">
-                                <Grid RowSpacing="2">
+                            <StackLayout Padding="0" BackgroundColor="Gray">
+                                <Grid RowSpacing="4">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="0.9*" />
                                         <RowDefinition Height="1*" />
@@ -117,7 +117,6 @@
                                         <ColumnDefinition Width="1*" />
                                         <ColumnDefinition Width="1*" />
                                     </Grid.ColumnDefinitions>
-
                                     <Label 
                                        FontSize="Micro"
                                        Grid.RowSpan="2"
@@ -126,24 +125,25 @@
                                        VerticalOptions="CenterAndExpand"
                                        Text="Oct. 10th 2019"/>
                                     <Label 
-                                        FontSize="Micro"
+                                       FontSize="Micro"
                                        Grid.RowSpan="2"
                                        Grid.Column="1"
-                                       HorizontalOptions="StartAndExpand"
+                                       HorizontalOptions="CenterAndExpand"
                                        VerticalOptions="CenterAndExpand"
                                        Text="3251353"/>
                                     <ProgressBar x:Name="pb_ProgressBar" 
                                        Progress="0.6" 
                                        WidthRequest="100"
-                                       HorizontalOptions="StartAndExpand"
+                                       HorizontalOptions="CenterAndExpand"
                                        VerticalOptions="CenterAndExpand"
+                                       ProgressColor="Red"
                                        Grid.RowSpan="2"
                                        Grid.Column="2"/>
                                     <Button x:Name="SHOWINFO"
                                        Text="SHOW INFO"
                                        FontSize="9"
                                        BorderRadius="5"
-                                       HorizontalOptions="StartAndExpand"
+                                       HorizontalOptions="EndAndExpand"
                                        VerticalOptions="Center"
                                        BackgroundColor="gray"
                                        TextColor="White"
@@ -157,7 +157,7 @@
                                        HeightRequest="20"
                                        Padding="0"
                                        BorderRadius="5"
-                                       HorizontalOptions="StartAndExpand"
+                                       HorizontalOptions="EndAndExpand"
                                        BackgroundColor="Red"
                                        TextColor="White"
                                        VerticalOptions="Center"
@@ -170,77 +170,73 @@
                                         <RowDefinition Height="1*" />
                                         <RowDefinition Height="1*" />
                                         <RowDefinition Height="1*" />
+                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="1*" />
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1.4*" />
-                                        <ColumnDefinition Width="2.5*" />
-                                        <ColumnDefinition Width="1.2*" />
-                                        <ColumnDefinition Width="0.4*" />
+                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="1*" />
                                     </Grid.ColumnDefinitions>
-                                    <Label  FontAttributes="Bold"
-                                       FontSize="8"
+                                    <Label  
+                                       FontSize="10"
                                        Grid.Row="0"
                                        Grid.ColumnSpan="4"
                                        HorizontalOptions="CenterAndExpand"
                                        VerticalOptions="End"
                                        Text="WORK ORDER ADDITIONAL DETAILS"/>
-
                                     <Label 
-                                       FontSize="8"
+                                       FontSize="10"
                                        Grid.Row="1"
                                        Grid.Column="0"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
-                                       Text="SACO Product Ref. Nr."/>
+                                       Text="SACO Product Ref. Nr.:"/>
                                     <Label 
-                                       FontSize="8"
+                                       FontSize="10"
                                        Grid.Row="2"
                                        Grid.Column="0"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
-                                       Text="SACO Product Sales R"/>
+                                       Text="SACO Product Sales Ref.:"/>
                                     <Label 
-                                       FontSize="8"
-                                       Grid.Row="1"
-                                       Grid.Column="2"
+                                       FontSize="10"
+                                       Grid.Row="3"
+                                       Grid.Column="0"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
-                                       Text="Qty. to Manufacture"/>
+                                       Text="Qty. to Manufacture:"/>
                                     <Label 
-                                       FontSize="8"
-                                       Grid.Row="2"
-                                       Grid.Column="2"
+                                       FontSize="10"
+                                       Grid.Row="4"
+                                       Grid.Column="0"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
                                        Text="Steps:"/>
-
-
-
                                     <Label FontAttributes="Bold"
-                                       FontSize="8"
+                                       FontSize="10"
                                        Grid.Row="1"
                                        Grid.Column="1"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
                                        Text="{Binding Ref}"/>
                                     <Label 
-                                       FontSize="8"
-                                        Grid.Row="2"
+                                       FontSize="10"
+                                       Grid.Row="2"
                                        Grid.Column="1"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
                                        Text="{Binding SalesRef}"/>
                                     <Label FontAttributes="Bold"
-                                       FontSize="8"
-                                        Grid.Row="1"
-                                       Grid.Column="3"
+                                       FontSize="10"
+                                       Grid.Row="3"
+                                       Grid.Column="1"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
                                        Text="{Binding Manufacture}"/>
                                     <Label FontAttributes="Bold"
-                                       FontSize="8"
-                                       Grid.Row="2"
-                                       Grid.Column="3"
+                                       FontSize="10"
+                                       Grid.Row="4"
+                                       Grid.Column="1"
                                        HorizontalOptions="StartAndExpand"
                                        VerticalOptions="CenterAndExpand"
                                        Text="{Binding Steps}"/>
@@ -249,10 +245,7 @@
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
-
             </ListView>
-
-
             <!-- footer -->
             <Grid Grid.Row="4" Grid.ColumnSpan="3" RowSpacing="1">
                     <Grid.RowDefinitions>
@@ -263,24 +256,27 @@
                         <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="1*" />
                     </Grid.ColumnDefinitions>
-                    <BoxView HeightRequest="1" Grid.Row="0" 
-                             Grid.ColumnSpan="2" WidthRequest="1"
-                             VerticalOptions="End"  HorizontalOptions="FillAndExpand"
-                             Color="Black"/>
-
+                    <BoxView 
+                        HeightRequest="1" 
+                        Grid.Row="0" 
+                        Grid.ColumnSpan="2" 
+                        WidthRequest="1" 
+                        VerticalOptions="End"  
+                        HorizontalOptions="FillAndExpand" 
+                        Color="Black"/>
                     <Button x:Name="Logout"
-                            Text="LogOut"
-                            FontSize="Micro"
-                            FontAttributes="Bold"
-                            Padding="1"
-                            BorderRadius="5"
-                            HorizontalOptions="End"
-                            BackgroundColor="Red"
-                            TextColor="White"
-                            VerticalOptions="Center"
-                            Clicked="GoToStep"
-                            Grid.Row="1"
-                            Grid.Column="1"/>
+                        Text="LogOut"
+                        FontSize="Micro"
+                        FontAttributes="Bold"
+                        Padding="1"
+                        BorderRadius="5"
+                        HorizontalOptions="End"
+                        BackgroundColor="Red"
+                        TextColor="White"
+                        VerticalOptions="Center"
+                        Clicked="GoToStep"
+                        Grid.Row="1"
+                        Grid.Column="1"/>
             </Grid>
         </Grid>
     </ContentPage.Content>

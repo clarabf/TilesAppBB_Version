@@ -42,11 +42,11 @@ namespace TilesApp
             //MainPage = new NavigationPage(new Login());
 
             ////testing table
-           // MainPage = new NavigationPage(new TestTableOrder("Bacall, L."));
+            MainPage = new NavigationPage(new TestTableOrder("Bacall, L."));
 
             ////testing steps
-            Tile t = new Tile(); t.id = 2;
-            MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
+            //Tile t = new Tile(); t.id = 2;
+            //MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
 
             ////testing connection to Odoo
             //TestClass tc = new TestClass();

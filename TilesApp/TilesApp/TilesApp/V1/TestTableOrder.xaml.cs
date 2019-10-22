@@ -12,6 +12,12 @@ namespace TilesApp.V1
     {
         private Boolean InfoRow = false;
 
+        public TestTableOrder()
+        {
+            InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+        }
+
         public TestTableOrder(string user_name)
         {
             InitializeComponent();

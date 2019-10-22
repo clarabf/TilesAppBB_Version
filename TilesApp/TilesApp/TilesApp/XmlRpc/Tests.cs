@@ -227,15 +227,15 @@ namespace XmlRpc {
             //    )
             //);
             XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "product.template", "search_read",
+            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "product.product", "search_read",
                 XmlRpcParameter.AsArray(
                     XmlRpcParameter.AsArray(
-                        // XmlRpcParameter.AsArray("is_company", "=", true), XmlRpcRequest.AsArray("customer", "=", true)
-                        XmlRpcParameter.AsArray("name", "ilike", condition)
+                        //XmlRpcParameter.AsArray("id", "ilike", condition)
+                        XmlRpcParameter.AsArray("id", ">", 0)
                     )
                 ),
                 XmlRpcParameter.AsStruct(
-                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "bom_count"))
+                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "product_template_attribute_value_ids", "bom_count", "name", "purchase_ok"))
                 // ,XmlRpcParameter.AsMember("limit", 2)
                 )
             );
