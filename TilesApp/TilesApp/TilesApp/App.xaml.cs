@@ -1,6 +1,7 @@
 ﻿using Android.Content.Res;
 using System;
 using System.IO;
+using TilesApp.ExpandableView;
 using TilesApp.Models;
 using TilesApp.V1;
 using Xamarin.Forms;
@@ -38,10 +39,10 @@ namespace TilesApp
             //MainPage = new NavigationPage(new AlertPage());
 
             ////testing login
-            MainPage = new NavigationPage(new Login());
+            //MainPage = new NavigationPage(new Login());
 
             ////testing table
-            //MainPage = new NavigationPage(new TestTableOrder("Bacall, L."));
+            MainPage = new NavigationPage(new TestTableOrder("Bacall, L."));
 
             ////testing steps
             //Tile t = new Tile(); t.id = 2;

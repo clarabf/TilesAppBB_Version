@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using TilesApp.Models;
+using TilesApp.ExpandableView;
 
 namespace TilesApp.V1
 {
@@ -16,6 +17,7 @@ namespace TilesApp.V1
             InitializeComponent();
             user.Text = user_name;
             NavigationPage.SetHasNavigationBar(this, false);
+            BindingContext = new ListViewPageModel();
         }
 
         private async void GoToStep(object sender, EventArgs args)
@@ -24,7 +26,7 @@ namespace TilesApp.V1
             await Navigation.PushModalAsync(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/3.PDF",3));
         }
 
-        private void Collapsed(object sender, EventArgs e)
+      /*  private void Collapsed(object sender, EventArgs e)
         {
             var table = new TableSection();
             var layout = new StackLayout() { Orientation = StackOrientation.Horizontal };
@@ -143,7 +145,7 @@ namespace TilesApp.V1
                 InfoRow = true;
                 TableRoot.Add(table);
             }
-        }
+        }*/
 
     }
 }
