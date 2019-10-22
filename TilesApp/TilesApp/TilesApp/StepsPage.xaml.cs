@@ -18,12 +18,15 @@ namespace TilesApp
         string worker;
         string pdf;
         Styles styles = new Styles();
+        private double width = 0;
+        private double height = 0;
 
         public StepsPage()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-
+            width = this.Width;
+            height = this.Height;
         }
 
         public StepsPage(Tile t, int t_id, int m_steps, string wor, string url, int s_order)
@@ -146,7 +149,8 @@ namespace TilesApp
                     {
                         Navigation.PopModalAsync(true);
                         //Navigation.PushModalAsync(new StepsPage(tile, new_task.id, max_steps, worker, next_step_url, next_step_order));
-                        Navigation.PushModalAsync(new AlertPage());
+                        // Navigation.PushModalAsync(new AlertPage());
+                        PAUSEPopup.IsVisible = true;
                     });
                 }
             }
@@ -154,6 +158,43 @@ namespace TilesApp
             {
                 Console.WriteLine(ex.ToString());
             }
+
+           
         }
+
+        private void HidePopup(object sender, EventArgs args)
+        {
+            PAUSEPopup.IsVisible = false;
+        }
+        protected override void OnSizeAllocated(double width, double height)
+        {
+            base.OnSizeAllocated(width, height);
+            if (width != this.width || height != this.height)
+            {
+                this.width = width;
+                this.height = height;
+                if (width > height)
+                {
+
+                    GridStep.RowDefinitions.Clear();
+                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1.2, GridUnitType.Star) });
+                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
+                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1.2, GridUnitType.Star) });
+                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(7, GridUnitType.Star) });
+
+                }
+                else
+                {
+                    GridStep.RowDefinitions.Clear();
+                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
+                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.6, GridUnitType.Star) });
+                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(7, GridUnitType.Star) });
+
+                }
+            }
+        }
+
+
     }
 }
