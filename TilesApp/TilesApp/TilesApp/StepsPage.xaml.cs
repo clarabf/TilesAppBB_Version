@@ -72,10 +72,10 @@ namespace TilesApp
             }
 
             skiplabel.Text = "Step " + s_order + "/" + max_steps;
-            //Device.BeginInvokeOnMainThread(() =>
-            //{
-            //    pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
-            //});
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
+            });
             NavigationPage.SetHasNavigationBar(this, false);
  
         }
@@ -92,7 +92,7 @@ namespace TilesApp
             b.Style = styles.selectedStyle;
             string next_step_url = "http://oboria.net/docs/pdf/ftp/3/" + b.Text + ".PDF";
             skiplabel.Text = "Step " + b.Text + "/" + max_steps;
-            //pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
+            pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
         }
 
         private async void PausePressed( object sender, EventArgs args)
@@ -158,8 +158,6 @@ namespace TilesApp
             {
                 Console.WriteLine(ex.ToString());
             }
-
-           
         }
 
         private async void Pause_Interrupt(object sender, EventArgs args)
@@ -172,33 +170,31 @@ namespace TilesApp
             PAUSEPopup.IsVisible = false;
         }
 
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-            if (width != this.width || height != this.height)
-            {
-                this.width = width;
-                this.height = height;
-                if (width > height)
-                {
-                    GridStep.RowDefinitions.Clear();
-                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1.2, GridUnitType.Star) });
-                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
-                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1.2, GridUnitType.Star) });
-                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(7, GridUnitType.Star) });
-                }
-                else
-                {
-                    GridStep.RowDefinitions.Clear();
-                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
-                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.6, GridUnitType.Star) });
-                    GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(7, GridUnitType.Star) });
+        //protected override void OnSizeAllocated(double width, double height)
+        //{
+        //    base.OnSizeAllocated(width, height);
+        //    if (width != this.width || height != this.height)
+        //    {
+        //        this.width = width;
+        //        this.height = height;
+        //        if (width > height)
+        //        {
+        //            GridStep.RowDefinitions.Clear();
+        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1.2, GridUnitType.Star) });
+        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
+        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1.2, GridUnitType.Star) });
+        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(7, GridUnitType.Star) });
+        //        }
+        //        else
+        //        {
+        //            GridStep.RowDefinitions.Clear();
+        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
+        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.6, GridUnitType.Star) });
+        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(7, GridUnitType.Star) });
 
-                }
-            }
-        }
-
-
+        //        }
+        //    }
+        //}
     }
 }

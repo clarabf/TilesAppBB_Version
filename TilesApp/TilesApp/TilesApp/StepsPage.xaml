@@ -60,11 +60,11 @@
                             Spacing = "0"
                             Grid.Row="2"
                             Grid.ColumnSpan="3"/>
-                        <!--<WebView x:Name="pdfViewer" 
+                        <WebView x:Name="pdfViewer" 
                             VerticalOptions="FillAndExpand"
                             HorizontalOptions="FillAndExpand"
                             Grid.Row="3"
-                            Grid.ColumnSpan="3" />-->
+                            Grid.ColumnSpan="3" />
                     </Grid>
                 </StackLayout>
                 <Frame x:Name="PAUSEPopup" 
@@ -115,6 +115,7 @@
                                                 <FormattedString>
                                                     <FormattedString.Spans>
                                                         <Span FontSize="Micro"  Text="YOU HAVE PAUSED YOUR WORK ORDER  &#x0a; &#x0a;" ></Span>
+
                                                         <Span FontSize="Micro" Text="ELAPSED TIME  &#x0a; 02hr 12 min 30 sec   " FontAttributes="Bold" ></Span>
                                                     </FormattedString.Spans>
                                                 </FormattedString>
