@@ -83,5 +83,7 @@ namespace TilesApp.ExpandableView
                 }
             }
         }
+
+        public Xamarin.Forms.Color CellColor { get; set; }
     }
 }
