@@ -45,7 +45,7 @@ namespace TilesApp
 
             ////testing steps
             //Tile t = new Tile(); t.id = 2;
-            //MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
+            //MainPage = new NavigationPage(new StepsPage(t, 2, 9, "user", "http://oboria.net/docs/pdf/ftp/6/3.PDF",3));
 
             ////testing connection to Odoo
             //TestClass tc = new TestClass();

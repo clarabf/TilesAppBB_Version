@@ -8,8 +8,8 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
-            <AbsoluteLayout  Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                <StackLayout  AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
+            <AbsoluteLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                <StackLayout AbsoluteLayout.LayoutBounds="0, 0, 1, 1" AbsoluteLayout.LayoutFlags="All">
                     <Grid Padding="10,10,10,10" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" x:Name="GridStep">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0.8*" />

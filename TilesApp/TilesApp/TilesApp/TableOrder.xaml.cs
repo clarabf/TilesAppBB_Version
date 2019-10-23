@@ -31,5 +31,20 @@ namespace TilesApp
             Tile t = new Tile(); t.id = 2;
             await Navigation.PushModalAsync(new StepsPage(t, 2, 9, "user", "http://oboria.net/docs/pdf/ftp/2/3.PDF",3));
         }
+
+        private void Logout_Pressed(object sender, EventArgs args)
+        {
+            //LOGOUTView.IsVisible = true;
+        }
+
+        private void Logout_Cancel(object sender, EventArgs args)
+        {
+            //LOGOUTView.IsVisible = false;
+        }
+
+        private async void Logout_Accept(object sender, EventArgs args)
+        {
+            await Navigation.PopModalAsync(true);
+        }
     }
 }

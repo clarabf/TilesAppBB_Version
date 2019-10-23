@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using TilesApp.Models;
 using Xamarin.Forms;
+using System.Linq;
 
 namespace TilesApp
 {
@@ -41,9 +42,9 @@ namespace TilesApp
 
             for (int i = 0; i < m_steps; i++)
             {
-
                 Style s;
                 if (i == (s_order - 1)) s = styles.selectedStyle;
+                else if (i < (s_order - 1)) s = styles.alreadyDoneStyle;
                 else s = styles.unselectedStyle;
 
                 var button = new Button()
@@ -54,7 +55,6 @@ namespace TilesApp
                 };
 
                 button.Clicked += Handle_Clicked;
-
                 stepBar.Children.Add(button);
 
                 if (i < m_steps - 1)
@@ -77,7 +77,6 @@ namespace TilesApp
                 pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
             });
             NavigationPage.SetHasNavigationBar(this, false);
- 
         }
 
         private void Handle_Clicked(object sender, EventArgs e)
@@ -90,9 +89,16 @@ namespace TilesApp
             t.tile_type = 3;
 
             b.Style = styles.selectedStyle;
-            string next_step_url = "http://oboria.net/docs/pdf/ftp/3/" + b.Text + ".PDF";
+            string next_step_url = "http://oboria.net/docs/pdf/ftp/6/" + b.Text + ".PDF";
             skiplabel.Text = "Step " + b.Text + "/" + max_steps;
             pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
+
+            var buttons = stepBar.Children.Where(x => x is Button).ToList();
+            foreach (Button bu in buttons) {
+                if (int.Parse(bu.ClassId) < int.Parse(b.ClassId)) bu.Style = styles.alreadyDoneStyle;
+                else if (int.Parse(bu.ClassId) > int.Parse(b.ClassId)) bu.Style = styles.unselectedStyle;
+                bu.CornerRadius = 40;
+            }
         }
 
         private async void PausePressed( object sender, EventArgs args)

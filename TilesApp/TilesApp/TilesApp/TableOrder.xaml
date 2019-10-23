@@ -286,7 +286,7 @@
                         BackgroundColor="Red"
                         TextColor="White"
                         VerticalOptions="Center"
-                        Clicked="GoToStep"
+                        Clicked="Logout_Pressed"
                         Grid.Row="1"
                         Grid.Column="1"/>
             </Grid>
