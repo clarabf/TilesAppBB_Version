@@ -34,12 +34,12 @@ namespace TilesApp
 
         private void Logout_Pressed(object sender, EventArgs args)
         {
-            //LOGOUTView.IsVisible = true;
+            LOGOUTView.IsVisible = true;
         }
 
         private void Logout_Cancel(object sender, EventArgs args)
         {
-            //LOGOUTView.IsVisible = false;
+            LOGOUTView.IsVisible = false;
         }
 
         private async void Logout_Accept(object sender, EventArgs args)
