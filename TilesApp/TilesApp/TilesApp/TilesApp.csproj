@@ -56,6 +56,9 @@
     <Compile Update="ScanQR.xaml.cs">
       <DependentUpon>ScanQR.xaml</DependentUpon>
     </Compile>
+    <Compile Update="TableOrder.xaml.cs">
+      <DependentUpon>TableOrder.xaml</DependentUpon>
+    </Compile>
     <Compile Update="V1\TestLastStep.xaml.cs">
       <DependentUpon>TestLastStep.xaml</DependentUpon>
     </Compile>

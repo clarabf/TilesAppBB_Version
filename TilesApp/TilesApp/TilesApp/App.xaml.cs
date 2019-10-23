@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using TilesApp.ExpandableView;
 using TilesApp.Models;
-using TilesApp.V1;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XmlRpc;
@@ -42,10 +41,10 @@ namespace TilesApp
             //MainPage = new NavigationPage(new Login());
 
             ////testing table
-            MainPage = new NavigationPage(new TestTableOrder("Bacall, L."));
+            MainPage = new NavigationPage(new TableOrder("Bacall, L."));
 
             ////testing steps
-            Tile t = new Tile(); t.id = 2;
+            //Tile t = new Tile(); t.id = 2;
             //MainPage = new NavigationPage(new StepsPage(t, 2, 5, "user", "http://oboria.net/docs/pdf/ftp/2/1.PDF",3));
 
             ////testing connection to Odoo

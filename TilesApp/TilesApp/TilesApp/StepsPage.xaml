@@ -39,6 +39,7 @@
                             Grid.Column="1"/>
                         <Button x:Name="nextStep"
                             Text="PAUSE ||"
+                            FontAttributes="Bold"
                             BorderRadius="10"
                             HorizontalOptions="End"
                             VerticalOptions="Center"

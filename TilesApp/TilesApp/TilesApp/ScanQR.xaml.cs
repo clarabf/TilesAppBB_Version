@@ -63,7 +63,7 @@ namespace TilesApp
                     {
                         Navigation.PopModalAsync(true);
                         //Navigation.PushModalAsync(new TestTiles(listTiles));
-                        Navigation.PushModalAsync(new TestTableOrder(qrScanned));
+                        Navigation.PushModalAsync(new TableOrder(qrScanned));
                     });
                 }
                 catch (Exception ex)
