@@ -22,7 +22,7 @@ namespace TilesApp
         {
             Tile t = new Tile();
             t.id = 2;
-            await Navigation.PushModalAsync(new ScanQR(t));
+            await Navigation.PushModalAsync(new ScanQR(t, "SCAN YOUR EMPLOYEE CARD", 1));
         }
 
         protected override void OnSizeAllocated(double width, double height)

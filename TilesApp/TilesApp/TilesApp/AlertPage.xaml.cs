@@ -54,21 +54,25 @@ namespace TilesApp
                 case "warning":
                     WARNINGView.IsVisible = false;
                     break;
+                //used
                 case "pause":
                     PAUSEView.IsVisible = false;
                     break;
                 case "completed":
                     COMPLETEDView.IsVisible = false;
                     break;
+                //used
                 case "logout":
                     LOGOUTView.IsVisible = false;
                     break;
+                //used
                 case "wrong":
                     WRONGView.IsVisible = false;
                     break;
                 case "continuation":
                     CONTINUATIONView.IsVisible = false;
                     break;
+                //used
                 case "scanned":
                     SCANNEDView.IsVisible = false;
                     break;
