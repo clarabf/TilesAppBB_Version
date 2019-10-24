@@ -51,6 +51,7 @@ namespace TilesApp
             Button b = (Button)sender;
             switch (b.ClassId)
             {
+                //used
                 case "warning":
                     WARNINGView.IsVisible = false;
                     break;

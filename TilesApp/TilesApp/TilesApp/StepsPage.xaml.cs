@@ -126,14 +126,25 @@ namespace TilesApp
             PAUSEView.IsVisible = true;
         }
 
-        private async void Pause_Interrupt(object sender, EventArgs args)
+        private void Pause_Interrupt(object sender, EventArgs args)
         {
-            await Navigation.PopModalAsync(true);
+            PAUSEView.IsVisible = false;
+            WARNINGView.IsVisible = true;
         }
 
         private void Pause_Resume(object sender, EventArgs args)
         {
             PAUSEView.IsVisible = false;
+        }
+
+        private async void Warning_Confirm(object sender, EventArgs args)
+        {
+            await Navigation.PopModalAsync(true);
+        }
+
+        private void Warning_Cancel(object sender, EventArgs args)
+        {
+            WARNINGView.IsVisible = false;
         }
 
         private void Retry(object sender, EventArgs args)
