@@ -37,7 +37,7 @@ namespace XmlRpc {
         public static readonly string DefaultContentType = "text/xml; charset=UTF-8";
         public static readonly string DefaultRequestMethod = "POST";
         public static readonly int DefaultTimeout = 5000;
-        public static readonly int DefaultAttempts = 1;
+        public static readonly int DefaultAttempts = 5;
         public static readonly int DefaultAttemptsTimeout = 500;
         public static readonly int DefaultConnectionLimit = 2;
         public static readonly ICredentials DefaultCredentials = CredentialCache.DefaultCredentials;
