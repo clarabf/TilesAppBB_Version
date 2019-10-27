@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TilesApp"
              x:Class="TilesApp.V1.TestTableOrder">
     <ContentPage.Resources>
         <StyleSheet  Source="../Assets/style.css"/>
@@ -143,18 +144,16 @@
                                        ProgressColor="Red"
                                        Grid.RowSpan="2"
                                        Grid.Column="2"/>
-                                    <Button x:Name="SHOWINFO"
-                                       Text="SHOW INFO"
-                                       FontSize="9"
-                                       BorderRadius="5"
-                                       HorizontalOptions="StartAndExpand"
-                                       VerticalOptions="Center"
-                                       BackgroundColor="gray"
-                                       TextColor="White"
-                                       HeightRequest="20"
-                                       Grid.Row="0"
-                                       Padding="0"
-                                       Grid.Column="3"/>
+                                    <local:FontAwesomeIcon 
+                                        Text="{x:Static local:Icon.FAChevronDown}"
+                                        FontSize="20"
+                                        Grid.ColumnSpan="2"
+                                        FontAttributes="Bold"
+                                        VerticalOptions="CenterAndExpand"
+                                        HorizontalOptions="Center"
+                                        Grid.Row="0"
+                                        Grid.Column="3"
+                                        TextColor="Red"/>
                                     <Button x:Name="CONTINUE"
                                        Text="CONTINUE"
                                        FontSize="9"

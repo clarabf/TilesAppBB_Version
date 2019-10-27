@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"  
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  
+             xmlns:local="clr-namespace:TilesApp.ExpandableView"  
+             x:Class="TilesApp.ExpandableView.MainPage1"  
+             Title ="Expendable ListView"  
+             BackgroundColor="Bisque">
+    <ContentPage.BindingContext>
+        <local:MainListView/>
+    </ContentPage.BindingContext>
+
+    <ListView Margin="0,80"  
+              ItemTapped="ListViewItem_Tabbed"  
+              ItemsSource="{Binding Products}"  
+              HasUnevenRows="True"  
+              BackgroundColor="Black">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <StackLayout Padding="20">
+                        <Label Text="{Binding Title}"  
+                               FontSize="25"  
+                               TextColor="Azure"/>
+                        <StackLayout IsVisible="{Binding Isvisible}"  
+                                     Orientation="Horizontal"  
+                                     Margin="0,0,80,0">
+                            <Button Text="Place Order"  
+                                    WidthRequest="110"  
+                                    FontSize="15"  
+                                    BackgroundColor="Chocolate"  
+                                    TextColor="White"/>
+                            <Button Text="Details"  
+                                    WidthRequest="110"  
+                                    FontSize="15"  
+                                    BackgroundColor="CornflowerBlue"  
+                                    TextColor="DarkBlue"/>
+                            <Button Text="Edit"  
+                                    WidthRequest="110"  
+                                    FontSize="15"  
+                                    BackgroundColor="LightCoral"  
+                                    TextColor="Maroon"/>
+                        </StackLayout>
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</ContentPage> 

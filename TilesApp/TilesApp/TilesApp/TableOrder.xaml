@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TilesApp"
              x:Class="TilesApp.TableOrder">
     <ContentPage.Resources>
         <StyleSheet  Source="../Assets/style.css"/>
@@ -123,8 +124,8 @@
                                         <StackLayout Padding="0" BackgroundColor="Gray">
                                             <Grid RowSpacing="4">
                                                 <Grid.RowDefinitions>
-                                                    <RowDefinition Height="0.8*" />
                                                     <RowDefinition Height="1*" />
+                                                    <RowDefinition Height="0.8*" />
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="1*" />
@@ -153,19 +154,7 @@
                                                     VerticalOptions="CenterAndExpand"
                                                     ProgressColor="Red"
                                                     Grid.RowSpan="2"
-                                                    Grid.Column="2"/>
-                                                <Button x:Name="SHOWINFO"
-                                                    Text="SHOW INFO"
-                                                    FontSize="9"
-                                                    BorderRadius="5"
-                                                    HorizontalOptions="EndAndExpand"
-                                                    VerticalOptions="Center"
-                                                    BackgroundColor="gray"
-                                                    TextColor="White"
-                                                    HeightRequest="20"
-                                                    Grid.Row="0"
-                                                    Padding="0"
-                                                    Grid.Column="3"/>
+                                                    Grid.Column="2"/>                                               
                                                 <Button x:Name="CONTINUE"
                                                     Text="CONTINUE"
                                                     FontSize="9"
@@ -177,8 +166,17 @@
                                                     TextColor="White"
                                                     VerticalOptions="Center"
                                                     Clicked="GoToStep"
-                                                    Grid.Row="1"
+                                                    Grid.Row="0"
                                                     Grid.Column="3"/>
+                                                <local:FontAwesomeIcon 
+                                                    Text="{x:Static local:Icon.FAChevronDown}"
+                                                    FontSize="15"
+                                                    FontAttributes="Bold"
+                                                    VerticalOptions="Start"
+                                                    HorizontalOptions="Center"
+                                                    Grid.Row="1"
+                                                    Grid.Column="3"
+                                                    TextColor="Red"/>
                                             </Grid>
                                             <Grid RowSpacing="0" IsVisible="{Binding IsVisible}" BackgroundColor="#fbfbfb">
                                                 <Grid.RowDefinitions>
