@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using TilesApp.Models;
 using TilesApp.ExpandableView;
+using static ExpendableListView.MainListView;
+using ExpendableListView;
 
 namespace TilesApp
 {
@@ -23,7 +25,12 @@ namespace TilesApp
             InitializeComponent();
             user.Text = user_name;
             NavigationPage.SetHasNavigationBar(this, false);
-            BindingContext = new ListViewPageModel();
+        }
+        private void ListViewItem_Tabbed(object sender, ItemTappedEventArgs e)
+        {
+            var unit  = e.Item as Unit;
+            var vm = BindingContext as MainListView;
+            vm?.ShoworHiddenProducts(unit);
         }
 
         private async void GoToStep(object sender, EventArgs args)

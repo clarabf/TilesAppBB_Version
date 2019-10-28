@@ -2,10 +2,14 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:TilesApp"
+             xmlns:local1="clr-namespace:ExpendableListView"
              x:Class="TilesApp.TableOrder">
     <ContentPage.Resources>
         <StyleSheet  Source="../Assets/style.css"/>
     </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <local1:MainListView/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <StackLayout Orientation="Horizontal" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" >
             <AbsoluteLayout Padding="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -113,16 +117,14 @@
                         </Grid>
                         <!-- table content -->
                         <ListView Grid.Row="3" Grid.ColumnSpan="3" 
-                            VerticalOptions="Start"
-                            ItemsSource="{Binding ItemsList}"
-                            CachingStrategy="RecycleElement"
-                            HasUnevenRows="True"
-                            SelectedItem="{Binding SelectedItem}">
+                                ItemTapped="ListViewItem_Tabbed"  
+                                 ItemsSource="{Binding Units}"  
+                                  HasUnevenRows="True" >
                             <ListView.ItemTemplate>
                                 <DataTemplate>
                                     <ViewCell>
-                                        <StackLayout Padding="0" BackgroundColor="Gray">
-                                            <Grid RowSpacing="4">
+                                        <StackLayout>
+                                            <Grid RowSpacing="4"   >
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="1*" />
                                                     <RowDefinition Height="0.8*" />
@@ -131,7 +133,8 @@
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1*" />
                                                     <ColumnDefinition Width="1*" />
-                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="0.35*" />
+                                                    <ColumnDefinition Width="0.65*" />
                                                 </Grid.ColumnDefinitions>
                                                 <Label 
                                                     FontSize="14"
@@ -154,7 +157,7 @@
                                                     VerticalOptions="CenterAndExpand"
                                                     ProgressColor="Red"
                                                     Grid.RowSpan="2"
-                                                    Grid.Column="2"/>                                               
+                                                    Grid.Column="2"/>
                                                 <Button x:Name="CONTINUE"
                                                     Text="CONTINUE"
                                                     FontSize="9"
@@ -167,93 +170,105 @@
                                                     VerticalOptions="Center"
                                                     Clicked="GoToStep"
                                                     Grid.Row="0"
-                                                    Grid.Column="3"/>
-                                                <local:FontAwesomeIcon 
-                                                    Text="{x:Static local:Icon.FAChevronDown}"
+                                                    Grid.Column="3"
+                                                    Grid.ColumnSpan="2"/>
+                                                <Label
+                                                    Text="{Binding FontAwsomeName}"
                                                     FontSize="15"
                                                     FontAttributes="Bold"
-                                                    VerticalOptions="Start"
-                                                    HorizontalOptions="Center"
+                                                    VerticalOptions="CenterAndExpand"
+                                                    HorizontalOptions="CenterAndExpand"
                                                     Grid.Row="1"
-                                                    Grid.Column="3"
-                                                    TextColor="Red"/>
+                                                    Grid.Column="4"
+                                                    TextColor="Red">
+                                                    <Label.FontFamily>
+                                                        <OnPlatform x:TypeArguments="x:String"
+                                                                    Android="fa-solid-900.ttf#Font Awesome 5 Free Bold" iOS="Font Awesome 5 Free"  />
+                                                    </Label.FontFamily>
+                                                </Label>
+
                                             </Grid>
-                                            <Grid RowSpacing="0" IsVisible="{Binding IsVisible}" BackgroundColor="#fbfbfb">
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="0.8*" />
-                                                    <RowDefinition Height="1*" />
-                                                    <RowDefinition Height="1.1*" />
-                                                    <RowDefinition Height="1*" />
-                                                    <RowDefinition Height="1*" />
-                                                </Grid.RowDefinitions>
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="2*" />
-                                                    <ColumnDefinition Width="2*" />
-                                                </Grid.ColumnDefinitions>
-                                                <Label  
+                                            <StackLayout IsVisible="{Binding IsVisible}"  
+                                     Orientation="Horizontal"  
+                                     >
+                                                <Grid RowSpacing="0" IsVisible="{Binding IsVisible}" BackgroundColor="#fbfbfb">
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="0.8*" />
+                                                        <RowDefinition Height="1*" />
+                                                        <RowDefinition Height="1.1*" />
+                                                        <RowDefinition Height="1*" />
+                                                        <RowDefinition Height="1*" />
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="2*" />
+                                                        <ColumnDefinition Width="2*" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label  
                                                     FontSize="12"
                                                     Grid.Row="0"
                                                     Grid.ColumnSpan="4"
                                                     HorizontalOptions="CenterAndExpand"
                                                     VerticalOptions="End"
                                                     Text="WORK ORDER ADDITIONAL DETAILS"/>
-                                                <Label 
+                                                    <Label 
                                                     FontSize="12"
                                                     Grid.Row="1"
                                                     Grid.Column="0"
                                                     HorizontalOptions="StartAndExpand"
                                                     VerticalOptions="CenterAndExpand"
                                                     Text="SACO Product Ref. Nr.:"/>
-                                                <Label 
+                                                    <Label 
                                                    FontSize="12"
                                                    Grid.Row="2"
                                                    Grid.Column="0"
                                                    HorizontalOptions="StartAndExpand"
                                                    VerticalOptions="CenterAndExpand"
                                                    Text="SACO Product Sales Ref.:"/>
-                                                <Label 
+                                                    <Label 
                                                     FontSize="12"
                                                     Grid.Row="3"
                                                     Grid.Column="0"
                                                     HorizontalOptions="StartAndExpand"
                                                     VerticalOptions="CenterAndExpand"
                                                     Text="Qty. to Manufacture:"/>
-                                                <Label 
+                                                    <Label 
                                                     FontSize="12"
                                                     Grid.Row="4"
                                                     Grid.Column="0"
                                                     HorizontalOptions="StartAndExpand"
                                                     VerticalOptions="CenterAndExpand"
                                                     Text="Steps:"/>
-                                                <Label FontAttributes="Bold"
+                                                    <Label FontAttributes="Bold"
                                                     FontSize="12"
                                                     Grid.Row="1"
                                                     Grid.Column="1"
                                                     HorizontalOptions="StartAndExpand"
                                                     VerticalOptions="CenterAndExpand"
                                                     Text="{Binding Ref}"/>
-                                                <Label 
+                                                    <Label 
                                                     FontSize="12"
                                                     Grid.Row="2"
                                                     Grid.Column="1"
                                                     HorizontalOptions="StartAndExpand"
                                                     VerticalOptions="CenterAndExpand"
                                                     Text="{Binding SalesRef}"/>
-                                                <Label FontAttributes="Bold"
+                                                    <Label FontAttributes="Bold"
                                                     FontSize="12"
                                                     Grid.Row="3"
                                                     Grid.Column="1"
                                                     HorizontalOptions="StartAndExpand"
                                                     VerticalOptions="CenterAndExpand"
                                                     Text="{Binding Manufacture}"/>
-                                                <Label FontAttributes="Bold"
+                                                    <Label FontAttributes="Bold"
                                                     FontSize="12"
                                                     Grid.Row="4"
                                                     Grid.Column="1"
                                                     HorizontalOptions="StartAndExpand"
                                                     VerticalOptions="CenterAndExpand"
                                                     Text="{Binding Steps}"/>
-                                            </Grid>
+                                                </Grid>
+
+                                            </StackLayout>
                                         </StackLayout>
                                     </ViewCell>
                                 </DataTemplate>

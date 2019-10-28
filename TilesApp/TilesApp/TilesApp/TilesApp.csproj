@@ -44,9 +44,6 @@
     <Compile Update="ExpandableView\MainListView.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="ExpandableView\MainPage1.xaml.cs">
-      <DependentUpon>MainPage1.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -97,9 +94,6 @@
     </EmbeddedResource>
     <EmbeddedResource Update="Assets\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ExpandableView\MainPage1.xaml">
-      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="HWV\HybridWebViewPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
