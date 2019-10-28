@@ -36,7 +36,7 @@ namespace TilesApp
         private async void GoToStep(object sender, EventArgs args)
         {
             Tile t = new Tile(); t.id = 2;
-            await Navigation.PushModalAsync(new StepsPage(t, 2, 9, "user", "http://oboria.net/docs/pdf/ftp/2/3.PDF",3));
+            await Navigation.PushModalAsync(new StepsPage(t, 2, 9, "user", "http://oboria.net/docs/pdf/ftp/2/2.PDF",2));
         }
 
         private void Logout_Pressed(object sender, EventArgs args)

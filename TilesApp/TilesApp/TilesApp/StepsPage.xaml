@@ -123,9 +123,10 @@
                                             </Label.FormattedText>
                                         </Label>
                                         <Button x:Name="INTERRUPT"
-                                            Text="INTERRUPT W.O. / &#x0a; EXIT TO MAIN MENU"
+                                            Text="INTERRUPT W.O./EXIT TO MAIN MENU"
                                             WidthRequest="200"
-                                            FontSize="Micro"                                    
+                                            FontSize="Micro"
+                                            FontAttributes="Bold"
                                             HeightRequest="80"
                                             BorderRadius="5"
                                             HorizontalOptions="CenterAndExpand"
@@ -137,7 +138,8 @@
                                             Clicked="Pause_Interrupt"/>
                                         <Button x:Name="RESUME"
                                             Text="RESUME"
-                                            FontSize="Micro"                                   
+                                            FontSize="Micro"  
+                                            FontAttributes="Bold"
                                             BorderRadius="5"
                                             HorizontalOptions="CenterAndExpand"
                                             VerticalOptions="CenterAndExpand"
