@@ -20,7 +20,15 @@ namespace TilesApp
         {
             current_tile = t;
             scanType = type;
+
+            var options = new ZXing.Mobile.MobileBarcodeScanningOptions();
+            options.TryInverted = true;
+            options.TryHarder = true;
+            options.AutoRotate = true;
+            options.PureBarcode = false;
+
             InitializeComponent();
+            zxing.Options = options;
             overlay.TopText = Content;
             NavigationPage.SetHasNavigationBar(this, false);
         }
