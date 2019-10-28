@@ -43,8 +43,8 @@ namespace TilesApp
             for (int i = 0; i < m_steps; i++)
             {
                 Style s;
-                if (i == (s_order - 1)) s = styles.selectedStyle;
-                else if (i < (s_order - 1)) s = styles.alreadyDoneStyle;
+                if (i == (current_step - 1)) s = styles.selectedStyle;
+                else if (i < (current_step - 1)) s = styles.alreadyDoneStyle;
                 else s = styles.unselectedStyle;
 
                 var button = new Button()
@@ -71,11 +71,22 @@ namespace TilesApp
                 }
             }
 
-            skiplabel.Text = "Step " + s_order + "/" + max_steps;
+            skiplabel.Text = "Step " + current_step + "/" + max_steps;
             Device.BeginInvokeOnMainThread(() =>
             {
                 pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + url };
             });
+
+            //// TESTS for now
+            if (worker=="wrong")
+            {
+                WRONGView.IsVisible = true;
+            }
+            else
+            {
+                if (current_step==4) SCANNEDView.IsVisible = true;
+            }
+
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
@@ -83,124 +94,74 @@ namespace TilesApp
         {
             Button b = (Button)sender;
 
-            ////////// TEST
-            Tile t = new Tile();
-            t.id = 2;
-            t.tile_type = 3;
+            if (b.Text=="3")
+            {
+                Tile t = new Tile();
+                t.id = 2;
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new ScanQR(t,"STEP 3/21 SCAN STICKER QR", 2));
+                });
+            }
+            else
+            {
+                b.Style = styles.selectedStyle;
+                string next_step_url = "http://oboria.net/docs/pdf/ftp/6/" + b.Text + ".PDF";
+                skiplabel.Text = "Step " + b.Text + "/" + max_steps;
+                pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
 
-            b.Style = styles.selectedStyle;
-            string next_step_url = "http://oboria.net/docs/pdf/ftp/6/" + b.Text + ".PDF";
-            skiplabel.Text = "Step " + b.Text + "/" + max_steps;
-            pdfViewer.Source = new UrlWebViewSource() { Url = "http://drive.google.com/viewerng/viewer?embedded=true&url=" + next_step_url };
-
-            var buttons = stepBar.Children.Where(x => x is Button).ToList();
-            foreach (Button bu in buttons) {
-                if (int.Parse(bu.ClassId) < int.Parse(b.ClassId)) bu.Style = styles.alreadyDoneStyle;
-                else if (int.Parse(bu.ClassId) > int.Parse(b.ClassId)) bu.Style = styles.unselectedStyle;
-                bu.CornerRadius = 40;
+                var buttons = stepBar.Children.Where(x => x is Button).ToList();
+                foreach (Button bu in buttons)
+                {
+                    if (int.Parse(bu.ClassId) < int.Parse(b.ClassId)) bu.Style = styles.alreadyDoneStyle;
+                    else if (int.Parse(bu.ClassId) > int.Parse(b.ClassId)) bu.Style = styles.unselectedStyle;
+                    bu.CornerRadius = 40;
+                }
             }
         }
 
-        private async void PausePressed( object sender, EventArgs args)
+        private void PausePressed( object sender, EventArgs args)
         {
-            Button b = (Button)sender;
-            int status;
-
-            if (b.Text == "SKIP STEP") status = 2;
-            else status = 3;
-            Console.WriteLine(status);
-
-            HttpClient client = new HttpClient();
-
-            try
-            {
-                // Update task information
-                //var dict = new Dictionary<string, object>();
-                //dict.Add("task_id", task_id);
-                //dict.Add("worker", worker);
-                //dict.Add("current_status", status);
-                //var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
-                //var response = await client.PutAsync("https://blackboxerpapi.azurewebsites.net/api/SetTaskStatus/", content);
-                //var successS = await response.Content.ReadAsStringAsync();
-                //bool success = bool.Parse(successS);
-
-                //response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetNextTask?tile_id=" + tile.id);
-                //var taskS = await response.Content.ReadAsStringAsync();
-                //TileTask new_task = JsonConvert.DeserializeObject<TileTask>(taskS);
-
-                //response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetStep?step_id=" + new_task.step_id);
-                //var stepS = await response.Content.ReadAsStringAsync();
-                //Step next_step = JsonConvert.DeserializeObject<Step>(stepS);
-
-                //int next_step_order = next_step.step_order;
-                //string next_step_url = next_step.url;
-
-                //////// TEST
-                int next_step_order = 1;
-
-                if (next_step_order == max_steps)
-                {
-                    var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetSkippedTasks?tile_id=" + tile.id);
-                    var skippedS = await response.Content.ReadAsStringAsync();
-                    List<TileTask> listSkipped = JsonConvert.DeserializeObject<List<TileTask>>(skippedS);
-                    //Device.BeginInvokeOnMainThread(() =>
-                    //{
-                    //    Navigation.PopModalAsync(true);
-                    //    Navigation.PushModalAsync(new TestLastStep(listSkipped, tile, new_task.id, max_steps, worker, next_step_url, next_step_order));
-                    //});
-                }
-                else
-                {
-                    //Device.BeginInvokeOnMainThread(() =>
-                    //{
-                    //    Navigation.PopModalAsync(true);
-                    //    Navigation.PushModalAsync(new StepsPage(tile, new_task.id, max_steps, worker, next_step_url, next_step_order));
-                    //    Navigation.PushModalAsync(new AlertPage());
-                    //});
-                    PAUSEPopup.IsVisible = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            PAUSEView.IsVisible = true;
         }
 
-        private async void Pause_Interrupt(object sender, EventArgs args)
+        private void Pause_Interrupt(object sender, EventArgs args)
         {
-            await Navigation.PopModalAsync(true);
+            PAUSEView.IsVisible = false;
+            WARNINGView.IsVisible = true;
         }
 
         private void Pause_Resume(object sender, EventArgs args)
         {
-            PAUSEPopup.IsVisible = false;
+            PAUSEView.IsVisible = false;
         }
 
-        //protected override void OnSizeAllocated(double width, double height)
-        //{
-        //    base.OnSizeAllocated(width, height);
-        //    if (width != this.width || height != this.height)
-        //    {
-        //        this.width = width;
-        //        this.height = height;
-        //        if (width > height)
-        //        {
-        //            GridStep.RowDefinitions.Clear();
-        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1.2, GridUnitType.Star) });
-        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
-        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1.2, GridUnitType.Star) });
-        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(7, GridUnitType.Star) });
-        //        }
-        //        else
-        //        {
-        //            GridStep.RowDefinitions.Clear();
-        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.05, GridUnitType.Star) });
-        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(0.6, GridUnitType.Star) });
-        //            GridStep.RowDefinitions.Add(new RowDefinition { Height = new GridLength(7, GridUnitType.Star) });
+        private async void Warning_Confirm(object sender, EventArgs args)
+        {
+            await Navigation.PopModalAsync(true);
+        }
 
-        //        }
-        //    }
-        //}
+        private void Warning_Cancel(object sender, EventArgs args)
+        {
+            WARNINGView.IsVisible = false;
+        }
+
+        private void Retry(object sender, EventArgs args)
+        {
+            Tile t = new Tile();
+            t.id = 2;
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Navigation.PopModalAsync(true);
+                Navigation.PushModalAsync(new ScanQR(t, "STEP 3/21 SCAN STICKER QR", 2));
+            });
+        }
+
+        private void Hide(object sender, EventArgs args)
+        {
+            SCANNEDView.IsVisible = false;
+        }
+
     }
 }

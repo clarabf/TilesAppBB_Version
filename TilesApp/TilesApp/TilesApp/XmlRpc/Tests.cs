@@ -204,39 +204,22 @@ namespace XmlRpc {
             //requestSearch.AddParams(db, responseLogin.GetInt(), pass, "res.partner", "search_read",
             //    XmlRpcParameter.AsArray(
             //        XmlRpcParameter.AsArray(
-            //            // XmlRpcParameter.AsArray("is_company", "=", true), XmlRpcRequest.AsArray("customer", "=", true)
             //            XmlRpcParameter.AsArray("name", "ilike", condition)
             //        )
             //    ),
             //    XmlRpcParameter.AsStruct(
             //        XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "email"))
-            //    // ,XmlRpcParameter.AsMember("limit", 2)
-            //    )
-            //);
-            //XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-            //requestSearch.AddParams(db, responseLogin.GetInt(), pass, "mrp.workcenter", "search_read",
-            //    XmlRpcParameter.AsArray(
-            //        XmlRpcParameter.AsArray(
-            //            // XmlRpcParameter.AsArray("is_company", "=", true), XmlRpcRequest.AsArray("customer", "=", true)
-            //            XmlRpcParameter.AsArray("name", "ilike", "t")
-            //        )
-            //    ),
-            //    XmlRpcParameter.AsStruct(
-            //        XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "code"))
-            //    // ,XmlRpcParameter.AsMember("limit", 2)
             //    )
             //);
             XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
             requestSearch.AddParams(db, responseLogin.GetInt(), pass, "product.product", "search_read",
                 XmlRpcParameter.AsArray(
                     XmlRpcParameter.AsArray(
-                        //XmlRpcParameter.AsArray("id", "ilike", condition)
-                        XmlRpcParameter.AsArray("id", ">", 0)
+                        XmlRpcParameter.AsArray("id", "in", XmlRpcParameter.AsArray(4, 51))
                     )
                 ),
                 XmlRpcParameter.AsStruct(
-                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "product_template_attribute_value_ids", "bom_count", "name", "purchase_ok"))
-                // ,XmlRpcParameter.AsMember("limit", 2)
+                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "sale_ok", "purchase_ok", "can_be_expensed", "type"))
                 )
             );
 

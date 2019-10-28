@@ -38,8 +38,8 @@ namespace TilesApp
             //MainPage = new NavigationPage(new AlertPage());
 
             ////testing login
-            //MainPage = new NavigationPage(new Login());
-            MainPage = new NavigationPage(new MainPage1());
+            MainPage = new NavigationPage(new Login());
+
             ////testing table
             //MainPage = new NavigationPage(new TableOrder("Bacall, L."));
 

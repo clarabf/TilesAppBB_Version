@@ -14,11 +14,14 @@ namespace TilesApp
     {
 
         Tile current_tile;
+        int scanType;
 
-        public ScanQR(Tile t)
+        public ScanQR(Tile t, string Content, int type)
         {
             current_tile = t;
+            scanType = type;
             InitializeComponent();
+            overlay.TopText = Content;
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
@@ -38,47 +41,38 @@ namespace TilesApp
 
             HttpClient client = new HttpClient();
             string success = "true";
-            try
-            {
-                var dict = new Dictionary<string, object>();
-                dict.Add("id", current_tile.id);
-                dict.Add("frame_code", qrScanned);
-                var content = new StringContent(JsonConvert.SerializeObject(dict), Encoding.UTF8, "application/json");
-                //var response = await client.PutAsync("https://blackboxerpapi.azurewebsites.net/api/SetFrameCode/", content);
-                //success = await response.Content.ReadAsStringAsync();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
 
-            if (bool.Parse(success) == true)
-            {
-                try
-                {
-                    //var response = await client.GetAsync("https://blackboxerpapi.azurewebsites.net/api/GetTilesOfWorkOrder?work_order_id=" + current_tile.work_order_id);
-                    //var tile_info = await response.Content.ReadAsStringAsync();
-                    //List<Tile> listTiles = JsonConvert.DeserializeObject<List<Tile>>(tile_info);
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        Navigation.PopModalAsync(true);
-                        //Navigation.PushModalAsync(new TestTiles(listTiles));
-                        Navigation.PushModalAsync(new TableOrder(qrScanned));
-                    });
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
-            }
-            else
+            // Card employee
+            if (scanType==1)
             {
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);
-                    DisplayAlert("Error", "Problem updating frame_code...", "Close");
+                    Navigation.PushModalAsync(new TableOrder(qrScanned));
                 });
             }
+            else
+            {
+                if (qrScanned=="WRONG")
+                {
+                    Tile t = new Tile(); t.id = 2;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new StepsPage(t, 2, 9, "wrong", "http://oboria.net/docs/pdf/ftp/6/WRONG.PDF", 4));
+                    });
+                }
+                else
+                {
+                    Tile t = new Tile(); t.id = 2;
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new StepsPage(t, 2, 9, "user", "http://oboria.net/docs/pdf/ftp/6/4.PDF", 4));
+                    });
+                }
+            }
+
         }
     }
 }
