@@ -84,7 +84,8 @@ namespace TilesApp
             }
             else
             {
-                if (current_step==4) SCANNEDView.IsVisible = true;
+                if (current_step == 4) SCANNEDView.IsVisible = true;
+                else if (current_step > 4 && worker=="show") CONTINUATIONView.IsVisible = true;
             }
 
             NavigationPage.SetHasNavigationBar(this, false);
@@ -97,12 +98,16 @@ namespace TilesApp
             if (b.Text=="3")
             {
                 Tile t = new Tile();
-                t.id = 2;
+                t.id = 4;
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);
                     Navigation.PushModalAsync(new ScanQR(t,"STEP 3/21 SCAN STICKER QR", 2));
                 });
+            }
+            else if (b.Text == max_steps.ToString())
+            {
+                COMPLETEDView.IsVisible = true;
             }
             else
             {
@@ -147,6 +152,16 @@ namespace TilesApp
             WARNINGView.IsVisible = false;
         }
 
+        private async void Complete_Confirm(object sender, EventArgs args)
+        {
+            await Navigation.PopModalAsync(true);
+        }
+
+        private void Complete_Cancel(object sender, EventArgs args)
+        {
+            COMPLETEDView.IsVisible = false;
+        }
+
         private void Retry(object sender, EventArgs args)
         {
             Tile t = new Tile();
@@ -158,10 +173,20 @@ namespace TilesApp
             });
         }
 
-        private void Hide(object sender, EventArgs args)
+        private void Scanned_Confirm(object sender, EventArgs args)
         {
             SCANNEDView.IsVisible = false;
         }
 
+        private void Continuation_Confirm(object sender, EventArgs args)
+        {
+            Tile t = new Tile();
+            t.id = current_step+1;
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Navigation.PopModalAsync(true);
+                Navigation.PushModalAsync(new ScanQR(t, "RESTART OF WORK\nSCAN STICKER QR", 2));
+            });
+        }
     }
 }

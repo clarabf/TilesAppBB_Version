@@ -59,6 +59,7 @@ namespace TilesApp
                 case "pause":
                     PAUSEView.IsVisible = false;
                     break;
+                //used
                 case "completed":
                     COMPLETEDView.IsVisible = false;
                     break;
@@ -70,6 +71,7 @@ namespace TilesApp
                 case "wrong":
                     WRONGView.IsVisible = false;
                     break;
+                //used
                 case "continuation":
                     CONTINUATIONView.IsVisible = false;
                     break;

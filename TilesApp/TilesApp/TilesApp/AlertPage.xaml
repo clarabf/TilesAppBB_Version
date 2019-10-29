@@ -237,8 +237,7 @@
                                         VerticalOptions="Center"
                                         Grid.Row="0"
                                         Grid.Column="0"
-                                        Grid.ColumnSpan="2"
-                                      >
+                                        Grid.ColumnSpan="2">
                                         <Label.FormattedText>
                                             <FormattedString>
                                                 <FormattedString.Spans>

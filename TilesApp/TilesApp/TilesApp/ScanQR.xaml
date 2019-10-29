@@ -6,32 +6,15 @@
     <ContentPage.Content>
         <Grid>
             <Grid ColumnSpacing="0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="2*" />
-                    <ColumnDefinition Width="1*" />
-                </Grid.ColumnDefinitions>
-                <BoxView 
-                    BackgroundColor="#3D3D3D"
-                    VerticalOptions="FillAndExpand"
-                    HorizontalOptions="FillAndExpand"
-                    Grid.Column="0"/>
                 <zxing:ZXingScannerView x:Name="zxing" 
                     HorizontalOptions="Center" 
-                    Grid.Column="1"
                     VerticalOptions="CenterAndExpand" 
                     IsScanning = "true"
                     OnScanResult="ZXingScannerView_OnOnScanResult" />
                 <zxing:ZXingDefaultOverlay x:Name="overlay"
                     TopText="SCAN YOUR EMPLOYEE CARD" 
-                    Grid.Column="1"
                     BottomText="" 
                     ShowFlashButton="False"/>
-                <BoxView 
-                    BackgroundColor="#3D3D3D"
-                    VerticalOptions="FillAndExpand"
-                    HorizontalOptions="FillAndExpand"
-                    Grid.Column="2"/>
             </Grid>
         </Grid>
     </ContentPage.Content>

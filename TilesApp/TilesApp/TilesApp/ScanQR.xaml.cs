@@ -63,24 +63,24 @@ namespace TilesApp
             {
                 if (qrScanned=="WRONG")
                 {
-                    Tile t = new Tile(); t.id = 2;
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new StepsPage(t, 2, 9, "wrong", "http://oboria.net/docs/pdf/ftp/6/WRONG.PDF", 4));
+                        Navigation.PushModalAsync(new StepsPage(current_tile, 2, 9, "wrong", "http://oboria.net/docs/pdf/ftp/6/WRONG.PDF", 4));
                     });
                 }
                 else
                 {
-                    Tile t = new Tile(); t.id = 2;
+                    string text;
+                    if (overlay.TopText.Contains("Restart")) text = "show";
+                    else text = "noShow";
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new StepsPage(t, 2, 9, "user", "http://oboria.net/docs/pdf/ftp/6/4.PDF", 4));
+                        Navigation.PushModalAsync(new StepsPage(current_tile, 2, 9, text, "http://oboria.net/docs/pdf/ftp/6/" + current_tile.id +".PDF", current_tile.id));
                     });
                 }
             }
-
         }
     }
 }
