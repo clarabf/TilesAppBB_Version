@@ -102,7 +102,7 @@ namespace TilesApp
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new ScanQR(t,"STEP 3/21 SCAN STICKER QR", 2));
+                    Navigation.PushModalAsync(new ScanQR(t,"STEP 3/21\nSCAN STICKER QR", 2));
                 });
             }
             else if (b.Text == max_steps.ToString())
@@ -169,7 +169,7 @@ namespace TilesApp
             Device.BeginInvokeOnMainThread(() =>
             {
                 Navigation.PopModalAsync(true);
-                Navigation.PushModalAsync(new ScanQR(t, "STEP 3/21 SCAN STICKER QR", 2));
+                Navigation.PushModalAsync(new ScanQR(t, "STEP 3/21\nSCAN STICKER QR", 2));
             });
         }
 
@@ -181,7 +181,7 @@ namespace TilesApp
         private void Continuation_Confirm(object sender, EventArgs args)
         {
             Tile t = new Tile();
-            t.id = current_step+1;
+            t.id = current_step;
             Device.BeginInvokeOnMainThread(() =>
             {
                 Navigation.PopModalAsync(true);

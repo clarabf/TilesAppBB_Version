@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using TilesApp.ExpandableView;
 using TilesApp.Models;
+using TilesApp.SACO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XmlRpc;
@@ -38,7 +39,7 @@ namespace TilesApp
             //MainPage = new NavigationPage(new AlertPage());
 
             ////testing login
-            MainPage = new NavigationPage(new Login());
+            //MainPage = new NavigationPage(new Login());
 
             ////testing table
             //MainPage = new NavigationPage(new TableOrder("Bacall, L."));
@@ -51,6 +52,9 @@ namespace TilesApp
             //TestClass tc = new TestClass();
             //tc.TestCreateRecord();
             //tc.TestSearchReadRecords("SPA_Tile100");
+
+            //testing SACO app
+            MainPage = new NavigationPage(new SACOLogin());
 
             NavigationPage.SetHasNavigationBar(this, false);
         }

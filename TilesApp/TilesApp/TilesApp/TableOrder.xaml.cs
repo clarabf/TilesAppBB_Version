@@ -40,7 +40,7 @@ namespace TilesApp
             if (int.Parse(b.ClassId) % 2 != 0)
             {
                 t.id = 6;
-                await Navigation.PushModalAsync(new StepsPage(t, 2, 9, "show", "http://oboria.net/docs/pdf/ftp/6/" + t.id + ".PDF", t.id));
+                await Navigation.PushModalAsync(new StepsPage(t, 2, 9, "show", "http://oboria.net/docs/pdf/ftp/WRONG/" + t.id + ".PDF", t.id));
             }
             else
             {

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TilesApp.SACO.SACOLogin">
+    <ContentPage.Resources>
+        <StyleSheet Source="../Assets/style.css"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid Padding="70"  BackgroundColor="#3D3D3D" x:Name="innerGrid">
+            <!--<Image 
+                Source="Background.png" 
+                Aspect="Fill"
+            />-->
+            <Button
+                x:Name="Login"
+                Text="LOGIN"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Clicked="GoToScan"
+            />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

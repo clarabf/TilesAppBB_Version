@@ -47,6 +47,12 @@
     <Compile Update="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Update="SACO_Basic\SACOTests.xaml.cs">
+      <DependentUpon>SACOTests.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SACO_Basic\SACOLogin.xaml.cs">
+      <DependentUpon>SACOLogin.xaml</DependentUpon>
+    </Compile>
     <Compile Update="StepProgressBarControl.xaml.cs">
       <DependentUpon>StepProgressBarControl.xaml</DependentUpon>
     </Compile>
