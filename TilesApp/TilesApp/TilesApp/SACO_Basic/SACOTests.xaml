@@ -6,37 +6,98 @@
         <StyleSheet Source="../Assets/style.css"/>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid Padding="70"  BackgroundColor="#3D3D3D" x:Name="innerGrid">
-            <!--<Image 
-                Source="Background.png" 
-                Aspect="Fill"
-            />-->
+        <Grid Padding="10"  BackgroundColor="#3D3D3D" x:Name="innerGrid">
+           
             <Grid.RowDefinitions>
+                <RowDefinition Height="0.8*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1.3*" />
             </Grid.RowDefinitions>
+            <Label Text="Welcome Trump, D."
+                   FontSize="22"
+                   TextColor="White"
+                   Grid.Row="0"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start" />
             <Button
-                x:Name="Test1"
-                Text="Test 1"
-                VerticalOptions="Center"
-                HorizontalOptions="Center"
-                Grid.Row="0"
-            />
-            <Button
-                x:Name="Test2"
-                Text="Test 2"
+                x:Name="QCBURN"
+                Text="QC BURN TEST"
+                TextColor="White"
+                BackgroundColor="Red"
+                FontAttributes="Bold"
+                FontSize="18"
+                WidthRequest="170"
+                BorderWidth="3"
+                BorderColor="White"
+                BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Grid.Row="1"
             />
             <Button
-                x:Name="Test3"
-                Text="Test 3"
+                x:Name="QCLIGHT"
+                Text="QC LIGHT TEST"
+                TextColor="White"
+                BackgroundColor="Red"
+                FontAttributes="Bold"
+                FontSize="18"
+                WidthRequest="170"
+                BorderWidth="3"
+                BorderColor="White"
+                BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Grid.Row="2"
             />
+            <Button
+                x:Name="QCVISUAL"
+                Text="QC VISUAL TEST"
+                TextColor="White"
+                BackgroundColor="Red"
+                FontAttributes="Bold"
+                FontSize="18"
+                WidthRequest="170"
+                BorderWidth="3"
+                BorderColor="White"
+                BorderRadius="8"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Grid.Row="3"
+            />
+            <Button
+                x:Name="QCVISUAL2"
+                Text="QC VISUAL TEST"
+                TextColor="White"
+                BackgroundColor="Red"
+                FontAttributes="Bold"
+                FontSize="18"
+                WidthRequest="170"
+                BorderWidth="3"
+                BorderColor="White"
+                BorderRadius="8"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Grid.Row="4"
+            />
+            <Button
+                x:Name="LOGOUT"
+                Text="LOG OUT"
+                TextColor="White"
+                BackgroundColor="Red"
+                FontAttributes="Bold"
+                FontSize="18"
+                WidthRequest="140"
+                BorderWidth="3"
+                BorderColor="White"
+                BorderRadius="8"
+                VerticalOptions="Center"
+                HorizontalOptions="Center"
+                Grid.Row="5"
+            />
+           
         </Grid>
     </ContentPage.Content>
 </ContentPage>

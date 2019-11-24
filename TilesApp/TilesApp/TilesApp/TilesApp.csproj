@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="Assets\Cameral.png" />
+    <None Remove="Assets\Cameralw.png" />
     <None Remove="Assets\Card.png" />
   </ItemGroup>
 
@@ -26,6 +27,7 @@
     <Page Include="Assets\Cameral.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
+    <Page Include="Assets\Cameralw.png" />
     <Page Include="Assets\Card.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Page>
@@ -131,10 +133,19 @@
     <None Update="Assets\CameraLens.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Assets\CameralWhite.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Assets\fa-solid-900.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Assets\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Logo2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\logoC.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="HybridWebViewPage.xaml">
