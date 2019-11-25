@@ -39,7 +39,6 @@
                    Grid.Column="1"
                    HorizontalOptions="Center"
                    VerticalOptions="End" />
-           
             <AbsoluteLayout  
                    Grid.Row="3" 
                    Grid.Column="1"
@@ -63,12 +62,12 @@
                         VerticalOptions="CenterAndExpand"
                         Clicked="GoToScan"/>
                 <Image Source="Cameralw.png" 
-                        WidthRequest="30" 
-                        HeightRequest="30"
-                        AbsoluteLayout.LayoutBounds="0.5,35,0.5,30" 
-                        AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
-                        HorizontalOptions="End"
-                        VerticalOptions="CenterAndExpand"/>
+                       WidthRequest="30" 
+                       HeightRequest="30"
+                       AbsoluteLayout.LayoutBounds="0.5,35,0.5,30" 
+                       AbsoluteLayout.LayoutFlags="XProportional,WidthProportional" 
+                       HorizontalOptions="End"
+                       VerticalOptions="CenterAndExpand"/>
             </AbsoluteLayout>
         </Grid>
     </ContentPage.Content>
