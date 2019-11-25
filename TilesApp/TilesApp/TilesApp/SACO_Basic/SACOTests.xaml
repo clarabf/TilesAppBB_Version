@@ -6,30 +6,23 @@
         <StyleSheet Source="../Assets/style.css"/>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <Image Source="Background.png" AbsoluteLayout.LayoutBounds="0,0,1,1"
-                   AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
-            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"
-                         BackgroundColor="Transparent"  VerticalOptions="FillAndExpand"
-                         HorizontalOptions="FillAndExpand"
-                         Orientation="Vertical">
-                <Grid Padding="10" BackgroundColor="Transparent"  VerticalOptions="FillAndExpand">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.8*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1.3*" />
-                    </Grid.RowDefinitions>
-                    <Label 
+        <Grid Padding="10"  BackgroundColor="Black" x:Name="innerGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.8*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1.3*" />
+            </Grid.RowDefinitions>
+            <Label 
                 Text="Welcome Trump, D."
                 FontSize="22"
                 TextColor="White"
                 Grid.Row="0"
                 HorizontalOptions="Center"
                 VerticalOptions="Start" />
-                    <Button
+            <Button
                 x:Name="QCBURN"
                 Text="QC BURN TEST"
                 TextColor="White"
@@ -44,7 +37,7 @@
                 HorizontalOptions="Center"
                 Grid.Row="1"
             />
-                    <Button
+            <Button
                 x:Name="QCLIGHT"
                 Text="QC LIGHT TEST"
                 TextColor="White"
@@ -59,7 +52,7 @@
                 HorizontalOptions="Center"
                 Grid.Row="2"
             />
-                    <Button
+            <Button
                 x:Name="QCVISUAL"
                 Text="QC VISUAL TEST"
                 TextColor="White"
@@ -74,7 +67,7 @@
                 HorizontalOptions="Center"
                 Grid.Row="3"
             />
-                    <Button
+            <Button
                 x:Name="QCVISUAL2"
                 Text="QC VISUAL TEST"
                 TextColor="White"
@@ -89,7 +82,7 @@
                 HorizontalOptions="Center"
                 Grid.Row="4"
             />
-                    <Button
+            <Button
                 x:Name="LOGOUT"
                 Text="LOG OUT"
                 TextColor="White"
@@ -104,8 +97,6 @@
                 HorizontalOptions="Center"
                 Grid.Row="5"
             />
-                </Grid>
-            </StackLayout>
-        </AbsoluteLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>
