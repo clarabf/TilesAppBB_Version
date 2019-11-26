@@ -22,13 +22,15 @@ using System.Xml;
 using System.Collections.Generic;
 using System.Text;
 using System.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace XmlRpc {
 
     /// <summary>
     /// This class, test the xmlrpc component on odoo 9
     /// </summary>
-    class TestClass {
+    class OdooConnection {
 
         //public static string Url = "http://localhost:8069/xmlrpc/2", db = "odoo9", pass = "admin", user = "admin";
         public static string ImgPath = "D:\\Users\\cbonillo\\source\\repos\\TilesApp\\TilesApp\\TilesApp\\TilesApp\\";
@@ -211,27 +213,34 @@ namespace XmlRpc {
             //        XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "email"))
             //    )
             //);
+            //XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
+            //requestSearch.AddParams(db, responseLogin.GetInt(), pass, "product.product", "search_read",
+            //    XmlRpcParameter.AsArray(
+            //        XmlRpcParameter.AsArray(
+            //            XmlRpcParameter.AsArray("id", "in", XmlRpcParameter.AsArray(4, 51))
+            //        )
+            //    ),
+            //    XmlRpcParameter.AsStruct(
+            //        XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "sale_ok", "purchase_ok", "can_be_expensed", "type"))
+            //    )
+            //);
+
             XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "product.product", "search_read",
+            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee.category", "search_read",
                 XmlRpcParameter.AsArray(
                     XmlRpcParameter.AsArray(
-                        XmlRpcParameter.AsArray("id", "in", XmlRpcParameter.AsArray(4, 51))
+                        XmlRpcParameter.AsArray("id", ">", 0)
                     )
                 ),
                 XmlRpcParameter.AsStruct(
-                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "sale_ok", "purchase_ok", "can_be_expensed", "type"))
+                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name"))
                 )
             );
 
             XmlRpcResponse responseSearch = client.Execute(requestSearch);
 
-            Console.WriteLine();
-            Console.WriteLine();
             Console.WriteLine("REQUEST (SEARCH): ");
             client.WriteRequest(Console.Out);
-
-            Console.WriteLine();
-            Console.WriteLine();
             Console.WriteLine("RESPONSE (SEARCH): ");
             if (responseSearch.IsFault()) {
                 Console.WriteLine(responseSearch.GetFaultString());
@@ -239,6 +248,95 @@ namespace XmlRpc {
                 Console.WriteLine(responseSearch.GetString());
             }
            
+        }
+
+        public void GetUserTags(string barcode)
+        {
+            XmlRpcClient client = new XmlRpcClient();
+            client.Url = Url;
+            client.Path = "/xmlrpc/2/common";
+
+            // LOGIN
+            XmlRpcRequest requestLogin = new XmlRpcRequest("authenticate");
+            requestLogin.AddParams(db, user, pass, XmlRpcParameter.EmptyStruct());
+            XmlRpcResponse responseLogin = client.Execute(requestLogin);
+
+            Console.WriteLine("LOGIN: ");
+            if (responseLogin.IsFault())
+            {
+                Console.WriteLine(responseLogin.GetFaultString());
+            }
+            else
+            {
+                Console.WriteLine(responseLogin.GetString());
+            }
+
+            // SEARCH
+            client.Path = "/xmlrpc/2/object";
+
+            XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
+            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee", "search_read",
+                XmlRpcParameter.AsArray(
+                    XmlRpcParameter.AsArray(
+                        XmlRpcParameter.AsArray("barcode", "=", barcode)
+                    )
+                ),
+                XmlRpcParameter.AsStruct(
+                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "department_id", "job_id", "address_id", "category_ids", "gender", "pin"))
+                )
+            );
+
+            XmlRpcResponse responseSearch = client.Execute(requestSearch);
+
+            Console.WriteLine("REQUEST (SEARCH): ");
+            client.WriteRequest(Console.Out);
+
+            List<object> ids = new List<object>();
+            Console.WriteLine("RESPONSE (SEARCH): ");
+            if (responseSearch.IsFault())
+            {
+                Console.WriteLine(responseSearch.GetFaultString());
+            }
+            else
+            {
+                Console.WriteLine(responseSearch.GetString());
+                List<object> responseList = (List<object>)responseSearch.GetObject(); //List with one element
+                foreach (object fields in responseList)
+                {
+                    Dictionary<string, object> dict = (Dictionary<string, object>)fields;
+                    foreach (KeyValuePair<string, object> kv in dict)
+                    {
+                        Console.WriteLine(kv.Key + " - " + kv.Value.ToString());
+                    }
+                    ids = (List<object>)dict["category_ids"];
+                }
+            }
+            if (ids.Count > 0)
+            {
+                requestSearch = new XmlRpcRequest("execute_kw");
+                requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee.category", "search_read",
+                    XmlRpcParameter.AsArray(
+                        XmlRpcParameter.AsArray(
+                            XmlRpcParameter.AsArray("id", "in", ids)
+                        )
+                    ),
+                    XmlRpcParameter.AsStruct(
+                        XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name"))
+                    )
+                );
+
+                responseSearch = client.Execute(requestSearch);
+                if (responseSearch.IsFault())
+                {
+                    Console.WriteLine(responseSearch.GetFaultString());
+                }
+                else
+                {
+                    Console.WriteLine(responseSearch.GetString());
+
+                }
+            }
+
         }
 
         public void TestCreateRecord() {
