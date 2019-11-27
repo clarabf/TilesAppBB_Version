@@ -36,5 +36,11 @@ namespace TilesApp.SACO
             await Navigation.PopModalAsync(true);
         }
 
+        private async void TakePhoto(object sender, EventArgs args)
+        {
+            //Register logout
+            await Navigation.PushModalAsync(new SACOTakePhoto());
+        }
+
     }
 }

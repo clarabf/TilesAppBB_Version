@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Media;
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
@@ -9,7 +10,6 @@ namespace TilesApp.SACO
     {
         private double width = 0;
         private double height = 0;
-        Dictionary<string, object> userInfo;
 
         public SACOTakePhoto()
         {
@@ -22,10 +22,40 @@ namespace TilesApp.SACO
 
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
-            var photo = await Plugin.Media.CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions() { });
+            try
+            {
+                await CrossMedia.Current.Initialize();
 
-            if (photo != null)
-                PhotoImage.Source = ImageSource.FromStream(() => { return photo.GetStream(); });
+                if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                {
+                    await DisplayAlert("No Camera", "No camera available.", "OK");
+                    return;
+                }
+
+                var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
+                {
+                    SaveToAlbum=true
+                    //Directory = "Sample",
+                    //Name = "test.jpg"
+                });
+
+                if (file == null)
+                    return;
+
+                PhotoImage.Source = ImageSource.FromStream(() =>
+                {
+                    var stream = file.GetStream();
+                    return stream;
+                });
+
+                //var bitmap = BitmapFactory.DecodeFile(file.Path);
+
+                await DisplayAlert("Photo taken correctly", file.AlbumPath, "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Permission denied", "Error: " + ex.Message, "OK");
+            }
         }
 
     }

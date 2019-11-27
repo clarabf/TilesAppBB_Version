@@ -43,6 +43,7 @@
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                Clicked="TakePhoto"
                 Grid.Row="1"
             />
             <Button
@@ -58,6 +59,7 @@
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                Clicked="TakePhoto"
                 Grid.Row="2"
             />
             <Button
@@ -73,6 +75,7 @@
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                Clicked="TakePhoto"
                 Grid.Row="3"
             />
             <Button
@@ -88,6 +91,7 @@
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                Clicked="TakePhoto"
                 Grid.Row="4"
             />
             <Button
