@@ -23,7 +23,7 @@ namespace TilesApp.SACO
         {
             Tile t = new Tile();
             t.id = 2;
-            await Navigation.PushModalAsync(new SACOTests());
+            await Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD",1));
         }
 
     }

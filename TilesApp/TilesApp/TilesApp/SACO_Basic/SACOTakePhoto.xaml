@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TilesApp.SACO.SACOTakePhoto">
+    <ContentPage.Resources>
+        <StyleSheet Source="../Assets/style.css"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Image x:Name="PhotoImage" />
+            <Button x:Name="CameraButton" Text="Take Photo" Grid.Row="1" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -250,8 +250,11 @@ namespace XmlRpc {
            
         }
 
-        public void GetUserTags(string barcode)
+        public Dictionary<string,object> GetUserInfo(string barcode)
         {
+            List<object> ids = new List<object>();
+            List<string> names = new List<string>();
+            Dictionary<string, object> userInfo = new Dictionary<string, object>();
             XmlRpcClient client = new XmlRpcClient();
             client.Url = Url;
             client.Path = "/xmlrpc/2/common";
@@ -290,8 +293,6 @@ namespace XmlRpc {
 
             Console.WriteLine("REQUEST (SEARCH): ");
             client.WriteRequest(Console.Out);
-
-            List<object> ids = new List<object>();
             Console.WriteLine("RESPONSE (SEARCH): ");
             if (responseSearch.IsFault())
             {
@@ -307,6 +308,7 @@ namespace XmlRpc {
                     foreach (KeyValuePair<string, object> kv in dict)
                     {
                         Console.WriteLine(kv.Key + " - " + kv.Value.ToString());
+                        if (kv.Key == "name" || kv.Key == "id") userInfo.Add(kv.Key, kv.Value.ToString());
                     }
                     ids = (List<object>)dict["category_ids"];
                 }
@@ -333,10 +335,21 @@ namespace XmlRpc {
                 else
                 {
                     Console.WriteLine(responseSearch.GetString());
+                    List<object> responseList = (List<object>)responseSearch.GetObject(); //List with one element
+                    foreach (object fields in responseList)
+                    {
+                        Dictionary<string, object> dict = (Dictionary<string, object>)fields;
+                        foreach (KeyValuePair<string, object> kv in dict)
+                        {
+                            Console.WriteLine(kv.Key + " - " + kv.Value.ToString());
+                        }
+                        names.Add(dict["name"].ToString());
+                    }
 
                 }
             }
-
+            userInfo.Add("tags",names);
+            return userInfo;
         }
 
         public void TestCreateRecord() {

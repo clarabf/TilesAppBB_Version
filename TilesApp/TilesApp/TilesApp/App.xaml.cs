@@ -49,13 +49,10 @@ namespace TilesApp
             //Tile t = new Tile(); t.id = 2;
             //MainPage = new NavigationPage(new StepsPage(t, 2, 9, "user", "http://oboria.net/docs/pdf/ftp/6/3.PDF",3));
 
-            //testing connection to Odoo
-            //OdooConnection oc = new OdooConnection();
-            //oc.GetUserTags("15887489");
+            //testing tke photo
+            //MainPage = new NavigationPage(new SACOTakePhoto()); 
 
             //testing SACO app
-            string json = jsParser.GenerateJSON();
-
             MainPage = new NavigationPage(new SACOLogin());
 
             NavigationPage.SetHasNavigationBar(this, false);
