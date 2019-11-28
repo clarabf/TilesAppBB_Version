@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TilesApp.SACO.SACOReader">
+    <ContentPage.Resources>
+        <StyleSheet Source="../Assets/style.css"/>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid BackgroundColor="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="5*" />
+            </Grid.RowDefinitions>
+            <Label x:Name="entry" 
+                Text="Scanned barcode:"
+                Grid.Row="0"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="StartAndExpand"
+            />
+            <Label x:Name="label"
+                Text=""
+                Grid.Row="1"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+            />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

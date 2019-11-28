@@ -14,16 +14,12 @@ namespace TilesApp
 {
     public partial class App : Application
     {
-        public Android.Webkit.WebView webView;
         public JSONParser jsParser = new JSONParser();
 
         public App()
         {
 
             InitializeComponent();
-
-            // OLD HybridWebView
-            //MainPage = new NavigationPage(new HybridWebViewPage());
 
             // this for Progressbar steps
             //MainPage = new NavigationPage(new MainPage());
@@ -54,6 +50,9 @@ namespace TilesApp
 
             //testing SACO app
             MainPage = new NavigationPage(new SACOLogin());
+
+            //testing Pistol Reader
+            //MainPage = new NavigationPage(new SACOReader());
 
             NavigationPage.SetHasNavigationBar(this, false);
         }

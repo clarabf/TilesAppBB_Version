@@ -74,9 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FontAwesomeIconRenderer.cs" />
-    <Compile Include="HybridWebViewRenderer.cs" />
-    <Compile Include="JavascriptWebViewClient.cs" />
-    <Compile Include="JSBridge.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

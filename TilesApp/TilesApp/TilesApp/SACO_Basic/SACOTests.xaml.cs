@@ -10,7 +10,7 @@ namespace TilesApp.SACO
         private double width = 0;
         private double height = 0;
         Dictionary<string, object> userInfo;
-
+        
         public SACOTests()
         {
             InitializeComponent();
@@ -32,14 +32,17 @@ namespace TilesApp.SACO
         private async void Logout(object sender, EventArgs args)
         {
             //Register logout
-
             await Navigation.PopModalAsync(true);
         }
 
         private async void TakePhoto(object sender, EventArgs args)
         {
-            //Register logout
             await Navigation.PushModalAsync(new SACOTakePhoto());
+        }
+
+        private async void Associate_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new SACOReader());
         }
 
     }
