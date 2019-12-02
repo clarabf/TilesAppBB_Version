@@ -1,27 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Messagecenters"
              x:Class="TilesApp.SACO.SACOReader">
-    <ContentPage.Resources>
-        <StyleSheet Source="../Assets/style.css"/>
-    </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid BackgroundColor="Transparent">
+        <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="5*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Label x:Name="entry" 
-                Text="Scanned barcode:"
-                Grid.Row="0"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="StartAndExpand"
-            />
-            <Label x:Name="label"
-                Text=""
-                Grid.Row="1"
+            <Label x:Name="title" 
+                Text="Scan QR of Main component:"
+                TextColor="Black"
+                FontSize="18"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
+                Grid.Row="0"
+            />
+            <!--<Label x:Name="label"
+                Text=""
+                BackgroundColor="LightGray"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="1"
+            />-->
+            <ListView ItemsSource="{Binding BarcodesScanned}" 
+                Grid.Row="1"      
+                />
+            <Button x:Name="btnSaveAndFinish"
+                TextColor="White"
+                BackgroundColor="Black"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="Save &amp; Finish"
+                WidthRequest="250"
+                BorderColor="White"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="2"
+                IsVisible="False"
+                Clicked="SaveAndFinish"
+            />
+            <Button x:Name="btnCancel"
+                TextColor="Black"
+                BackgroundColor="White"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="Cancel"
+                WidthRequest="250"
+                BorderColor="Black"
+                BorderWidth="1"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="3"
+                Clicked="Cancel"
             />
         </Grid>
     </ContentPage.Content>

@@ -27,6 +27,33 @@ namespace TilesApp.SACO
             height = this.Height;
             userInfo = userInf;
             user.Text = userInfo["name"].ToString();
+            List<string> tags = (List<string>)userInfo["tags"];
+            foreach (string tag in tags)
+            {
+                switch(tag)
+                {
+                    case "Associate":
+                        btAssociate.BackgroundColor = Color.Red;
+                        btAssociate.IsEnabled = true;
+                        break;
+                    case "Assemble":
+                        btAssemble.BackgroundColor = Color.Red;
+                        btAssemble.IsEnabled = true;
+                        break;
+                    case "Checkinout":
+                        btCheckInOut.BackgroundColor = Color.Red;
+                        btCheckInOut.IsEnabled = true;
+                        break;
+                    case "QC":
+                        btQC.BackgroundColor = Color.Red;
+                        btQC.IsEnabled = true;
+                        break;
+                    case "Report":
+                        btReport.BackgroundColor = Color.Red;
+                        btReport.IsEnabled = true;
+                        break;
+                }
+            }
         }
 
         private async void Logout(object sender, EventArgs args)

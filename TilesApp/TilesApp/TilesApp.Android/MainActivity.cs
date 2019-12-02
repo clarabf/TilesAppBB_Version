@@ -48,8 +48,8 @@ namespace TilesApp.Droid
             {
                 //Print the BARCODE to the debug console
                 string barcode = TranslateKeyCodes(code.ToArray());
-                System.Diagnostics.Debug.WriteLine("Barcode: " + barcode);
-                Toast.MakeText(this, "Barcode: " + TranslateKeyCodes(code.ToArray()), ToastLength.Long).Show();
+                //System.Diagnostics.Debug.WriteLine("Barcode: " + barcode);
+                //Toast.MakeText(this, "Barcode: " + barcode, ToastLength.Long).Show();
                 code.Clear();
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "SendBarcode", barcode);
             }

@@ -32,10 +32,10 @@
                 </Label.FormattedText>
             </Label>
             <Button
-                x:Name="Associate"
+                x:Name="btAssociate"
                 Text="Associate"
                 TextColor="White"
-                BackgroundColor="Red"
+                BackgroundColor="Gray"
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="170"
@@ -45,10 +45,11 @@
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Clicked="Associate_Command"
+                IsEnabled="False"
                 Grid.Row="1"
             />
             <Button
-                x:Name="Assemble"
+                x:Name="btAssemble"
                 Text="Assemble"
                 TextColor="White"
                 BackgroundColor="Gray"
@@ -60,10 +61,11 @@
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                IsEnabled="False"
                 Grid.Row="2"
             />
             <Button
-                x:Name="CheckInOut"
+                x:Name="btCheckInOut"
                 Text="Check in/out"
                 TextColor="White"
                 BackgroundColor="Gray"
@@ -75,10 +77,11 @@
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                IsEnabled="False"
                 Grid.Row="3"
             />
             <Button
-                x:Name="QC"
+                x:Name="btQC"
                 Text="QC"
                 TextColor="White"
                 BackgroundColor="Gray"
@@ -90,13 +93,14 @@
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                IsEnabled="False"
                 Grid.Row="4"
             />
             <Button
-                x:Name="Report"
+                x:Name="btReport"
                 Text="Report"
                 TextColor="White"
-                BackgroundColor="Red"
+                BackgroundColor="Gray"
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="170"
@@ -106,6 +110,7 @@
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
                 Clicked="TakePhoto"
+                IsEnabled="False"
                 Grid.Row="5"
             />
             <Button
