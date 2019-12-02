@@ -61,6 +61,7 @@
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
+                Clicked="Assemble_Command"
                 IsEnabled="False"
                 Grid.Row="2"
             />

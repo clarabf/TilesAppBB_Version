@@ -50,8 +50,11 @@
     <Compile Update="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOReader.xaml.cs">
-      <DependentUpon>SACOReader.xaml</DependentUpon>
+    <Compile Update="SACO_Basic\SACOAssociate.xaml.cs">
+      <DependentUpon>SACOAssociate.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SACO_Basic\SACOAssemble.xaml.cs">
+      <DependentUpon>SACOAssemble.xaml</DependentUpon>
     </Compile>
     <Compile Update="SACO_Basic\SACOTakePhoto.xaml.cs">
       <DependentUpon>SACOTakePhoto.xaml</DependentUpon>

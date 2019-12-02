@@ -6,7 +6,7 @@ using Xamarin.Forms;
 namespace TilesApp.SACO
 {
 
-    public partial class SACOReader : ContentPage
+    public partial class SACOAssemble : ContentPage
     {
         private double width = 0;
         private double height = 0;
@@ -15,29 +15,27 @@ namespace TilesApp.SACO
         private List<string> barcodes = new List<string>();
         public ObservableCollection<string> BarcodesScanned { get; set; } = new ObservableCollection<string>();
 
-        public SACOReader()
+        public SACOAssemble()
         {
             InitializeComponent();
             BindingContext = this;
             NavigationPage.SetHasNavigationBar(this, false);
             width = this.Width;
             height = this.Height;
-            BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
-            MessagingCenter.Subscribe<Application, String>(Application.Current, "SendBarcode", (s, a) => {
+            //BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
+            MessagingCenter.Subscribe<Application, String>(Application.Current, "BarcodeScanned", (s, a) => {
                 if (!mainScanned)
                 {
                     mainScanned = true;
                     mainCode = a.ToString();
-                    title.Text = "Scan QR of the component";
+                    title.Text = "Scan barcode of the other components";
                     BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
-                    //label.Text = "Main item <" + mainCode + "> identified successfully.\n" + DateTime.Now + "\nStart associating components.";
                     btnSaveAndFinish.IsVisible = true;
                 }
                 else
                 {
                     barcodes.Add(a.ToString());
-                    title.Text = "Scan QR of the component (" + barcodes.Count + ")";
-                    //label.Text = "Item <" + a.ToString() + "> identified successfully.\n" + DateTime.Now + "\nKeep scanning components.";
+                    title.Text = "Scan barcode of the other components (" + barcodes.Count + ")";
                     BarcodesScanned.Add("Item <" + a.ToString() + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
                 }
             });
@@ -45,7 +43,7 @@ namespace TilesApp.SACO
 
         private async void SaveAndFinish(object sender, EventArgs args)
         {
-            MessagingCenter.Unsubscribe<Application, String>(Application.Current, "SendBarcode");
+            MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             //Update info in DB
             string message="";
             foreach (string code in barcodes) message += code + " - ";
@@ -55,7 +53,7 @@ namespace TilesApp.SACO
 
         private async void Cancel(object sender, EventArgs args)
         {
-            MessagingCenter.Unsubscribe<Application, String>(Application.Current, "SendBarcode");
+            MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             await Navigation.PopModalAsync(true);
         }
 

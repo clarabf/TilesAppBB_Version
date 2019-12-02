@@ -51,7 +51,8 @@ namespace TilesApp.Droid
                 //System.Diagnostics.Debug.WriteLine("Barcode: " + barcode);
                 //Toast.MakeText(this, "Barcode: " + barcode, ToastLength.Long).Show();
                 code.Clear();
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "SendBarcode", barcode);
+                if (barcode.Length==8) MessagingCenter.Send(Xamarin.Forms.Application.Current, "UserScanned", barcode);
+                else MessagingCenter.Send(Xamarin.Forms.Application.Current, "BarcodeScanned", barcode);
             }
             return base.OnKeyDown(keyCode, e);
         }

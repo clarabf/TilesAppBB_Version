@@ -67,10 +67,14 @@ namespace TilesApp.SACO
             await Navigation.PushModalAsync(new SACOTakePhoto());
         }
 
-        private async void Associate_Command(object sender, EventArgs args)
+        private async void Assemble_Command(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new SACOReader());
+            await Navigation.PushModalAsync(new SACOAssemble());
         }
 
+        private async void Associate_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new SACOAssociate());
+        }
     }
 }

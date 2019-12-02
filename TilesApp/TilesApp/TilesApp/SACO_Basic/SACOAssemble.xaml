@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Messagecenters"
+             x:Class="TilesApp.SACO.SACOAssemble">
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="3*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Label x:Name="title" 
+                Text="Scan barcode of Main component:"
+                TextColor="Black"
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="0"
+            />
+            <ListView ItemsSource="{Binding BarcodesScanned}" 
+                Grid.Row="1"      
+                />
+            <Button x:Name="btnSaveAndFinish"
+                TextColor="White"
+                BackgroundColor="Black"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="Save &amp; Finish"
+                WidthRequest="250"
+                BorderColor="White"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="2"
+                IsVisible="False"
+                Clicked="SaveAndFinish"
+            />
+            <Button x:Name="btnCancel"
+                TextColor="Black"
+                BackgroundColor="White"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="Cancel"
+                WidthRequest="250"
+                BorderColor="Black"
+                BorderWidth="1"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="3"
+                Clicked="Cancel"
+            />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

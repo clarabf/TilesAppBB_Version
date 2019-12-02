@@ -2,32 +2,51 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:Messagecenters"
-             x:Class="TilesApp.SACO.SACOReader">
+             x:Class="TilesApp.SACO.SACOAssociate">
     <ContentPage.Content>
         <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="3*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Label x:Name="title" 
-                Text="Scan QR of Main component:"
+            <Label x:Name="lblTitle" 
+                Text="Scan barcode of component:"
                 TextColor="Black"
+                FontAttributes="Bold"
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="0"
             />
-            <!--<Label x:Name="label"
-                Text=""
-                BackgroundColor="LightGray"
+            <Label x:Name="lblBarcode"
+                TextColor="Black"
+                FontSize="16"
+                Margin="20,0,20,0"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="1"
-            />-->
-            <ListView ItemsSource="{Binding BarcodesScanned}" 
+                IsVisible="False"
                 Grid.Row="1"      
+                >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="Barcode &lt;" />
+                            <Span x:Name="barcode" FontAttributes="Bold" Text="12345678" />
+                            <Span Text="&gt; scanned.&#x0a;Add name of the component: "/>
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Entry x:Name="entry"
+                Keyboard="Default"
+                Margin="20,0,20,0"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
+                Grid.Row="2"      
                 />
             <Button x:Name="btnSaveAndFinish"
                 TextColor="White"
@@ -40,7 +59,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="2"
+                Grid.Row="3"
                 IsVisible="False"
                 Clicked="SaveAndFinish"
             />
@@ -56,7 +75,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="3"
+                Grid.Row="4"
                 Clicked="Cancel"
             />
         </Grid>

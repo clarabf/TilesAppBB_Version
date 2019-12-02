@@ -50,25 +50,36 @@ namespace TilesApp.SACO
             // Card employee
             if (scanType==1)
             {
-                //Get userInfo (name and tags)
-                OdooConnection oc = new OdooConnection();
-                Dictionary<string, object> userInfo = oc.GetUserInfo(qrScanned);
-
-                //Register login
-                var dataLogin = new Dictionary<string, object>();
-                dataLogin.Add("id", userInfo["id"].ToString());
-                dataLogin.Add("cardCode", qrScanned);
-                dataLogin.Add("employeeName", userInfo["name"].ToString());
-                dataLogin.Add("timestamp", DateTime.Now);
-                var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
-                var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
-                var answer = await postResponse.Content.ReadAsStringAsync();
-
-                Device.BeginInvokeOnMainThread(() =>
+                try
                 {
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new SACOTests(userInfo));
-                });
+                    //Get userInfo (name and tags)
+                    OdooConnection oc = new OdooConnection();
+                    Dictionary<string, object> userInfo = oc.GetUserInfo(qrScanned);
+
+                    //Register login
+                    var dataLogin = new Dictionary<string, object>();
+                    dataLogin.Add("id", userInfo["id"].ToString());
+                    dataLogin.Add("cardCode", qrScanned);
+                    dataLogin.Add("employeeName", userInfo["name"].ToString());
+                    dataLogin.Add("timestamp", DateTime.Now);
+                    var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
+                    var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
+                    var answer = await postResponse.Content.ReadAsStringAsync();
+
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new SACOTests(userInfo));
+                    });
+                }
+                catch
+                {
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        DisplayAlert("Error scanning badge", "User not found in DB...", "Ok");
+                    });
+                }
             }
             else
             {
