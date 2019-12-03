@@ -44,6 +44,10 @@ namespace TilesApp.SACO
                         btCheckInOut.BackgroundColor = Color.Red;
                         btCheckInOut.IsEnabled = true;
                         break;
+                    case "Checkpoint":
+                        btCheckpoint.BackgroundColor = Color.Red;
+                        btCheckpoint.IsEnabled = true;
+                        break;
                     case "QC":
                         btQC.BackgroundColor = Color.Red;
                         btQC.IsEnabled = true;
@@ -56,15 +60,10 @@ namespace TilesApp.SACO
             }
         }
 
-        private async void Logout(object sender, EventArgs args)
+        private async void Logout_Command(object sender, EventArgs args)
         {
             //Register logout
             await Navigation.PopModalAsync(true);
-        }
-
-        private async void TakePhoto(object sender, EventArgs args)
-        {
-            await Navigation.PushModalAsync(new SACOTakePhoto());
         }
 
         private async void Assemble_Command(object sender, EventArgs args)
@@ -75,6 +74,21 @@ namespace TilesApp.SACO
         private async void Associate_Command(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new SACOAssociate());
+        }
+
+        private async void Checkpoint_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new SACOCheckpoint());
+        }
+
+        private async void QC_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new SACOQC());
+        }
+
+        private async void Report_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new SACOTakePhoto());
         }
     }
 }

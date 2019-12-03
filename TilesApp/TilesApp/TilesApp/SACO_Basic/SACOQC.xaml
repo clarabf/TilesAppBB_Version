@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:Messagecenters"
+             x:Class="TilesApp.SACO.SACOQC">
+    <ContentPage.Content>
+        <Grid BackgroundColor="White">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="1*" />
+            </Grid.ColumnDefinitions>
+            <Label x:Name="lblTitle" 
+                Text="Scan barcode of component:"
+                TextColor="Black"
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+            />
+            <Label x:Name="lblBarcode"
+                TextColor="Black"
+                FontSize="16"
+                Margin="20,0,20,0"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
+                Grid.Row="1" 
+                Grid.ColumnSpan="2"
+                >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="Checkin of component&#x0a;    &lt;" />
+                            <Span x:Name="barcode" FontAttributes="Bold" Text="12345678"/>
+                            <Span Text="&gt;&#x0a;      done successfully."/>
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <Button x:Name="btPass"
+                TextColor="Green"
+                BackgroundColor="White"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="PASS"
+                WidthRequest="150"
+                HeightRequest="100"
+                BorderColor="Green"
+                BorderWidth="1"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
+                Grid.Row="2"
+                Grid.Column="0"
+                Clicked="PassOrFail"
+            />
+            <Button x:Name="btFail"
+                TextColor="Red"
+                BackgroundColor="White"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="FAIL"
+                WidthRequest="150"
+                HeightRequest="100"
+                BorderColor="Red"
+                BorderWidth="1"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
+                Grid.Row="2"
+                Grid.Column="1"
+                Clicked="PassOrFail"
+            />
+            <Button x:Name="btCancel"
+                TextColor="Black"
+                BackgroundColor="White"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="Cancel"
+                WidthRequest="250"
+                BorderColor="Black"
+                BorderWidth="1"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="3"
+                Grid.ColumnSpan="2"
+                Clicked="Cancel"
+            />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

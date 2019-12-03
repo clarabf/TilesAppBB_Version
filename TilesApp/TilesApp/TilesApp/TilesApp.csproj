@@ -50,6 +50,12 @@
     <Compile Update="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
+    <Compile Update="SACO_Basic\SACOQC.xaml.cs">
+      <DependentUpon>SACOQC.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SACO_Basic\SACOCheckpoint.xaml.cs">
+      <DependentUpon>SACOCheckpoint.xaml</DependentUpon>
+    </Compile>
     <Compile Update="SACO_Basic\SACOAssociate.xaml.cs">
       <DependentUpon>SACOAssociate.xaml</DependentUpon>
     </Compile>
