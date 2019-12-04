@@ -352,6 +352,120 @@ namespace XmlRpc {
             return userInfo;
         }
 
+        public Dictionary<string, object> GetUsers()
+        {
+            
+            List<string> names = new List<string>();
+
+            Dictionary<string, object> users = new Dictionary<string, object>();
+            Dictionary<string, string> tags = new Dictionary<string, string>();
+
+            Dictionary<string, object> userInfo;
+            List<object> ids;
+            List<string> id_names;
+
+            XmlRpcClient client = new XmlRpcClient();
+            client.Url = Url;
+            client.Path = "/xmlrpc/2/common";
+
+            // LOGIN
+            XmlRpcRequest requestLogin = new XmlRpcRequest("authenticate");
+            requestLogin.AddParams(db, user, pass, XmlRpcParameter.EmptyStruct());
+            XmlRpcResponse responseLogin = client.Execute(requestLogin);
+
+            Console.WriteLine("LOGIN: ");
+            if (responseLogin.IsFault())
+            {
+                Console.WriteLine(responseLogin.GetFaultString());
+            }
+            else
+            {
+                Console.WriteLine(responseLogin.GetString());
+            }
+
+            // SEARCH
+            client.Path = "/xmlrpc/2/object";
+
+            ///////////// TAGS /////////////
+            XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
+            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee.category", "search_read",
+                XmlRpcParameter.AsArray(
+                    XmlRpcParameter.AsArray(
+                        XmlRpcParameter.AsArray("id", ">", 0)
+                    )
+                ),
+                XmlRpcParameter.AsStruct(
+                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name"))
+                )
+            );
+
+            XmlRpcResponse responseSearch = client.Execute(requestSearch);
+
+            Console.WriteLine("REQUEST (SEARCH): ");
+            client.WriteRequest(Console.Out);
+            Console.WriteLine("RESPONSE (SEARCH): ");
+            if (responseSearch.IsFault())
+            {
+                Console.WriteLine(responseSearch.GetFaultString());
+            }
+            else
+            {
+                Console.WriteLine(responseSearch.GetString());
+                List<object> responseList = (List<object>)responseSearch.GetObject(); //List with one element
+                foreach (object fields in responseList)
+                {
+                    Dictionary<string, object> dict = (Dictionary<string, object>)fields;
+                    tags.Add(dict["id"].ToString(), dict["name"].ToString());
+                }
+            }
+
+            //USERS
+            requestSearch = new XmlRpcRequest("execute_kw");
+            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee", "search_read",
+                XmlRpcParameter.AsArray(
+                    XmlRpcParameter.AsArray(
+                        XmlRpcParameter.AsArray("id", ">", 0)
+                    )
+                ),
+                XmlRpcParameter.AsStruct(
+                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "barcode", "category_ids"))
+                )
+            );
+
+            responseSearch = client.Execute(requestSearch);
+
+            Console.WriteLine("REQUEST (SEARCH): ");
+            client.WriteRequest(Console.Out);
+            Console.WriteLine("RESPONSE (SEARCH): ");
+            if (responseSearch.IsFault())
+            {
+                Console.WriteLine(responseSearch.GetFaultString());
+            }
+            else
+            {
+                Console.WriteLine(responseSearch.GetString());
+                List<object> responseList = (List<object>)responseSearch.GetObject(); //List with one element
+                foreach (object fields in responseList)
+                {
+
+                    Dictionary<string, object> dict = (Dictionary<string, object>)fields;
+                    userInfo = new Dictionary<string, object>();
+                    id_names = new List<string>();
+                    if (dict["barcode"].ToString()!="False")
+                    {
+                        ids = (List<object>)dict["category_ids"];
+                        foreach (object id in ids) id_names.Add(tags[id.ToString()]);
+                        userInfo.Add("id", dict["id"].ToString());
+                        userInfo.Add("name", dict["name"].ToString());
+                        userInfo.Add("tags", id_names);
+                        users.Add(dict["barcode"].ToString(), userInfo);
+                    }
+                }
+            }
+
+            return users;
+        }
+
         public void TestCreateRecord() {
             XmlRpcClient client = new XmlRpcClient();
             client.Url = Url;

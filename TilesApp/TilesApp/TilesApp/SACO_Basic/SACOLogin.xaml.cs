@@ -14,31 +14,41 @@ namespace TilesApp.SACO
     {
         private double width = 0;
         private double height = 0;
+        private Dictionary<string, object> users;
 
         public SACOLogin()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
+        }
+
+        public SACOLogin(Dictionary<string,object> usersList)
+        {
+            InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+            users = usersList;
             width = this.Width;
             height = this.Height;
+
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
 
                 try
                 {
-                    OdooConnection oc = new OdooConnection();
-                    Dictionary<string, object> userInfo = oc.GetUserInfo(a.ToString());
-                    HttpClient client = new HttpClient();
+                    Dictionary<string, object> userInfo = (Dictionary<string, object>)usersList[a.ToString()];
+                    //OdooConnection oc = new OdooConnection();
+                    //Dictionary<string, object> userInfo = oc.GetUserInfo(a.ToString());
 
                     //Register login
-                    var dataLogin = new Dictionary<string, object>();
-                    dataLogin.Add("id", userInfo["id"].ToString());
-                    dataLogin.Add("cardCode", a.ToString());
-                    dataLogin.Add("employeeName", userInfo["name"].ToString());
-                    dataLogin.Add("timestamp", DateTime.Now);
-                    var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
-                    var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
-                    var answer = await postResponse.Content.ReadAsStringAsync();
+                    //HttpClient client = new HttpClient();
+                    //var dataLogin = new Dictionary<string, object>();
+                    //dataLogin.Add("id", userInfo["id"].ToString());
+                    //dataLogin.Add("cardCode", a.ToString());
+                    //dataLogin.Add("employeeName", userInfo["name"].ToString());
+                    //dataLogin.Add("timestamp", DateTime.Now);
+                    //var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
+                    //var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
+                    //var answer = await postResponse.Content.ReadAsStringAsync();
                     await Navigation.PushModalAsync(new SACOTests(userInfo));
                 }
                 catch

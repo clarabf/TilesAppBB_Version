@@ -7,6 +7,7 @@ using Plugin.CurrentActivity;
 using Plugin.Media;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using TilesApp.SACO;
 using Xamarin.Forms;
 
@@ -46,16 +47,14 @@ namespace TilesApp.Droid
             }
             else
             {
-                //Print the BARCODE to the debug console
                 string barcode = TranslateKeyCodes(code.ToArray());
-                //System.Diagnostics.Debug.WriteLine("Barcode: " + barcode);
-                //Toast.MakeText(this, "Barcode: " + barcode, ToastLength.Long).Show();
                 code.Clear();
                 if (barcode.Length==8) MessagingCenter.Send(Xamarin.Forms.Application.Current, "UserScanned", barcode);
                 else MessagingCenter.Send(Xamarin.Forms.Application.Current, "BarcodeScanned", barcode);
             }
             return base.OnKeyDown(keyCode, e);
         }
+
         private string TranslateKeyCodes(string[] keyCodes)
         {
             String result = "";

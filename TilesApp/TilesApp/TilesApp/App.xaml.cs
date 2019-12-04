@@ -1,5 +1,6 @@
 ﻿using Android.Content.Res;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using TilesApp.ExpandableView;
 using TilesApp.Models;
@@ -49,7 +50,14 @@ namespace TilesApp
             //MainPage = new NavigationPage(new SACOTakePhoto()); 
 
             //testing SACO app
-            MainPage = new NavigationPage(new SACOLogin());
+
+            //Asking users beforehand
+            OdooConnection od = new OdooConnection();
+            Dictionary<string, object> users = od.GetUsers();
+            MainPage = new NavigationPage(new SACOLogin(users));
+
+            //Consult user later
+            //MainPage = new NavigationPage(new SACOLogin(new Dictionary<string, object>()));
 
             //testing Pistol Reader
             //MainPage = new NavigationPage(new SACOReader());
