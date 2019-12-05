@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:Messagecenters"
              x:Class="TilesApp.SACO.SACOAssemble">
     <ContentPage.Content>
         <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="3*" />
+                <RowDefinition Height="0.4*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
-            <Label x:Name="title" 
+            <Label x:Name="lblTest" 
+                Text="ASSEMBLE"
+                TextColor="Black"
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+                Grid.Row="0"
+            />
+            <Label x:Name="lblTitle" 
                 Text="Scan barcode of Main component:"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="0"
+                Grid.Row="1"
             />
             <ListView ItemsSource="{Binding BarcodesScanned}" 
-                Grid.Row="1"      
+                Grid.Row="2"      
                 />
             <Button x:Name="btnSaveAndFinish"
                 TextColor="White"
@@ -33,8 +42,8 @@
                 BorderColor="White"
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="2"
+                VerticalOptions="EndAndExpand"
+                Grid.Row="3"
                 IsVisible="False"
                 Clicked="SaveAndFinish"
             />
@@ -50,7 +59,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="3"
+                Grid.Row="4"
                 Clicked="Cancel"
             />
         </Grid>

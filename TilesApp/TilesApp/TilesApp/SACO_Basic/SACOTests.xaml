@@ -6,7 +6,7 @@
         <StyleSheet Source="../Assets/style.css"/>
     </ContentPage.Resources>
     <ContentPage.Content>
-        <Grid Padding="10"  BackgroundColor="Black" x:Name="innerGrid">
+        <Grid Padding="10"  BackgroundColor="White" x:Name="innerGrid">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
@@ -19,7 +19,7 @@
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
             <Label 
-                TextColor="White"
+                TextColor="Black"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
                 Grid.Row="0"
@@ -28,8 +28,8 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <FormattedString.Spans>
-                            <Span FontSize="18" Text="Welcome " />
-                            <Span x:Name="user" FontSize="18" FontAttributes="Bold" Text="Trump, D." />
+                            <Span FontSize="18" Text="Welcome, " />
+                            <Span x:Name="user" FontSize="18" FontAttributes="Bold" Text="Dante Sparda" />
                         </FormattedString.Spans>
                     </FormattedString>
                 </Label.FormattedText>
@@ -38,13 +38,13 @@
                 x:Name="btAssociate"
                 Text="Associate"
                 TextColor="White"
-                BackgroundColor="Gray"
+                BackgroundColor="LightGray"
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="150"
                 HeightRequest="100"
-                BorderWidth="3"
-                BorderColor="White"
+                BorderWidth="1"
+                BorderColor="Black"
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
@@ -57,13 +57,13 @@
                 x:Name="btAssemble"
                 Text="Assemble"
                 TextColor="White"
-                BackgroundColor="Gray"
+                BackgroundColor="LightGray"
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="150"
                 HeightRequest="100"
-                BorderWidth="3"
-                BorderColor="White"
+                BorderWidth="1"
+                BorderColor="Black"
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
@@ -74,15 +74,15 @@
             />
             <Button
                 x:Name="btCheckInOut"
-                Text="CHECK IN/&#x0a;CHECK OUT"
+                Text="CHECK-IN/&#x0a;CHECK-OUT"
                 TextColor="White"
-                BackgroundColor="Gray"
+                BackgroundColor="LightGray"
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="150"
                 HeightRequest="100"
-                BorderWidth="3"
-                BorderColor="White"
+                BorderWidth="1"
+                BorderColor="Black"
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
@@ -94,13 +94,13 @@
                 x:Name="btCheckpoint"
                 Text="CHECKPOINT"
                 TextColor="White"
-                BackgroundColor="Gray"
+                BackgroundColor="LightGray"
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="150"
                 HeightRequest="100"
-                BorderWidth="3"
-                BorderColor="White"
+                BorderWidth="1"
+                BorderColor="Black"
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
@@ -113,13 +113,13 @@
                 x:Name="btQC"
                 Text="QUALITY&#x0a;CONTROL"
                 TextColor="White"
-                BackgroundColor="Gray"
+                BackgroundColor="LightGray"
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="150"
                 HeightRequest="100"
-                BorderWidth="3"
-                BorderColor="White"
+                BorderWidth="1"
+                BorderColor="Black"
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
@@ -132,13 +132,13 @@
                 x:Name="btReport"
                 Text="Report"
                 TextColor="White"
-                BackgroundColor="Gray"
+                BackgroundColor="LightGray"
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="150"
                 HeightRequest="100"
-                BorderWidth="3"
-                BorderColor="White"
+                BorderWidth="1"
+                BorderColor="Black"
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"
@@ -155,8 +155,8 @@
                 FontAttributes="Bold"
                 FontSize="18"
                 WidthRequest="140"
-                BorderWidth="3"
-                BorderColor="White"
+                BorderWidth="1"
+                BorderColor="Black"
                 BorderRadius="8"
                 VerticalOptions="Center"
                 HorizontalOptions="Center"

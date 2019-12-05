@@ -33,27 +33,27 @@ namespace TilesApp.SACO
                 switch(tag)
                 {
                     case "Associate":
-                        btAssociate.BackgroundColor = Color.Red;
+                        btAssociate.BackgroundColor = Color.Black;
                         btAssociate.IsEnabled = true;
                         break;
                     case "Assemble":
-                        btAssemble.BackgroundColor = Color.Red;
+                        btAssemble.BackgroundColor = Color.Black;
                         btAssemble.IsEnabled = true;
                         break;
                     case "Checkinout":
-                        btCheckInOut.BackgroundColor = Color.Red;
+                        btCheckInOut.BackgroundColor = Color.Black;
                         btCheckInOut.IsEnabled = true;
                         break;
                     case "Checkpoint":
-                        btCheckpoint.BackgroundColor = Color.Red;
+                        btCheckpoint.BackgroundColor = Color.Black;
                         btCheckpoint.IsEnabled = true;
                         break;
                     case "QC":
-                        btQC.BackgroundColor = Color.Red;
+                        btQC.BackgroundColor = Color.Black;
                         btQC.IsEnabled = true;
                         break;
                     case "Report":
-                        btReport.BackgroundColor = Color.Red;
+                        btReport.BackgroundColor = Color.Black;
                         btReport.IsEnabled = true;
                         break;
                 }
@@ -66,14 +66,14 @@ namespace TilesApp.SACO
             await Navigation.PopModalAsync(true);
         }
 
-        private async void Assemble_Command(object sender, EventArgs args)
-        {
-            await Navigation.PushModalAsync(new SACOAssemble());
-        }
-
         private async void Associate_Command(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new SACOAssociate());
+        }
+
+        private async void Assemble_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new SACOAssemble());
         }
 
         private async void Checkpoint_Command(object sender, EventArgs args)

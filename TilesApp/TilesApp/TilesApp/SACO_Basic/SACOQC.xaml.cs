@@ -39,7 +39,7 @@ namespace TilesApp.SACO
                 //Update FAIL info
                 message = "<" + barcode.Text + "> has failed the Quality Control...";
             }
-            await DisplayAlert("Checkout of the component", message, "Ok");
+            await DisplayAlert("Check-out of the component", message, "Ok");
             await Navigation.PopModalAsync(true);
         }
 

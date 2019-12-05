@@ -1,6 +1,7 @@
 ﻿using Plugin.Media;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -10,6 +11,8 @@ namespace TilesApp.SACO
     {
         private double width = 0;
         private double height = 0;
+        private Stream photo;
+        private string photoPath;
 
         public SACOTakePhoto()
         {
@@ -17,7 +20,6 @@ namespace TilesApp.SACO
             NavigationPage.SetHasNavigationBar(this, false);
             width = this.Width;
             height = this.Height;
-            CameraButton.Clicked += CameraButton_Clicked;
         }
 
         private async void CameraButton_Clicked(object sender, EventArgs e)
@@ -42,13 +44,15 @@ namespace TilesApp.SACO
                 if (file == null)
                     return;
 
+                btnSaveAndFinish.BackgroundColor = Color.Black;
+                btnSaveAndFinish.IsEnabled = true;
+
                 PhotoImage.Source = ImageSource.FromStream(() =>
                 {
-                    var stream = file.GetStream();
-                    return stream;
+                    photo = file.GetStream();
+                    photoPath = file.AlbumPath;
+                    return photo;
                 });
-
-                //var bitmap = BitmapFactory.DecodeFile(file.Path);
 
                 await DisplayAlert("Photo taken correctly", file.AlbumPath, "OK");
             }
@@ -56,6 +60,18 @@ namespace TilesApp.SACO
             {
                 await DisplayAlert("Permission denied", "Error: " + ex.Message, "OK");
             }
+        }
+
+        private async void SaveAndFinish(object sender, EventArgs args)
+        {
+            //Update info in DB
+            await DisplayAlert("Photo updated successfully!", "<" + photoPath + "> stored in DB.", "OK");
+            await Navigation.PopModalAsync(true);
+        }
+
+        private async void Cancel(object sender, EventArgs args)
+        {
+            await Navigation.PopModalAsync(true);
         }
 
     }

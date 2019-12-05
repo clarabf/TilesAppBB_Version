@@ -5,7 +5,6 @@ using Xamarin.Forms;
 using ZXing;
 using Newtonsoft.Json;
 using System.Text;
-using TilesApp.Models;
 using XmlRpc;
 
 namespace TilesApp.SACO
@@ -14,10 +13,12 @@ namespace TilesApp.SACO
     {
 
         int scanType;
+        Dictionary<string, object> users;
 
-        public SACOScan(string Content, int type)
+        public SACOScan(string Content, int type, Dictionary<string, object> usersList)
         {
             scanType = type;
+            users = usersList;
 
             var options = new ZXing.Mobile.MobileBarcodeScanningOptions();
             options.TryInverted = true;
@@ -52,19 +53,18 @@ namespace TilesApp.SACO
             {
                 try
                 {
-                    //Get userInfo (name and tags)
-                    OdooConnection oc = new OdooConnection();
-                    Dictionary<string, object> userInfo = oc.GetUserInfo(qrScanned);
+
+                    Dictionary<string, object> userInfo = (Dictionary<string, object>)users[qrScanned];
 
                     //Register login
-                    var dataLogin = new Dictionary<string, object>();
-                    dataLogin.Add("id", userInfo["id"].ToString());
-                    dataLogin.Add("cardCode", qrScanned);
-                    dataLogin.Add("employeeName", userInfo["name"].ToString());
-                    dataLogin.Add("timestamp", DateTime.Now);
-                    var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
-                    var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
-                    var answer = await postResponse.Content.ReadAsStringAsync();
+                    //var dataLogin = new Dictionary<string, object>();
+                    //dataLogin.Add("id", userInfo["id"].ToString());
+                    //dataLogin.Add("cardCode", qrScanned);
+                    //dataLogin.Add("employeeName", userInfo["name"].ToString());
+                    //dataLogin.Add("timestamp", DateTime.Now);
+                    //var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
+                    //var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
+                    //var answer = await postResponse.Content.ReadAsStringAsync();
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
@@ -87,10 +87,6 @@ namespace TilesApp.SACO
             }
         }
 
-        private string GetTimestamp(DateTime value)
-        {
-            return value.ToString("yyyyMMddHHmmssffff");
-        }
     }
 }
 

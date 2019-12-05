@@ -6,7 +6,8 @@
     <ContentPage.Content>
         <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.4*" />
+                <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
@@ -15,6 +16,16 @@
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
+            <Label x:Name="lblTest" 
+                Text="QUALITY CONTROL"
+                TextColor="Black"
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+                Grid.Row="0"
+                Grid.ColumnSpan="2"
+            />
             <Label x:Name="lblTitle" 
                 Text="Scan barcode of component:"
                 TextColor="Black"
@@ -22,7 +33,7 @@
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="0"
+                Grid.Row="1"
                 Grid.ColumnSpan="2"
             />
             <Label x:Name="lblBarcode"
@@ -32,15 +43,15 @@
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
                 IsVisible="False"
-                Grid.Row="1" 
+                Grid.Row="2" 
                 Grid.ColumnSpan="2"
                 >
                 <Label.FormattedText>
                     <FormattedString>
                         <FormattedString.Spans>
-                            <Span Text="Checkin of component&#x0a;    &lt;" />
+                            <Span Text="Check-in of component&#x0a;    &lt;" />
                             <Span x:Name="barcode" FontAttributes="Bold" Text="12345678"/>
-                            <Span Text="&gt;&#x0a;      done successfully."/>
+                            <Span Text="&gt;&#x0a;    done successfully."/>
                         </FormattedString.Spans>
                     </FormattedString>
                 </Label.FormattedText>
@@ -57,9 +68,9 @@
                 BorderWidth="1"
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
                 IsVisible="False"
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="0"
                 Clicked="PassOrFail"
             />
@@ -75,9 +86,9 @@
                 BorderWidth="1"
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
                 IsVisible="False"
-                Grid.Row="2"
+                Grid.Row="3"
                 Grid.Column="1"
                 Clicked="PassOrFail"
             />
@@ -93,7 +104,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="3"
+                Grid.Row="4"
                 Grid.ColumnSpan="2"
                 Clicked="Cancel"
             />

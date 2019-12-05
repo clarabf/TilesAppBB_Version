@@ -6,10 +6,20 @@
     <ContentPage.Content>
         <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.4*" />
+                <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
+            <Label x:Name="lblTest" 
+                Text="CHECKPOINT"
+                TextColor="Black"
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+                Grid.Row="0"
+            />
             <Label x:Name="lblTitle" 
                 Text="Scan barcode of component:"
                 TextColor="Black"
@@ -17,7 +27,7 @@
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="0"
+                Grid.Row="1"
             />
             <Label x:Name="lblBarcode"
                 TextColor="Black"
@@ -26,7 +36,7 @@
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
                 IsVisible="False"
-                Grid.Row="1"      
+                Grid.Row="2"      
                 >
                 <Label.FormattedText>
                     <FormattedString>
@@ -50,7 +60,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="2"
+                Grid.Row="3"
                 Clicked="Come_Back"
             />
         </Grid>

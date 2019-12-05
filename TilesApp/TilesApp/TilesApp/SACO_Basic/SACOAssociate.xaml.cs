@@ -30,7 +30,7 @@ namespace TilesApp.SACO
             //Update info in DB
             if (entry.Text != "")
             {
-                await DisplayAlert("Component added to the database", "<" + entry.Text + "> was added successfully!", "OK");
+                await DisplayAlert("Component added successfully!", "<" + entry.Text + "> stored in DB.", "OK");
                 await Navigation.PopModalAsync(true);
             }
             else

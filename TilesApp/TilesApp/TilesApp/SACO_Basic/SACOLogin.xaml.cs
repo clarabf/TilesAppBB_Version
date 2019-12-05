@@ -20,13 +20,8 @@ namespace TilesApp.SACO
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-        }
-
-        public SACOLogin(Dictionary<string,object> usersList)
-        {
-            InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
-            users = usersList;
+            OdooConnection od = new OdooConnection();
+            users = od.GetUsers();
             width = this.Width;
             height = this.Height;
 
@@ -35,7 +30,8 @@ namespace TilesApp.SACO
 
                 try
                 {
-                    Dictionary<string, object> userInfo = (Dictionary<string, object>)usersList[a.ToString()];
+                    Dictionary<string, object> userInfo = (Dictionary<string, object>)users[a.ToString()];
+                    
                     //OdooConnection oc = new OdooConnection();
                     //Dictionary<string, object> userInfo = oc.GetUserInfo(a.ToString());
 
@@ -62,7 +58,7 @@ namespace TilesApp.SACO
         {
             Tile t = new Tile();
             t.id = 2;
-            await Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD",1));
+            await Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD",1, users));
         }
 
     }

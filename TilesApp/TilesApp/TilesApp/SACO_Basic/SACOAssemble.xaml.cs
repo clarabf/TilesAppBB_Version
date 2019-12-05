@@ -28,14 +28,14 @@ namespace TilesApp.SACO
                 {
                     mainScanned = true;
                     mainCode = a.ToString();
-                    title.Text = "Scan barcode of the other components";
+                    lblTitle.Text = "Scan barcode of the other components";
                     BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
                     btnSaveAndFinish.IsVisible = true;
                 }
                 else
                 {
                     barcodes.Add(a.ToString());
-                    title.Text = "Scan barcode of the other components (" + barcodes.Count + ")";
+                    lblTitle.Text = "Scan barcode of the other components (" + barcodes.Count + ")";
                     BarcodesScanned.Add("Item <" + a.ToString() + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
                 }
             });
