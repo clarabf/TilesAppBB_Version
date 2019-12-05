@@ -13,7 +13,8 @@ using Xamarin.Forms;
 
 namespace TilesApp.Droid
 {
-    [Activity(Label = "TilesApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+
+    [Activity(Label = "TilesApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
 
@@ -26,6 +27,7 @@ namespace TilesApp.Droid
 
             await CrossMedia.Current.Initialize();
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
+
             base.OnCreate(savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
             Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);

@@ -20,11 +20,16 @@ namespace TilesApp.SACO
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            OdooConnection od = new OdooConnection();
-            users = od.GetUsers();
+        }
+
+        public SACOLogin(Dictionary<string, object> usersList)
+        {
+            InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+            users = usersList;
             width = this.Width;
             height = this.Height;
-
+            
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
 

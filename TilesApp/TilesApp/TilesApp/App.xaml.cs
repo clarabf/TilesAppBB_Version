@@ -50,7 +50,9 @@ namespace TilesApp
             //MainPage = new NavigationPage(new SACOTakePhoto()); 
 
             //testing SACO app
-            MainPage = new NavigationPage(new SACOLogin());
+            OdooConnection od = new OdooConnection();
+            Dictionary<string, object> users = od.GetUsers();
+            MainPage = new NavigationPage(new SACOLogin(users));
 
             //testing Pistol Reader
             //MainPage = new NavigationPage(new SACOReader());
