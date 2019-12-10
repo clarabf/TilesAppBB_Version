@@ -1,13 +1,10 @@
-﻿using Android.Content.Res;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using TilesApp.ExpandableView;
-using TilesApp.Models;
+﻿using System.Collections.Generic;
 using TilesApp.SACO;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XmlRpc;
+using TilesApp.Rfid.ViewModels;
+using System.Linq;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -50,15 +47,43 @@ namespace TilesApp
             //MainPage = new NavigationPage(new SACOTakePhoto()); 
 
             //testing SACO app
-            OdooConnection od = new OdooConnection();
-            Dictionary<string, object> users = od.GetUsers();
-            MainPage = new NavigationPage(new SACOLogin(users));
+            //OdooConnection od = new OdooConnection();
+            //Dictionary<string, object> users = od.GetUsers();
+            MainPage = new NavigationPage(new Rfid.Views.MainPage());
 
             //testing Pistol Reader
             //MainPage = new NavigationPage(new SACOReader());
 
             NavigationPage.SetHasNavigationBar(this, false);
         }
+
+        /// <summary>
+        /// Change the displayed tab to the one titled "Find Tag"
+        /// </summary>
+        public static void ShowFind()
+        {
+            var main = App.Current.MainPage as Rfid.Views.MainPage;
+            var target = main.Children.Where(x => x.Title == "Find Tag").FirstOrDefault() as NavigationPage;
+            main.CurrentPage = target;
+            target.CurrentPage.Focus();
+        }
+
+        /// <summary>
+        /// Change the displayed tab to the one titled "Read Write"
+        /// </summary>
+        public static void ShowReadWrite()
+        {
+           var main = App.Current.MainPage as Rfid.Views.MainPage;
+            var target = main.Children.Where(x => x.Title == "Read Write").FirstOrDefault() as NavigationPage;
+            main.CurrentPage = target;
+            target.CurrentPage.Focus();
+        }
+
+
+        /// <summary>
+        /// Gets the <see cref="ViewModels.ViewModelLocator"/> that will return a ViewModel for a View
+        /// </summary>
+        public static ViewModelLocator ViewModel { get; } = new ViewModelLocator();
 
         protected override void OnStart()
         {

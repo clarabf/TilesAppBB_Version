@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:views="clr-namespace:TilesApp.Rfid.Views"
+            xmlns:native_views ="clr-namespace:TilesApp"
+            x:Class="TilesApp.Rfid.Views.MainPage"
+            >
+    <TabbedPage.Children>
+        <NavigationPage Title="Login">
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="tab_feed.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
+            <x:Arguments>
+                <native_views:Login />
+            </x:Arguments>
+        </NavigationPage>
+
+
+        <NavigationPage Title="Transports">
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="tab_feed.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
+            <x:Arguments>
+                <views:TransportsPage />
+            </x:Arguments>
+        </NavigationPage>
+		
+		<NavigationPage Title="Readers">
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="tab_feed.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
+            <x:Arguments>
+                <views:ReadersPage />
+            </x:Arguments>
+        </NavigationPage>
+
+        <NavigationPage Title="Inventory">
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="tab_feed.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
+            <x:Arguments>
+                <views:InventoryPage />
+            </x:Arguments>
+        </NavigationPage>
+
+        <NavigationPage Title="Read Test">
+            <NavigationPage.Icon>
+                <OnPlatform x:TypeArguments="FileImageSource">
+                    <On Platform="iOS" Value="tab_feed.png"/>
+                </OnPlatform>
+            </NavigationPage.Icon>
+            <x:Arguments>
+                <views:ReadTestPage />
+            </x:Arguments>
+        </NavigationPage>
+
+
+    </TabbedPage.Children>
+</TabbedPage>
