@@ -39,12 +39,6 @@
     <Compile Update="App - Copy.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="ExpandableView\MainListView.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <Compile Update="Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
-    </Compile>
     <Compile Update="SACO_Basic\SACOQC.xaml.cs">
       <DependentUpon>SACOQC.xaml</DependentUpon>
     </Compile>
@@ -60,8 +54,8 @@
     <Compile Update="SACO_Basic\SACOTakePhoto.xaml.cs">
       <DependentUpon>SACOTakePhoto.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOTests.xaml.cs">
-      <DependentUpon>SACOTests.xaml</DependentUpon>
+    <Compile Update="SACO_Basic\SACOApps.xaml.cs">
+      <DependentUpon>SACOApps.xaml</DependentUpon>
     </Compile>
     <Compile Update="SACO_Basic\SACOLogin.xaml.cs">
       <DependentUpon>SACOLogin.xaml</DependentUpon>
@@ -72,38 +66,8 @@
     <Compile Update="StepProgressBarControl.xaml.cs">
       <DependentUpon>StepProgressBarControl.xaml</DependentUpon>
     </Compile>
-    <Compile Update="ElementsTest\TestPDFViewer.xaml.cs">
-      <DependentUpon>TestPDFViewer.xaml</DependentUpon>
-    </Compile>
     <Compile Update="StepsPage.xaml.cs">
       <DependentUpon>StepsPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="ScanQR.xaml.cs">
-      <DependentUpon>ScanQR.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="TableOrder.xaml.cs">
-      <DependentUpon>TableOrder.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="V1\TestLastStep.xaml.cs">
-      <DependentUpon>TestLastStep.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="V1\TestGeneralStep.xaml.cs">
-      <DependentUpon>TestGeneralStep.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="V1\TestScanView.xaml.cs">
-      <DependentUpon>TestScanView.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="V1\TestFirstStep.xaml.cs">
-      <DependentUpon>TestFirstStep.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="V1\TestTiles.xaml.cs">
-      <DependentUpon>TestTiles.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="V1\TestTableOrder.xaml.cs">
-      <DependentUpon>TestTableOrder.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="V1\TestWorkOrder.xaml.cs">
-      <DependentUpon>TestWorkOrder.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -121,12 +85,6 @@
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="StepProgressBarControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="ScanQR.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="V1\TestScanView.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
   </ItemGroup>

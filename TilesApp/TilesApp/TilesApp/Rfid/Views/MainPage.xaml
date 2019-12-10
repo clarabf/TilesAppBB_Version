@@ -3,6 +3,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:views="clr-namespace:TilesApp.Rfid.Views"
             xmlns:native_views ="clr-namespace:TilesApp"
+            xmlns:saco_views ="clr-namespace:TilesApp.SACO"
             x:Class="TilesApp.Rfid.Views.MainPage"
             >
     <TabbedPage.Children>
@@ -13,7 +14,7 @@
                 </OnPlatform>
             </NavigationPage.Icon>
             <x:Arguments>
-                <native_views:Login />
+                <saco_views:SACOLogin />
             </x:Arguments>
         </NavigationPage>
 

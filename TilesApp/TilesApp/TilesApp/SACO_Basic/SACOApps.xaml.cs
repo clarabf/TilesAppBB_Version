@@ -5,13 +5,13 @@ using Xamarin.Forms;
 namespace TilesApp.SACO
 {
 
-    public partial class SACOTests : ContentPage
+    public partial class SACOApps : ContentPage
     {
         private double width = 0;
         private double height = 0;
         Dictionary<string, object> userInfo;
         
-        public SACOTests()
+        public SACOApps()
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -19,7 +19,7 @@ namespace TilesApp.SACO
             height = this.Height;
         }
 
-        public SACOTests(Dictionary<string, object> userInf)
+        public SACOApps(Dictionary<string, object> userInf)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
-using TilesApp.Models;
 using Xamarin.Forms;
 using XmlRpc;
 
@@ -20,13 +19,8 @@ namespace TilesApp.SACO
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-        }
-
-        public SACOLogin(Dictionary<string, object> usersList)
-        {
-            InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
-            users = usersList;
+            //OdooConnection od = new OdooConnection();
+            //users = od.GetUsers();
             width = this.Width;
             height = this.Height;
             
@@ -50,7 +44,7 @@ namespace TilesApp.SACO
                     //var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
                     //var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
                     //var answer = await postResponse.Content.ReadAsStringAsync();
-                    await Navigation.PushModalAsync(new SACOTests(userInfo));
+                    await Navigation.PushModalAsync(new SACOApps(userInfo));
                 }
                 catch
                 {
@@ -61,8 +55,6 @@ namespace TilesApp.SACO
 
         private async void GoToScan(object sender, EventArgs args)
         {
-            Tile t = new Tile();
-            t.id = 2;
             await Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD",1, users));
         }
 

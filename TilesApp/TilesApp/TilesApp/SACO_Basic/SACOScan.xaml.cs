@@ -69,7 +69,7 @@ namespace TilesApp.SACO
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new SACOTests(userInfo));
+                        Navigation.PushModalAsync(new SACOApps(userInfo));
                     });
                 }
                 catch
