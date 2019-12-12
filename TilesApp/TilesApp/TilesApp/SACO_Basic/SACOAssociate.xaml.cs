@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using TilesApp.Rfid;
+using TilesApp.Rfid.Models;
 using TilesApp.Rfid.ViewModels;
 using Xamarin.Forms;
 
@@ -16,7 +18,7 @@ namespace TilesApp.SACO
         public SACOAssociate()
         {
             InitializeComponent();
-            //this.BindWithLifecycle(App.ViewModel.Inventory);
+            App.ViewModel.Inventory.Transponders.CollectionChanged += Transponders_CollectionChanged;
              
             BindingContext = this;
             NavigationPage.SetHasNavigationBar(this, false);
@@ -29,13 +31,18 @@ namespace TilesApp.SACO
                 barcode.Text = a.ToString();
             });
 
-            MessagingCenter.Subscribe<Application, String>(Application.Current, "EpcScanned", (s, a) => {
-                lblBarcode.IsVisible = true;
-                entry.IsVisible = true;
-                btnSaveAndFinish.IsVisible = true;
-                //barcode.Text = a;
-                BarcodesScanned.Add("item <" + a + "> scanned");
-            });
+        }
+
+        private void Transponders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems != null)
+            {
+                foreach (var item in args.NewItems.Cast<IdentifiedItem>())
+                {
+                    BarcodesScanned.Add(item.Identifier);
+                }
+            }
+
         }
 
         private async void SaveAndFinish(object sender, EventArgs args)
