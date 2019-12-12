@@ -58,35 +58,6 @@
                 IsVisible="False"
                 Grid.Row="3"      
                 />
-            <!--<ListView ItemsSource="{Binding Transponders}" CachingStrategy="RecycleElement" SeparatorVisibility="None" HasUnevenRows="true" 
-                      BackgroundColor="#f0f8fc" Margin="0,4"  Grid.Row="4"  >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <ViewCell.View>
-                                <StackLayout Orientation="Vertical" VerticalOptions="Fill"
-                                    HorizontalOptions="FillAndExpand" Spacing="0" Padding="4,0">
-                                    <Label Text="{Binding Identifier}" Margin="4, 4, 4, 0" FontSize="Medium"
-                                           LineBreakMode="TailTruncation"
-                                           HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand" />
-                                    <StackLayout Orientation="Horizontal" Spacing="0"
-                                        HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand">
-                                        --><!-- Channel, Phase, RSSI, Seen Count--><!--
-                                        <Label Text="{Binding NormalizedSignal, StringFormat='RSSI: {0,4:P0}'}" Margin="4, 0" FontSize="Micro" FontAttributes="Italic"
-                                               VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" />
-                                        <Label Text="{Binding Phase, StringFormat='Ph: {0,3}'}" Margin="4, 0" FontSize="Micro" FontAttributes="Italic"
-                                               HorizontalOptions="End" HorizontalTextAlignment="End" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" />
-                                        <Label Text="{Binding ChannelFrequency, StringFormat='Ch: {0}Hz'}" Margin="8, 0" FontSize="Micro" FontAttributes="Italic"
-                                               HorizontalOptions="End" HorizontalTextAlignment="End" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" />
-                                        <Label Text="{Binding SeenCount, StringFormat='Seen: {0,3}'}" Margin="4, 0" FontSize="Micro" FontAttributes="Italic"
-                                               HorizontalOptions="EndAndExpand" HorizontalTextAlignment="End" VerticalOptions="StartAndExpand" VerticalTextAlignment="Center" />
-                                    </StackLayout>
-                                </StackLayout>
-                            </ViewCell.View>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>-->
             <ListView ItemsSource="{Binding BarcodesScanned}" 
                 Grid.Row="4"      
                 />

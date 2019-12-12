@@ -29,8 +29,8 @@
                 <views:TransportsPage />
             </x:Arguments>
         </NavigationPage>
-		
-		<NavigationPage Title="Readers">
+
+        <NavigationPage Title="Readers">
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="tab_feed.png"/>
@@ -40,29 +40,6 @@
                 <views:ReadersPage />
             </x:Arguments>
         </NavigationPage>
-
-        <NavigationPage Title="Inventory">
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="tab_feed.png"/>
-                </OnPlatform>
-            </NavigationPage.Icon>
-            <x:Arguments>
-                <views:InventoryPage />
-            </x:Arguments>
-        </NavigationPage>
-
-        <NavigationPage Title="Read Test">
-            <NavigationPage.Icon>
-                <OnPlatform x:TypeArguments="FileImageSource">
-                    <On Platform="iOS" Value="tab_feed.png"/>
-                </OnPlatform>
-            </NavigationPage.Icon>
-            <x:Arguments>
-                <views:ReadTestPage />
-            </x:Arguments>
-        </NavigationPage>
-
 
     </TabbedPage.Children>
 </TabbedPage>
