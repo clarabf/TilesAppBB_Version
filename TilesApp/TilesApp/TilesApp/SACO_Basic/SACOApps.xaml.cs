@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TilesApp.Rfid.Views;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -16,7 +17,7 @@ namespace TilesApp.SACO
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             width = this.Width;
-            height = this.Height;
+            height = this.Height;            
         }
 
         public SACOApps(Dictionary<string, object> userInf)
@@ -69,6 +70,7 @@ namespace TilesApp.SACO
         private async void Associate_Command(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new SACOAssociate());
+            //await Navigation.PushModalAsync(new InventoryPage()); 
         }
 
         private async void Assemble_Command(object sender, EventArgs args)

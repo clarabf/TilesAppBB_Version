@@ -20,7 +20,7 @@ namespace TilesApp
             InitializeComponent();
 
             //testing SACO app
-            MainPage = new NavigationPage(new Rfid.Views.MainPage());
+            MainPage = new Rfid.Views.MainPage();
             NavigationPage.SetHasNavigationBar(this, false);
         }
 

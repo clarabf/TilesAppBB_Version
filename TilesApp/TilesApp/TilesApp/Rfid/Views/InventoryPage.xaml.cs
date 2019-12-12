@@ -17,6 +17,8 @@ namespace TilesApp.Rfid.Views
             InitializeComponent();
 
             this.BindWithLifecycle(App.ViewModel.Inventory);
+            
+            //Console.WriteLine(Statistics.TotalUniqueCount);
         }
 
         private string SelectedTransponder { get; set; }      

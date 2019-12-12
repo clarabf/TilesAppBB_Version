@@ -4,11 +4,8 @@ namespace TilesApp.Rfid.Models
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Text;
-
     using Services;
     using TechnologySolutions.Rfid;
-    using TechnologySolutions.Rfid.AsciiProtocol;
 
     /// <summary>
     /// View model for the inventory of transponders and barcodes
@@ -50,6 +47,7 @@ namespace TilesApp.Rfid.Models
             this.Statistics = statistics;
             this.Identifiers = new ObservableCollection<IdentifiedItem>();
             this.transponders = new Dictionary<string, IdentifiedItem>();
+            
             //this.IsEnabled = true;
 
             monitorTransponders.TranspondersReceived += (sender, e) =>
@@ -97,7 +95,6 @@ namespace TilesApp.Rfid.Models
         {
             int unique;
             int seen;
-
             seen = 0;
             unique = 0;
 
@@ -116,6 +113,7 @@ namespace TilesApp.Rfid.Models
                     unique += 1;
                     this.transponders.Add(transponder.Epc, item);
                     this.Identifiers.Add(item);
+                    Console.WriteLine("THE EPC IS: " + transponder.Epc);
                 }
                 else
                 {
@@ -127,7 +125,7 @@ namespace TilesApp.Rfid.Models
                 item.ChannelFrequency = channel;
                 item.Phase = phase;
             }
-
+            
             this.Statistics.Update(unique, seen, transpondersChunk.EndOfPass);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Xamarin.Forms;
 
 namespace TilesApp.Rfid.Models
 {
@@ -57,6 +58,7 @@ namespace TilesApp.Rfid.Models
         public IdentifiedItem(string identifier)
         {
             this.identifier = identifier;
+            MessagingCenter.Send(Xamarin.Forms.Application.Current, "EpcScanned", identifier);
         }
 
         /// <summary>

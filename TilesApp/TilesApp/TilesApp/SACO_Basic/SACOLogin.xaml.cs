@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using TilesApp.Rfid;
 using Xamarin.Forms;
 using XmlRpc;
 
@@ -18,12 +19,12 @@ namespace TilesApp.SACO
         public SACOLogin()
         {
             InitializeComponent();
+            this.BindWithLifecycle(App.ViewModel.Inventory);
             NavigationPage.SetHasNavigationBar(this, false);
-            //OdooConnection od = new OdooConnection();
-            //users = od.GetUsers();
+            OdooConnection od = new OdooConnection();
+            users = od.GetUsers();
             width = this.Width;
             height = this.Height;
-            
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
 
@@ -57,6 +58,8 @@ namespace TilesApp.SACO
         {
             await Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD",1, users));
         }
+
+
 
     }
 }

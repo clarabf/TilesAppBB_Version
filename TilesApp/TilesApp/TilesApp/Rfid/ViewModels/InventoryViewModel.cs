@@ -153,7 +153,7 @@ namespace TilesApp.Rfid.ViewModels
 
         public void Hidden()
         {
-            this.transponders.IsEnabled = false;
+            //this.transponders.IsEnabled = false;
         }
     }
 }

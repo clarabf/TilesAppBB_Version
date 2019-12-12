@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using TilesApp.Rfid;
+using TilesApp.Rfid.ViewModels;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -8,10 +12,12 @@ namespace TilesApp.SACO
     {
         private double width = 0;
         private double height = 0;
-
+        public ObservableCollection<string> BarcodesScanned { get; set; } = new ObservableCollection<string>();
         public SACOAssociate()
         {
             InitializeComponent();
+            //this.BindWithLifecycle(App.ViewModel.Inventory);
+             
             BindingContext = this;
             NavigationPage.SetHasNavigationBar(this, false);
             width = this.Width;
@@ -21,6 +27,14 @@ namespace TilesApp.SACO
                 entry.IsVisible = true;
                 btnSaveAndFinish.IsVisible = true;
                 barcode.Text = a.ToString();
+            });
+
+            MessagingCenter.Subscribe<Application, String>(Application.Current, "EpcScanned", (s, a) => {
+                lblBarcode.IsVisible = true;
+                entry.IsVisible = true;
+                btnSaveAndFinish.IsVisible = true;
+                //barcode.Text = a;
+                BarcodesScanned.Add("item <" + a + "> scanned");
             });
         }
 
@@ -43,6 +57,13 @@ namespace TilesApp.SACO
         {
             MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             await Navigation.PopModalAsync(true);
+        }
+
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            App.ViewModel.Inventory.ClearCommand.Execute(null);
         }
 
     }
