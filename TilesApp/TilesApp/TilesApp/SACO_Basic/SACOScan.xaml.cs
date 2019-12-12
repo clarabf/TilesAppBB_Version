@@ -81,9 +81,13 @@ namespace TilesApp.SACO
                     });
                 }
             }
-            else
+            else if (scanType==2)
             {
-                
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new JSONPage(qrScanned));
+                });
             }
         }
 
