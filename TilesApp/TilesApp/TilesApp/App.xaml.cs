@@ -26,7 +26,7 @@ namespace TilesApp
             //MainPage = new NavigationPage(new JSONPage(json));
 
             //MainPage = new NavigationPage(new JSONPageInit());
-            //NavigationPage.SetHasNavigationBar(this, false);
+            NavigationPage.SetHasNavigationBar(this, false);
         }
 
         /// <summary>
