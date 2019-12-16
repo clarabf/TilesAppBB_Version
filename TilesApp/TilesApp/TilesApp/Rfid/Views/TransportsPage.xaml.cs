@@ -36,5 +36,10 @@ namespace TilesApp.Rfid.Views
                 this.TransportsListView.SelectedItem = null;
             }
         }
+
+        private async void Cancel(object sender, EventArgs args)
+        {
+            await Navigation.PopModalAsync(true);
+        }
     }
 }

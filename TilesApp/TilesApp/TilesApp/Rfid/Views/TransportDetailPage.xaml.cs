@@ -31,5 +31,10 @@ namespace TilesApp.Rfid.Views
         {
             InitializeComponent();
         }
+
+        private async void Cancel(object sender, EventArgs args)
+        {
+            await Navigation.PopModalAsync(true);
+        }
     }
 }

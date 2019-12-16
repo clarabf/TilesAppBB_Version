@@ -50,6 +50,7 @@
             <StackLayout Orientation="Horizontal" Padding="12" HorizontalOptions="FillAndExpand">
                 <Button Text="Connect" Command="{Binding ConnectCommand}" />
                 <Button Text="Disconnect" Command="{Binding DisconnectCommand}" HorizontalOptions="EndAndExpand"/>
+                <Button Text="Cancel" Clicked="Cancel" HorizontalOptions="EndAndExpand"/>
             </StackLayout>
 
             <Button x:Name="forgetButton" Text="Forget" Command="{Binding ForgetCommand}" Margin="12,8" VerticalOptions="EndAndExpand" HorizontalOptions="Center">
