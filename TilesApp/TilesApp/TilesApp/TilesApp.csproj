@@ -39,28 +39,28 @@
     <Compile Update="App - Copy.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOQC.xaml.cs">
+    <Compile Update="SACO_Basic\Skeletons\SACOQC.xaml.cs">
       <DependentUpon>SACOQC.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOCheckpoint.xaml.cs">
+    <Compile Update="SACO_Basic\Skeletons\SACOCheckpoint.xaml.cs">
       <DependentUpon>SACOCheckpoint.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOAssociate.xaml.cs">
+    <Compile Update="SACO_Basic\Skeletons\SACOAssociate.xaml.cs">
       <DependentUpon>SACOAssociate.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOAssemble.xaml.cs">
+    <Compile Update="SACO_Basic\Skeletons\SACOAssemble.xaml.cs">
       <DependentUpon>SACOAssemble.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOTakePhoto.xaml.cs">
+    <Compile Update="SACO_Basic\Other_Functionalities\SACOTakePhoto.xaml.cs">
       <DependentUpon>SACOTakePhoto.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOApps.xaml.cs">
+    <Compile Update="SACO_Basic\Skeletons\SACOApps.xaml.cs">
       <DependentUpon>SACOApps.xaml</DependentUpon>
     </Compile>
     <Compile Update="SACO_Basic\SACOLogin.xaml.cs">
       <DependentUpon>SACOLogin.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOScan.xaml.cs">
+    <Compile Update="SACO_Basic\Other_Functionalities\SACOScan.xaml.cs">
       <DependentUpon>SACOScan.xaml</DependentUpon>
     </Compile>
     <Compile Update="StepProgressBarControl.xaml.cs">
@@ -78,8 +78,14 @@
     <EmbeddedResource Update="Assets\style.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <EmbeddedResource Update="SACO_Basic\SACOScan.xaml">
+    <EmbeddedResource Update="SACO_Basic\Other_Functionalities\SACOScan.xaml">
       <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SACO_Basic\SACOAppPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="SACO_Basic\SACOSkeleton.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="StepProgressBarControl.xaml">
       <Generator>MSBuild:Compile</Generator>

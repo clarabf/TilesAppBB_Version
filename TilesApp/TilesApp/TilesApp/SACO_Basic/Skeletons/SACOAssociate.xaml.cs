@@ -20,7 +20,7 @@ namespace TilesApp.SACO
             InitializeComponent();
             App.ViewModel.Inventory.Transponders.CollectionChanged += Transponders_CollectionChanged;
 
-           BindingContext = this;
+            BindingContext = this;
             NavigationPage.SetHasNavigationBar(this, false);
             width = this.Width;
             height = this.Height;

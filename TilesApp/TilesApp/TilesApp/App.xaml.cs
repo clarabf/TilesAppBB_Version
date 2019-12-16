@@ -19,8 +19,20 @@ namespace TilesApp
 
             InitializeComponent();
 
-            //testing SACO app
-            MainPage = new NavigationPage(new Rfid.Views.MainPage());
+            ////testing SACO app
+            //MainPage = new NavigationPage(new Rfid.Views.MainPage());
+
+            ////testing generated JSON
+            //string json = jsParser.GenerateJSON();
+            //MainPage = new NavigationPage(new JSONPage(json));
+
+            ////testing JSON scanned from QR
+            //MainPage = new NavigationPage(new JSONPageInit());
+
+            ////testing pages visualization
+            MainPage = new NavigationPage(new SACOAppPage());
+            //MainPage = new NavigationPage(new SACOSkeleton());
+
             NavigationPage.SetHasNavigationBar(this, false);
         }
 

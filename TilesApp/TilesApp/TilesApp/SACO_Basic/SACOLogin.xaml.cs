@@ -21,8 +21,8 @@ namespace TilesApp.SACO
             InitializeComponent();
             this.BindWithLifecycle(App.ViewModel.Inventory);
             NavigationPage.SetHasNavigationBar(this, false);
-            OdooConnection od = new OdooConnection();
-            users = od.GetUsers();
+            //OdooConnection od = new OdooConnection();
+            //users = od.GetUsers();
             width = this.Width;
             height = this.Height;
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
@@ -45,7 +45,7 @@ namespace TilesApp.SACO
                     //var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
                     //var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
                     //var answer = await postResponse.Content.ReadAsStringAsync();
-                    await Navigation.PushModalAsync(new SACOApps(userInfo));
+                    await Navigation.PushModalAsync(new SACOAppPage(userInfo));
                 }
                 catch
                 {
