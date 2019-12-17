@@ -16,11 +16,11 @@ namespace TilesApp
 
         public App()
         {
-            MainPage = new NavigationPage(new SACOLogin());
+            
             InitializeComponent();
 
             ////testing SACO app
-            
+            MainPage = new NavigationPage(new SACOLogin());
 
             ////testing generated JSON
             //string json = jsParser.GenerateJSON();

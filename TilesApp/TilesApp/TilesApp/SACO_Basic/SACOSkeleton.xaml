@@ -16,38 +16,46 @@
                 <RowDefinition Height="0.4*" />
             </Grid.RowDefinitions>
             <Label
-                TextColor = "#dc3545"
+                x:Name="taskName"
+                TextColor ="#dc3545"
                 Text="TASK_NAME"
                 HorizontalOptions="Center"
                 VerticalOptions="End"
-                 FontAttributes="Bold"
+                FontAttributes="Bold"
                 Grid.Row="0"
-                FontSize="25"/>
+                FontSize="25"
+                />
             <Label
+                x:Name="topText"
                 TextColor="#dc3545"
                 Text="Scan the barcode:"
                 HorizontalOptions="Center"
                 VerticalOptions="Start"
                 Grid.Row="1"
-                FontSize="20"/>
+                FontSize="20"
+                />
             <Label
-                TextColor = "#3E3E3E"
+                x:Name="tagIdentified"
+                TextColor ="#3E3E3E"
                 Text="TAG identified successfully!"
                 HorizontalOptions="Center"
                 VerticalOptions="End"
-                 FontAttributes="Bold"
+                FontAttributes="Bold"
                 Grid.Row="2"
-                FontSize="18"/>
+                FontSize="18"
+                />
             <Label
+                x:Name="id"
                 TextColor = "#D2D2D2"
                 Text="ITEM_123456789_20191125"
                 HorizontalOptions="Center"
                 VerticalOptions="Start"
-                 FontAttributes="Bold"
+                FontAttributes="Bold"
                 Grid.Row="3"
-                FontSize="18"/>
+                FontSize="18"
+                />
             <Button
-                x:Name="RETRY"
+                x:Name="topButton"
                 Text="RETRY"
                 TextColor="#dc3545"
                 BackgroundColor="Transparent"
@@ -59,9 +67,9 @@
                 VerticalOptions="End"
                 HorizontalOptions="CenterAndExpand"
                 Grid.Row="4"
-                    />
+                />
             <Button
-                x:Name="SAVE"
+                x:Name="bottomButton"
                 Text="SAVE and HOME"
                 TextColor="White"
                 BackgroundColor="#dc3545"
@@ -71,7 +79,7 @@
                 VerticalOptions="Start"
                 HorizontalOptions="CenterAndExpand"
                 Grid.Row="5"
-                    />
+                />
         </Grid>
     </ContentPage.Content>
 </ContentPage>
