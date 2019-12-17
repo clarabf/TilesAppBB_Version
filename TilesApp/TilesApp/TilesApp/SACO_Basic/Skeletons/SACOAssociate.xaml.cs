@@ -18,6 +18,7 @@ namespace TilesApp.SACO
         public SACOAssociate()
         {
             InitializeComponent();
+            this.BindWithLifecycle(App.ViewModel.Inventory);
             App.ViewModel.Inventory.Transponders.CollectionChanged += Transponders_CollectionChanged;
 
             BindingContext = this;

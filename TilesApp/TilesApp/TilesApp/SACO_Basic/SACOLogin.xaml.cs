@@ -19,10 +19,10 @@ namespace TilesApp.SACO
         public SACOLogin()
         {
             InitializeComponent();
-            this.BindWithLifecycle(App.ViewModel.Inventory);
+            Setup();
             NavigationPage.SetHasNavigationBar(this, false);
-            //OdooConnection od = new OdooConnection();
-            //users = od.GetUsers();
+            OdooConnection od = new OdooConnection();
+            users = od.GetUsers();
             width = this.Width;
             height = this.Height;
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
@@ -54,12 +54,25 @@ namespace TilesApp.SACO
             });
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            Setup();
+        }
+
         private async void GoToScan(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD",1, users));
         }
 
+        private async void Reader_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new Rfid.Views.MainPage());
+        }
 
-
+        private void Setup()
+        {
+            this.BindWithLifecycle(App.ViewModel.Inventory);
+        }
     }
 }

@@ -196,6 +196,7 @@
     </AndroidResource>
     <AndroidResource Include="Resources\xml\file_paths.xml" />
     <AndroidResource Include="Resources\drawable\LoadingScreen.png" />
+    <AndroidResource Include="Resources\drawable\LoadingScreen_centered.xml" />
     <None Include="Resources\drawable\CameralWhite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

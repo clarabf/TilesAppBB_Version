@@ -39,6 +39,9 @@
     <Compile Update="App - Copy.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
+    <Compile Update="Rfid\Views\ReadersMainTabbedPage.xaml.cs">
+      <DependentUpon>ReadersMainTabbedPage.xaml</DependentUpon>
+    </Compile>
     <Compile Update="SACO_Basic\Skeletons\SACOQC.xaml.cs">
       <DependentUpon>SACOQC.xaml</DependentUpon>
     </Compile>

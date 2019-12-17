@@ -16,11 +16,11 @@ namespace TilesApp
 
         public App()
         {
-
+            MainPage = new NavigationPage(new SACOLogin());
             InitializeComponent();
 
             ////testing SACO app
-            //MainPage = new NavigationPage(new Rfid.Views.MainPage());
+            
 
             ////testing generated JSON
             //string json = jsParser.GenerateJSON();
@@ -30,7 +30,7 @@ namespace TilesApp
             //MainPage = new NavigationPage(new JSONPageInit());
 
             ////testing pages visualization
-            MainPage = new NavigationPage(new SACOAppPage());
+            //MainPage = new NavigationPage(new SACOAppPage());
             //MainPage = new NavigationPage(new SACOSkeleton());
 
             NavigationPage.SetHasNavigationBar(this, false);
@@ -78,6 +78,7 @@ namespace TilesApp
         {
             // Handle when your app resumes
         }
+
 
     }
 }

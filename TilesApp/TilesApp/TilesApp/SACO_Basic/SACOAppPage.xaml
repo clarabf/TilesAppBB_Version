@@ -172,7 +172,7 @@
                     TextColor="#3E3E3E"/>
                 <Button
                     x:Name="READER"
-                    Text="READER"
+                    Text="READERS  "
                     Padding="0"
                     TextColor="#3E3E3E"
                     BackgroundColor="Transparent"

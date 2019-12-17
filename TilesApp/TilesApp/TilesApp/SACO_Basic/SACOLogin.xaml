@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:TilesApp"
              x:Class="TilesApp.SACO.SACOLogin">
     <ContentPage.Resources>
         <StyleSheet Source="../Assets/style.css"/>
@@ -10,17 +11,19 @@
             <Image Source="Background.png" AbsoluteLayout.LayoutBounds="0,0,1,1"
                    AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
             <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"
-                         BackgroundColor="Transparent"  VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand"
+                         BackgroundColor="Transparent"  VerticalOptions="Fill" HorizontalOptions="FillAndExpand"
                          Orientation="Vertical">
                 <Grid Padding="70"   BackgroundColor="Transparent">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1.9*" />
                         <RowDefinition Height="1.1*" />
                         <RowDefinition Height="0.4*" />
+                        <RowDefinition Height="0.4*" />
+                        <RowDefinition Height="0.4*" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.1*" />
-                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" /> 
                         <ColumnDefinition Width="0.1*" />
                     </Grid.ColumnDefinitions>
                     <Image Source="logoC.png"
@@ -76,7 +79,27 @@
                             VerticalOptions="CenterAndExpand"/>
                     </AbsoluteLayout>
                 </Grid>
+                <StackLayout 
+                    Orientation="Horizontal" 
+                    VerticalOptions="End"
+                    >
+                    <Button
+                            x:Name="READER"
+                            Text="Check connected readers"
+                            TextColor="White"
+                            BackgroundColor="Black"
+                            FontAttributes="Bold"
+                            FontSize="14"
+                            BorderWidth="3"
+                            BorderColor="White"
+                            BorderRadius="8" 
+                            HorizontalOptions="CenterAndExpand"
+                            Margin="0,0,0,20"
+                            Clicked="Reader_Command"
+                        />
+                </StackLayout>
             </StackLayout>
+            
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

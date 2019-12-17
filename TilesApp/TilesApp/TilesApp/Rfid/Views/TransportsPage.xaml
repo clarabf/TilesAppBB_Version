@@ -58,19 +58,6 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="btCancel"
-                TextColor="Black"
-                BackgroundColor="White"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Cancel"
-                BorderColor="Black"
-                BorderWidth="1"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
-                Clicked="Cancel"
-            />
             <Label Text="Tap on a Transport row to see its details and connect or disconnect it"
                    LineBreakMode="WordWrap"
                    Style="{DynamicResource ListItemDetailTextStyle}"
@@ -79,6 +66,20 @@
                    Margin="12,8"
                    HorizontalOptions="CenterAndExpand"
                    />
+            <Button x:Name="btCancel"
+                TextColor="Black"
+                BackgroundColor="White"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="Home"
+                BorderColor="Black"
+                BorderWidth="1"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                Clicked="Cancel"
+            />
+           
             <!-- Enumerators -->
             <!--<Label Text="Enumerators" />
             <ListView x:Name="EnumeratorsListView"

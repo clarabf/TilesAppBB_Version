@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using TilesApp.Rfid;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -14,6 +15,7 @@ namespace TilesApp.SACO
         public SACOAppPage()
         {
             InitializeComponent();
+            this.BindWithLifecycle(App.ViewModel.Inventory);
             NavigationPage.SetHasNavigationBar(this, false);
             width = this.Width;
             height = this.Height;
@@ -94,7 +96,7 @@ namespace TilesApp.SACO
 
         private async void Reader_Command(object sender, EventArgs args)
         {
-            await DisplayAlert("READER", "Reader...", "OK");
+            await Navigation.PushModalAsync(new Rfid.Views.MainPage());
         }
 
         private async void Logout_Command(object sender, EventArgs args)

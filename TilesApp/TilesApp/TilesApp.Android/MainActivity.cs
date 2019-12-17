@@ -35,6 +35,7 @@ namespace TilesApp.Droid
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             ZXing.Mobile.MobileBarcodeScanner.Initialize(Application);
             LoadApplication(new App());
+
         }
 
         private IAndroidLifecycle TslLifecycle
@@ -133,6 +134,7 @@ namespace TilesApp.Droid
             }
             return result;
         }
-    }
 
+
+    }
 }

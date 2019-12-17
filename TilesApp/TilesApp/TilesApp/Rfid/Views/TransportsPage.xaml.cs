@@ -23,6 +23,7 @@ namespace TilesApp.Rfid.Views
             InitializeComponent();
 
             this.BindWithLifecycle(viewModel = App.ViewModel.Transports);
+
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
@@ -39,7 +40,9 @@ namespace TilesApp.Rfid.Views
 
         private async void Cancel(object sender, EventArgs args)
         {
-            await Navigation.PopModalAsync(true);
+            await Navigation.PushAsync(new InventoryPage() { ViewModel = App.ViewModel.Inventory });
         }
+
+
     }
 }
