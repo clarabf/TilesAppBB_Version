@@ -4,6 +4,7 @@ using System.Text;
 
 namespace TilesApp.Rfid.ViewModels
 {
+    using Android.Bluetooth;
     using Android.Hardware.Usb;
     using System.Collections.ObjectModel;
     using System.Linq;
@@ -24,6 +25,7 @@ namespace TilesApp.Rfid.ViewModels
         private readonly IProgress<ReaderEventArgs> activeReaderChanged;
 
         public ObservableCollection<UsbDevice> SerialReaders { get; private set; } = new ObservableCollection<UsbDevice>();
+        public ObservableCollection<BluetoothDevice> BluetoothCameraReaders { get; private set; } = new ObservableCollection<BluetoothDevice>();
         /// <summary>
         /// Initializes a new instance of the ReadersViewModel class
         /// </summary>

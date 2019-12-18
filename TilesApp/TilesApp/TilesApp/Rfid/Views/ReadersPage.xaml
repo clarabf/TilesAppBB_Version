@@ -8,6 +8,12 @@
         <StackLayout
             Spacing="0"
             >
+            <Label Text="UHF Bluetooth Readers:" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   FontSize="Large"
+                   TextColor="DarkGray"/>
             <ListView x:Name="ReadessListView" 
                 ItemsSource="{Binding Readers}"
                 VerticalOptions="FillAndExpand"
@@ -77,7 +83,99 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Label Text="Readers will appear here as Transports are connected"
+            <Label Text="Camera Bluetooth Readers:" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   FontSize="Large"
+                   TextColor="DarkGray"/>
+            <ListView x:Name="BluetoothCameraReadersListView" 
+                ItemsSource="{Binding BluetoothCameraReaders}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                IsPullToRefreshEnabled="false"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected"
+                BackgroundColor="#f0f0f8"
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="8" Spacing="0">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Name }"
+                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Start"
+                                           VerticalOptions="Center"
+                                           FontSize="Large">
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Address, StringFormat='Addr.: {0}' }"
+                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
+                                           VerticalOptions="Center"
+                                           FontSize="Small" />
+                                    <Label Text="{Binding BondState, StringFormat='state: {0}' }"
+                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
+                                           VerticalOptions="Center"
+                                           FontSize="Small" />
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <Label Text="Serial Readers:" 
+                   FontAttributes="Bold"
+                   HorizontalOptions="Start"
+                   VerticalOptions="Center"
+                   FontSize="Large"
+                   TextColor="DarkGray"/>
+            <ListView x:Name="SerialReadersListView" 
+                ItemsSource="{Binding SerialReaders}"
+                VerticalOptions="FillAndExpand"
+                HasUnevenRows="true"
+                IsPullToRefreshEnabled="false"
+                CachingStrategy="RecycleElement"
+                ItemSelected="OnItemSelected"
+                BackgroundColor="#f0f0f8"
+                >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Padding="8" Spacing="0">
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding ProductName }"
+                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}"
+                                           FontAttributes="Bold"
+                                           HorizontalOptions="Start"
+                                           VerticalOptions="Center"
+                                           FontSize="Large">
+                                    </Label>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding SerialNumber, StringFormat='SN: {0}' }"
+                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
+                                           VerticalOptions="Center"
+                                           FontSize="Small" />
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding ProductId, StringFormat='PID: {0}' }"
+                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
+                                           VerticalOptions="Center"
+                                           FontSize="Small" />
+                                    <Label Text="{Binding VendorId, StringFormat='VID: {0}' }"
+                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
+                                           VerticalOptions="Center"
+                                           FontSize="Small" />
+                                </StackLayout>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            <!--<Label Text="Readers will appear here as Transports are connected"
                    LineBreakMode="WordWrap"
                    Style="{DynamicResource ListItemDetailTextStyle}"
                    FontSize="Medium" FontAttributes="Italic"
@@ -92,7 +190,7 @@
                    HorizontalTextAlignment="Center"
                    Margin="12,4,12,8"
                    HorizontalOptions="CenterAndExpand"
-                   />
+                   />-->
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿using Android.Hardware.Usb;
+﻿using Android.Bluetooth;
+using Android.Hardware.Usb;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -50,11 +51,26 @@ namespace TilesApp.SACO
 
             MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceDetached", async (s, device) => {
                 if (device != null) {
-                
+                    App.ViewModel.Readers.SerialReaders.Clear();
+                }
+            });
+            MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceFound", async (s, device) => {
+                if (device != null)
+                {
+                    App.ViewModel.Readers.BluetoothCameraReaders.Add(device);
+                    /* await DisplayAlert("Bluetooth Device was connected",
+                     "Name : " + device.Name 
+                     , "Close alert");*/
+                }
+            });
+            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "BluetoothDeviceLost", async (s, device) => {
+                if (device != null)
+                {
+                    App.ViewModel.Readers.BluetoothCameraReaders.Clear();
                 }
             });
 
-            
+
 
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");

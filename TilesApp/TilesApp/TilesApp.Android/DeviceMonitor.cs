@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using Android.App;
+using Android.Bluetooth;
 using Android.Content;
 using Android.Hardware.Usb;
 using Android.OS;
@@ -16,7 +17,7 @@ using Xamarin.Forms;
 namespace TilesApp.Droid
 {
     [BroadcastReceiver(Enabled = true)]
-    [Android.App.IntentFilter(actions: new[] { UsbManager.ActionUsbDeviceAttached, UsbManager.ActionUsbDeviceDetached})]
+    [Android.App.IntentFilter(actions: new[] { UsbManager.ActionUsbDeviceAttached, UsbManager.ActionUsbDeviceDetached, BluetoothDevice.ActionFound })]
     [MetaData(UsbManager.ActionUsbDeviceAttached, Resource = "@xml/device_filter")]
     [MetaData(UsbManager.ActionUsbDeviceDetached, Resource = "@xml/device_filter")]
     class DeviceMonitor : BroadcastReceiver
@@ -50,7 +51,14 @@ namespace TilesApp.Droid
             {
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceDetached", device);
                 device = MainActivity.device = null;
-            }           
+            } 
+            else if (intent.Action == BluetoothDevice.ActionFound)
+            {
+                // Get connected bluetooth device
+                BluetoothDevice bluetoothDevice = (BluetoothDevice)intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
+                if (bluetoothDevice.Type == BluetoothDeviceType.Le)
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceFound", bluetoothDevice);
+            }
         }
     }
 

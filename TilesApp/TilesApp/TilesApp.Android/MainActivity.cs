@@ -11,6 +11,7 @@ using TilesApp.Rfid;
 
 namespace TilesApp.Droid
 {
+    using Android.Bluetooth;
     using Android.Content;
     using Android.Hardware.Usb;
     using Android.Views.InputMethods;
@@ -30,7 +31,7 @@ namespace TilesApp.Droid
         protected async override void OnCreate(Bundle savedInstanceState)
         {
 
-            
+
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -44,16 +45,10 @@ namespace TilesApp.Droid
             ZXing.Mobile.MobileBarcodeScanner.Initialize(Application);
             LoadApplication(new App());
             monitor = new DeviceMonitor();
-            manager = (UsbManager)Android.App.Application.Context.GetSystemService(Context.UsbService);
-            try
-            {
-                device = MainActivity.device = (manager.DeviceList.Values.ToArray())[0];
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
-            }
-            catch (Exception) { }
-
+            ScanBluetoothDevices();
+            ScanSerialDevices();
+           
         }
-
         private IAndroidLifecycle TslLifecycle
         {
             get
@@ -87,7 +82,7 @@ namespace TilesApp.Droid
             base.OnPause();
 
             this.TslLifecycle.OnPause();
-            UnregisterReceiver(monitor);
+            //UnregisterReceiver(monitor);
         }
 
         protected override void OnResume()
@@ -114,7 +109,7 @@ namespace TilesApp.Droid
             {
                 string barcode = TranslateKeyCodes(code.ToArray());
                 code.Clear();
-                if (barcode.Length==8) MessagingCenter.Send(Xamarin.Forms.Application.Current, "UserScanned", barcode);
+                if (barcode.Length == 8) MessagingCenter.Send(Xamarin.Forms.Application.Current, "UserScanned", barcode);
                 else MessagingCenter.Send(Xamarin.Forms.Application.Current, "BarcodeScanned", barcode);
             }
             return base.OnKeyDown(keyCode, e);
@@ -154,6 +149,30 @@ namespace TilesApp.Droid
             }
             return result;
         }
+
+        private void ScanBluetoothDevices(){
+
+            BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
+            foreach (BluetoothDevice bluetoothDevice in adapter.BondedDevices)
+            {
+                if(bluetoothDevice.Type == BluetoothDeviceType.Le)
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceFound", bluetoothDevice);
+            }
+        }
+
+        private void ScanSerialDevices()
+        {
+            manager = (UsbManager)Android.App.Application.Context.GetSystemService(Context.UsbService);
+            try
+            {
+                device = MainActivity.device = (manager.DeviceList.Values.ToArray())[0];
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
+            }
+            catch (Exception) { }
+        }
+
+
+
 
 
     }
