@@ -14,6 +14,7 @@ namespace TilesApp.Droid
     using Android.Content;
     using Android.Hardware.Usb;
     using Android.Views.InputMethods;
+    using System.Linq;
     using TechnologySolutions.Rfid.AsciiProtocol.Extensions;
     using TechnologySolutions.Rfid.AsciiProtocol.Transports;
 
@@ -24,7 +25,8 @@ namespace TilesApp.Droid
         List<string> code = new List<string>();
         private IAndroidLifecycle lifecyle;
         DeviceMonitor monitor;
-        public static UsbDevice device; 
+        public static UsbDevice device;
+        UsbManager manager;
         protected async override void OnCreate(Bundle savedInstanceState)
         {
 
@@ -42,6 +44,13 @@ namespace TilesApp.Droid
             ZXing.Mobile.MobileBarcodeScanner.Initialize(Application);
             LoadApplication(new App());
             monitor = new DeviceMonitor();
+            manager = (UsbManager)Android.App.Application.Context.GetSystemService(Context.UsbService);
+            try
+            {
+                device = MainActivity.device = (manager.DeviceList.Values.ToArray())[0];
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
+            }
+            catch (Exception) { }
 
         }
 

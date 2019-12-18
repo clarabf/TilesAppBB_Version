@@ -4,7 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
+using TechnologySolutions.Rfid;
 using TilesApp.Rfid;
+using TilesApp.Rfid.ViewModels;
 using Xamarin.Forms;
 using XmlRpc;
 
@@ -16,7 +18,6 @@ namespace TilesApp.SACO
         private double width = 0;
         private double height = 0;
         private Dictionary<string, object> users;
-
         public SACOLogin()
         {
             InitializeComponent();
@@ -27,8 +28,10 @@ namespace TilesApp.SACO
             width = this.Width;
             height = this.Height;            
             MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceAttached", async (s, device) => {
-                if (device != null)
-                    await DisplayAlert("Device plugged in", 
+                if (device != null) {
+                    App.ViewModel.Readers.SerialReaders.Add(device);
+                }
+                   /* await DisplayAlert("Device plugged in", 
                     "Class : "+ device.Class +"\n"+
                     "DeviceClass : " + device.DeviceClass + "\n"+
                     "DeviceId : " + device.DeviceId + "\n" +
@@ -42,26 +45,13 @@ namespace TilesApp.SACO
                     "SerialNumber : " + device.SerialNumber + "\n" +
                     "VendorId : " + device.VendorId + "\n" +
                     "Version : " + device.Version + "\n" 
-                    , "Close alert");                  
+                    , "Close alert");           */       
             });
 
             MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceDetached", async (s, device) => {
-                if(device!=null)
-                    await DisplayAlert("Device plugged out",                  
-                    "Class : " + device.Class + "\n" +
-                    "DeviceClass : " + device.DeviceClass + "\n" +
-                    "DeviceId : " + device.DeviceId + "\n" +
-                    "DeviceName : " + device.DeviceName + "\n" +
-                    "DeviceProtocol : " + device.DeviceProtocol + "\n" +
-                    "DeviceSubClass : " + device.DeviceSubclass + "\n" +
-                    "Type : " + device.GetType() + "\n" +
-                    "ManufacturerName : " + device.ManufacturerName + "\n" +
-                    "ProductId : " + device.ProductId + "\n" +
-                    "ProductName : " + device.ProductName + "\n" +
-                    "SerialNumber : " + device.SerialNumber + "\n" +
-                    "VendorId : " + device.VendorId + "\n" +
-                    "Version : " + device.Version + "\n"
-                    , "Close alert");
+                if (device != null) {
+                
+                }
             });
 
             

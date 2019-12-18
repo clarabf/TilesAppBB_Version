@@ -4,6 +4,7 @@ using System.Text;
 
 namespace TilesApp.Rfid.ViewModels
 {
+    using Android.Hardware.Usb;
     using System.Collections.ObjectModel;
     using System.Linq;
     using System.Windows.Input;
@@ -22,7 +23,7 @@ namespace TilesApp.Rfid.ViewModels
         private readonly IProgress<ReaderEventArgs> readerChanged;
         private readonly IProgress<ReaderEventArgs> activeReaderChanged;
 
-
+        public ObservableCollection<UsbDevice> SerialReaders { get; private set; } = new ObservableCollection<UsbDevice>();
         /// <summary>
         /// Initializes a new instance of the ReadersViewModel class
         /// </summary>
