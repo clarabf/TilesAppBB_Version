@@ -33,6 +33,7 @@
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <BundleAssemblies>false</BundleAssemblies>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -76,6 +77,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeviceMonitor.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FontAwesomeIconRenderer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
@@ -197,6 +201,7 @@
     <AndroidResource Include="Resources\xml\file_paths.xml" />
     <AndroidResource Include="Resources\drawable\LoadingScreen.png" />
     <AndroidResource Include="Resources\drawable\LoadingScreen_centered.xml" />
+    <AndroidResource Include="Resources\xml\device_filter.xml" />
     <None Include="Resources\drawable\CameralWhite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

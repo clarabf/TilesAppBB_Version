@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Android.Hardware.Usb;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -24,7 +25,47 @@ namespace TilesApp.SACO
             OdooConnection od = new OdooConnection();
             users = od.GetUsers();
             width = this.Width;
-            height = this.Height;
+            height = this.Height;            
+            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceAttached", async (s, device) => {
+                if (device != null)
+                    await DisplayAlert("Device plugged in", 
+                    "Class : "+ device.Class +"\n"+
+                    "DeviceClass : " + device.DeviceClass + "\n"+
+                    "DeviceId : " + device.DeviceId + "\n" +
+                    "DeviceName : " + device.DeviceName + "\n" +
+                    "DeviceProtocol : " + device.DeviceProtocol + "\n" +
+                    "DeviceSubClass : " + device.DeviceSubclass + "\n" +
+                    "Type : " + device.GetType() + "\n" +
+                    "ManufacturerName : " + device.ManufacturerName + "\n" +
+                    "ProductId : " + device.ProductId + "\n" +
+                    "ProductName : " + device.ProductName + "\n" +
+                    "SerialNumber : " + device.SerialNumber + "\n" +
+                    "VendorId : " + device.VendorId + "\n" +
+                    "Version : " + device.Version + "\n" 
+                    , "Close alert");                  
+            });
+
+            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceDetached", async (s, device) => {
+                if(device!=null)
+                    await DisplayAlert("Device plugged out",                  
+                    "Class : " + device.Class + "\n" +
+                    "DeviceClass : " + device.DeviceClass + "\n" +
+                    "DeviceId : " + device.DeviceId + "\n" +
+                    "DeviceName : " + device.DeviceName + "\n" +
+                    "DeviceProtocol : " + device.DeviceProtocol + "\n" +
+                    "DeviceSubClass : " + device.DeviceSubclass + "\n" +
+                    "Type : " + device.GetType() + "\n" +
+                    "ManufacturerName : " + device.ManufacturerName + "\n" +
+                    "ProductId : " + device.ProductId + "\n" +
+                    "ProductName : " + device.ProductName + "\n" +
+                    "SerialNumber : " + device.SerialNumber + "\n" +
+                    "VendorId : " + device.VendorId + "\n" +
+                    "Version : " + device.Version + "\n"
+                    , "Close alert");
+            });
+
+            
+
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
 

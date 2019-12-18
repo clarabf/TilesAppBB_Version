@@ -11,18 +11,24 @@ using TilesApp.Rfid;
 
 namespace TilesApp.Droid
 {
+    using Android.Content;
+    using Android.Hardware.Usb;
+    using Android.Views.InputMethods;
     using TechnologySolutions.Rfid.AsciiProtocol.Extensions;
     using TechnologySolutions.Rfid.AsciiProtocol.Transports;
 
-    [Activity(Label = "TilesApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "TilesApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
     {
 
         List<string> code = new List<string>();
         private IAndroidLifecycle lifecyle;
-
+        DeviceMonitor monitor;
+        public static UsbDevice device; 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
+
+            
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -35,6 +41,7 @@ namespace TilesApp.Droid
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             ZXing.Mobile.MobileBarcodeScanner.Initialize(Application);
             LoadApplication(new App());
+            monitor = new DeviceMonitor();
 
         }
 
@@ -71,12 +78,16 @@ namespace TilesApp.Droid
             base.OnPause();
 
             this.TslLifecycle.OnPause();
+            UnregisterReceiver(monitor);
         }
 
         protected override void OnResume()
         {
             base.OnResume();
             this.TslLifecycle.OnResume(this);
+            //RegisterReceiver(monitor, new IntentFilter(UsbManager.ActionUsbDeviceAttached));
+            //RegisterReceiver(monitor, new IntentFilter(UsbManager.ActionUsbDeviceDetached));
+
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)

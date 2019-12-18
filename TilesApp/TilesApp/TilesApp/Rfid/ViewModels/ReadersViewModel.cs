@@ -120,6 +120,7 @@ namespace TilesApp.Rfid.ViewModels
             //}
         }
 
+
         private async void SelectedReader_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsActive")
