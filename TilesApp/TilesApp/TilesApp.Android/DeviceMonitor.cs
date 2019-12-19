@@ -17,7 +17,7 @@ using Xamarin.Forms;
 namespace TilesApp.Droid
 {
     [BroadcastReceiver(Enabled = true)]
-    [Android.App.IntentFilter(actions: new[] { UsbManager.ActionUsbDeviceAttached, UsbManager.ActionUsbDeviceDetached, BluetoothDevice.ActionFound })]
+    [Android.App.IntentFilter(actions: new[] { UsbManager.ActionUsbDeviceAttached, UsbManager.ActionUsbDeviceDetached, BluetoothDevice.ActionFound, BluetoothDevice.ActionAclConnected, BluetoothDevice.ActionAclDisconnected })]
     [MetaData(UsbManager.ActionUsbDeviceAttached, Resource = "@xml/device_filter")]
     [MetaData(UsbManager.ActionUsbDeviceDetached, Resource = "@xml/device_filter")]
     class DeviceMonitor : BroadcastReceiver
@@ -31,34 +31,49 @@ namespace TilesApp.Droid
         {
             UsbManager manager = (UsbManager)context.GetSystemService(Context.UsbService);
             var DeviceList = manager.DeviceList;
-
-
-            // depending on the action, inform the SACOLogin.xml.cs
-            if (intent.Action == UsbManager.ActionUsbDeviceAttached)
+            BluetoothDevice bluetoothDevice;
+            // depending on the action, inform the Application
+            switch (intent.Action)
             {
-                // if the device is connected, then get it from the UsbManager
-                if (device == null)
-                {
-                    try
+                case UsbManager.ActionUsbDeviceAttached:
+                    // if the device is connected, then get it from the UsbManager
+                    if (device == null)
                     {
-                        device = MainActivity.device =(DeviceList.Values.ToArray())[0];
+                        try
+                        {
+                            device = MainActivity.device = (DeviceList.Values.ToArray())[0];
+                        }
+                        catch (Exception) { }
                     }
-                    catch (Exception) { }
-                }
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
+                    break;
+                case UsbManager.ActionUsbDeviceDetached:
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceDetached", device);
+                    device = MainActivity.device = null;
+                    break;
+                case BluetoothDevice.ActionFound:
+                    // Get found bluetooth device
+                    bluetoothDevice = (BluetoothDevice)intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
+                    if (bluetoothDevice.Type == BluetoothDeviceType.Le)
+                        MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceFound", bluetoothDevice);
+                    break;
+                case BluetoothDevice.ActionAclConnected:
+                    // Get connected bluetooth device
+                    bluetoothDevice = (BluetoothDevice)intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
+                    if (bluetoothDevice.Type == BluetoothDeviceType.Le)
+                        MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceConnected", bluetoothDevice);
+                    break;
+                case BluetoothDevice.ActionAclDisconnected:
+                    // Get disconnected bluetooth device
+                    bluetoothDevice = (BluetoothDevice)intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
+                    if (bluetoothDevice.Type == BluetoothDeviceType.Le)
+                        MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceDisconnected", bluetoothDevice);
+                    break;
+                default:
+                    break;
             }
-            else if (intent.Action == UsbManager.ActionUsbDeviceDetached)
-            {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceDetached", device);
-                device = MainActivity.device = null;
-            } 
-            else if (intent.Action == BluetoothDevice.ActionFound)
-            {
-                // Get connected bluetooth device
-                BluetoothDevice bluetoothDevice = (BluetoothDevice)intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
-                if (bluetoothDevice.Type == BluetoothDeviceType.Le)
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceFound", bluetoothDevice);
-            }
+
+
         }
     }
 
