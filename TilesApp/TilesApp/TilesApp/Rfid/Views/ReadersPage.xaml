@@ -76,7 +76,7 @@
                                             </DataTrigger>
                                         </Button.Triggers>
                                     </Button>
-                                    <Button Text="Disconnect"  Command="{Binding DisconnectCommand}" HorizontalOptions="EndAndExpand"/>
+                                    <Button Text="Connect"  Command="{Binding ConnectDeviceCommand}" HorizontalOptions="EndAndExpand"/>
                                 </StackLayout>
                             </StackLayout>
                         </ViewCell>
@@ -103,20 +103,28 @@
                         <ViewCell>
                             <StackLayout Padding="8" Spacing="0">
                                 <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Name }"
+                                    <Label Text="{Binding Device.Name }"
                                            LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}"
                                            FontAttributes="Bold"
                                            HorizontalOptions="Start"
                                            VerticalOptions="Center"
                                            FontSize="Large">
                                     </Label>
+                                    <Label Text="{Binding State }"
+                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
+                                           HorizontalOptions="EndAndExpand"
+                                           VerticalOptions="Center"
+                                           FontSize="Medium" FontAttributes="Italic"
+                                           >
+                                        <Label.Triggers>
+                                            <DataTrigger TargetType="Label" Binding="{Binding IsActive}" Value="True">
+                                                <Setter Property="FontAttributes" Value="Bold" />
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
                                 </StackLayout>
                                 <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Address, StringFormat='Addr.: {0}' }"
-                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
-                                           VerticalOptions="Center"
-                                           FontSize="Small" />
-                                    <Label Text="{Binding BondState, StringFormat='state: {0}' }"
+                                    <Label Text="{Binding Device.Address, StringFormat='Addr.: {0}' }"
                                            LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
                                            VerticalOptions="Center"
                                            FontSize="Small" />

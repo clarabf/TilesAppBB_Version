@@ -155,7 +155,7 @@ namespace TilesApp.Droid
             BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
             foreach (BluetoothDevice bluetoothDevice in adapter.BondedDevices)
             {
-                if(bluetoothDevice.Type == BluetoothDeviceType.Le)
+                if (bluetoothDevice.Type == BluetoothDeviceType.Le)
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceFound", bluetoothDevice);
             }
         }

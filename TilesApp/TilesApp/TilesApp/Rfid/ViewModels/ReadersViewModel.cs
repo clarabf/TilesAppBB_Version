@@ -13,6 +13,7 @@ namespace TilesApp.Rfid.ViewModels
     using TechnologySolutions.Rfid;
     using TechnologySolutions.Rfid.AsciiOperations;
     using TechnologySolutions.Rfid.AsciiProtocol.Commands;
+    using TilesApp.Models;
 
     /// <summary>
     /// View model to display the list of available readers
@@ -24,8 +25,8 @@ namespace TilesApp.Rfid.ViewModels
         private readonly IProgress<ReaderEventArgs> readerChanged;
         private readonly IProgress<ReaderEventArgs> activeReaderChanged;
 
-        public ObservableCollection<UsbDevice> SerialReaders { get; private set; } = new ObservableCollection<UsbDevice>();
-        public ObservableCollection<BluetoothDevice> BluetoothCameraReaders { get; private set; } = new ObservableCollection<BluetoothDevice>();
+        public ObservableCollection<UsbDevice> SerialReaders { get; set; } = new ObservableCollection<UsbDevice>();
+        public ObservableCollection<ComplexBluetoothDevice> BluetoothCameraReaders { get; set; } = new ObservableCollection<ComplexBluetoothDevice>();
         /// <summary>
         /// Initializes a new instance of the ReadersViewModel class
         /// </summary>
