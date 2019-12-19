@@ -6,7 +6,7 @@ using Xamarin.Forms;
 namespace TilesApp.SACO
 {
 
-    public partial class SACOAssemble : ContentPage
+    public partial class SACOAssemble : BasePage
     {
         private double width = 0;
         private double height = 0;
