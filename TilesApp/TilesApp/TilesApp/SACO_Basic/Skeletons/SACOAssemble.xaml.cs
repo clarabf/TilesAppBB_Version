@@ -22,27 +22,31 @@ namespace TilesApp.SACO
             width = this.Width;
             height = this.Height;
             //BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
-            MessagingCenter.Subscribe<Application, String>(Application.Current, "BarcodeScanned", (s, a) => {
-                if (!mainScanned)
-                {
-                    mainScanned = true;
-                    mainCode = a.ToString();
-                    lblTitle.Text = "Scan barcode of the other components";
-                    BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
-                    btnSaveAndFinish.IsVisible = true;
-                }
-                else
-                {
-                    barcodes.Add(a.ToString());
-                    lblTitle.Text = "Scan barcode of the other components (" + barcodes.Count + ")";
-                    BarcodesScanned.Add("Item <" + a.ToString() + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
-                }
-            });
         }
 
+        public override void BarcodeDetected(string code)
+        {
+            if (!mainScanned)
+            {
+                mainScanned = true;
+                mainCode = code.ToString();
+                lblTitle.Text = "Scan barcode of the other components";
+                BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
+                btnSaveAndFinish.IsVisible = true;
+            }
+            else
+            {
+                barcodes.Add(code.ToString());
+                lblTitle.Text = "Scan barcode of the other components (" + barcodes.Count + ")";
+                BarcodesScanned.Add("Item <" + code.ToString() + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
+            }
+        }
+        public override void TransponderDetected(string transponder)
+        {
+
+        }
         private async void SaveAndFinish(object sender, EventArgs args)
         {
-            MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             //Update info in DB
             string message="";
             foreach (string code in barcodes) message += code + " - ";
@@ -52,7 +56,6 @@ namespace TilesApp.SACO
 
         private async void Cancel(object sender, EventArgs args)
         {
-            MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             await Navigation.PopModalAsync(true);
         }
 

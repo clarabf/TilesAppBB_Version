@@ -4,7 +4,7 @@ using Xamarin.Forms;
 namespace TilesApp.SACO
 {
 
-    public partial class SACOCheckpoint : ContentPage
+    public partial class SACOCheckpoint : BasePage
     {
         private double width = 0;
         private double height = 0;
@@ -16,15 +16,18 @@ namespace TilesApp.SACO
             NavigationPage.SetHasNavigationBar(this, false);
             width = this.Width;
             height = this.Height;
-            MessagingCenter.Subscribe<Application, String>(Application.Current, "BarcodeScanned", (s, a) => {
-                lblBarcode.IsVisible = true;
-                barcode.Text = a.ToString();
-            });
         }
+        public override void BarcodeDetected(string code)
+        {
+            lblBarcode.IsVisible = true;
+            barcode.Text = code.ToString();
+        }
+        public override void TransponderDetected(string transponder)
+        {
 
+        }
         private async void Come_Back(object sender, EventArgs args)
         {
-            MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             await Navigation.PopModalAsync(true);
         }
 

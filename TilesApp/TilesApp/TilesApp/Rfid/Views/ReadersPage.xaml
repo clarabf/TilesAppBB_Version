@@ -67,7 +67,7 @@
                                            HorizontalOptions="EndAndExpand"
                                            FontSize="Small" />
                                 </StackLayout>
-                                <!--<Label Text="{Binding Id }" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Micro" />-->
+                                <!--<Label Text="{Binding Id }" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Micro" />
                                 <StackLayout IsVisible="True" Orientation="Horizontal">
                                     <Button x:Name="makeActiveButton"  Text="Make Active" Command="{Binding MakeActiveCommand}" >
                                         <Button.Triggers>
@@ -77,7 +77,7 @@
                                         </Button.Triggers>
                                     </Button>
                                     <Button Text="Connect"  Command="{Binding ConnectDeviceCommand}" HorizontalOptions="EndAndExpand"/>
-                                </StackLayout>
+                                </StackLayout>-->
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

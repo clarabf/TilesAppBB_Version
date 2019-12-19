@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+<d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
              x:Class="TilesApp.SACO.SACOAssociate">
     <ContentPage.Content>
         <Grid BackgroundColor="White">
@@ -58,7 +59,7 @@
                 IsVisible="False"
                 Grid.Row="3"      
                 />
-            <ListView ItemsSource="{Binding BarcodesScanned}" 
+            <ListView ItemsSource="{Binding Transponders}" 
                 Grid.Row="4"      
                 />
             <Button x:Name="btnSaveAndFinish"
@@ -93,4 +94,4 @@
             />
         </Grid>
     </ContentPage.Content>
-</ContentPage>
+</d:BasePage>
