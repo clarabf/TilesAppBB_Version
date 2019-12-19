@@ -102,7 +102,11 @@ namespace TilesApp.SACO
         private async void Logout_Command(object sender, EventArgs args)
         {
             //Register logout
-            await Navigation.PopModalAsync(true);
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Navigation.PopModalAsync(true);
+                Navigation.PushModalAsync(new SACOLogin());
+            });
         }
 
         protected override void OnSizeAllocated(double width, double height)
@@ -126,6 +130,7 @@ namespace TilesApp.SACO
                 }
             }
         }
+
 
     }
 }

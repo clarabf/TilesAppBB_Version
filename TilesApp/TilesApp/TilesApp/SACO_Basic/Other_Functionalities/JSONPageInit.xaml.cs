@@ -9,9 +9,6 @@ namespace TilesApp.SACO
 
     public partial class JSONPageInit : ContentPage
     {
-        private double width = 0;
-        private double height = 0;
-
         public JSONPageInit()
         {
             InitializeComponent();

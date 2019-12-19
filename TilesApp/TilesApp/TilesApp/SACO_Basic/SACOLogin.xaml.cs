@@ -1,20 +1,14 @@
-﻿using Android.Bluetooth;
-using Android.Hardware.Usb;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using TechnologySolutions.Rfid;
 using TilesApp.Rfid;
-using TilesApp.Rfid.ViewModels;
 using Xamarin.Forms;
 using XmlRpc;
 
 namespace TilesApp.SACO
 {
 
-    public partial class SACOLogin : ContentPage
+    public partial class SACOLogin : BasePage
     {
         private double width = 0;
         private double height = 0;
@@ -28,57 +22,12 @@ namespace TilesApp.SACO
             users = od.GetUsers();
             width = this.Width;
             height = this.Height;            
-            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceAttached", async (s, device) => {
-                if (device != null) {
-                    App.ViewModel.Readers.SerialReaders.Add(device);
-                }
-                   /* await DisplayAlert("Device plugged in", 
-                    "Class : "+ device.Class +"\n"+
-                    "DeviceClass : " + device.DeviceClass + "\n"+
-                    "DeviceId : " + device.DeviceId + "\n" +
-                    "DeviceName : " + device.DeviceName + "\n" +
-                    "DeviceProtocol : " + device.DeviceProtocol + "\n" +
-                    "DeviceSubClass : " + device.DeviceSubclass + "\n" +
-                    "Type : " + device.GetType() + "\n" +
-                    "ManufacturerName : " + device.ManufacturerName + "\n" +
-                    "ProductId : " + device.ProductId + "\n" +
-                    "ProductName : " + device.ProductName + "\n" +
-                    "SerialNumber : " + device.SerialNumber + "\n" +
-                    "VendorId : " + device.VendorId + "\n" +
-                    "Version : " + device.Version + "\n" 
-                    , "Close alert");           */       
-            });
-
-            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceDetached", async (s, device) => {
-                if (device != null) {
-                    App.ViewModel.Readers.SerialReaders.Clear();
-                }
-            });
-            MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceFound", async (s, device) => {
-                if (device != null)
-                {
-                    App.ViewModel.Readers.BluetoothCameraReaders.Add(device);
-                    /* await DisplayAlert("Bluetooth Device was connected",
-                     "Name : " + device.Name 
-                     , "Close alert");*/
-                }
-            });
-            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "BluetoothDeviceLost", async (s, device) => {
-                if (device != null)
-                {
-                    App.ViewModel.Readers.BluetoothCameraReaders.Clear();
-                }
-            });
-
-
-
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
-
                 try
                 {
                     Dictionary<string, object> userInfo = (Dictionary<string, object>)users[a.ToString()];
-                    
+
                     //OdooConnection oc = new OdooConnection();
                     //Dictionary<string, object> userInfo = oc.GetUserInfo(a.ToString());
 
@@ -92,7 +41,11 @@ namespace TilesApp.SACO
                     //var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
                     //var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
                     //var answer = await postResponse.Content.ReadAsStringAsync();
-                    await Navigation.PushModalAsync(new SACOAppPage(userInfo));
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new SACOAppPage(userInfo));
+                    });
                 }
                 catch
                 {
@@ -109,7 +62,11 @@ namespace TilesApp.SACO
 
         private async void GoToScan(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD",1, users));
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                Navigation.PopModalAsync(true);
+                Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD", 1, users));
+            });
         }
 
         private async void Reader_Command(object sender, EventArgs args)
