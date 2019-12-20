@@ -29,7 +29,7 @@ namespace TilesApp.SACO
             lblBarcode.IsVisible = true;
             entry.IsVisible = true;
             btnSaveAndFinish.IsVisible = true;
-            barcode.Text = code.ToString();
+            barcode.Text = code;
         }
         public override void TransponderDetected(string transponder)
         {

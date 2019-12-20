@@ -14,7 +14,7 @@ using TilesApp.Rfid.ViewModels;
 namespace TilesApp.Rfid.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ReadersPage : ContentPage
+    public partial class ReadersPage : BasePage
     {
         ReadersViewModel viewModel;
 
