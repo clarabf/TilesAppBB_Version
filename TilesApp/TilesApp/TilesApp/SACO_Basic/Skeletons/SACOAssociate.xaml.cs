@@ -14,7 +14,7 @@ namespace TilesApp.SACO
     {
         private double width = 0;
         private double height = 0;
-        public ObservableCollection<string> Transponders { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> InputDataValues { get; set; } = new ObservableCollection<string>();
         public SACOAssociate()
         {
             InitializeComponent();
@@ -24,17 +24,15 @@ namespace TilesApp.SACO
             height = this.Height;
         }
 
-        public override void BarcodeDetected(string code)
+        public override void InputDataDetected(Dictionary<string, object> input)
         {
             lblBarcode.IsVisible = true;
             entry.IsVisible = true;
             btnSaveAndFinish.IsVisible = true;
-            barcode.Text = code;
+            barcode.Text = input[nameof(InputDataProps.ReaderType)].ToString() +"|"+ input[nameof(InputDataProps.Value)].ToString();
+            InputDataValues.Add(input[nameof(InputDataProps.Value)].ToString());
         }
-        public override void TransponderDetected(string transponder)
-        {
-            Transponders.Add(transponder);
-        }
+
 
         private async void SaveAndFinish(object sender, EventArgs args)
         {

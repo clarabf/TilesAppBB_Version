@@ -59,7 +59,7 @@
                 IsVisible="False"
                 Grid.Row="3"      
                 />
-            <ListView ItemsSource="{Binding Transponders}" 
+            <ListView ItemsSource="{Binding InputDataValues}" 
                 Grid.Row="4"      
                 />
             <Button x:Name="btnSaveAndFinish"

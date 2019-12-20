@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -17,15 +18,14 @@ namespace TilesApp.SACO
             width = this.Width;
             height = this.Height;
         }
-        public override void BarcodeDetected(string code)
+
+        public override void InputDataDetected(Dictionary<string, object> input)
         {
             lblBarcode.IsVisible = true;
-            barcode.Text = code.ToString();
-        }
-        public override void TransponderDetected(string transponder)
-        {
+            barcode.Text = input[nameof(InputDataProps.Value)].ToString();
 
         }
+
         private async void Come_Back(object sender, EventArgs args)
         {
             await Navigation.PopModalAsync(true);

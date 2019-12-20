@@ -110,7 +110,12 @@ namespace TilesApp.Droid
                 string barcode = TranslateKeyCodes(code.ToArray());
                 code.Clear();
                 if (barcode.Length == 8) MessagingCenter.Send(Xamarin.Forms.Application.Current, "UserScanned", barcode);
-                else MessagingCenter.Send(Xamarin.Forms.Application.Current, "BarcodeScanned", barcode);
+                else {
+                    Dictionary<string, object> InputWithDevice = new Dictionary<string, object>();
+                    InputWithDevice.Add("Device", e.Device);
+                    InputWithDevice.Add("Value", barcode);
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "BarcodeScanned", InputWithDevice); 
+                }
             }
             return base.OnKeyDown(keyCode, e);
         }
