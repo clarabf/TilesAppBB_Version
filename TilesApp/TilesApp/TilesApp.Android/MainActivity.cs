@@ -15,6 +15,7 @@ namespace TilesApp.Droid
     using Android.Content;
     using Android.Hardware.Usb;
     using Android.Views.InputMethods;
+    using PCLAppConfig;
     using System.Linq;
     using TechnologySolutions.Rfid.AsciiProtocol.Extensions;
     using TechnologySolutions.Rfid.AsciiProtocol.Transports;
@@ -30,8 +31,6 @@ namespace TilesApp.Droid
         UsbManager manager;
         protected async override void OnCreate(Bundle savedInstanceState)
         {
-
-
             TabLayoutResource = Resource.Layout.Tabbar;
             ToolbarResource = Resource.Layout.Toolbar;
 
@@ -40,6 +39,7 @@ namespace TilesApp.Droid
 
             base.OnCreate(savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
             Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             ZXing.Mobile.MobileBarcodeScanner.Initialize(Application);
@@ -47,7 +47,6 @@ namespace TilesApp.Droid
             monitor = new DeviceMonitor();
             ScanBluetoothDevices();
             ScanSerialDevices();
-           
         }
         private IAndroidLifecycle TslLifecycle
         {

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="PCLAppConfig" Version="1.0.1" />
     <PackageReference Include="Tsl.AsciiProtocol.Std" Version="1.4.0" />
     <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />
     <PackageReference Include="Xam.Plugin.SimpleAudioPlayer" Version="1.3.1" />

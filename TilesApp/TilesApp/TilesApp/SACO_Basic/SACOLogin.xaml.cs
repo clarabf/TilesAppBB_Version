@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PCLAppConfig;
 using System;
 using System.Collections.Generic;
 using TilesApp.Rfid;
@@ -20,6 +21,11 @@ namespace TilesApp.SACO
             NavigationPage.SetHasNavigationBar(this, false);
             OdooConnection od = new OdooConnection();
             users = od.GetUsers();
+            if (users==null)
+            {
+                DisplayAlert("Error recovering users", "Please, check that internet is turned on in your mobile and restart the application.", "OK");
+                //DisplayAlert("Error recovering users", ConfigurationManager.AppSettings["key"], "OK");
+            }
             width = this.Width;
             height = this.Height;            
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {

@@ -48,7 +48,7 @@ namespace TilesApp.SACO
                     case "QC":
                         btQC.IsEnabled = true;
                         break;
-                    case "Report":
+                    case "QCRich":
                         btQCR.IsEnabled = true;
                         break;
                 }
