@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using PCLAppConfig;
 
 namespace TilesApp.Azure
 {
@@ -14,9 +15,9 @@ namespace TilesApp.Azure
         private static CloudBlobContainer container;
         private static CloudBlockBlob outputBlob;
 
-        public static Dictionary<string,string> writeJPEGStream(Stream fileStream, String appName, Dictionary<string,string> metaDataDictionary)
+        public static Dictionary<string,string> WriteJPEGStream(Stream fileStream, String appName, Dictionary<string,string> metaDataDictionary)
         {
-            storageAccount = CloudStorageAccount.Parse(Environment.GetEnvironmentVariable("AZURE_STORAGE_CONNECTION_STRING"));
+            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
             string fileName = Guid.NewGuid().ToString() + ".jpeg";
 
             try
@@ -32,7 +33,7 @@ namespace TilesApp.Azure
             try
             {
                 // Create container if not exits
-                container = client.GetContainerReference(appName);
+                container = client.GetContainerReference(appName.ToLower());
                 container.CreateIfNotExistsAsync().Wait();
             }
             catch
@@ -61,6 +62,5 @@ namespace TilesApp.Azure
                 {"ContentMD5",outputBlob.Properties.ContentMD5}
             };
         }
-
     }
 }
