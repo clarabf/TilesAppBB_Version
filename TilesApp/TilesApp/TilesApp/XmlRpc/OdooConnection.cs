@@ -24,6 +24,7 @@ using System.Text;
 using System.IO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using PCLAppConfig;
 
 namespace XmlRpc {
 
@@ -32,223 +33,7 @@ namespace XmlRpc {
     /// </summary>
     class OdooConnection {
 
-        //public static string Url = "http://localhost:8069/xmlrpc/2", db = "odoo9", pass = "admin", user = "admin";
-        public static string ImgPath = "D:\\Users\\cbonillo\\source\\repos\\TilesApp\\TilesApp\\TilesApp\\TilesApp\\";
-        public static string Url = "https://sacodoo-13-0-parametric-626490.dev.odoo.com", db = "sacodoo-13-0-parametric-626490", pass = "Saco-2019", user = "miguelfontgivell@saco.com";
-
-        public void TestRequestXml() {
-            XmlRpcRequest request = new XmlRpcRequest("version");
-            request.AddParam(false);
-            request.AddParam(3);
-            request.AddParam(4.9);
-            request.AddParam(DateTime.Now);
-            request.AddParam(DateTime.UtcNow);
-            request.AddParam(Encoding.UTF8.GetBytes("hello"));
-
-            Dictionary<string, object> dictest = new Dictionary<string, object>();
-            dictest.Add("hello", "hello");
-            // request.AddParam(dictest);
-
-            List<object> listtest = new List<object>();
-            listtest.Add(3);
-            listtest.Add("hello");
-            listtest.Add(dictest);
-            request.AddParam(listtest);
-
-            XmlDocument xmlRequest = RequestFactory.BuildRequest(request);
-
-            xmlRequest.Save(Console.Out);
-
-            XmlRpcClient client = new XmlRpcClient();
-            client.AppName = "Test";
-            Console.WriteLine("\n");
-            Console.WriteLine(client.GetUserAgent());
-        }
-
-        public void TestReadVersion() {
-            XmlRpcClient client = new XmlRpcClient();
-            client.Url = Url;
-            client.Path = "/xmlrpc/2/common";
-
-            XmlRpcResponse response = client.Execute("version");
-
-            Console.WriteLine("version");
-            Console.WriteLine("REQUEST: ");
-            client.WriteRequest(Console.Out);
-
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("RESPONSE: ");
-            client.WriteResponse(Console.Out);
-
-            Console.WriteLine();
-            Console.WriteLine();
-            if (response.IsFault()) {
-                Console.WriteLine(response.GetFaultString());
-            } else {
-                Console.WriteLine(response.GetString());
-            }
-        }
-
-        public void TestReadRecords() {
-            XmlRpcClient client = new XmlRpcClient();
-            client.Url = Url;
-            client.Path = "/xmlrpc/2/common";           
-
-            // LOGIN
-            XmlRpcRequest requestLogin = new XmlRpcRequest("authenticate");
-            requestLogin.AddParams(db, user, pass, XmlRpcParameter.EmptyStruct());
-
-            XmlRpcResponse responseLogin = client.Execute(requestLogin);
-
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("LOGIN: ");
-            if (responseLogin.IsFault()) {
-                Console.WriteLine(responseLogin.GetFaultString());
-            } else {
-                Console.WriteLine(responseLogin.GetString());
-            }
-
-            // SEARCH
-            client.Path = "/xmlrpc/2/object";
-
-            XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "res.partner", "search", 
-                XmlRpcParameter.AsArray(
-                    XmlRpcParameter.AsArray(
-                        XmlRpcParameter.AsArray("is_company", "=", true), XmlRpcParameter.AsArray("customer", "=", true)
-                    )
-                )
-            );
-
-            requestSearch.AddParamStruct(
-                XmlRpcParameter.AsMember("limit", 2)
-            );
-
-            XmlRpcResponse responseSearch = client.Execute(requestSearch);
-            
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("SEARCH: ");
-            if (responseSearch.IsFault()) {
-                Console.WriteLine(responseSearch.GetFaultString());
-            } else {
-                Console.WriteLine(responseSearch.GetString());
-            }
-
-            // READ
-            XmlRpcRequest requestRead = new XmlRpcRequest("execute_kw");
-            requestRead.AddParams(db, responseLogin.GetInt(), pass, "res.partner", "read",                                           
-                XmlRpcParameter.AsArray(
-                    responseSearch.GetArray()
-                )
-            );
-
-            requestRead.AddParamStruct(XmlRpcParameter.AsMember("fields", 
-                    XmlRpcParameter.AsArray("name")
-                )
-            );
-
-            XmlRpcResponse responseRead = client.Execute(requestRead);
-
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("READ: ");
-            if (responseRead.IsFault()) {
-                Console.WriteLine(responseRead.GetFaultString());
-            } else {
-                Console.WriteLine(responseRead.GetString());
-            }
-        }
-
-        public void TestResponseXml() {
-            XmlDocument testDoc = new XmlDocument();
-            // testDoc.AppendChild(testDoc.CreateElement("methodResponse"));
-            // testDoc.LoadXml("<methodResponse><fault><value><struct><member><name>faultCode</name><value><int>1</int></value></member><member><name>faultString</name><value><string>Error</string></value></member></struct></value></fault></methodResponse>");
-            testDoc.LoadXml("<methodResponse><params><param><value><array><data><value><int>7</int></value><value><int>11</int></value><value><int>8</int></value><value><int>44</int></value><value><int>10</int></value><value><int>12</int></value></data></array></value></param></params></methodResponse>");
-
-            testDoc.Save(Console.Out);
-            XmlRpcResponse response = ResponseFactory.BuildResponse(testDoc);
-
-            if (response.IsFault()) {
-                Console.WriteLine(response.GetFaultString());
-            } else {
-                Console.WriteLine();
-                Console.WriteLine();
-                Console.WriteLine(response.GetString());
-            }
-        }     
-
-        public void TestSearchReadRecords(string condition) {
-            XmlRpcClient client = new XmlRpcClient();
-            client.Url = Url;
-            client.Path = "/xmlrpc/2/common";           
-
-            // LOGIN
-            XmlRpcRequest requestLogin = new XmlRpcRequest("authenticate");
-            requestLogin.AddParams(db, user, pass, XmlRpcParameter.EmptyStruct());
-            XmlRpcResponse responseLogin = client.Execute(requestLogin);
-
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("LOGIN: ");
-            if (responseLogin.IsFault()) {
-                Console.WriteLine(responseLogin.GetFaultString());
-            } else {
-                Console.WriteLine(responseLogin.GetString());
-            }
-
-            // SEARCH
-            client.Path = "/xmlrpc/2/object";
-
-            //XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-            //requestSearch.AddParams(db, responseLogin.GetInt(), pass, "res.partner", "search_read",
-            //    XmlRpcParameter.AsArray(
-            //        XmlRpcParameter.AsArray(
-            //            XmlRpcParameter.AsArray("name", "ilike", condition)
-            //        )
-            //    ),
-            //    XmlRpcParameter.AsStruct(
-            //        XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "email"))
-            //    )
-            //);
-            //XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-            //requestSearch.AddParams(db, responseLogin.GetInt(), pass, "product.product", "search_read",
-            //    XmlRpcParameter.AsArray(
-            //        XmlRpcParameter.AsArray(
-            //            XmlRpcParameter.AsArray("id", "in", XmlRpcParameter.AsArray(4, 51))
-            //        )
-            //    ),
-            //    XmlRpcParameter.AsStruct(
-            //        XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "sale_ok", "purchase_ok", "can_be_expensed", "type"))
-            //    )
-            //);
-
-            XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-            requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee.category", "search_read",
-                XmlRpcParameter.AsArray(
-                    XmlRpcParameter.AsArray(
-                        XmlRpcParameter.AsArray("id", ">", 0)
-                    )
-                ),
-                XmlRpcParameter.AsStruct(
-                    XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name"))
-                )
-            );
-
-            XmlRpcResponse responseSearch = client.Execute(requestSearch);
-
-            Console.WriteLine("REQUEST (SEARCH): ");
-            client.WriteRequest(Console.Out);
-            Console.WriteLine("RESPONSE (SEARCH): ");
-            if (responseSearch.IsFault()) {
-                Console.WriteLine(responseSearch.GetFaultString());
-            } else {
-                Console.WriteLine(responseSearch.GetString());
-            }
-           
-        }
+        public static string Url = ConfigurationManager.AppSettings["url"], db = ConfigurationManager.AppSettings["db"], pass = ConfigurationManager.AppSettings["pass"], user = ConfigurationManager.AppSettings["user"];
 
         public Dictionary<string,object> GetUserInfo(string barcode)
         {
@@ -472,23 +257,27 @@ namespace XmlRpc {
                         }
                     }
                 }
-
                 return users;
             }
-            catch
+            catch (WebServiceException)
             {
-                return null;
+                users.Add("error", "internet");
+                return users;
             }
-            
+            catch (System.InvalidCastException)
+            {
+                users.Add("error","odoo");
+                return users;
+            }
         }
 
-        public void TestCreateRecord() {
+        public void CreateLog()
+        {
             XmlRpcClient client = new XmlRpcClient();
             client.Url = Url;
-            client.Path = "/xmlrpc/2/common";           
+            client.Path = "/xmlrpc/2/common";
 
             // LOGIN
-
             XmlRpcRequest requestLogin = new XmlRpcRequest("authenticate");
             requestLogin.AddParams(db, user, pass, XmlRpcParameter.EmptyStruct());
 
@@ -506,51 +295,28 @@ namespace XmlRpc {
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("LOGIN: ");
-            if (responseLogin.IsFault()) {
+            if (responseLogin.IsFault())
+            {
                 Console.WriteLine(responseLogin.GetFaultString());
-            } else {
+            }
+            else
+            {
                 Console.WriteLine(responseLogin.GetString());
             }
 
             // CREATE
 
             client.Path = "/xmlrpc/2/object";
-
-            //XmlRpcRequest requestCreate = new XmlRpcRequest("execute_kw");
-            //requestCreate.AddParams(db, responseLogin.GetInt(), pass, "res.partner", "create",                                           
-            //    XmlRpcParameter.AsArray(
-            //        XmlRpcParameter.AsStruct(
-            //            XmlRpcParameter.AsMember("name", "Lauren Bacall")
-            //            , XmlRpcParameter.AsMember("image_1920", Convert.ToBase64String(File.ReadAllBytes("img/lauren.jpg")))
-            //            , XmlRpcParameter.AsMember("email", "lauren.bacall@saco.com")
-            //        )
-            //    )
-            //);
-
-            //XmlRpcRequest requestCreate = new XmlRpcRequest("execute_kw");
-            //requestCreate.AddParams(db, responseLogin.GetInt(), pass, "project.project", "create",
-            //    XmlRpcParameter.AsArray(
-            //        XmlRpcParameter.AsStruct(
-            //            XmlRpcParameter.AsMember("name", "ProjectFromCodeEmail6")
-            //          , XmlRpcParameter.AsMember("alias_name", "project")
-            //          , XmlRpcParameter.AsMember("alias_domain", "sacodoo-13-0-parametric-626490.dev.odoo.com")
-            //        )
-            //    )
-            //);
-
             XmlRpcRequest requestCreate = new XmlRpcRequest("execute_kw");
-            requestCreate.AddParams(db, responseLogin.GetInt(), pass, "mrp.workcenter", "create",
+            requestCreate.AddParams(db, responseLogin.GetInt(), pass, "maintenance.request", "create",
                 XmlRpcParameter.AsArray(
                     XmlRpcParameter.AsStruct(
-                        XmlRpcParameter.AsMember("name", "WOTest")
-                      , XmlRpcParameter.AsMember("code", "codeTest")
-                      , XmlRpcParameter.AsMember("costs_hour", 45)
-                      , XmlRpcParameter.AsMember("time_efficiency", 78)
-                      , XmlRpcParameter.AsMember("capacity", 3)
-                      , XmlRpcParameter.AsMember("oee_target", 58)
-                      , XmlRpcParameter.AsMember("time_start", 100)
-                      , XmlRpcParameter.AsMember("time_stop", 250)
-                      , XmlRpcParameter.AsMember("nore", "This is a note")
+                        XmlRpcParameter.AsMember("name", "Phone Log 2")
+                      , XmlRpcParameter.AsMember("employee_id", 5)
+                      , XmlRpcParameter.AsMember("maintenance_team_id", 3)
+                      , XmlRpcParameter.AsMember("description", "This is a test")
+                      //, XmlRpcParameter.AsMember("priority", 2)
+                      , XmlRpcParameter.AsMember("email_cc", "lalala@email.com")
                     )
                 )
             );
@@ -571,21 +337,15 @@ namespace XmlRpc {
             Console.WriteLine();
             Console.WriteLine();
             Console.WriteLine("READ: ");
-            if (responseCreate.IsFault()) {
+            if (responseCreate.IsFault())
+            {
                 Console.WriteLine(responseCreate.GetFaultString());
-            } else {
+            }
+            else
+            {
                 Console.WriteLine(responseCreate.GetString());
             }
         }
 
-        public void Main(string[] args) {
-            //TestRequestXml();
-            //TestResponseXml();
-            //TestReadVersion();
-            //TestReadRecords();
-            //TestCreateRecord();
-            TestSearchReadRecords("t");
-            Console.ReadKey();
-        }
     }
 }

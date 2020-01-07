@@ -14,6 +14,8 @@ namespace TilesApp.SACO
     {
         private double width = 0;
         private double height = 0;
+        string lastValue;
+
         public ObservableCollection<string> InputDataValues { get; set; } = new ObservableCollection<string>();
         public SACOAssociate()
         {
@@ -27,25 +29,19 @@ namespace TilesApp.SACO
         public override void InputDataDetected(Dictionary<string, object> input)
         {
             lblBarcode.IsVisible = true;
-            entry.IsVisible = true;
             btnSaveAndFinish.IsVisible = true;
-            barcode.Text = input[nameof(InputDataProps.ReaderType)].ToString() +"|"+ input[nameof(InputDataProps.Value)].ToString();
+            //barcode.Text = input[nameof(InputDataProps.ReaderType)].ToString() +"|"+ input[nameof(InputDataProps.Value)].ToString();
             InputDataValues.Add(input[nameof(InputDataProps.Value)].ToString());
+            lastValue = input[nameof(InputDataProps.Value)].ToString();
+
         }
 
 
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             //Update info in DB
-            if (entry.Text != "")
-            {
-                await DisplayAlert("Component added successfully!", "<" + entry.Text + "> stored in DB.", "OK");
-                await Navigation.PopModalAsync(true);
-            }
-            else
-            {
-                await DisplayAlert("Empty name", "Please, fill the component name before clicking 'Save & Finish'.", "OK");
-            }
+            await DisplayAlert("Component added successfully!", "<" + lastValue + "> stored in DB.", "OK");
+            await Navigation.PopModalAsync(true);
         }
 
         private async void Cancel(object sender, EventArgs args)

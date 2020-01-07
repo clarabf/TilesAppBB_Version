@@ -10,7 +10,6 @@
                 <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="2*" />
                 <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
@@ -34,33 +33,16 @@
             />
             <Label x:Name="lblBarcode"
                 TextColor="Black"
-                FontSize="16"
+                Text ="Last barcode scanned"
+                FontSize="18"
                 Margin="20,0,20,0"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
-                IsVisible="False"
+                IsVisible="True"
                 Grid.Row="2"      
-                >
-                <Label.FormattedText>
-                    <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="Barcode &lt;" />
-                            <Span x:Name="barcode" FontAttributes="Bold" Text="12345678" />
-                            <Span Text="&gt; scanned.&#x0a;Add name of the component: "/>
-                        </FormattedString.Spans>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
-            <Entry x:Name="entry"
-                Keyboard="Default"
-                Margin="20,0,20,0"
-                HorizontalOptions="FillAndExpand"
-                VerticalOptions="CenterAndExpand"
-                IsVisible="False"
-                Grid.Row="3"      
-                />
+            />
             <ListView ItemsSource="{Binding InputDataValues}" 
-                Grid.Row="4"      
+                Grid.Row="3"      
                 />
             <Button x:Name="btnSaveAndFinish"
                 TextColor="White"
@@ -73,7 +55,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
-                Grid.Row="5"
+                Grid.Row="4"
                 IsVisible="False"
                 Clicked="SaveAndFinish"
             />
@@ -89,7 +71,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="6"
+                Grid.Row="5"
                 Clicked="Cancel"
             />
         </Grid>

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Xamarin.Forms;
+using TilesApp.Azure;
 
 namespace TilesApp.SACO
 {
@@ -36,9 +37,9 @@ namespace TilesApp.SACO
 
                 var file = await CrossMedia.Current.TakePhotoAsync(new Plugin.Media.Abstractions.StoreCameraMediaOptions
                 {
-                    SaveToAlbum=true
-                    //Directory = "Sample",
-                    //Name = "test.jpg"
+                    //SaveToAlbum=true
+                    Directory = "Sample",
+                    Name = "test.jpg"
                 });
 
                 if (file == null)
@@ -47,12 +48,15 @@ namespace TilesApp.SACO
                 btnSaveAndFinish.BackgroundColor = Color.Black;
                 btnSaveAndFinish.IsEnabled = true;
 
-                PhotoImage.Source = ImageSource.FromStream(() =>
-                {
-                    photo = file.GetStream();
-                    photoPath = file.AlbumPath;
-                    return photo;
-                });
+                photo = file.GetStream();
+                photoPath = file.AlbumPath;
+
+                //PhotoImage.Source = ImageSource.FromStream(() =>
+                //{
+                //    photo = file.GetStream();
+                //    photoPath = file.AlbumPath;
+                //    return photo;
+                //});
 
                 await DisplayAlert("Photo taken correctly", file.AlbumPath, "OK");
             }
@@ -65,6 +69,11 @@ namespace TilesApp.SACO
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             //Update info in DB
+            Dictionary<string, string> metaData = new Dictionary<string, string>();
+            metaData.Add("k1","v1");
+            metaData.Add("k2", "v2");
+            StreamToAzure.WriteJPEGStream(photo,"testapp",metaData);
+
             await DisplayAlert("Photo updated successfully!", "<" + photoPath + "> stored in DB.", "OK");
             await Navigation.PopModalAsync(true);
         }

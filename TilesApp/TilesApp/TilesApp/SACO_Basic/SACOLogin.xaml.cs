@@ -20,10 +20,14 @@ namespace TilesApp.SACO
             Setup();
             NavigationPage.SetHasNavigationBar(this, false);
             OdooConnection od = new OdooConnection();
+            //od.CreateLog();
             users = od.GetUsers();
-            if (users==null)
+            if (users.ContainsKey("error"))
             {
-                DisplayAlert("Error recovering users", "Please, check that internet is turned on in your mobile and restart the application.", "OK");
+                string message="";
+                if (users["error"].ToString() == "internet") message = "Please, check that internet is turned on in your mobile and restart the application.";
+                else if (users["error"].ToString() == "odoo") message = "Odoo connection failed. Please, restart the application.";
+                DisplayAlert("Error recovering users", message, "OK");
                 //DisplayAlert("Error recovering users", ConfigurationManager.AppSettings["key"], "OK");
             }
             width = this.Width;
