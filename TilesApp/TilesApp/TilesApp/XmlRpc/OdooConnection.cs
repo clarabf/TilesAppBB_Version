@@ -33,7 +33,7 @@ namespace XmlRpc {
     /// </summary>
     class OdooConnection {
 
-        public static string Url = ConfigurationManager.AppSettings["url"], db = ConfigurationManager.AppSettings["db"], pass = ConfigurationManager.AppSettings["pass"], user = ConfigurationManager.AppSettings["user"];
+        public static string Url = ConfigurationManager.AppSettings["SACODOO_URL"], db = ConfigurationManager.AppSettings["SACODOO_DB"], pass = ConfigurationManager.AppSettings["SACODOO_ADMIN_PASSWORD"], user = ConfigurationManager.AppSettings["SACODOO_ADMIN_USER"];
 
         public Dictionary<string,object> GetUserInfo(string barcode)
         {
