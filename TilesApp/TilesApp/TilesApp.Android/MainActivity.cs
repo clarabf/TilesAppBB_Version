@@ -46,7 +46,7 @@ namespace TilesApp.Droid
             ZXing.Mobile.MobileBarcodeScanner.Initialize(Application);
             LoadApplication(new App());
             monitor = new DeviceMonitor();
-            ScanBluetoothDevices();
+            //ScanBluetoothDevices();
             ScanSerialDevices();
         }
         private IAndroidLifecycle TslLifecycle
@@ -157,20 +157,28 @@ namespace TilesApp.Droid
 
         private void ScanBluetoothDevices(){
             BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
+            List<string>  ouiVendorIds = new List<string>(ConfigurationManager.AppSettings["OUI_VENDOR_IDS"].Split(new char[] { ';' }));
             foreach (BluetoothDevice bluetoothDevice in adapter.BondedDevices)
             {
-                if (bluetoothDevice.Type == BluetoothDeviceType.Le)
+                string[] mac = bluetoothDevice.Address.Split(':');
+                string oui = mac[0] + mac[1] + mac[2];
+                if (ouiVendorIds.Contains(oui))
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceFound", bluetoothDevice);
             }
         }
 
         private void ScanSerialDevices()
         {
+            List<string> vendorIds = new List<string>(ConfigurationManager.AppSettings["VENDOR_IDS"].Split(new char[] { ';' }));
+            List<string> productIds = new List<string>(ConfigurationManager.AppSettings["PRODUCT_IDS"].Split(new char[] { ';' }));
             manager = (UsbManager)Android.App.Application.Context.GetSystemService(Context.UsbService);
             try
             {
                 device = MainActivity.device = (manager.DeviceList.Values.ToArray())[0];
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
+                if (vendorIds.Contains(device.VendorId.ToString()) && productIds.Contains(device.ProductId.ToString()))
+                { 
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
+                }
             }
             catch (Exception) { }
         }

@@ -1,6 +1,7 @@
 ﻿using Android.Bluetooth;
 using Android.Hardware.Usb;
 using Android.Views;
+using Android.Widget;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -62,6 +63,8 @@ namespace TilesApp
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceFound");
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceConnected");
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceDisconnected");
+            MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "ChargerConnected");
+            MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "ChargerDisconnected");
             base.OnDisappearing();
         }
 
@@ -209,6 +212,20 @@ namespace TilesApp
                                 readersViewModel.BluetoothCameraReaders[i].State = inActiveDevice.State;
                         }
                     }
+                }
+            });
+
+            MessagingCenter.Subscribe<Application, bool>(Application.Current, "ChargerConnected", async (s, chargerConnected) => {
+                if (chargerConnected)
+                {
+                    Console.WriteLine("============Charger was connected!===========");
+                }
+            });
+
+            MessagingCenter.Subscribe<Application, bool>(Application.Current, "ChargerDisconnected", async (s, chargerDisconnected) => {
+                if (chargerDisconnected)
+                {
+                    Console.WriteLine("============Charger was disconnected!===========");
                 }
             });
         }
