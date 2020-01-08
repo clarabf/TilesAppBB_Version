@@ -14,7 +14,9 @@
                    HorizontalOptions="Start"
                    VerticalOptions="Center"
                    FontSize="Large"
-                   TextColor="DarkGray"/>
+                   TextColor="DarkGray"
+                   IsVisible="{Binding ReadersNotEmpty}"
+                   />
             <ListView x:Name="ReadessListView" 
                 ItemsSource="{Binding Readers}"
                 VerticalOptions="FillAndExpand"
@@ -25,6 +27,7 @@
                 CachingStrategy="RecycleElement"
                 ItemSelected="OnItemSelected"
                 BackgroundColor="#f0f0f8"
+                IsVisible="{Binding ReadersNotEmpty}"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -89,7 +92,9 @@
                    HorizontalOptions="Start"
                    VerticalOptions="Center"
                    FontSize="Large"
-                   TextColor="DarkGray"/>
+                   TextColor="DarkGray"
+                   IsVisible="{Binding BluetoothCameraReadersNotEmpty}"
+                   />
             <ListView x:Name="BluetoothCameraReadersListView" 
                 ItemsSource="{Binding BluetoothCameraReaders}"
                 VerticalOptions="FillAndExpand"
@@ -98,6 +103,7 @@
                 CachingStrategy="RecycleElement"
                 ItemSelected="OnItemSelected"
                 BackgroundColor="#f0f0f8"
+                IsVisible="{Binding BluetoothCameraReadersNotEmpty}"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -140,7 +146,9 @@
                    HorizontalOptions="Start"
                    VerticalOptions="Center"
                    FontSize="Large"
-                   TextColor="DarkGray"/>
+                   TextColor="DarkGray"
+                   IsVisible="{Binding SerialReadersNotEmpty}"
+                   />
             <ListView x:Name="SerialReadersListView" 
                 ItemsSource="{Binding SerialReaders}"
                 VerticalOptions="FillAndExpand"
@@ -149,6 +157,7 @@
                 CachingStrategy="RecycleElement"
                 ItemSelected="OnItemSelected"
                 BackgroundColor="#f0f0f8"
+                IsVisible="{Binding SerialReadersNotEmpty}"
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>

@@ -36,6 +36,8 @@ namespace TilesApp
             App.ViewModel.Inventory.Transponders.CollectionChanged += Transponders_CollectionChanged;
             InputData.CollectionChanged += InputData_CollectionChanged;
             this.readersViewModel = App.ViewModel.Readers;
+            subscribe();
+
         }
 
 
@@ -46,83 +48,13 @@ namespace TilesApp
         {
             base.OnAppearing();
             App.ViewModel.Inventory.ClearCommand.Execute(null);
+            subscribe();
 
-            // SUBSCRIBE TO ALL THE EVENTS THAT MIGHT AFFECT THE PAGE
-            MessagingCenter.Subscribe<Application, Dictionary<string, object>>(Application.Current, "BarcodeScanned", (s, InputWithDevice) => {
-                InputDevice device = (InputDevice)InputWithDevice["Device"];
-                foreach (var compDevice in readersViewModel.BluetoothCameraReaders)
-                {
-                    if (compDevice.Device.Name == device.Name)
-                    {
-                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Bluetooth2D);
-                        return;
-                    }
-                }
-                foreach (var serDevice in readersViewModel.SerialReaders)
-                {
-                    if (serDevice.ProductId == device.ProductId)
-                    {
-                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Serial1D);
-                        return;
-                    }
-                }
-                DisplayAlert("Error", "Reader not recognized!", "Ok");
-            });
-            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceAttached", async (s, device) => {
-                if (device != null)
-                {
-                    readersViewModel.SerialReaders.Add(device);
-                }
-            });
-            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceDetached", async (s, device) => {
-                if (device != null)
-                {
-                    readersViewModel.SerialReaders.Clear();
-                }
-            });
-            MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceFound", async (s, device) => {
-                if (device != null)
-                {
-                    ComplexBluetoothDevice pairedDevice = new ComplexBluetoothDevice(device, ComplexBluetoothDevice.States.Paired);
-                    readersViewModel.BluetoothCameraReaders.Add(pairedDevice);
-                }
-            });
-            MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceConnected", async (s, device) => {
-                if (device != null)
-                {
-                    ComplexBluetoothDevice activeDevice = new ComplexBluetoothDevice(device, ComplexBluetoothDevice.States.Active);
-                    foreach (var compDevice in readersViewModel.BluetoothCameraReaders)
-                    {
-                        if (compDevice.Device.Address == activeDevice.Device.Address)
-                        {
-                            int i = readersViewModel.BluetoothCameraReaders.IndexOf(compDevice);
-                            if (i != -1)
-                                readersViewModel.BluetoothCameraReaders[i].State = activeDevice.State;
-                        }
-                    }
-                }
-            });
-            MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceDisconnected", async (s, device) => {
-                if (device != null)
-                {
-                    ComplexBluetoothDevice activeDevice = new ComplexBluetoothDevice(device, ComplexBluetoothDevice.States.Disconnected);
-                    foreach (var compDevice in readersViewModel.BluetoothCameraReaders)
-                    {
-                        if (compDevice.Device.Address == activeDevice.Device.Address)
-                        {
-                            int i = readersViewModel.BluetoothCameraReaders.IndexOf(compDevice);
-                            if (i != -1)
-                                readersViewModel.BluetoothCameraReaders[i].State = activeDevice.State;
-                        }
-                    }
-                }
-            });
+
         }
 
         protected override void OnDisappearing()
         {
-            base.OnDisappearing();
-
             // UNSUBSRCIBE WHEN PAGE IS CLOSED
             MessagingCenter.Unsubscribe<Application, string>(Application.Current, "BarcodeScanned");
             MessagingCenter.Unsubscribe<Application, UsbDevice>(Application.Current, "DeviceAttached");
@@ -130,6 +62,7 @@ namespace TilesApp
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceFound");
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceConnected");
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceDisconnected");
+            base.OnDisappearing();
         }
 
 
@@ -158,6 +91,13 @@ namespace TilesApp
 
         }
         private void ProcessInput(string code, Enum reader) {
+            foreach (var item in InputData.ToList())
+            {
+                if (item[nameof(InputDataProps.Value)].ToString() == code)
+                {
+                    return;
+                }
+            }
             Dictionary<string, object> input = new Dictionary<string, object>();
             input.Add(nameof(InputDataProps.Value), code);
             input.Add(nameof(InputDataProps.ReaderType), reader);
@@ -173,7 +113,105 @@ namespace TilesApp
             // This function should be implemented in child classes
         }
 
+        private void subscribe() {
 
+            // SUBSCRIBE TO ALL THE EVENTS THAT MIGHT AFFECT THE PAGE
+            MessagingCenter.Subscribe<Application, Dictionary<string, object>>(Application.Current, "BarcodeScanned", (s, InputWithDevice) => {
+                InputDevice device = (InputDevice)InputWithDevice["Device"];
+                foreach (var compDevice in readersViewModel.BluetoothCameraReaders.ToList())
+                {
+                    if (compDevice.Device.Name == device.Name)
+                    {
+                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Bluetooth2D);
+                        return;
+                    }
+                }
+                foreach (var serDevice in readersViewModel.SerialReaders.ToList())
+                {
+                    if (serDevice.ProductId == device.ProductId)
+                    {
+                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Serial1D);
+                        return;
+                    }
+                }
+                DisplayAlert("Error", "Reader not recognized!", "Ok");
+            });
+            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceAttached", async (s, device) => {
+                if (device != null)
+                {
+                    foreach (var serialDevice in readersViewModel.SerialReaders.ToList())
+                    {
+                        if (serialDevice.SerialNumber == device.SerialNumber)
+                        {
+                            return;
+                        }
+                    }
+                    readersViewModel.SerialReaders.Add(device);
+                }
+            });
+
+            MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceDetached", async (s, device) => {
+                if (device != null)
+                {
+                    foreach (var serialDevice in readersViewModel.SerialReaders.ToList())
+                    {
+                        if (serialDevice.SerialNumber == device.SerialNumber)
+                        {
+                            readersViewModel.SerialReaders.Remove(serialDevice);
+                        }
+                    }
+                }
+            });
+            MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceFound", async (s, device) => {
+                if (device != null)
+                {
+                    ComplexBluetoothDevice pairedDevice = new ComplexBluetoothDevice(device, ComplexBluetoothDevice.States.Paired);
+                    foreach (var compDevice in readersViewModel.BluetoothCameraReaders.ToList())
+                    {
+                        if (compDevice.Device.Address == pairedDevice.Device.Address)
+                        {
+                            int i = readersViewModel.BluetoothCameraReaders.IndexOf(compDevice);
+                            if (i != -1)
+                                readersViewModel.BluetoothCameraReaders[i].State = pairedDevice.State;
+                            return;
+                        }
+                    }
+                    readersViewModel.BluetoothCameraReaders.Add(pairedDevice);
+                }
+            });
+            MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceConnected", async (s, device) => {
+                if (device != null)
+                {
+                    ComplexBluetoothDevice activeDevice = new ComplexBluetoothDevice(device, ComplexBluetoothDevice.States.Active);
+                    foreach (var compDevice in readersViewModel.BluetoothCameraReaders.ToList())
+                    {
+                        if (compDevice.Device.Address == activeDevice.Device.Address)
+                        {
+                            int i = readersViewModel.BluetoothCameraReaders.IndexOf(compDevice);
+                            if (i != -1)
+                                readersViewModel.BluetoothCameraReaders[i].State = activeDevice.State;
+                            return;
+                        }
+                    }
+                    readersViewModel.BluetoothCameraReaders.Add(activeDevice);
+                }
+            });
+            MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceDisconnected", async (s, device) => {
+                if (device != null)
+                {
+                    ComplexBluetoothDevice inActiveDevice = new ComplexBluetoothDevice(device, ComplexBluetoothDevice.States.Disconnected);
+                    foreach (var compDevice in readersViewModel.BluetoothCameraReaders.ToList())
+                    {
+                        if (compDevice.Device.Address == inActiveDevice.Device.Address)
+                        {
+                            int i = readersViewModel.BluetoothCameraReaders.IndexOf(compDevice);
+                            if (i != -1)
+                                readersViewModel.BluetoothCameraReaders[i].State = inActiveDevice.State;
+                        }
+                    }
+                }
+            });
+        }
 
 
 

@@ -17,6 +17,7 @@ namespace TilesApp.Droid
     using Android.Views.InputMethods;
     using PCLAppConfig;
     using System.Linq;
+    using System.Threading;
     using TechnologySolutions.Rfid.AsciiProtocol.Extensions;
     using TechnologySolutions.Rfid.AsciiProtocol.Transports;
 
@@ -68,7 +69,10 @@ namespace TilesApp.Droid
                 return this.lifecyle;
             }
         }
-
+        protected override void OnStart()
+        {
+            base.OnStart();
+        }
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -88,9 +92,6 @@ namespace TilesApp.Droid
         {
             base.OnResume();
             this.TslLifecycle.OnResume(this);
-            //RegisterReceiver(monitor, new IntentFilter(UsbManager.ActionUsbDeviceAttached));
-            //RegisterReceiver(monitor, new IntentFilter(UsbManager.ActionUsbDeviceDetached));
-
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
@@ -155,7 +156,6 @@ namespace TilesApp.Droid
         }
 
         private void ScanBluetoothDevices(){
-
             BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
             foreach (BluetoothDevice bluetoothDevice in adapter.BondedDevices)
             {

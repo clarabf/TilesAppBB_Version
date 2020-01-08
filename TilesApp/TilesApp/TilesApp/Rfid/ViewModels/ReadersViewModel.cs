@@ -7,6 +7,7 @@ namespace TilesApp.Rfid.ViewModels
     using Android.Bluetooth;
     using Android.Hardware.Usb;
     using System.Collections.ObjectModel;
+    using System.Collections.Specialized;
     using System.Linq;
     using System.Windows.Input;
 
@@ -44,6 +45,38 @@ namespace TilesApp.Rfid.ViewModels
             this.readerManager.ActiveReaderChanged += (sender, e) => { this.activeReaderChanged.Report(e); };
 
             this.RefreshReadersCommand = new RelayCommand(this.ExecuteRefreshReaders);
+            Readers.CollectionChanged += Readers_CollectionChanged;
+            SerialReaders.CollectionChanged += SerialReaders_CollectionChanged;
+            BluetoothCameraReaders.CollectionChanged += BluetoothCameraReaders_CollectionChanged;
+        }
+
+        private void Readers_CollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems != null)
+            {
+                    ReadersNotEmpty = true;
+            }
+            else
+            ReadersNotEmpty = Readers.Count >0;
+        }
+
+        private void SerialReaders_CollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems != null)
+            {
+                    SerialReadersNotEmpty = true;
+            }
+            else
+                SerialReadersNotEmpty = SerialReaders.Count > 0;
+        }
+        private void BluetoothCameraReaders_CollectionChanged(object sender, NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems != null)
+            {
+                BluetoothCameraReadersNotEmpty = true;
+            }
+            else
+                BluetoothCameraReadersNotEmpty = BluetoothCameraReaders.Count > 0;
         }
 
         /// <summary>
@@ -177,6 +210,39 @@ namespace TilesApp.Rfid.ViewModels
             }
         }
 
+
+
+        private bool _readersNotEmpty = false;
+        public bool ReadersNotEmpty
+        {
+            get { return _readersNotEmpty; }
+            set
+            {
+                _readersNotEmpty = value;
+                RaisePropertyChanged(nameof(ReadersNotEmpty));
+            }
+        }
+
+        private bool _serialReadersNotEmpty = false;
+        public bool SerialReadersNotEmpty
+        {
+            get { return _serialReadersNotEmpty; }
+            set
+            {
+                _serialReadersNotEmpty = value;
+                RaisePropertyChanged(nameof(SerialReadersNotEmpty));
+            }
+        }
+        private bool _bluetoothCameraReadersNotEmpty = false;
+        public bool BluetoothCameraReadersNotEmpty
+        {
+            get { return _bluetoothCameraReadersNotEmpty; }
+            set
+            {
+                _bluetoothCameraReadersNotEmpty = value;
+                RaisePropertyChanged(nameof(BluetoothCameraReadersNotEmpty));
+            }
+        }
         private void ExecuteRefreshReaders()
         {
             this.IsRefreshing = true;
