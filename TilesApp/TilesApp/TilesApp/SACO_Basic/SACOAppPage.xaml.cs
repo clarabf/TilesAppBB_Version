@@ -31,26 +31,37 @@ namespace TilesApp.SACO
             List<string> tags = (List<string>)userInfo["tags"];
             foreach (string tag in tags)
             {
-                switch (tag)
+                string simplifiedTag = tag.Substring(4);
+                int underScore = simplifiedTag.IndexOf("_");
+                if (tag.Contains("App_Associate_"))
                 {
-                    case "Associate":
-                        btAssociate.IsEnabled = true;
-                        break;
-                    case "Assemble":
-                        btAssemble.IsEnabled = true;
-                        break;
-                    case "Checkpoint":
-                        btCheckpoint.IsEnabled = true;
-                        break;
-                    case "CheckpointRich":
-                        btCheckpointR.IsEnabled = true;
-                        break;
-                    case "QC":
-                        btQC.IsEnabled = true;
-                        break;
-                    case "QCRich":
-                        btQCR.IsEnabled = true;
-                        break;
+                    btAssociate.Text = simplifiedTag.Substring(underScore+1);
+                    btAssociate.IsEnabled = true;
+                }
+                else if (tag.Contains("App_Assemble_"))
+                {
+                    btAssemble.Text = simplifiedTag.Substring(underScore + 1);
+                    btAssemble.IsEnabled = true;
+                }
+                else if (tag.Contains("App_Checkpoint_"))
+                {
+                    btCheckpoint.Text = simplifiedTag.Substring(underScore + 1);
+                    btCheckpoint.IsEnabled = true;
+                }
+                else if (tag.Contains("App_CheckpointRich_"))
+                {
+                    btCheckpointR.Text = simplifiedTag.Substring(underScore + 1);
+                    btCheckpointR.IsEnabled = true;
+                }
+                else if (tag.Contains("App_QC_"))
+                {
+                    btQC.Text = simplifiedTag.Substring(underScore + 1);
+                    btQC.IsEnabled = true;
+                }
+                else if (tag.Contains("App_QCRich_"))
+                {
+                    btQCR.Text = simplifiedTag.Substring(underScore + 1);
+                    btQCR.IsEnabled = true;
                 }
             }
         }

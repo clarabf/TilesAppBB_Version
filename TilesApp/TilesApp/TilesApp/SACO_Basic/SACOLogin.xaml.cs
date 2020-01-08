@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using PCLAppConfig;
 using System;
 using System.Collections.Generic;
 using TilesApp.Rfid;
@@ -11,8 +10,6 @@ namespace TilesApp.SACO
 
     public partial class SACOLogin : BasePage
     {
-        private double width = 0;
-        private double height = 0;
         private Dictionary<string, object> users;
         public SACOLogin()
         {
@@ -28,10 +25,7 @@ namespace TilesApp.SACO
                 if (users["error"].ToString() == "internet") message = "Please, check that internet is turned on in your mobile and restart the application.";
                 else if (users["error"].ToString() == "odoo") message = "Odoo connection failed. Please, restart the application.";
                 DisplayAlert("Error recovering users", message, "OK");
-                //DisplayAlert("Error recovering users", ConfigurationManager.AppSettings["key"], "OK");
             }
-            width = this.Width;
-            height = this.Height;            
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
                 try
