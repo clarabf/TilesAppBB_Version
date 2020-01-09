@@ -12,18 +12,18 @@ namespace TilesApp.SACO
 
     public partial class SACOAssociate : BasePage
     {
-        private double width = 0;
-        private double height = 0;
-        string lastValue;
+
+        private string lastValue;
+        private string appName;
 
         public ObservableCollection<string> InputDataValues { get; set; } = new ObservableCollection<string>();
-        public SACOAssociate()
+        public SACOAssociate(string name)
         {
             InitializeComponent();
             BindingContext = this;
+            appName = name;
+            lblTest.Text = appName + " (Associate)";
             NavigationPage.SetHasNavigationBar(this, false);
-            width = this.Width;
-            height = this.Height;
         }
 
         public override void ScannerReadDetected(Dictionary<string, object> input)

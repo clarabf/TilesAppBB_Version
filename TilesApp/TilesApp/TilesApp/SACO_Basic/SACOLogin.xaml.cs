@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using TilesApp.Azure;
 using TilesApp.Rfid;
 using Xamarin.Forms;
 using XmlRpc;
@@ -16,6 +17,12 @@ namespace TilesApp.SACO
             InitializeComponent();
             Setup();
             NavigationPage.SetHasNavigationBar(this, false);
+
+            //Dictionary<string, object> metaData = new Dictionary<string, object>();
+            //metaData.Add("asdsdssds", "vvvvvv");
+            //metaData.Add("hhhhhh", "v2v2v2");
+            //bool success = CosmosDBManager.InsertOneObject(metaData);
+
             OdooConnection od = new OdooConnection();
             //od.CreateLog();
             users = od.GetUsers();

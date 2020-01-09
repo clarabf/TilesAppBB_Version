@@ -4,19 +4,17 @@ using Xamarin.Forms;
 
 namespace TilesApp.SACO
 {
-
     public partial class SACOQC : BasePage
     {
-        private double width = 0;
-        private double height = 0;
+        private string appName;
 
-        public SACOQC()
+        public SACOQC(string name)
         {
             InitializeComponent();
             BindingContext = this;
             NavigationPage.SetHasNavigationBar(this, false);
-            width = this.Width;
-            height = this.Height;
+            appName = name;
+            lblTest.Text = appName + " (QC)";
         }
         public override void ScannerReadDetected(Dictionary<string, object> input)
         {
@@ -29,11 +27,11 @@ namespace TilesApp.SACO
         private async void PassOrFail(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            string message = "";
+            string message;
             if (b.Text == "PASS")
             {
                 //Update PASS info
-                message = "<" + barcode.Text + "> has passed successfully to the next step!"; 
+                message = "<" + barcode.Text + "> has passed successfully to the next step!";
             }
             else
             {

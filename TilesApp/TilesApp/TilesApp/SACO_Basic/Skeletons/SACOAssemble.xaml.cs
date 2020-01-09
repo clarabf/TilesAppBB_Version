@@ -7,21 +7,19 @@ namespace TilesApp.SACO
 {
     public partial class SACOAssemble : BasePage
     {
-        private double width = 0;
-        private double height = 0;
         private bool mainScanned = false;
         private string mainCode;
         private List<string> barcodes = new List<string>();
+        private string appName;
         public ObservableCollection<string> BarcodesScanned { get; set; } = new ObservableCollection<string>();
 
-        public SACOAssemble()
+        public SACOAssemble(string name)
         {
             InitializeComponent();
             BindingContext = this;
+            appName = name;
+            lblTest.Text = appName + " (Assemble)";
             NavigationPage.SetHasNavigationBar(this, false);
-            width = this.Width;
-            height = this.Height;
-            //BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
         }
 
         public override void ScannerReadDetected(Dictionary<string, object> input)
@@ -44,9 +42,9 @@ namespace TilesApp.SACO
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             //Update info in DB
-            string message="";
+            string message = "";
             foreach (string code in barcodes) message += code + " - ";
-            await DisplayAlert(mainCode  + " was assembled successfully!", message.Substring(0, message.Length-2), "OK");
+            await DisplayAlert(mainCode + " was assembled successfully!", message.Substring(0, message.Length - 2), "OK");
             await Navigation.PopModalAsync(true);
         }
 

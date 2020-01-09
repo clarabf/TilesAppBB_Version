@@ -7,16 +7,16 @@ namespace TilesApp.SACO
 
     public partial class SACOCheckpoint : BasePage
     {
-        private double width = 0;
-        private double height = 0;
 
-        public SACOCheckpoint()
+        private string appName;
+
+        public SACOCheckpoint(string name)
         {
             InitializeComponent();
             BindingContext = this;
+            appName = name;
+            lblTest.Text = appName + " (Checkpoint)";
             NavigationPage.SetHasNavigationBar(this, false);
-            width = this.Width;
-            height = this.Height;
         }
 
         public override void ScannerReadDetected(Dictionary<string, object> input)

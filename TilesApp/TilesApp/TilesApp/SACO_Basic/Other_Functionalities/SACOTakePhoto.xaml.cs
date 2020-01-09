@@ -1,6 +1,9 @@
 ﻿using Plugin.Media;
 using System;
 using System.Collections.Generic;
+using Plugin.Media;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using Xamarin.Forms;
 using TilesApp.Azure;
@@ -10,17 +13,16 @@ namespace TilesApp.SACO
 
     public partial class SACOTakePhoto : ContentPage
     {
-        private double width = 0;
-        private double height = 0;
         private Stream photo;
         private string photoPath;
+        private string appName;
 
-        public SACOTakePhoto()
+        public SACOTakePhoto(string name)
         {
             InitializeComponent();
+            appName = name;
+            lblTest.Text = appName + " (QCRich)";
             NavigationPage.SetHasNavigationBar(this, false);
-            width = this.Width;
-            height = this.Height;
         }
 
         private async void CameraButton_Clicked(object sender, EventArgs e)
@@ -70,9 +72,9 @@ namespace TilesApp.SACO
         {
             //Update info in DB
             Dictionary<string, string> metaData = new Dictionary<string, string>();
-            metaData.Add("k1","v1");
+            metaData.Add("k1", "v1");
             metaData.Add("k2", "v2");
-            StreamToAzure.WriteJPEGStream(photo,"testapp",metaData);
+            StreamToAzure.WriteJPEGStream(photo, appName, metaData);
 
             await DisplayAlert("Photo updated successfully!", "<" + photoPath + "> stored in DB.", "OK");
             await Navigation.PopModalAsync(true);

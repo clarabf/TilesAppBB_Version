@@ -21,8 +21,6 @@ namespace TilesApp.Azure
 
         public static bool InsertOneObject(Dictionary<string, object> metaDataDictionary)
         {
-            settings.RetryWrites = false;
-            var mongoClient = new MongoClient(settings);
 
             try
             {

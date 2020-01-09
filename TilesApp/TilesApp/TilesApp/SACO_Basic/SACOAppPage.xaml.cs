@@ -8,8 +8,6 @@ namespace TilesApp.SACO
 
     public partial class SACOAppPage : ContentPage
     {
-        private double width = 0;
-        private double height = 0;
         Dictionary<string, object> userInfo;
 
         public SACOAppPage()
@@ -17,52 +15,40 @@ namespace TilesApp.SACO
             InitializeComponent();
             this.BindWithLifecycle(App.ViewModel.Inventory);
             NavigationPage.SetHasNavigationBar(this, false);
-            width = this.Width;
-            height = this.Height;
         }
 
         public SACOAppPage(Dictionary<string, object> userInf)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            width = this.Width;
-            height = this.Height;
             userInfo = userInf;
             List<string> tags = (List<string>)userInfo["tags"];
+            int row = 0;
             foreach (string tag in tags)
             {
                 string simplifiedTag = tag.Substring(4);
                 int underScore = simplifiedTag.IndexOf("_");
-                if (tag.Contains("App_Associate_"))
+                buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                Button button = new Button
                 {
-                    btAssociate.Text = simplifiedTag.Substring(underScore+1);
-                    btAssociate.IsEnabled = true;
-                }
-                else if (tag.Contains("App_Assemble_"))
-                {
-                    btAssemble.Text = simplifiedTag.Substring(underScore + 1);
-                    btAssemble.IsEnabled = true;
-                }
-                else if (tag.Contains("App_Checkpoint_"))
-                {
-                    btCheckpoint.Text = simplifiedTag.Substring(underScore + 1);
-                    btCheckpoint.IsEnabled = true;
-                }
-                else if (tag.Contains("App_CheckpointRich_"))
-                {
-                    btCheckpointR.Text = simplifiedTag.Substring(underScore + 1);
-                    btCheckpointR.IsEnabled = true;
-                }
-                else if (tag.Contains("App_QC_"))
-                {
-                    btQC.Text = simplifiedTag.Substring(underScore + 1);
-                    btQC.IsEnabled = true;
-                }
-                else if (tag.Contains("App_QCRich_"))
-                {
-                    btQCR.Text = simplifiedTag.Substring(underScore + 1);
-                    btQCR.IsEnabled = true;
-                }
+                    Text = simplifiedTag.Substring(underScore + 1),
+                    TextColor = Color.FromHex("#F8F9FA"),
+                    BackgroundColor = Color.FromHex("#DC3545"),
+                    FontAttributes = FontAttributes.Bold,
+                    FontSize = 16,
+                    WidthRequest = 190,
+                    CornerRadius = 8,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center,
+                };
+                if (tag.Contains("App_Associate_")) button.Clicked += Associate_Command;
+                else if (tag.Contains("App_Assemble_")) button.Clicked += Assemble_Command;
+                else if (tag.Contains("App_Checkpoint_")) button.Clicked += Checkpoint_Command;
+                else if (tag.Contains("App_CheckpointRich_")) button.Clicked += CheckpointRich_Command;
+                else if (tag.Contains("App_QC_")) button.Clicked += QC_Command;
+                else if (tag.Contains("App_QCRich_")) button.Clicked += QCRich_Command;
+                buttonsGrid.Children.Add(button, 0, row);
+                row++;
             }
         }
 
@@ -70,17 +56,20 @@ namespace TilesApp.SACO
 
         private async void Associate_Command(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new SACOAssociate());
+            Button b = (Button)sender;
+            await Navigation.PushModalAsync(new SACOAssociate(b.Text));
         }
 
         private async void Assemble_Command(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new SACOAssemble());
+            Button b = (Button)sender;
+            await Navigation.PushModalAsync(new SACOAssemble(b.Text));
         }
 
         private async void Checkpoint_Command(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new SACOCheckpoint());
+            Button b = (Button)sender;
+            await Navigation.PushModalAsync(new SACOCheckpoint(b.Text));
         }
 
         private async void CheckpointRich_Command(object sender, EventArgs args)
@@ -90,12 +79,14 @@ namespace TilesApp.SACO
 
         private async void QC_Command(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new SACOQC());
+            Button b = (Button)sender;
+            await Navigation.PushModalAsync(new SACOQC(b.Text));
         }
 
         private async void QCRich_Command(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new SACOTakePhoto());
+            Button b = (Button)sender;
+            await Navigation.PushModalAsync(new SACOTakePhoto(b.Text));
         }
 
         // Bottom bar
@@ -119,29 +110,6 @@ namespace TilesApp.SACO
                 Navigation.PushModalAsync(new SACOLogin());
             });
         }
-
-        protected override void OnSizeAllocated(double width, double height)
-        {
-            base.OnSizeAllocated(width, height);
-            if (width != this.width || height != this.height)
-            {
-                this.width = width;
-                this.height = height;
-                if (width > height)
-                {
-                    FASignOut.Margin = new Thickness(0, 0, 0, 5);
-                    FABarcode.Margin = new Thickness(80, 0, 0, 5);
-                    FAFileTextO.Margin = new Thickness(64, 0, 0, 7);
-                }
-                else
-                {
-                    FASignOut.Margin = new Thickness(0, 0, 0, 13);
-                    FABarcode.Margin = new Thickness(80, 0, 0, 13);
-                    FAFileTextO.Margin = new Thickness(64, 0, 0, 15);
-                }
-            }
-        }
-
 
     }
 }
