@@ -18,7 +18,7 @@ namespace TilesApp.SACO
             width = this.Width;
             height = this.Height;
         }
-        public override void InputDataDetected(Dictionary<string, object> input)
+        public override void ScannerReadDetected(Dictionary<string, object> input)
         {
             lblBarcode.IsVisible = true;
             btFail.IsVisible = true;

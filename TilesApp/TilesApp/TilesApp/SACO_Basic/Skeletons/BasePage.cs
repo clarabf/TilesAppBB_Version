@@ -10,13 +10,15 @@ using System.Linq;
 using TilesApp.Models;
 using TilesApp.Rfid.Models;
 using TilesApp.Rfid.ViewModels;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace TilesApp
 {
     public class BasePage : ContentPage, INotifyPropertyChanged
     {
-        public ObservableCollection<Dictionary<string, object>> InputData { get; set; } = new ObservableCollection<Dictionary<string, object>>();
+        public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
+        public BaseData BaseData  = new BaseData();
         private ReadersViewModel readersViewModel;
 
         public enum ReadersTypes
@@ -35,10 +37,13 @@ namespace TilesApp
         }
         public BasePage(){
             App.ViewModel.Inventory.Transponders.CollectionChanged += Transponders_CollectionChanged;
-            InputData.CollectionChanged += InputData_CollectionChanged;
+            ScannerReads.CollectionChanged += ScannerReads_CollectionChanged;
             this.readersViewModel = App.ViewModel.Readers;
             subscribe();
 
+
+
+            
         }
 
 
@@ -82,19 +87,19 @@ namespace TilesApp
             }
 
         }
-        private void InputData_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+        private void ScannerReads_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems != null)
             {
                 foreach (var item in args.NewItems.Cast<Dictionary<string, object>>())
                 {
-                    InputDataDetected(item);
+                    ScannerReadDetected(item);
                 }
             }
 
         }
         private void ProcessInput(string code, Enum reader) {
-            foreach (var item in InputData.ToList())
+            foreach (var item in ScannerReads.ToList())
             {
                 if (item[nameof(InputDataProps.Value)].ToString() == code)
                 {
@@ -105,13 +110,13 @@ namespace TilesApp
             input.Add(nameof(InputDataProps.Value), code);
             input.Add(nameof(InputDataProps.ReaderType), reader);
             input.Add(nameof(InputDataProps.Timestamp), DateTime.Now);
-            InputData.Add(input);
+            ScannerReads.Add(input);
         }      
 
 
 
         // VIRTUAL FUNCTIONS
-        public virtual void InputDataDetected(Dictionary<string, object> input)
+        public virtual void ScannerReadDetected(Dictionary<string, object> input)
         {
             // This function should be implemented in child classes
         }
@@ -228,9 +233,18 @@ namespace TilesApp
                     Console.WriteLine("============Charger was disconnected!===========");
                 }
             });
+
+            MessagingCenter.Subscribe<Application, String>(Application.Current, "FetchedDeviceSerialNumber", async (s, serialNumber) => {
+                if (serialNumber!= null)
+                {
+                    BaseData.DeviceSerialNumber = serialNumber;
+                }
+            });
+
+
         }
 
-
+      
 
 
     }

@@ -15,6 +15,7 @@ namespace TilesApp.Droid
     using Android.Content;
     using Android.Hardware.Usb;
     using Android.Views.InputMethods;
+    using Java.Lang.Reflect;
     using PCLAppConfig;
     using System.Linq;
     using System.Threading;
@@ -48,6 +49,7 @@ namespace TilesApp.Droid
             monitor = new DeviceMonitor();
             //ScanBluetoothDevices();
             ScanSerialDevices();
+            GetDeviceSerialNumber();
         }
         private IAndroidLifecycle TslLifecycle
         {
@@ -183,7 +185,11 @@ namespace TilesApp.Droid
             catch (Exception) { }
         }
 
-
+        private void GetDeviceSerialNumber()
+        {
+            MessagingCenter.Send(Xamarin.Forms.Application.Current, "FetchedDeviceSerialNumber", Android.OS.Build.Serial);
+            return;          
+        }
 
 
 

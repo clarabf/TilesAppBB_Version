@@ -24,7 +24,7 @@ namespace TilesApp.SACO
             //BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
         }
 
-        public override void InputDataDetected(Dictionary<string, object> input)
+        public override void ScannerReadDetected(Dictionary<string, object> input)
         {
             if (!mainScanned)
             {
