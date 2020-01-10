@@ -18,10 +18,11 @@ namespace TilesApp.SACO
             Setup();
             NavigationPage.SetHasNavigationBar(this, false);
 
-            //Dictionary<string, object> metaData = new Dictionary<string, object>();
-            //metaData.Add("asdsdssds", "vvvvvv");
-            //metaData.Add("hhhhhh", "v2v2v2");
-            //bool success = CosmosDBManager.InsertOneObject(metaData);
+            Dictionary<string, object> metaData = new Dictionary<string, object>();
+            metaData.Add("asdsdssds", "vvvvvv");
+            metaData.Add("hhhhhh", "v2v2v2");
+            metaData.Add("time_stamp", DateTime.Now);
+            bool success = CosmosDBManager.InsertOneObject(metaData);
 
             OdooConnection od = new OdooConnection();
             //od.CreateLog();
