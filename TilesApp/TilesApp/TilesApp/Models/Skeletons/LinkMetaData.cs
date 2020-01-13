@@ -9,7 +9,6 @@ using Newtonsoft.Json;
 
 namespace TilesApp.Models.Skeletons
 {
-
     public class LinkMetaData
     {
         public String ProductFamily { get; set; }
@@ -27,28 +26,34 @@ namespace TilesApp.Models.Skeletons
         public Dictionary<string, object> AdditionalData { get; set; }
 
         //Constructor from json string
-        public LinkMetaData(string jsonConfig = "")
+        public LinkMetaData(string jsonConfig = null)
         {
-            Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
-            Type propertyType = GetType();
-
-            foreach (var prop in GetType().GetProperties())
+            if (jsonConfig != null)
             {
-                propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);
+                Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
+                Type propertyType = GetType();
+
+                foreach (var prop in GetType().GetProperties())
+                {
+                    if (configData.ContainsKey(prop.Name)) { propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]); }
+                }
             }
         }
         //Constructor from json stream
         public LinkMetaData(Stream streamConfig)
         {
-            StreamReader reader = new StreamReader(streamConfig);
-            string jsonConfig = reader.ReadToEnd();
-
-            Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
-            Type propertyType = GetType();
-
-            foreach (var prop in GetType().GetProperties())
+            if (streamConfig != null)
             {
-                propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);
+                StreamReader reader = new StreamReader(streamConfig);
+                string jsonConfig = reader.ReadToEnd();
+
+                Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
+                Type propertyType = GetType();
+
+                foreach (var prop in GetType().GetProperties())
+                {
+                    if (configData.ContainsKey(prop.Name)) { propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]); }
+                }
             }
         }
         //Add metadata from string
