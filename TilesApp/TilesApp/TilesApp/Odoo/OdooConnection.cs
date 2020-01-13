@@ -26,27 +26,29 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using PCLAppConfig;
 
-namespace XmlRpc {
+namespace TilesApp.Odoo
+{
 
     /// <summary>
     /// This class, test the xmlrpc component on odoo 9
     /// </summary>
     class OdooConnection {
 
-        public static string Url = ConfigurationManager.AppSettings["SACODOO_URL"], db = ConfigurationManager.AppSettings["SACODOO_DB"], pass = ConfigurationManager.AppSettings["SACODOO_ADMIN_PASSWORD"], user = ConfigurationManager.AppSettings["SACODOO_ADMIN_USER"];
+        private static string Url = ConfigurationManager.AppSettings["SACODOO_URL"], db = ConfigurationManager.AppSettings["SACODOO_DB"], pass = ConfigurationManager.AppSettings["SACODOO_ADMIN_PASSWORD"], user = ConfigurationManager.AppSettings["SACODOO_ADMIN_USER"];
+        private static int? adminID;
+        private static XmlRpcClient client = new XmlRpcClient();
 
-        public Dictionary<string,object> GetUserInfo(string barcode)
+        private static Dictionary<string,Dictionary<string, object>> cachedUserInfo;
+        private static Dictionary<string, object> cachedUsers;
+        private static Dictionary<string, Stream> cachedConfigFiles;
+
+        public static void Login()
         {
-            List<object> ids = new List<object>();
-            List<string> names = new List<string>();
-            Dictionary<string, object> userInfo = new Dictionary<string, object>();
-            XmlRpcClient client = new XmlRpcClient();
             client.Url = Url;
             client.Path = "/xmlrpc/2/common";
 
             try
             {
-                // LOGIN
                 XmlRpcRequest requestLogin = new XmlRpcRequest("authenticate");
                 requestLogin.AddParams(db, user, pass, XmlRpcParameter.EmptyStruct());
                 XmlRpcResponse responseLogin = client.Execute(requestLogin);
@@ -54,18 +56,38 @@ namespace XmlRpc {
                 Console.WriteLine("LOGIN: ");
                 if (responseLogin.IsFault())
                 {
-                    Console.WriteLine(responseLogin.GetFaultString());
+                    throw new Exception(responseLogin.GetFaultString());
                 }
                 else
                 {
-                    Console.WriteLine(responseLogin.GetString());
+                    adminID = responseLogin.GetInt();
                 }
+            }
+            catch(Exception e)
+            {
+                throw e;
+            }
+        }
+        public Dictionary<string,object> GetUserInfo(string barcode, bool forceCacheUpdate = false)
+        {
+            // CHECK IF ALREADY CACHED
+            if (cachedUserInfo.ContainsKey(barcode) & !forceCacheUpdate) { return cachedUserInfo[barcode]; }
+
+            // OTHERWISE DO
+            List<object> ids = new List<object>();
+            List<string> names = new List<string>();
+            Dictionary<string, object> userInfo = new Dictionary<string, object>();
+
+            try
+            {
+                // LOGIN IF NECESSARY
+                if(adminID==null){ Login(); };
 
                 // SEARCH
                 client.Path = "/xmlrpc/2/object";
 
                 XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-                requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee", "search_read",
+                requestSearch.AddParams(db, adminID, pass, "hr.employee", "search_read",
                     XmlRpcParameter.AsArray(
                         XmlRpcParameter.AsArray(
                             XmlRpcParameter.AsArray("barcode", "=", barcode)
@@ -103,7 +125,7 @@ namespace XmlRpc {
                 if (ids.Count > 0)
                 {
                     requestSearch = new XmlRpcRequest("execute_kw");
-                    requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee.category", "search_read",
+                    requestSearch.AddParams(db, adminID, pass, "hr.employee.category", "search_read",
                         XmlRpcParameter.AsArray(
                             XmlRpcParameter.AsArray(
                                 XmlRpcParameter.AsArray("id", "in", ids)
@@ -136,6 +158,7 @@ namespace XmlRpc {
                     }
                 }
                 userInfo.Add("tags", names);
+                cachedUserInfo.Add(barcode, userInfo);
                 return userInfo;
             }
             catch 
@@ -144,10 +167,12 @@ namespace XmlRpc {
             }
             
         }
-
-        public Dictionary<string, object> GetUsers()
+        public Dictionary<string, object> GetUsers(bool forceCacheUpdate = false)
         {
-            
+            // CHECK IF ALREADY CACHED
+            if (cachedUsers != null & !forceCacheUpdate) { return cachedUsers; }
+
+            // OTHERWISE DO
             List<string> names = new List<string>();
 
             Dictionary<string, object> users = new Dictionary<string, object>();
@@ -157,33 +182,19 @@ namespace XmlRpc {
             List<object> ids;
             List<string> id_names;
 
-            XmlRpcClient client = new XmlRpcClient();
-            client.Url = Url;
             client.Path = "/xmlrpc/2/common";
 
             try
             {
-                // LOGIN
-                XmlRpcRequest requestLogin = new XmlRpcRequest("authenticate");
-                requestLogin.AddParams(db, user, pass, XmlRpcParameter.EmptyStruct());
-                XmlRpcResponse responseLogin = client.Execute(requestLogin);
-
-                Console.WriteLine("LOGIN: ");
-                if (responseLogin.IsFault())
-                {
-                    Console.WriteLine(responseLogin.GetFaultString());
-                }
-                else
-                {
-                    Console.WriteLine(responseLogin.GetString());
-                }
+                // LOGIN IF NECESSARY
+                if (adminID == null) { Login(); };
 
                 // SEARCH
                 client.Path = "/xmlrpc/2/object";
 
                 ///////////// TAGS /////////////
                 XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-                requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee.category", "search_read",
+                requestSearch.AddParams(db, adminID, pass, "hr.employee.category", "search_read",
                     XmlRpcParameter.AsArray(
                         XmlRpcParameter.AsArray(
                             XmlRpcParameter.AsArray("id", ">", 0)
@@ -216,7 +227,7 @@ namespace XmlRpc {
 
                 //USERS
                 requestSearch = new XmlRpcRequest("execute_kw");
-                requestSearch.AddParams(db, responseLogin.GetInt(), pass, "hr.employee", "search_read",
+                requestSearch.AddParams(db, adminID, pass, "hr.employee", "search_read",
                     XmlRpcParameter.AsArray(
                         XmlRpcParameter.AsArray(
                             XmlRpcParameter.AsArray("id", ">", 0)
@@ -257,6 +268,7 @@ namespace XmlRpc {
                         }
                     }
                 }
+                cachedUsers = users;
                 return users;
             }
             catch (WebServiceException)
@@ -269,7 +281,7 @@ namespace XmlRpc {
                 users.Add("error","odoo");
                 return users;
             }
-        }
+        }        
 
         public void CreateLog()
         {
