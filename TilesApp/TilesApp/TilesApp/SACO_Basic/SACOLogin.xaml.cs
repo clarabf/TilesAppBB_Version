@@ -53,8 +53,9 @@ namespace TilesApp.SACO
                     //var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
                     //var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
                     //var answer = await postResponse.Content.ReadAsStringAsync();
+                    App.UserInfo = userInfo; // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
                     Device.BeginInvokeOnMainThread(() =>
-                    {
+                    {                        
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new SACOAppPage(userInfo));
                     });

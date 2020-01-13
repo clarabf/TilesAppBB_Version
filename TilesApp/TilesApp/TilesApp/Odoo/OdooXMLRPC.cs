@@ -33,7 +33,7 @@ namespace TilesApp.Odoo
             Login();
             GetApps();
             //Once user opens app
-            GetConfigFiles(validAppsList);
+            //GetConfigFiles(validAppsList);
         }
 
         private static void GetApps()

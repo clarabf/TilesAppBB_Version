@@ -18,6 +18,8 @@ namespace TilesApp.Models
 
         public BaseData() {
             getLocation(); // sets the Location property to the current location
+
+            DeviceSerialNumber = App.DeviceSerialNumber!=null ? App.DeviceSerialNumber : null ;
         }
 
 

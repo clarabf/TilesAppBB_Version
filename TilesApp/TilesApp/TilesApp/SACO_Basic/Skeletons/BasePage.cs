@@ -40,7 +40,15 @@ namespace TilesApp
             ScannerReads.CollectionChanged += ScannerReads_CollectionChanged;
             this.readersViewModel = App.ViewModel.Readers;
             subscribe();
-
+            try
+            {
+                BaseData.UserId = App.UserInfo["id"].ToString();
+                BaseData.UserName = App.UserInfo["name"].ToString();
+            }
+            catch (Exception)
+            {
+            }
+  
 
 
             
@@ -234,12 +242,7 @@ namespace TilesApp
                 }
             });
 
-            MessagingCenter.Subscribe<Application, String>(Application.Current, "FetchedDeviceSerialNumber", async (s, serialNumber) => {
-                if (serialNumber!= null)
-                {
-                    BaseData.DeviceSerialNumber = serialNumber;
-                }
-            });
+           
 
 
         }

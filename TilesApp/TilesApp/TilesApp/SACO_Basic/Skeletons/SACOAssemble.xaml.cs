@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using TilesApp.Azure;
+using TilesApp.Models.Skeletons;
+using TilesApp.Odoo;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -10,14 +13,23 @@ namespace TilesApp.SACO
         private bool mainScanned = false;
         private string mainCode;
         private List<string> barcodes = new List<string>();
-        private string appName;
         public ObservableCollection<string> BarcodesScanned { get; set; } = new ObservableCollection<string>();
-
-        public SACOAssemble(string name)
+        public JoinMetaData MetaData { get; set; } = new JoinMetaData();
+        public SACOAssemble(string appName)
         {
             InitializeComponent();
             BindingContext = this;
-            appName = name;
+            string[] appNameArr = appName.Split('-');
+            if (appNameArr.Length > 2)
+            {
+                BaseData.AppType = appNameArr[0] + "-" + appNameArr[1];
+                BaseData.AppName = appNameArr[2];
+            }
+            else {
+                BaseData.AppType = "JOIN";
+                BaseData.AppName = appName;
+            }
+           
             lblTest.Text = appName + " (Assemble)";
             NavigationPage.SetHasNavigationBar(this, false);
         }
@@ -41,6 +53,12 @@ namespace TilesApp.SACO
         }
         private async void SaveAndFinish(object sender, EventArgs args)
         {
+            // Formulate the JSON
+            Dictionary<string, Object> json = new Dictionary<string, object>();
+            json.Add("barcodes", barcodes);
+            json.Add("base", BaseData);
+            json.Add("meta", MetaData);
+            bool success = CosmosDBManager.InsertOneObject(json);
             //Update info in DB
             string message = "";
             foreach (string code in barcodes) message += code + " - ";
