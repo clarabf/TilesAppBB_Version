@@ -10,6 +10,7 @@
                 <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Label x:Name="lblTest" 
                 Text="CHECKPOINT"
@@ -48,6 +49,21 @@
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
+            <Button x:Name="btnSaveAndFinish"
+                TextColor="White"
+                BackgroundColor="Black"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="Save &amp; Finish"
+                WidthRequest="250"
+                BorderColor="White"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="EndAndExpand"
+                Grid.Row="3"
+                IsVisible="False"
+                Clicked="SaveAndFinish"
+            />
             <Button x:Name="btnCancel"
                 TextColor="Black"
                 BackgroundColor="White"
@@ -60,7 +76,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="3"
+                Grid.Row="4"
                 Clicked="Come_Back"
             />
         </Grid>

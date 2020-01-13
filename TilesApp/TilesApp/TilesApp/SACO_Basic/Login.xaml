@@ -2,7 +2,7 @@
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
-            x:Class="TilesApp.SACO.SACOLogin">
+            x:Class="TilesApp.SACO.Login">
     <ContentPage.Resources>
         <StyleSheet Source="../Assets/style.css"/>
     </ContentPage.Resources>
@@ -40,7 +40,7 @@
                         Grid.Row="2"
                         HorizontalOptions="Center"
                         VerticalOptions="StartAndExpand" />
-                    <Button x:Name="Login"
+                    <Button x:Name="LoginBtn"
                         TextColor="White"
                         BackgroundColor="Red"
                         FontAttributes="Bold"

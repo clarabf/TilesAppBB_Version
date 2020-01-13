@@ -6,6 +6,7 @@ using ZXing;
 using Newtonsoft.Json;
 using System.Text;
 using XmlRpc;
+using TilesApp.Services;
 
 namespace TilesApp.SACO
 {
@@ -51,28 +52,16 @@ namespace TilesApp.SACO
             // Card employee
             if (scanType==1)
             {
-                try
+                if(OdooXMLRPC.users.ContainsKey(qrScanned))
                 {
-
-                    Dictionary<string, object> userInfo = (Dictionary<string, object>)users[qrScanned];
-
-                    //Register login
-                    //var dataLogin = new Dictionary<string, object>();
-                    //dataLogin.Add("id", userInfo["id"].ToString());
-                    //dataLogin.Add("cardCode", qrScanned);
-                    //dataLogin.Add("employeeName", userInfo["name"].ToString());
-                    //dataLogin.Add("timestamp", DateTime.Now);
-                    //var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
-                    //var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
-                    //var answer = await postResponse.Content.ReadAsStringAsync();
-
+                    OdooXMLRPC.SetCurrentUser(qrScanned);
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new SACOAppPage(userInfo));
+                        Navigation.PushModalAsync(new AppPage());
                     });
                 }
-                catch
+                else
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {

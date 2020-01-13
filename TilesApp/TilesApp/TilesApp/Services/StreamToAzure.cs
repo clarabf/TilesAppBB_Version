@@ -6,7 +6,7 @@ using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using PCLAppConfig;
 
-namespace TilesApp.Azure
+namespace TilesApp.Services
 {
     public static class StreamToAzure
     {

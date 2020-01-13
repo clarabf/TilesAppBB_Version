@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
-using TilesApp.Azure;
+using TilesApp.Services;
 
 namespace TilesApp.Models.Skeletons
 {

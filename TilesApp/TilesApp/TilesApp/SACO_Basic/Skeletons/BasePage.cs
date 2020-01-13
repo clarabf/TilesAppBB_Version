@@ -10,6 +10,7 @@ using System.Linq;
 using TilesApp.Models;
 using TilesApp.Rfid.Models;
 using TilesApp.Rfid.ViewModels;
+using TilesApp.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -42,8 +43,8 @@ namespace TilesApp
             subscribe();
             try
             {
-                BaseData.UserId = App.UserInfo["id"].ToString();
-                BaseData.UserName = App.UserInfo["name"].ToString();
+                BaseData.UserId = OdooXMLRPC.userID.ToString();
+                BaseData.UserName = OdooXMLRPC.userName;
             }
             catch (Exception)
             {

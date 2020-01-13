@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Xamarin.Forms;
-using TilesApp.Azure;
+using TilesApp.Services;
 
 namespace TilesApp.SACO
 {

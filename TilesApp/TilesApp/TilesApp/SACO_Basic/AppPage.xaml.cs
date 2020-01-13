@@ -1,70 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
-using TilesApp.Odoo;
+using TilesApp.Services;
 using TilesApp.Rfid;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
 {
 
-    public partial class SACOAppPage : ContentPage
+    public partial class AppPage : ContentPage
     {
         Dictionary<string, object> userInfo;
 
-        public SACOAppPage()
+        public AppPage()
         {
             InitializeComponent();
             this.BindWithLifecycle(App.ViewModel.Inventory);
             NavigationPage.SetHasNavigationBar(this, false);
-        }
-
-        public SACOAppPage(Dictionary<string, object> userInf)
-        {
-            InitializeComponent();
-            NavigationPage.SetHasNavigationBar(this, false);
-            userInfo = userInf;
-            List<string> tags = (List<string>)userInfo["tags"];
             int row = 0;
-            foreach (string tag in tags)
+            foreach (string tag in OdooXMLRPC.userAppsList)
             {
-                if (OdooXMLRPC.appsConfigs.ContainsKey(tag)) {
-                    string[] tagArr = tag.Split('_');
-                    string appType = tagArr[1];
-                    string appName = tagArr[2];
-                    buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                    Button button = new Button
-                    {
-                        Text = appName,
-                        TextColor = Color.FromHex("#F8F9FA"),
-                        BackgroundColor = Color.FromHex("#DC3545"),
-                        FontAttributes = FontAttributes.Bold,
-                        FontSize = 16,
-                        WidthRequest = 190,
-                        CornerRadius = 8,
-                        VerticalOptions = LayoutOptions.Center,
-                        HorizontalOptions = LayoutOptions.Center,
-                    };
+                string[] tagArr = tag.Split('_');
+                string appType = tagArr[1];
+                string appName = tagArr[2];
+                buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                Button button = new Button
+                {
+                    Text = appName,
+                    TextColor = Color.FromHex("#F8F9FA"),
+                    BackgroundColor = Color.FromHex("#DC3545"),
+                    FontAttributes = FontAttributes.Bold,
+                    FontSize = 16,
+                    WidthRequest = 190,
+                    CornerRadius = 8,
+                    VerticalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.Center,
+                };
 
-                    switch (appType)
-                    {
-                        case "Link":
-                            button.Clicked += Link_Command;
-                            break;
-                        case "Join":
-                            button.Clicked += Join_Command;
-                            break;
-                        case "Reg":
-                            button.Clicked += Reg_Command;
-                            break;
-                        case "QC":
-                            button.Clicked += QC_Command;
-                            break;
-                        default:
-                            break;
-                    }
-                    buttonsGrid.Children.Add(button, 0, row);
-                    row++;
-                }                
+                switch (appType)
+                {
+                    case "Link":
+                        button.Clicked += Link_Command;
+                        break;
+                    case "Join":
+                        button.Clicked += Join_Command;
+                        break;
+                    case "Reg":
+                        button.Clicked += Reg_Command;
+                        break;
+                    case "QC":
+                        button.Clicked += QC_Command;
+                        break;
+                    default:
+                        break;
+                }
+                buttonsGrid.Children.Add(button, 0, row);
+                row++;           
             }
         }
 
@@ -73,7 +63,7 @@ namespace TilesApp.SACO
         private async void Link_Command(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            foreach (var tag in (List<string>)userInfo["tags"])
+            foreach (var tag in (OdooXMLRPC.userAppsList))
             {
                 if (tag.Contains(b.Text)&& tag.Contains("Link"))
                 {
@@ -86,7 +76,7 @@ namespace TilesApp.SACO
         private async void Join_Command(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            foreach (var tag in (List<string>)userInfo["tags"])
+            foreach (var tag in (OdooXMLRPC.userAppsList))
             {
                 if (tag.Contains(b.Text) && tag.Contains("Join"))
                 {
@@ -99,7 +89,7 @@ namespace TilesApp.SACO
         private async void Reg_Command(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            foreach (var tag in (List<string>)userInfo["tags"])
+            foreach (var tag in (OdooXMLRPC.userAppsList))
             {
                 if (tag.Contains(b.Text) && tag.Contains("Reg"))
                 {
@@ -113,7 +103,7 @@ namespace TilesApp.SACO
         private async void QC_Command(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            foreach (var tag in (List<string>)userInfo["tags"])
+            foreach (var tag in (OdooXMLRPC.userAppsList))
             {
                 if (tag.Contains(b.Text) && tag.Contains("QC"))
                 {
@@ -142,7 +132,7 @@ namespace TilesApp.SACO
             Device.BeginInvokeOnMainThread(() =>
             {
                 Navigation.PopModalAsync(true);
-                Navigation.PushModalAsync(new SACOLogin());
+                Navigation.PushModalAsync(new Login());
             }); 
         }
 

@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using TilesApp.Azure;
+using TilesApp.Services;
 using TilesApp.Models.Skeletons;
-using TilesApp.Odoo;
-using TilesApp.Rfid;
-using TilesApp.Rfid.Models;
-using TilesApp.Rfid.ViewModels;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -17,7 +12,6 @@ namespace TilesApp.SACO
     {
 
         private string lastValue;
-        private string appName;
         public LinkMetaData MetaData { get; set; }
 
         public ObservableCollection<string> InputDataValues { get; set; } = new ObservableCollection<string>();
@@ -25,7 +19,7 @@ namespace TilesApp.SACO
         {
             InitializeComponent();
             BindingContext = this;
-            MetaData = new LinkMetaData(OdooXMLRPC.appsConfigs[tag]);
+            MetaData = new LinkMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
             BaseData.AppType = appNameArr[1];
             BaseData.AppName = appNameArr[2];
@@ -47,13 +41,19 @@ namespace TilesApp.SACO
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             // Formulate the JSON
-            Dictionary<string, Object> json = new Dictionary<string, object>();
-            json.Add("barcode", lastValue);
-            json.Add("base", BaseData);
-            json.Add("meta", MetaData);
-            bool success = CosmosDBManager.InsertOneObject(json);
-            //Update info in DB
-            await DisplayAlert("Component added successfully!", "<" + lastValue + "> stored in DB.", "OK");
+            if (MetaData.IsValid())
+            {
+                Dictionary<string, Object> json = new Dictionary<string, object>();
+                json.Add("barcodes", InputDataValues);
+                json.Add("base", BaseData);
+                json.Add("meta", MetaData);
+                bool success = CosmosDBManager.InsertOneObject(json);
+                await DisplayAlert("Component added successfully!", "<" + lastValue + "> stored in DB.", "OK");
+            }
+            else
+            {
+                await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
+            }
             await Navigation.PopModalAsync(true);
         }
 

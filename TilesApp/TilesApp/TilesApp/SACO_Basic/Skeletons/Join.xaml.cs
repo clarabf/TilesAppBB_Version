@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using TilesApp.Azure;
+using TilesApp.Services;
 using TilesApp.Models.Skeletons;
-using TilesApp.Odoo;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -19,7 +18,7 @@ namespace TilesApp.SACO
         {
             InitializeComponent();
             BindingContext = this;
-            MetaData = new JoinMetaData(OdooXMLRPC.appsConfigs[tag]);
+            MetaData = new JoinMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
             BaseData.AppType = appNameArr[1];
             BaseData.AppName = appNameArr[2];           
@@ -47,15 +46,23 @@ namespace TilesApp.SACO
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             // Formulate the JSON
-            Dictionary<string, Object> json = new Dictionary<string, object>();
-            json.Add("barcodes", barcodes);
-            json.Add("base", BaseData);
-            json.Add("meta", MetaData);
-            bool success = CosmosDBManager.InsertOneObject(json);
-            //Update info in DB
-            string message = "";
-            foreach (string code in barcodes) message += code + " - ";
-            await DisplayAlert(mainCode + " was assembled successfully!", message.Substring(0, message.Length - 2), "OK");
+            if (MetaData.IsValid())
+            {
+                Dictionary<string, Object> json = new Dictionary<string, object>();
+                json.Add("barcodes", barcodes);
+                json.Add("base", BaseData);
+                json.Add("meta", MetaData);
+                bool success = CosmosDBManager.InsertOneObject(json);
+
+                string message = "";
+                foreach (string code in barcodes) message += code + " - ";
+                await DisplayAlert(mainCode + " was assembled successfully!", message.Substring(0, message.Length - 2), "OK");
+
+            }
+            else
+            {
+                await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
+            }
             await Navigation.PopModalAsync(true);
         }
 

@@ -1,28 +1,21 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using TilesApp.Azure;
-using TilesApp.Odoo;
+using TilesApp.Services;
 using TilesApp.Rfid;
 using Xamarin.Forms;
 using XmlRpc;
 
 namespace TilesApp.SACO
 {
-    public partial class SACOLogin : BasePage
+    public partial class Login : BasePage
     {
-        public SACOLogin()
+        public Login()
         {
             InitializeComponent();
             Setup();
             NavigationPage.SetHasNavigationBar(this, false);
 
-            Dictionary<string, object> metaData = new Dictionary<string, object>();
-            metaData.Add("asdsdssds", "vvvvvv");
-            metaData.Add("hhhhhh", "v2v2v2");
-            metaData.Add("time_stamp", DateTime.Now);
-            bool success = CosmosDBManager.InsertOneObject(metaData);
-            //od.CreateLog();
             if (OdooXMLRPC.users.ContainsKey("error"))
             {
                 string message="";
@@ -32,31 +25,16 @@ namespace TilesApp.SACO
             }
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
-                try
+                if(OdooXMLRPC.users.ContainsKey(a.ToString()))
                 {
-                    Dictionary<string, object> userInfo = (Dictionary<string, object>)OdooXMLRPC.users[a.ToString()];
-
-                    //OdooConnection oc = new OdooConnection();
-                    //Dictionary<string, object> userInfo = oc.GetUserInfo(a.ToString());
-
-                    //Register login
-                    //HttpClient client = new HttpClient();
-                    //var dataLogin = new Dictionary<string, object>();
-                    //dataLogin.Add("id", userInfo["id"].ToString());
-                    //dataLogin.Add("cardCode", a.ToString());
-                    //dataLogin.Add("employeeName", userInfo["name"].ToString());
-                    //dataLogin.Add("timestamp", DateTime.Now);
-                    //var content = new StringContent(JsonConvert.SerializeObject(dataLogin), Encoding.UTF8, "application/json");
-                    //var postResponse = await client.PostAsync("https://sacoerpconnect.azurewebsites.net/api/insertLoginRecord/", content);
-                    //var answer = await postResponse.Content.ReadAsStringAsync();
-                    App.UserInfo = userInfo; // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
+                    OdooXMLRPC.SetCurrentUser(a.ToString()); // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
                     Device.BeginInvokeOnMainThread(() =>
                     {                        
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new SACOAppPage(userInfo));
+                        Navigation.PushModalAsync(new AppPage());
                     });
                 }
-                catch
+                else
                 {
                     await DisplayAlert("Error scanning badge", "User not found in DB...", "Ok");
                 }
@@ -69,7 +47,7 @@ namespace TilesApp.SACO
             Setup();
         }
 
-        private async void GoToScan(object sender, EventArgs args)
+        private void GoToScan(object sender, EventArgs args)
         {
             Device.BeginInvokeOnMainThread(() =>
             {

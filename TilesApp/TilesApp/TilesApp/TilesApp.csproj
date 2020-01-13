@@ -50,8 +50,11 @@
     <Compile Update="App - Copy.xaml.cs">
       <DependentUpon>%(Filename)</DependentUpon>
     </Compile>
-    <Compile Update="Rfid\Views\ReadersMainTabbedPage.xaml.cs">
+    <Compile Update="Libraries\Rfid\Views\ReadersMainTabbedPage.xaml.cs">
       <DependentUpon>ReadersMainTabbedPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="SACO_Basic\AppPage.xaml.cs">
+      <DependentUpon>AppPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="SACO_Basic\Skeletons\QC.xaml.cs">
       <DependentUpon>QC.xaml</DependentUpon>
@@ -68,8 +71,8 @@
     <Compile Update="SACO_Basic\Other_Functionalities\SACOTakePhoto.xaml.cs">
       <DependentUpon>SACOTakePhoto.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\SACOLogin.xaml.cs">
-      <DependentUpon>SACOLogin.xaml</DependentUpon>
+    <Compile Update="SACO_Basic\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Update="SACO_Basic\Other_Functionalities\SACOScan.xaml.cs">
       <DependentUpon>SACOScan.xaml</DependentUpon>
@@ -92,7 +95,7 @@
     <EmbeddedResource Update="SACO_Basic\Other_Functionalities\SACOScan.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="SACO_Basic\SACOAppPage.xaml">
+    <EmbeddedResource Update="SACO_Basic\AppPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="StepProgressBarControl.xaml">

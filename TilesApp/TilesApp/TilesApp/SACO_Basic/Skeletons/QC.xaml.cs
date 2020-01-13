@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TilesApp.Azure;
+using TilesApp.Services;
 using TilesApp.Models.Skeletons;
-using TilesApp.Odoo;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -16,7 +15,7 @@ namespace TilesApp.SACO
             InitializeComponent();
             BindingContext = this;
             NavigationPage.SetHasNavigationBar(this, false);
-            MetaData = new QCMetaData(OdooXMLRPC.appsConfigs[tag]);
+            MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
             BaseData.AppType = appNameArr[1];
             BaseData.AppName = appNameArr[2];
@@ -45,12 +44,21 @@ namespace TilesApp.SACO
                 message = "<" + barcode.Text + "> has failed the Quality Control...";
             }
             // Formulate the JSON
-            Dictionary<string, Object> json = new Dictionary<string, object>();
-            json.Add("barcode", barcode.Text);
-            json.Add("base", BaseData);
-            json.Add("meta", MetaData);
-            bool success = CosmosDBManager.InsertOneObject(json);
-            await DisplayAlert("Check-out of the component", message, "Ok");
+            if (MetaData.IsValid())
+            {
+                Dictionary<string, Object> json = new Dictionary<string, object>();
+                json.Add("barcode", barcode.Text);
+                json.Add("base", BaseData);
+                json.Add("meta", MetaData);
+                bool success = CosmosDBManager.InsertOneObject(json);
+
+                await DisplayAlert("Check-out of the component", message, "Ok");
+
+            }
+            else
+            {
+                await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
+            }
             await Navigation.PopModalAsync(true);
         }
 

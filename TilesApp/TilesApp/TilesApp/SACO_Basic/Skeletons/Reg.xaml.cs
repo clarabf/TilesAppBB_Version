@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using TilesApp.Azure;
+using TilesApp.Services;
 using TilesApp.Models.Skeletons;
-using TilesApp.Odoo;
 using Xamarin.Forms;
 
 namespace TilesApp.SACO
@@ -17,7 +16,7 @@ namespace TilesApp.SACO
         {
             InitializeComponent();
             BindingContext = this;
-            MetaData = new RegMetaData(OdooXMLRPC.appsConfigs[tag]);
+            MetaData = new RegMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
             BaseData.AppType = appNameArr[1];
             BaseData.AppName = appNameArr[2];
@@ -29,16 +28,29 @@ namespace TilesApp.SACO
         {
             lblBarcode.IsVisible = true;
             barcode.Text = input[nameof(InputDataProps.Value)].ToString();
-
-            // Formulate the JSON
-            Dictionary<string, Object> json = new Dictionary<string, object>();
-            json.Add("barcode", input[nameof(InputDataProps.Value)].ToString());
-            json.Add("base", BaseData);
-            json.Add("meta", MetaData);
-            bool success = CosmosDBManager.InsertOneObject(json);
-
         }
 
+        private async void SaveAndFinish(object sender, EventArgs args)
+        {
+
+            // Formulate the JSON
+            if (MetaData.IsValid())
+            {
+                Dictionary<string, Object> json = new Dictionary<string, object>();
+                json.Add("barcode", barcode.Text);
+                json.Add("base", BaseData);
+                json.Add("meta", MetaData);
+                bool success = CosmosDBManager.InsertOneObject(json);
+
+                await DisplayAlert(barcode.Text + " was regitered successfully!", barcode.Text, "OK");
+
+            }
+            else
+            {
+                await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
+            }
+            await Navigation.PopModalAsync(true);
+        }
         private async void Come_Back(object sender, EventArgs args)
         {
             await Navigation.PopModalAsync(true);

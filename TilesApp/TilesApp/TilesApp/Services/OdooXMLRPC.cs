@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using XmlRpc;
 
-namespace TilesApp.Odoo
+namespace TilesApp.Services
 {
     public static class OdooXMLRPC
     {
@@ -31,8 +31,10 @@ namespace TilesApp.Odoo
         //CURRENT USER DATA
         public static int? userID;
         public static string userName;
+        //Get user validated apps Step 3
         public static List<string> userAppsList = new List<string> { };
 
+        //On start Step 1
         public static void Start(bool forceCacheUpdate = false)
         {
             if (adminID == null) { Login(); }
@@ -208,6 +210,7 @@ namespace TilesApp.Odoo
                 throw new Exception("Something went wrong getting valid apps from Odoo.");
             }
         }
+        //Get app config Step 4
         public static Stream GetAppConfig(string appName, bool forceCacheUpdate = false)
         {
             try
@@ -241,17 +244,18 @@ namespace TilesApp.Odoo
                 throw new Exception("Something went wrong getting app config file from Odoo.");
             }
         }
-        public static void SetCurrentUser(string barcode, bool forceCacheUpdate = false)
+        //Once user scans barcode Step 2
+        public static void SetCurrentUser(string barcode)
         {
-            if (forceCacheUpdate) { userAppsList = null; }
+            userAppsList.Clear();
             try
             {
                 Dictionary<string, object> selectedUser = (Dictionary<string, object>)users[barcode];
                 userName = (string)selectedUser["name"];
-                userID = (int)selectedUser["id"];
+                userID = Int32.Parse(selectedUser["id"].ToString());
                 foreach (string userApp in (List<string>)selectedUser["tags"])
                 {
-                    if (validAppsList.Contains(userApp)) { userAppsList.Add(userApp) };
+                    if (validAppsList.Contains(userApp)) { userAppsList.Add(userApp); }
                 }
             }
             catch
