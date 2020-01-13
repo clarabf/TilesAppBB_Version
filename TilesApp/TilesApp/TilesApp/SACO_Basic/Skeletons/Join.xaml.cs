@@ -8,29 +8,22 @@ using Xamarin.Forms;
 
 namespace TilesApp.SACO
 {
-    public partial class SACOAssemble : BasePage
+    public partial class Join : BasePage
     {
         private bool mainScanned = false;
         private string mainCode;
         private List<string> barcodes = new List<string>();
         public ObservableCollection<string> BarcodesScanned { get; set; } = new ObservableCollection<string>();
-        public JoinMetaData MetaData { get; set; } = new JoinMetaData();
-        public SACOAssemble(string appName)
+        public JoinMetaData MetaData { get; set; }
+        public Join(string tag)
         {
             InitializeComponent();
             BindingContext = this;
-            string[] appNameArr = appName.Split('-');
-            if (appNameArr.Length > 2)
-            {
-                BaseData.AppType = appNameArr[0] + "-" + appNameArr[1];
-                BaseData.AppName = appNameArr[2];
-            }
-            else {
-                BaseData.AppType = "JOIN";
-                BaseData.AppName = appName;
-            }
-           
-            lblTest.Text = appName + " (Assemble)";
+            MetaData = new JoinMetaData(OdooXMLRPC.appsConfigs[tag]);
+            string[] appNameArr = tag.Split('_');
+            BaseData.AppType = appNameArr[1];
+            BaseData.AppName = appNameArr[2];           
+            lblTest.Text = appNameArr[2] + " (Assemble)";
             NavigationPage.SetHasNavigationBar(this, false);
         }
 

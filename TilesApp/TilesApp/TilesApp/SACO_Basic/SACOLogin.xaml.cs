@@ -11,7 +11,6 @@ namespace TilesApp.SACO
 {
     public partial class SACOLogin : BasePage
     {
-        private Dictionary<string, object> users;
         public SACOLogin()
         {
             InitializeComponent();
@@ -23,22 +22,19 @@ namespace TilesApp.SACO
             metaData.Add("hhhhhh", "v2v2v2");
             metaData.Add("time_stamp", DateTime.Now);
             bool success = CosmosDBManager.InsertOneObject(metaData);
-
-            OdooConnection od = new OdooConnection();
             //od.CreateLog();
-            users = od.GetUsers();
-            if (users.ContainsKey("error"))
+            if (OdooXMLRPC.users.ContainsKey("error"))
             {
                 string message="";
-                if (users["error"].ToString() == "internet") message = "Please, check that internet is turned on in your mobile and restart the application.";
-                else if (users["error"].ToString() == "odoo") message = "Odoo connection failed. Please, restart the application.";
+                if (OdooXMLRPC.users["error"].ToString() == "internet") message = "Please, check that internet is turned on in your mobile and restart the application.";
+                else if (OdooXMLRPC.users["error"].ToString() == "odoo") message = "Odoo connection failed. Please, restart the application.";
                 DisplayAlert("Error recovering users", message, "OK");
             }
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
                 try
                 {
-                    Dictionary<string, object> userInfo = (Dictionary<string, object>)users[a.ToString()];
+                    Dictionary<string, object> userInfo = (Dictionary<string, object>)OdooXMLRPC.users[a.ToString()];
 
                     //OdooConnection oc = new OdooConnection();
                     //Dictionary<string, object> userInfo = oc.GetUserInfo(a.ToString());
@@ -78,7 +74,7 @@ namespace TilesApp.SACO
             Device.BeginInvokeOnMainThread(() =>
             {
                 Navigation.PopModalAsync(true);
-                Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD", 1, users));
+                Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD", 1, OdooXMLRPC.users));
             });
         }
 

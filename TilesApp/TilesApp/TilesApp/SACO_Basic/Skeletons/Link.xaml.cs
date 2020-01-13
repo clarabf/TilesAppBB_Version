@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using TilesApp.Azure;
+using TilesApp.Models.Skeletons;
+using TilesApp.Odoo;
 using TilesApp.Rfid;
 using TilesApp.Rfid.Models;
 using TilesApp.Rfid.ViewModels;
@@ -10,19 +13,23 @@ using Xamarin.Forms;
 namespace TilesApp.SACO
 {
 
-    public partial class SACOAssociate : BasePage
+    public partial class Link : BasePage
     {
 
         private string lastValue;
         private string appName;
+        public LinkMetaData MetaData { get; set; }
 
         public ObservableCollection<string> InputDataValues { get; set; } = new ObservableCollection<string>();
-        public SACOAssociate(string name)
+        public Link(string tag)
         {
             InitializeComponent();
             BindingContext = this;
-            appName = name;
-            lblTest.Text = appName + " (Associate)";
+            MetaData = new LinkMetaData(OdooXMLRPC.appsConfigs[tag]);
+            string[] appNameArr = tag.Split('_');
+            BaseData.AppType = appNameArr[1];
+            BaseData.AppName = appNameArr[2];
+            lblTest.Text = appNameArr[2] + " (Associate)";
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
@@ -39,6 +46,12 @@ namespace TilesApp.SACO
 
         private async void SaveAndFinish(object sender, EventArgs args)
         {
+            // Formulate the JSON
+            Dictionary<string, Object> json = new Dictionary<string, object>();
+            json.Add("barcode", lastValue);
+            json.Add("base", BaseData);
+            json.Add("meta", MetaData);
+            bool success = CosmosDBManager.InsertOneObject(json);
             //Update info in DB
             await DisplayAlert("Component added successfully!", "<" + lastValue + "> stored in DB.", "OK");
             await Navigation.PopModalAsync(true);

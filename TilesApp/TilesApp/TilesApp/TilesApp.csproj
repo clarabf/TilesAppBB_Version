@@ -53,17 +53,17 @@
     <Compile Update="Rfid\Views\ReadersMainTabbedPage.xaml.cs">
       <DependentUpon>ReadersMainTabbedPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\Skeletons\SACOQC.xaml.cs">
-      <DependentUpon>SACOQC.xaml</DependentUpon>
+    <Compile Update="SACO_Basic\Skeletons\QC.xaml.cs">
+      <DependentUpon>QC.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\Skeletons\SACOCheckpoint.xaml.cs">
-      <DependentUpon>SACOCheckpoint.xaml</DependentUpon>
+    <Compile Update="SACO_Basic\Skeletons\Reg.xaml.cs">
+      <DependentUpon>Reg.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\Skeletons\SACOAssociate.xaml.cs">
-      <DependentUpon>SACOAssociate.xaml</DependentUpon>
+    <Compile Update="SACO_Basic\Skeletons\Link.xaml.cs">
+      <DependentUpon>Link.xaml</DependentUpon>
     </Compile>
-    <Compile Update="SACO_Basic\Skeletons\SACOAssemble.xaml.cs">
-      <DependentUpon>SACOAssemble.xaml</DependentUpon>
+    <Compile Update="SACO_Basic\Skeletons\Join.xaml.cs">
+      <DependentUpon>Join.xaml</DependentUpon>
     </Compile>
     <Compile Update="SACO_Basic\Other_Functionalities\SACOTakePhoto.xaml.cs">
       <DependentUpon>SACOTakePhoto.xaml</DependentUpon>

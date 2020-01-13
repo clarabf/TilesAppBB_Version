@@ -36,7 +36,7 @@ namespace TilesApp.Odoo
             GetUsers();
             GetApps();
             //Once user opens app
-            //GetConfigFiles(validAppsList);
+            GetConfigFiles(validAppsList);
         }
         public static void GetUsers(bool forceCacheUpdate = false)
         {
