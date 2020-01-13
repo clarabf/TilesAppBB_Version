@@ -12,18 +12,12 @@ namespace TilesApp.Odoo
 {
     public static class OdooXMLRPC
     {
-        public static string Url = "https://sacodoo-13-0-parametric-626490.dev.odoo.com",
-                        db = "sacodoo-13-0-parametric-626490",
-                        pass = "Saco-2019",
-                        user = "miguelfontgivell@saco.com",
-                        sherpaFolder = "SherpaApps";
-
         //CONNECTION VARIABLES
-        //public static string url = ConfigurationManager.AppSettings["SACODOO_URL"];
-        //public static string db = ConfigurationManager.AppSettings["SACODOO_DB"];
-        //public static string pass = ConfigurationManager.AppSettings["SACODOO_ADMIN_PASSWORD"];
-        //public static string user = ConfigurationManager.AppSettings["SACODOO_ADMIN_USER"];
-        //public static string user = ConfigurationManager.AppSettings["SHERPA_APPS_FOLDER"];
+        public static string url = ConfigurationManager.AppSettings["SACODOO_URL"];
+        public static string db = ConfigurationManager.AppSettings["SACODOO_DB"];
+        public static string pass = ConfigurationManager.AppSettings["SACODOO_ADMIN_PASSWORD"];
+        public static string user = ConfigurationManager.AppSettings["SACODOO_ADMIN_USER"];
+        public static string sherpaFolder = ConfigurationManager.AppSettings["SHERPA_APPS_FOLDER"];
 
         //CONNECTION CLIENT
         private static XmlRpcClient client = new XmlRpcClient();
@@ -149,7 +143,7 @@ namespace TilesApp.Odoo
         {
             try
             {
-                client.Url = Url;
+                client.Url = url;
                 client.Path = "/xmlrpc/2/common";
 
                 // LOGIN
