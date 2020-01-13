@@ -28,7 +28,6 @@ namespace TilesApp.Odoo
         //GET USER APPS
         public static List<string> currentUserAppsList = new List<string> { };
         public static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
-        public static Dictionary<string, dynamic> appsConfigsTest = new Dictionary<string, dynamic> { };
         public static void Start()
         {
             Login();
@@ -127,14 +126,6 @@ namespace TilesApp.Odoo
                     MemoryStream stream = new MemoryStream(byteArray);
 
                     appsConfigs.Add(nameOfApp, stream);
-
-                    // Remove. It is here, just to make sure we can serialize the stream to object properly
-                    var serializer = new JsonSerializer();
-                    var sr = new StreamReader(stream);
-                    var jtr = new JsonTextReader(sr);
-                    dynamic test = serializer.Deserialize(jtr);
-
-                    appsConfigsTest.Add(nameOfApp, test);
                 }
             }
             Console.WriteLine("The end");

@@ -15,7 +15,7 @@ namespace TilesApp.Azure
         private static CloudBlobContainer container;
         private static CloudBlockBlob outputBlob;
 
-        public static Dictionary<string, string> WriteJPEGStream(Stream fileStream, String appName, Dictionary<string, string> metaDataDictionary)
+        public static Dictionary<string, string> WriteJPEGStream(Stream fileStream, String appName)
         {
             storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
             string fileName = Guid.NewGuid().ToString() + ".jpeg";
@@ -48,16 +48,12 @@ namespace TilesApp.Azure
             {
                 outputBlob = container.GetBlockBlobReference(fileName);
                 outputBlob.Properties.ContentType = "image/jpeg";
-                foreach (var key in metaDataDictionary.Keys)
-                {
-                    outputBlob.Metadata.Add(key, metaDataDictionary[key]);
-                }
                 outputBlob.UploadFromStreamAsync(fileStream).Wait();
 
                 return new Dictionary<string, string>()
                 {
                     {"ContentMD5",outputBlob.Properties.ContentMD5},
-                    {"Uri",ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName +"/" + fileName}
+                    {"Uri",ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName.ToLower() +"/" + fileName}
                 };
             }
             catch
@@ -66,7 +62,7 @@ namespace TilesApp.Azure
             }
         }
 
-        public static List<Dictionary<string, string>> WriteJPEGStreams(List<Stream> fileStreams, String appName, Dictionary<string, string> metaDataDictionary)
+        public static List<Dictionary<string, string>> WriteJPEGStreams(List<Stream> fileStreams, String appName)
         {
             storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
 
@@ -99,17 +95,13 @@ namespace TilesApp.Azure
                     string fileName = Guid.NewGuid().ToString() + ".jpeg";
                     outputBlob = container.GetBlockBlobReference(fileName);
                     outputBlob.Properties.ContentType = "image/jpeg";
-                    foreach (var key in metaDataDictionary.Keys)
-                    {
-                        outputBlob.Metadata.Add(key, metaDataDictionary[key]);
-                    }
                     outputBlob.UploadFromStreamAsync(str).Wait();
                     returnList.Add
                     (
                         new Dictionary<string, string>()
                         {
                             {"ContentMD5",outputBlob.Properties.ContentMD5},
-                            {"Uri",ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName +"/" + fileName}
+                            {"Uri",ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName.ToLower() +"/" + fileName}
                         }
                     );
                 }

@@ -85,14 +85,14 @@ namespace TilesApp.Models.Skeletons
                 throw new Exception("Data is not a JSON");
             }
         }
-        public void AddAttachedFile(Stream fileStream, String appName, Dictionary<string, string> metaDataDictionary)
+        public void AddAttachedFile(Stream fileStream, String appName)
         {
-            Dictionary<string, string> hashAndURL = StreamToAzure.WriteJPEGStream(fileStream, appName, metaDataDictionary);
+            Dictionary<string, string> hashAndURL = StreamToAzure.WriteJPEGStream(fileStream, appName);
             QCAttachedFilesHASHnURL.Add(hashAndURL["ContentMD5"], hashAndURL["Uri"]);
         }
-        public void AddAttachedFiles(List<Stream> fileStream, String appName, Dictionary<string, string> metaDataDictionary)
+        public void AddAttachedFiles(List<Stream> fileStream, String appName)
         {
-            List<Dictionary<string, string>> hashAndURLs = StreamToAzure.WriteJPEGStreams(fileStream, appName, metaDataDictionary);
+            List<Dictionary<string, string>> hashAndURLs = StreamToAzure.WriteJPEGStreams(fileStream, appName);
 
             foreach (Dictionary<string, string> hashAndURL in hashAndURLs)
             {

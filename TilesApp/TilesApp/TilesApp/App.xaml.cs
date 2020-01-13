@@ -21,7 +21,7 @@ namespace TilesApp
 
             ////testing SACO app
             MainPage = new NavigationPage(new SACOLogin());
-            //MainPage = new NavigationPage(new SACOTakePhoto());
+            //MainPage = new NavigationPage(new SACOTakePhoto("TestPhoto"));
 
             ////testing generated JSON
             //string json = jsParser.GenerateJSON();

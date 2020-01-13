@@ -43,7 +43,7 @@ namespace TilesApp.SACO
                     Directory = "Sample",
                     Name = "test.jpg"
                 });
-
+                
                 if (file == null)
                     return;
 
@@ -71,13 +71,10 @@ namespace TilesApp.SACO
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             //Update info in DB
-            Dictionary<string, string> metaData = new Dictionary<string, string>();
-            metaData.Add("k1", "v1");
-            metaData.Add("k2", "v2");
-            StreamToAzure.WriteJPEGStream(photo, appName, metaData);
+            StreamToAzure.WriteJPEGStream(photo, appName);
 
             await DisplayAlert("Photo updated successfully!", "<" + photoPath + "> stored in DB.", "OK");
-            await Navigation.PopModalAsync(true);
+            //await Navigation.PopModalAsync(true);
         }
 
         private async void Cancel(object sender, EventArgs args)
