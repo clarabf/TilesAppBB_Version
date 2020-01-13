@@ -23,20 +23,133 @@ namespace TilesApp.Odoo
         private static XmlRpcClient client = new XmlRpcClient();
 
         //ODOO RETRIEVED VARIABLES
-        public static int adminID;
+        public static int? adminID;
+        public static Dictionary<string, object> users = new Dictionary<string, object>{ };
         public static List<string> validAppsList = new List<string> { };
         //GET USER APPS
         public static List<string> currentUserAppsList = new List<string> { };
         public static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
+
         public static void Start()
         {
             Login();
+            GetUsers();
             GetApps();
             //Once user opens app
             //GetConfigFiles(validAppsList);
         }
+        public static void GetUsers(bool forceCacheUpdate = false)
+        {
+            // CHECK IF ALREADY CACHED
+            if (users == null || !forceCacheUpdate)
+            {
+                // OTHERWISE DO
+                List<string> names = new List<string>();
 
-        private static void GetApps()
+                Dictionary<string, string> tags = new Dictionary<string, string>();
+
+                Dictionary<string, object> userInfo;
+                List<object> ids;
+                List<string> id_names;
+
+                client.Path = "/xmlrpc/2/common";
+
+                try
+                {
+                    // LOGIN IF NECESSARY
+                    if (adminID == null) { Login(); };
+
+                    // SEARCH
+                    client.Path = "/xmlrpc/2/object";
+
+                    ///////////// TAGS /////////////
+                    XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
+                    requestSearch.AddParams(db, adminID, pass, "hr.employee.category", "search_read",
+                        XmlRpcParameter.AsArray(
+                            XmlRpcParameter.AsArray(
+                                XmlRpcParameter.AsArray("id", ">", 0)
+                            )
+                        ),
+                        XmlRpcParameter.AsStruct(
+                            XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name"))
+                        )
+                    );
+
+                    XmlRpcResponse responseSearch = client.Execute(requestSearch);
+
+                    Console.WriteLine("REQUEST (SEARCH): ");
+                    client.WriteRequest(Console.Out);
+                    Console.WriteLine("RESPONSE (SEARCH): ");
+                    if (responseSearch.IsFault())
+                    {
+                        Console.WriteLine(responseSearch.GetFaultString());
+                    }
+                    else
+                    {
+                        Console.WriteLine(responseSearch.GetString());
+                        List<object> responseList = (List<object>)responseSearch.GetObject(); //List with one element
+                        foreach (object fields in responseList)
+                        {
+                            Dictionary<string, object> dict = (Dictionary<string, object>)fields;
+                            tags.Add(dict["id"].ToString(), dict["name"].ToString());
+                        }
+                    }
+
+                    //USERS
+                    requestSearch = new XmlRpcRequest("execute_kw");
+                    requestSearch.AddParams(db, adminID, pass, "hr.employee", "search_read",
+                        XmlRpcParameter.AsArray(
+                            XmlRpcParameter.AsArray(
+                                XmlRpcParameter.AsArray("id", ">", 0)
+                            )
+                        ),
+                        XmlRpcParameter.AsStruct(
+                            XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "barcode", "category_ids"))
+                        )
+                    );
+
+                    responseSearch = client.Execute(requestSearch);
+
+                    Console.WriteLine("REQUEST (SEARCH): ");
+                    client.WriteRequest(Console.Out);
+                    Console.WriteLine("RESPONSE (SEARCH): ");
+                    if (responseSearch.IsFault())
+                    {
+                        Console.WriteLine(responseSearch.GetFaultString());
+                    }
+                    else
+                    {
+                        Console.WriteLine(responseSearch.GetString());
+                        List<object> responseList = (List<object>)responseSearch.GetObject(); //List with one element
+                        foreach (object fields in responseList)
+                        {
+
+                            Dictionary<string, object> dict = (Dictionary<string, object>)fields;
+                            userInfo = new Dictionary<string, object>();
+                            id_names = new List<string>();
+                            if (dict["barcode"].ToString() != "False")
+                            {
+                                ids = (List<object>)dict["category_ids"];
+                                foreach (object id in ids) id_names.Add(tags[id.ToString()]);
+                                userInfo.Add("id", dict["id"].ToString());
+                                userInfo.Add("name", dict["name"].ToString());
+                                userInfo.Add("tags", id_names);
+                                users.Add(dict["barcode"].ToString(), userInfo);
+                            }
+                        }
+                    }
+                }
+                catch (WebServiceException)
+                {
+                    users.Add("error", "internet");
+                }
+                catch (System.InvalidCastException)
+                {
+                    users.Add("error", "odoo");
+                }
+            }            
+        }
+        private static void GetApps(bool forceCacheUpdate = false)
         {
             client.Path = "/xmlrpc/2/object";
             XmlRpcRequest requestCreate = new XmlRpcRequest("execute_kw");
@@ -79,8 +192,7 @@ namespace TilesApp.Odoo
             }
             Console.WriteLine("The end");
         }
-
-        private static void GetConfigFiles(List<String> appsList)
+        private static void GetConfigFiles(List<String> appsList, bool forceCacheUpdate = false)
         {
             List<object> requestList = new List<object> { };
 

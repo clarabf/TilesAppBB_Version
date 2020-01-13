@@ -282,7 +282,6 @@ namespace TilesApp.Odoo
                 return users;
             }
         }        
-
         public void CreateLog()
         {
             XmlRpcClient client = new XmlRpcClient();
