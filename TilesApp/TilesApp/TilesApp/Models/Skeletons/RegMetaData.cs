@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace TilesApp.Models.Skeletons
 {
-    public class RegMetaData
+    public class RegMetaData : BaseData
     {
         public string Operation { get; set; }
         public string OperationDetails { get; set; }
@@ -17,7 +17,7 @@ namespace TilesApp.Models.Skeletons
         public Dictionary<string, object> AdditionalData { get; set; }
 
         //Constructor from json string
-        public RegMetaData(string jsonConfig = null)
+        public RegMetaData(string jsonConfig = null) : base()
         {
             if (jsonConfig != null)
             {
@@ -31,12 +31,13 @@ namespace TilesApp.Models.Skeletons
             }
         }
         //Constructor from json stream
-        public RegMetaData(Stream streamConfig)
+        public RegMetaData(Stream streamConfig) : base()
         {
             if (streamConfig != null)
-            {
+            {                
                 StreamReader reader = new StreamReader(streamConfig);
                 string jsonConfig = reader.ReadToEnd();
+                streamConfig.Position = 0;
 
                 Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
                 Type propertyType = GetType();

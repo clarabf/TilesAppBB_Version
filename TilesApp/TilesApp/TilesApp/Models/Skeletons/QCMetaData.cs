@@ -10,7 +10,7 @@ using TilesApp.Services;
 
 namespace TilesApp.Models.Skeletons
 {
-    public class QCMetaData
+    public class QCMetaData : BaseData
     {
         public bool? QCPass { get; set; }
         public String QCProcedureDetails { get; set; }
@@ -26,7 +26,7 @@ namespace TilesApp.Models.Skeletons
         public bool AreAttachedFilesMandatory { get; set; }
 
         //Constructor from json string
-        public QCMetaData(string jsonConfig = null)
+        public QCMetaData(string jsonConfig = null) : base()
         {
             if (jsonConfig != null)
             {
@@ -40,12 +40,13 @@ namespace TilesApp.Models.Skeletons
             }
         }
         //Constructor from json stream
-        public QCMetaData(Stream streamConfig)
+        public QCMetaData(Stream streamConfig) : base()
         {
             if (streamConfig != null)
             {
                 StreamReader reader = new StreamReader(streamConfig);
                 string jsonConfig = reader.ReadToEnd();
+                streamConfig.Position = 0;
 
                 Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
                 Type propertyType = GetType();

@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace TilesApp.Models.Skeletons
 {
-    public class JoinMetaData
+    public class JoinMetaData : BaseData
     {
         public String ParentUUID { get; set; }
         [BsonIgnore]
@@ -18,7 +18,7 @@ namespace TilesApp.Models.Skeletons
         private Dictionary<string, object> AdditionalData { get; set; }
 
         //Constructor from json string
-        public JoinMetaData(string jsonConfig = null)
+        public JoinMetaData(string jsonConfig = null) : base()
         {
             if (jsonConfig != null)
             {
@@ -32,12 +32,13 @@ namespace TilesApp.Models.Skeletons
             }
         }
         //Constructor from json stream
-        public JoinMetaData(Stream streamConfig)
+        public JoinMetaData(Stream streamConfig) : base()
         {
             if (streamConfig != null)
-            {
+            {                
                 StreamReader reader = new StreamReader(streamConfig);
                 string jsonConfig = reader.ReadToEnd();
+                streamConfig.Position = 0;
 
                 Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
                 Type propertyType = GetType();
