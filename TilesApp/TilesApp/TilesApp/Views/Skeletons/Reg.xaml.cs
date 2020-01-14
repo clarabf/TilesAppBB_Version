@@ -28,6 +28,7 @@ namespace TilesApp.Views
         {
             lblBarcode.IsVisible = true;
             barcode.Text = input[nameof(BaseData.InputDataProps.Value)].ToString();
+            btnSaveAndFinish.IsVisible = true;
         }
 
         private async void SaveAndFinish(object sender, EventArgs args)
