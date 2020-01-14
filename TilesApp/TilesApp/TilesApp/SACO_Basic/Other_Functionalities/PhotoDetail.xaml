@@ -32,12 +32,12 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="1*" />
                                         <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="1*" />
+                                        <ColumnDefinition Width="0.5*" />
                                     </Grid.ColumnDefinitions>
                                     <Label
                                         x:Name="Path"
                                         FontAttributes="Bold"
-                                        Text="{Binding Path}"
+                                        Text="{Binding FileName}"
                                         Grid.Column="0"
                                         HorizontalOptions="CenterAndExpand"
                                         VerticalOptions="CenterAndExpand"
@@ -45,7 +45,7 @@
                                     <Label 
                                         x:Name="TimeLabel"
                                         FontAttributes="Bold"
-                                        Text="{Binding Time}"
+                                        Text="{Binding DateAndTime}"
                                         Grid.Column="1"
                                         HorizontalOptions="CenterAndExpand" 
                                         VerticalOptions="CenterAndExpand"
@@ -56,6 +56,7 @@
                                         Padding="0"
                                         HorizontalOptions="CenterAndExpand"
                                         VerticalOptions="CenterAndExpand"
+                                        ClassId="{Binding FileName}"
                                         Source="{Binding ImageSource}"
                                         Clicked="Delete_Photo"
                                     />
@@ -78,6 +79,7 @@
                 VerticalOptions="EndAndExpand"
                 Grid.Row="2"
                 IsVisible="True"
+                Clicked="SaveAndFinish"
             />
             <Button x:Name="btnCancel"
                 TextColor="Black"

@@ -214,6 +214,7 @@
     <AndroidResource Include="Resources\drawable\newBackground.jpg" />
     <AndroidResource Include="Resources\drawable\loadingScreen.jpg" />
     <AndroidResource Include="Resources\drawable\splashScreen.jpg" />
+    <AndroidResource Include="Resources\drawable\delete.png" />
     <None Include="Resources\drawable\CameralWhite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

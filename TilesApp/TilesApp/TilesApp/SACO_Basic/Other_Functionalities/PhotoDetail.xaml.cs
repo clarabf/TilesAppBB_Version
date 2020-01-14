@@ -25,31 +25,26 @@ namespace TilesApp.SACO
             {
                 TakenPhotos.Add(phD);
             }
-            //TakenPhotos.Add(new PhotoData() { Path = "lalalalala", Time = DateTime.Now.ToShortTimeString(), ImageSource = "delete.png" });
         }
 
+        private void Delete_Photo(object sender, EventArgs args)
+        {
+            ImageButton b = (ImageButton)sender;
+            PhotoData phD = TakenPhotos.FirstOrDefault(ph => ph.FileName == b.ClassId);
+            TakenPhotos.Remove(phD);
+        }
         private async void Cancel(object sender, EventArgs args)
         {
+            await DisplayAlert("Edition complete", "No changes have been made.", "Ok");
             await Navigation.PopModalAsync(true);
         }
 
-        private async void Delete_Photo(object sender, EventArgs args)
+        private async void SaveAndFinish(object sender, EventArgs args)
         {
-            TakenPhotos.Add(new PhotoData() { Path = "lelelelel", Time = DateTime.Now.ToShortTimeString(), ImageSource = "delete.png" });
             MessagingCenter.Send(this, "SendPhotos", TakenPhotos);
-            await DisplayAlert("Delete photo", "Photo has been successfully deleted!", "Ok");
+            await DisplayAlert("Edition complete", "Photos have been successfully deleted!", "Ok");
+            await Navigation.PopModalAsync(true);
         }
 
-        //public void OnMore(object sender, EventArgs e)
-        //{
-        //    var mi = ((MenuItem)sender);
-        //    DisplayAlert("More Context Action", mi.CommandParameter + " more context action", "OK");
-        //}
-
-        //public void OnDelete(object sender, EventArgs e)
-        //{
-        //    var mi = ((MenuItem)sender);
-        //    DisplayAlert("Delete Context Action", mi.CommandParameter + " delete context action", "OK");
-        //}
     }
 }
