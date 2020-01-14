@@ -3,70 +3,54 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
             x:Class="TilesApp.SACO.SACOLogin">
-    <ContentPage.Resources>
-        <StyleSheet Source="../Assets/style.css"/>
-    </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <Image Source="Background.png" AbsoluteLayout.LayoutBounds="0,0,1,1"
-                   AbsoluteLayout.LayoutFlags="All" Aspect="AspectFill"/>
+            <Image Source="newBackground.jpg" Aspect="Fill"/>
             <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"
                          BackgroundColor="Transparent"  VerticalOptions="Fill" HorizontalOptions="FillAndExpand"
                          Orientation="Vertical">
-                <Grid Padding="70"   BackgroundColor="Transparent">
+                <Grid Padding="40" StyleClass="gridLogin">
                     <Grid.RowDefinitions> 
-                        <RowDefinition Height="2*" />
                         <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="2.75*" />
+                        <RowDefinition Height="1.25*" />
+                        <RowDefinition Height=".66*" />
                     </Grid.RowDefinitions>
-                    <Image Source="logoC.png"
-                        HeightRequest="350" 
-                        WidthRequest="350"
-                        Grid.Row="0"
-                        HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="CenterAndExpand"/>
+
                     <Image Source="logo.png"
                         HeightRequest="250" 
                         WidthRequest="200"
+                        Grid.Row="0"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="Start" 
+                       />
+                    
+                    <Image Source="sherpaLogo.png"
+                        Margin="0, 50, 0, 0"
                         Grid.Row="1"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="Start" />
-                    <Label Text="ERP CONNECT"
-                        FontSize="22"
-                        TextColor="White"
-                        HorizontalTextAlignment="End"
-                        Grid.Row="2"
-                        HorizontalOptions="Center"
-                        VerticalOptions="StartAndExpand" />
-                    <Button x:Name="Login"
-                        TextColor="White"
-                        BackgroundColor="Red"
-                        FontAttributes="Bold"
-                        FontSize="18"
-                        WidthRequest="200"
+                    
+
+                    <!---->
+                    <Button StyleClass="primaryButton"
+                        x:Name="Login"
+                        WidthRequest="500"
                         Text="LOG IN (CAMERA)"
-                        BorderWidth="3"
-                        BorderColor="White"
-                        BorderRadius="8"
-                        Grid.Row="3"
+                        Padding="0,15,0,15"
+                        Grid.Row="2"
                         HorizontalOptions="CenterAndExpand" 
                         VerticalOptions="EndAndExpand"
                         Clicked="GoToScan"
+                            
                     />
-                    <Button
+
+                    <Button StyleClass="darkButton"
                         x:Name="READER"
-                        Text="Check connected readers"
-                        TextColor="White"
-                        BackgroundColor="Black"
-                        FontAttributes="Bold"
-                        FontSize="18"
-                        WidthRequest="200"
-                        BorderWidth="3"
-                        BorderColor="White"
-                        BorderRadius="8" 
-                        Grid.Row="4"
+                        Text="Check connected readers"                        
+                        WidthRequest="500"
+                        Padding="0,15,0,15"
+                        Grid.Row="3"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="EndAndExpand"
                         Clicked="Reader_Command"

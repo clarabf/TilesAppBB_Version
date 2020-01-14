@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:fontawesome="clr-namespace:FontAwesome"
              x:Class="TilesApp.Rfid.Views.TransportsPage"
               Title="Transports" >
     <!-- x:Name="TransportsPage" -->
@@ -13,10 +14,11 @@
             </ToolbarItem.Icon>
         </ToolbarItem>
     </ContentPage.ToolbarItems>
-    <ContentPage.Content>
+    <ContentPage.Content >
         <StackLayout
             Spacing="0"
             Padding="0, 4"
+            BackgroundColor="#000000"
             >
             <ListView x:Name="TransportsListView" 
                 ItemsSource="{Binding Transports}"
@@ -26,8 +28,9 @@
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsRefreshing}"
                 CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected"
-                BackgroundColor="#f0f0f8"
+                ItemSelected="OnItemSelected"   
+                BackgroundColor="#202020"
+
                 >
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -58,15 +61,21 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Label Text="Tap on a Transport row to see its details and connect or disconnect it"
+            <Label Text="TAP ON A TRANSPORT ROW TO SEE ITS DETAILS AND CONNECT OR DISCONNECT IT"
                    LineBreakMode="WordWrap"
-                   Style="{DynamicResource ListItemDetailTextStyle}"
-                   FontSize="Medium" FontAttributes="Italic"
+                   FontSize="14"
                    HorizontalTextAlignment="Center"
                    Margin="12,8"
+                   TextColor="#ffffff"
                    HorizontalOptions="CenterAndExpand"
-                   />
-            <Button x:Name="btCancel"
+                   StyleClass="fontLight">
+                <Label.FontFamily>
+                    <OnPlatform x:TypeArguments="x:String">
+                        <On Platform="Android" Value="OpenSans-Regular.ttf#OpenSans-Regular" />
+                    </OnPlatform>
+                </Label.FontFamily>
+            </Label>
+            <!--<Button x:Name="btCancel"
                 TextColor="Black"
                 BackgroundColor="White"
                 FontAttributes="Bold"
@@ -78,32 +87,16 @@
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
                 Clicked="Cancel"
-            />
-           
-            <!-- Enumerators -->
-            <!--<Label Text="Enumerators" />
-            <ListView x:Name="EnumeratorsListView"
-                      ItemsSource="{Binding Enumerators }">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Horizontal" Padding="10">
-                                <Label Text="{Binding Transport }" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="Medium" />
-                                <Label Text="{Binding State }" LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}" FontSize="Small" />
-                                <Button Text="Start" Command="{Binding StartEnumeratorCommand }"/>
-                                <Button Text="Stop" Command="{Binding StopEnumeratorCommand }"/>
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Label Text="Pairing" />
-            <StackLayout Orientation="Horizontal">
-                <Editor Text="{Binding BluetoothAddressText}" />
-                <Button Text="Pair" Command="{Binding PairAndConnectCommand}" />
-                <Button Text="Unpair" Command="{Binding UnpairAndDisconnectCommand}" />
-            </StackLayout>
-            -->
+            />-->
+            <Button 
+                Text="&#xf015;"
+                FontFamily="{StaticResource FontAwesomeSolid}"
+                HorizontalOptions="Center"                
+                Clicked="Cancel"
+                FontSize="32"
+                TextColor="#bc0000"
+                BackgroundColor="Transparent"
+                VerticalOptions="Center" />
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

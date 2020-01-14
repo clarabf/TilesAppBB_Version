@@ -1,8 +1,4 @@
-﻿Grid {
-    background-color: white;
-}
-
-TableView {
+﻿TableView {
     padding: 5px;
     font-size: 14;
     font-weight: 700;
@@ -41,6 +37,7 @@ Label {
     background-color: #fff;
     border-color: #ccc;
 }
+
 .btn-info {
     color: #fff;
     background-color: #5bc0de;
@@ -51,8 +48,32 @@ Label {
     text-align: right;
     color: black;
 }
+
 .btn-dark {
     color: #fff;
     background-color: #343a40;
     border-color: #343a40;
+}
+
+/*  NEW   */
+
+.gridLogin Button {
+    border-style: solid;
+    border-width: 3;
+    border-color: #796f6f;
+    border-radius: 5;
+    color: white;
+    font-size: 18;
+}
+
+.primaryButton {
+    background-color: #bc0000;
+}
+
+.darkButton {
+    background-color: #202020;
+}
+
+.fontLight{
+    font-weight: 100;
 }

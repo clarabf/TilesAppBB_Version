@@ -32,14 +32,15 @@ namespace TilesApp.SACO
                 Button button = new Button
                 {
                     Text = simplifiedTag.Substring(underScore + 1),
-                    TextColor = Color.FromHex("#F8F9FA"),
-                    BackgroundColor = Color.FromHex("#DC3545"),
-                    FontAttributes = FontAttributes.Bold,
-                    FontSize = 16,
-                    WidthRequest = 190,
-                    CornerRadius = 8,
+                    TextColor = Color.FromHex("#ffffff"),
+                    BackgroundColor = Color.FromHex("#bc0000"),
+                    FontSize = 18,
+                    WidthRequest = 500,
+                    CornerRadius = 5,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center,
+                    BorderColor = Color.FromHex("#796f6f"),
+                    BorderWidth = 3
                 };
                 if (tag.Contains("App_Associate_")) button.Clicked += Associate_Command;
                 else if (tag.Contains("App_Assemble_")) button.Clicked += Assemble_Command;

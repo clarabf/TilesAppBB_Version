@@ -60,8 +60,8 @@
     <PackageReference Include="SkiaSharp">
       <Version>1.68.1</Version>
     </PackageReference>
-    <PackageReference Include="Syncfusion.Xamarin.SfProgressBar">
-      <Version>17.3.0.34</Version>
+    <PackageReference Include="SkiaSharp.Views.Forms">
+      <Version>1.68.1.1</Version>
     </PackageReference>
     <PackageReference Include="Tsl.AsciiProtocol.Std">
       <Version>1.4.0</Version>
@@ -105,6 +105,11 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
     <AndroidAsset Include="App.config" />
+    <AndroidAsset Include="Assets\FontAwesome5Brands.otf" />
+    <AndroidAsset Include="Assets\FontAwesome5Regular.otf" />
+    <AndroidAsset Include="Assets\FontAwesome5Solid.otf" />
+    <AndroidAsset Include="Assets\OpenSans-Regular.ttf" />
+    <AndroidAsset Include="Assets\Oswald.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -203,9 +208,13 @@
       <Generator>MSBuild:UpdateGeneratedFiles</Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\xml\file_paths.xml" />
-    <AndroidResource Include="Resources\drawable\LoadingScreen.png" />
+    <AndroidResource Include="Resources\drawable\_LoadingScreen.png" />
     <AndroidResource Include="Resources\drawable\LoadingScreen_centered.xml" />
     <AndroidResource Include="Resources\xml\device_filter.xml" />
+    <AndroidResource Include="Resources\drawable\sherpaLogo.png" />
+    <AndroidResource Include="Resources\drawable\newBackground.jpg" />
+    <AndroidResource Include="Resources\drawable\loadingScreen.jpg" />
+    <AndroidResource Include="Resources\drawable\splashScreen.jpg" />
     <None Include="Resources\drawable\CameralWhite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
