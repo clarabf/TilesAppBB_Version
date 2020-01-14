@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TilesApp.SACO.SACOTakePhoto">
+             x:Class="TilesApp.SACO.SACOTakePhoto"
+             xmlns:local1="clr-namespace:TilesApp.Models">
     <ContentPage.Resources>
         <StyleSheet Source="../../Assets/style.css"/>
     </ContentPage.Resources>
+    <ContentPage.BindingContext>
+        <local1:PhotoData/>
+    </ContentPage.BindingContext>
     <ContentPage.Content>
         <Grid>
             <Grid.RowDefinitions>
@@ -12,6 +16,7 @@
                 <RowDefinition Height="3*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="0.2*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Label x:Name="lblTest" 
@@ -58,6 +63,21 @@
                 Grid.Row="3"
                 Clicked="CameraButton_Clicked"
             />
+            <Label x:Name="lblListPhotos" 
+                FontSize="12"
+                IsVisible="True"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand"
+                Grid.Row="4">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="Taken photos: &lt;" TextColor="Black"/>
+                        <Span x:Name="numPhotos" Text="{Binding NumTakenPhotos}" TextColor="Black"/>
+                        <Span Text="&gt;. " TextColor="Black"/>
+                        <Span x:Name="hyper" Text="Edit." FontAttributes="Bold" TextColor="Blue"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
             <Button x:Name="btnCancel"
                 TextColor="Black"
                 BackgroundColor="White"
@@ -70,7 +90,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="4"
+                Grid.Row="5"
                 Clicked="Cancel"
             />
         </Grid>
