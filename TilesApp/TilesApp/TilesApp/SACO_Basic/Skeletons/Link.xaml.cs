@@ -21,8 +21,8 @@ namespace TilesApp.SACO
             BindingContext = this;
             MetaData = new LinkMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
-            BaseData.AppType = appNameArr[1];
-            BaseData.AppName = appNameArr[2];
+            MetaData.AppType = appNameArr[1];
+            MetaData.AppName = appNameArr[2];
             lblTest.Text = appNameArr[2] + " (Associate)";
             NavigationPage.SetHasNavigationBar(this, false);
         }
@@ -40,14 +40,10 @@ namespace TilesApp.SACO
 
         private async void SaveAndFinish(object sender, EventArgs args)
         {
-            // Formulate the JSON
+            //MetaData.ScannerReads = ScannerReads;
             if (MetaData.IsValid())
             {
-                Dictionary<string, Object> json = new Dictionary<string, object>();
-                json.Add("barcodes", InputDataValues);
-                json.Add("base", BaseData);
-                json.Add("meta", MetaData);
-                bool success = CosmosDBManager.InsertOneObject(json);
+                bool success = CosmosDBManager.InsertOneObject(MetaData);
                 await DisplayAlert("Component added successfully!", "<" + lastValue + "> stored in DB.", "OK");
             }
             else

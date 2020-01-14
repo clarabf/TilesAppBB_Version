@@ -19,7 +19,7 @@ namespace TilesApp
     public class BasePage : ContentPage, INotifyPropertyChanged
     {
         public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
-        public BaseData BaseData  = new BaseData();
+        //public BaseData BaseData  = new BaseData();
         private ReadersViewModel readersViewModel;
 
         public enum ReadersTypes

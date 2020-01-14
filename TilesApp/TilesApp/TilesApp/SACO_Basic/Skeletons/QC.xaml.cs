@@ -26,8 +26,8 @@ namespace TilesApp.SACO
             
             //MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
-            BaseData.AppType = appNameArr[1];
-            BaseData.AppName = appNameArr[2];
+            MetaData.AppType = appNameArr[1];
+            MetaData.AppName = appNameArr[2];
             lblTest.Text = appNameArr[2] + " (QC)";
             appName = appNameArr[2];
             
@@ -61,14 +61,10 @@ namespace TilesApp.SACO
                 //Update FAIL info
                 message = "Component(s) failed the Quality Control...";
             }
-            // Formulate the JSON
+            //    MetaData.ScannerReads = ScannerReads;
             //if (MetaData.IsValid())
             //{
-            //    Dictionary<string, Object> json = new Dictionary<string, object>();
-            //    json.Add("barcode", "123456");
-            //    json.Add("base", BaseData);
-            //    json.Add("meta", MetaData);
-            //    bool success = CosmosDBManager.InsertOneObject(json);
+            //    bool success = CosmosDBManager.InsertOneObject(MetaData);
 
             //    await DisplayAlert("Check-out of the component", message, "Ok");
 

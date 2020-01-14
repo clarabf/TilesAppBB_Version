@@ -19,8 +19,8 @@ namespace TilesApp.SACO
             BindingContext = this;
             MetaData = new RegMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
-            BaseData.AppType = appNameArr[1];
-            BaseData.AppName = appNameArr[2];
+            MetaData.AppType = appNameArr[1];
+            MetaData.AppName = appNameArr[2];
             lblTest.Text = appNameArr[2] + " (Checkpoint)";
             NavigationPage.SetHasNavigationBar(this, false);
         }
@@ -33,18 +33,11 @@ namespace TilesApp.SACO
 
         private async void SaveAndFinish(object sender, EventArgs args)
         {
-
-            // Formulate the JSON
+            //MetaData.ScannerReads = ScannerReads;
             if (MetaData.IsValid())
             {
-                Dictionary<string, Object> json = new Dictionary<string, object>();
-                json.Add("barcode", barcode.Text);
-                json.Add("base", BaseData);
-                json.Add("meta", MetaData);
-                bool success = CosmosDBManager.InsertOneObject(json);
-
+                bool success = CosmosDBManager.InsertOneObject(MetaData);
                 await DisplayAlert(barcode.Text + " was regitered successfully!", barcode.Text, "OK");
-
             }
             else
             {
