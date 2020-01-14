@@ -8,8 +8,10 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.4*" />
                 <RowDefinition Height="0.5*" />
+                <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.2*" />
+                <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -36,23 +38,38 @@
                 Grid.Row="1"
                 Grid.ColumnSpan="2"
             />
-            <Label x:Name="lblBarcode"
-                TextColor="Black"
-                FontSize="16"
-                Margin="20,0,20,0"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                IsVisible="False"
-                Grid.Row="2" 
+            <ListView ItemsSource="{Binding InputDataValues}" 
+                Grid.Row="2"
                 Grid.ColumnSpan="2"
-                >
+             />
+            <Button x:Name="btnTakePicture"
+                TextColor="White"
+                BackgroundColor="Black"
+                FontAttributes="Bold"
+                FontSize="14"
+                Text="TAKE PICTURE"
+                WidthRequest="250"
+                BorderColor="White"
+                BorderRadius="8"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="3"
+                Clicked="CameraButton_Clicked"
+                Grid.ColumnSpan="2"
+            />
+            <Label x:Name="lblListPhotos" 
+                Grid.ColumnSpan="2"
+                FontSize="12"
+                IsVisible="True"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand"
+                Grid.Row="4">
                 <Label.FormattedText>
                     <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="Check-in of component&#x0a;    &lt;" />
-                            <Span x:Name="barcode" FontAttributes="Bold" Text="12345678"/>
-                            <Span Text="&gt;&#x0a;    done successfully."/>
-                        </FormattedString.Spans>
+                        <Span Text="Taken photos: &lt;" TextColor="Black"/>
+                        <Span x:Name="numPhotos" Text="0" TextColor="Black"/>
+                        <Span Text="&gt;. " TextColor="Black"/>
+                        <Span x:Name="hyper" Text="Edit." FontAttributes="Bold" TextColor="Blue"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -62,15 +79,15 @@
                 FontAttributes="Bold"
                 FontSize="14"
                 Text="PASS"
-                WidthRequest="150"
-                HeightRequest="100"
+                WidthRequest="100"
                 BorderColor="Green"
                 BorderWidth="1"
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
-                IsVisible="False"
-                Grid.Row="3"
+                IsVisible="True"
+                Margin="60,0,0,0"
+                Grid.Row="5"
                 Grid.Column="0"
                 Clicked="PassOrFail"
             />
@@ -80,15 +97,15 @@
                 FontAttributes="Bold"
                 FontSize="14"
                 Text="FAIL"
-                WidthRequest="150"
-                HeightRequest="100"
+                WidthRequest="100"
                 BorderColor="Red"
                 BorderWidth="1"
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
-                IsVisible="False"
-                Grid.Row="3"
+                IsVisible="True"
+                Margin="-50,0,0,0"
+                Grid.Row="5"
                 Grid.Column="1"
                 Clicked="PassOrFail"
             />
@@ -104,7 +121,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="4"
+                Grid.Row="6"
                 Grid.ColumnSpan="2"
                 Clicked="Cancel"
             />

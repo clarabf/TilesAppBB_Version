@@ -89,7 +89,7 @@ namespace TilesApp.Services
 
             try
             {
-                List<Dictionary<string, string>> returnList = null;
+                List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
                 foreach (Stream str in fileStreams)
                 {
                     string fileName = Guid.NewGuid().ToString() + ".jpeg";
