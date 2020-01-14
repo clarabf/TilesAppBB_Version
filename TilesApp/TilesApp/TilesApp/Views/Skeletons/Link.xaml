@@ -2,7 +2,7 @@
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
-             x:Class="TilesApp.SACO.Reg">
+             x:Class="TilesApp.Views.Link">
     <ContentPage.Content>
         <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
@@ -10,10 +10,11 @@
                 <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
+                <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Label x:Name="lblTest" 
-                Text="CHECKPOINT"
+                Text="ASSOCIATE"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
@@ -32,23 +33,17 @@
             />
             <Label x:Name="lblBarcode"
                 TextColor="Black"
-                FontSize="16"
+                Text ="Last barcode scanned"
+                FontSize="18"
                 Margin="20,0,20,0"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand"
-                IsVisible="False"
+                IsVisible="True"
                 Grid.Row="2"      
-                >
-                <Label.FormattedText>
-                    <FormattedString>
-                        <FormattedString.Spans>
-                            <Span Text="Checkpoint of component&#x0a;    &lt;" />
-                            <Span x:Name="barcode" FontAttributes="Bold" Text="12345678"/>
-                            <Span Text="&gt;&#x0a;      done successfully."/>
-                        </FormattedString.Spans>
-                    </FormattedString>
-                </Label.FormattedText>
-            </Label>
+            />
+            <ListView ItemsSource="{Binding InputDataValues}" 
+                Grid.Row="3"      
+                />
             <Button x:Name="btnSaveAndFinish"
                 TextColor="White"
                 BackgroundColor="Black"
@@ -60,7 +55,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
-                Grid.Row="3"
+                Grid.Row="4"
                 IsVisible="False"
                 Clicked="SaveAndFinish"
             />
@@ -69,15 +64,15 @@
                 BackgroundColor="White"
                 FontAttributes="Bold"
                 FontSize="14"
-                Text="Come back"
+                Text="Cancel"
                 WidthRequest="250"
                 BorderColor="Black"
                 BorderWidth="1"
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="4"
-                Clicked="Come_Back"
+                Grid.Row="5"
+                Clicked="Cancel"
             />
         </Grid>
     </ContentPage.Content>

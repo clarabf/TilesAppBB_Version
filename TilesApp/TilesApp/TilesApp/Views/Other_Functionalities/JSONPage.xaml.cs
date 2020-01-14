@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace TilesApp.SACO
+namespace TilesApp.Views
 {
 
     public partial class JSONPage : ContentPage

@@ -2,19 +2,18 @@
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
-             x:Class="TilesApp.SACO.Link">
+            x:Class="TilesApp.Views.Join">
     <ContentPage.Content>
         <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.4*" />
                 <RowDefinition Height="0.5*" />
+                <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="0.5*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Label x:Name="lblTest" 
-                Text="ASSOCIATE"
+                Text="ASSEMBLE"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
@@ -23,7 +22,7 @@
                 Grid.Row="0"
             />
             <Label x:Name="lblTitle" 
-                Text="Scan barcode of component:"
+                Text="Scan barcode of Main component:"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
@@ -31,18 +30,8 @@
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="1"
             />
-            <Label x:Name="lblBarcode"
-                TextColor="Black"
-                Text ="Last barcode scanned"
-                FontSize="18"
-                Margin="20,0,20,0"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                IsVisible="True"
+            <ListView ItemsSource="{Binding BarcodesScanned}" 
                 Grid.Row="2"      
-            />
-            <ListView ItemsSource="{Binding InputDataValues}" 
-                Grid.Row="3"      
                 />
             <Button x:Name="btnSaveAndFinish"
                 TextColor="White"
@@ -55,7 +44,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
-                Grid.Row="4"
+                Grid.Row="3"
                 IsVisible="False"
                 Clicked="SaveAndFinish"
             />
@@ -71,7 +60,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
-                Grid.Row="5"
+                Grid.Row="4"
                 Clicked="Cancel"
             />
         </Grid>

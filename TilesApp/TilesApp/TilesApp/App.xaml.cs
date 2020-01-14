@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using TilesApp.SACO;
+using TilesApp.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using XmlRpc;
@@ -30,10 +30,6 @@ namespace TilesApp
 
             ////testing JSON scanned from QR
             //MainPage = new NavigationPage(new JSONPageInit());
-
-            ////testing pages visualization
-            //MainPage = new NavigationPage(new SACOAppPage());
-            //MainPage = new NavigationPage(new SACOSkeleton());
 
             NavigationPage.SetHasNavigationBar(this, false);
 

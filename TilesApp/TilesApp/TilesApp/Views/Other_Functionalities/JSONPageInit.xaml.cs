@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
-namespace TilesApp.SACO
+namespace TilesApp.Views
 {
 
     public partial class JSONPageInit : ContentPage
@@ -17,7 +17,7 @@ namespace TilesApp.SACO
 
         private async void ShowScanning(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new SACOScan("SCAN YOUR QR WITH JSON", 2, null));
+            await Navigation.PushModalAsync(new Scan("SCAN YOUR QR WITH JSON", 2, null));
         }
 
 

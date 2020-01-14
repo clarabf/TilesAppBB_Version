@@ -3,7 +3,7 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:views="clr-namespace:TilesApp.Rfid.Views"
             xmlns:native_views ="clr-namespace:TilesApp"
-            xmlns:saco_views ="clr-namespace:TilesApp.SACO"
+            xmlns:saco_views ="clr-namespace:TilesApp.Views"
             x:Class="TilesApp.Rfid.Views.MainPage"
             >
     <TabbedPage.Children>

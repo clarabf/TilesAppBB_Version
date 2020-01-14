@@ -8,15 +8,15 @@ using System.Text;
 using XmlRpc;
 using TilesApp.Services;
 
-namespace TilesApp.SACO
+namespace TilesApp.Views
 {
-    public partial class SACOScan : ContentPage
+    public partial class Scan : ContentPage
     {
 
         int scanType;
         Dictionary<string, object> users;
 
-        public SACOScan(string Content, int type, Dictionary<string, object> usersList)
+        public Scan(string Content, int type, Dictionary<string, object> usersList)
         {
             scanType = type;
             users = usersList;

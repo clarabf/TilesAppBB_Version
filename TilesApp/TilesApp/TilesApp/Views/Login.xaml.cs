@@ -6,7 +6,7 @@ using TilesApp.Rfid;
 using Xamarin.Forms;
 using XmlRpc;
 
-namespace TilesApp.SACO
+namespace TilesApp.Views
 {
     public partial class Login : BasePage
     {
@@ -52,7 +52,7 @@ namespace TilesApp.SACO
             Device.BeginInvokeOnMainThread(() =>
             {
                 Navigation.PopModalAsync(true);
-                Navigation.PushModalAsync(new SACOScan("SCAN YOUR EMPLOYEE CARD", 1, OdooXMLRPC.users));
+                Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, OdooXMLRPC.users));
             });
         }
 

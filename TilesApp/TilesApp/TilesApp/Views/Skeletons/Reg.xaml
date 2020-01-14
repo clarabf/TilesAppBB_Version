@@ -2,18 +2,18 @@
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
-            x:Class="TilesApp.SACO.Join">
+             x:Class="TilesApp.Views.Reg">
     <ContentPage.Content>
         <Grid BackgroundColor="White">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.4*" />
                 <RowDefinition Height="0.5*" />
-                <RowDefinition Height="2*" />
+                <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
             </Grid.RowDefinitions>
             <Label x:Name="lblTest" 
-                Text="ASSEMBLE"
+                Text="CHECKPOINT"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
@@ -22,7 +22,7 @@
                 Grid.Row="0"
             />
             <Label x:Name="lblTitle" 
-                Text="Scan barcode of Main component:"
+                Text="Scan barcode of component:"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
@@ -30,9 +30,25 @@
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="1"
             />
-            <ListView ItemsSource="{Binding BarcodesScanned}" 
+            <Label x:Name="lblBarcode"
+                TextColor="Black"
+                FontSize="16"
+                Margin="20,0,20,0"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
                 Grid.Row="2"      
-                />
+                >
+                <Label.FormattedText>
+                    <FormattedString>
+                        <FormattedString.Spans>
+                            <Span Text="Checkpoint of component&#x0a;    &lt;" />
+                            <Span x:Name="barcode" FontAttributes="Bold" Text="12345678"/>
+                            <Span Text="&gt;&#x0a;      done successfully."/>
+                        </FormattedString.Spans>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
             <Button x:Name="btnSaveAndFinish"
                 TextColor="White"
                 BackgroundColor="Black"
@@ -53,7 +69,7 @@
                 BackgroundColor="White"
                 FontAttributes="Bold"
                 FontSize="14"
-                Text="Cancel"
+                Text="Come back"
                 WidthRequest="250"
                 BorderColor="Black"
                 BorderWidth="1"
@@ -61,7 +77,7 @@
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="4"
-                Clicked="Cancel"
+                Clicked="Come_Back"
             />
         </Grid>
     </ContentPage.Content>

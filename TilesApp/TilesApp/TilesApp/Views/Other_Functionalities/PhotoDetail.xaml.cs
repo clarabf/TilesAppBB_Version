@@ -9,7 +9,7 @@ using TilesApp.Models;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace TilesApp.SACO
+namespace TilesApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PhotoDetail : ContentPage

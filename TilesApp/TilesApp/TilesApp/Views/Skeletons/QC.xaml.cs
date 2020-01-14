@@ -8,7 +8,7 @@ using Plugin.Media;
 using System.IO;
 using TilesApp.Models;
 
-namespace TilesApp.SACO
+namespace TilesApp.Views
 {
     public partial class QC : BasePage
     {
@@ -24,8 +24,8 @@ namespace TilesApp.SACO
             
             //MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
-            MetaData.AppType = appNameArr[1];
-            MetaData.AppName = appNameArr[2];
+            //MetaData.AppType = appNameArr[1];
+            //MetaData.AppName = appNameArr[2];
             lblTest.Text = appNameArr[2] + " (QC)";
             appName = appNameArr[2];
             

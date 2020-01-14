@@ -4,9 +4,8 @@ using TilesApp.Services;
 using TilesApp.Rfid;
 using Xamarin.Forms;
 
-namespace TilesApp.SACO
+namespace TilesApp.Views
 {
-
     public partial class AppPage : ContentPage
     {
         Dictionary<string, object> userInfo;

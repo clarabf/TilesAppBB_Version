@@ -5,9 +5,8 @@ using TilesApp.Models.Skeletons;
 using Xamarin.Forms;
 using TilesApp.Models;
 
-namespace TilesApp.SACO
+namespace TilesApp.Views
 {
-
     public partial class Reg : BasePage
     {
 
