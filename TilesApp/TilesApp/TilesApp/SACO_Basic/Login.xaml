@@ -2,7 +2,10 @@
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
-            x:Class="TilesApp.SACO.SACOLogin">
+            x:Class="TilesApp.SACO.Login">
+    <ContentPage.Resources>
+        <StyleSheet Source="../Assets/style.css"/>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Image Source="newBackground.jpg" Aspect="Fill"/>
@@ -34,7 +37,7 @@
 
                     <!---->
                     <Button StyleClass="primaryButton"
-                        x:Name="Login"
+                        x:Name="LoginBtn"
                         WidthRequest="500"
                         Text="LOG IN (CAMERA)"
                         Padding="0,15,0,15"

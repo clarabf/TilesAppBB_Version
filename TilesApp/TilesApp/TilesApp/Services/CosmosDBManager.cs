@@ -8,7 +8,7 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using PCLAppConfig;
 
-namespace TilesApp.Azure
+namespace TilesApp.Services
 {
     public static class CosmosDBManager
     {

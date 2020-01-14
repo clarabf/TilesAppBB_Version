@@ -5,6 +5,7 @@ using Xamarin.Forms.Xaml;
 using XmlRpc;
 using TilesApp.Rfid.ViewModels;
 using System.Linq;
+using TilesApp.Services;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -13,15 +14,15 @@ namespace TilesApp
     public partial class App : Application
     {
         public JSONParser jsParser = new JSONParser();
-
+        public static string DeviceSerialNumber { get; private set; }
         public App()
         {
             
             InitializeComponent();
-
+            OdooXMLRPC.Start();
             ////testing SACO app
-            MainPage = new NavigationPage(new SACOLogin());
-            //MainPage = new NavigationPage(new SACOTakePhoto());
+            MainPage = new NavigationPage(new Login());
+            //MainPage = new NavigationPage(new SACOTakePhoto("TestPhoto"));
 
             ////testing generated JSON
             //string json = jsParser.GenerateJSON();
@@ -35,6 +36,13 @@ namespace TilesApp
             //MainPage = new NavigationPage(new SACOSkeleton());
 
             NavigationPage.SetHasNavigationBar(this, false);
+
+            MessagingCenter.Subscribe<Application, string>(Application.Current, "FetchedDeviceSerialNumber", async (s, sn) => {
+                if (sn != null)
+                {
+                    DeviceSerialNumber = sn;
+                }
+            });
         }
 
         /// <summary>

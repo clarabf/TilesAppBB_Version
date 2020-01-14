@@ -10,6 +10,7 @@ using System.Linq;
 using TilesApp.Models;
 using TilesApp.Rfid.Models;
 using TilesApp.Rfid.ViewModels;
+using TilesApp.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -40,7 +41,15 @@ namespace TilesApp
             ScannerReads.CollectionChanged += ScannerReads_CollectionChanged;
             this.readersViewModel = App.ViewModel.Readers;
             subscribe();
-
+            try
+            {
+                BaseData.UserId = OdooXMLRPC.userID.ToString();
+                BaseData.UserName = OdooXMLRPC.userName;
+            }
+            catch (Exception)
+            {
+            }
+  
 
 
             
@@ -234,12 +243,7 @@ namespace TilesApp
                 }
             });
 
-            MessagingCenter.Subscribe<Application, String>(Application.Current, "FetchedDeviceSerialNumber", async (s, serialNumber) => {
-                if (serialNumber!= null)
-                {
-                    BaseData.DeviceSerialNumber = serialNumber;
-                }
-            });
+           
 
 
         }
