@@ -44,7 +44,7 @@ namespace TilesApp.SACO
         }
         public override void ScannerReadDetected(Dictionary<string, object> input)
         {
-            InputDataValues.Add(input[nameof(InputDataProps.Value)].ToString());
+            InputDataValues.Add(input[nameof(BaseData.InputDataProps.Value)].ToString());
         }
         private async void PassOrFail(object sender, EventArgs args)
         {

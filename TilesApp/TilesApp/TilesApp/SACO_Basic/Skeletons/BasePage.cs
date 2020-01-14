@@ -90,15 +90,15 @@ namespace TilesApp
         private void ProcessInput(string code, Enum reader) {
             foreach (var item in ScannerReads.ToList())
             {
-                if (item[nameof(InputDataProps.Value)].ToString() == code)
+                if (item[nameof(BaseData.InputDataProps.Value)].ToString() == code)
                 {
                     return;
                 }
             }
             Dictionary<string, object> input = new Dictionary<string, object>();
-            input.Add(nameof(InputDataProps.Value), code);
-            input.Add(nameof(InputDataProps.ReaderType), reader);
-            input.Add(nameof(InputDataProps.Timestamp), DateTime.Now);
+            input.Add(nameof(BaseData.InputDataProps.Value), code);
+            input.Add(nameof(BaseData.InputDataProps.ReaderType), reader);
+            input.Add(nameof(BaseData.InputDataProps.Timestamp), DateTime.Now);
             ScannerReads.Add(input);
         }      
 
