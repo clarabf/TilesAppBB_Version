@@ -13,6 +13,8 @@ namespace TilesApp.Models
         public string AppName { get; set; }
         public string AppType { get; set; }
         public string Station { get; set; }
+        public int? UserId { get; private set; }
+        public string UserName { get; private set; }
         public enum InputDataProps
         {
             Value,
@@ -24,24 +26,9 @@ namespace TilesApp.Models
             getLocation(); // sets the Location property to the current location
 
             DeviceSerialNumber = App.DeviceSerialNumber!=null ? App.DeviceSerialNumber : null ;
+            UserId = OdooXMLRPC.userID;
+            UserName = OdooXMLRPC.userName;
         }
-
-        public int? UserId
-        {
-            get
-            {
-                return OdooXMLRPC.userID;
-            }
-        }
-
-        public string UserName
-        {
-            get
-            {
-                return OdooXMLRPC.userName;
-            }
-        }
-
         private async void getLocation()
         {
             try

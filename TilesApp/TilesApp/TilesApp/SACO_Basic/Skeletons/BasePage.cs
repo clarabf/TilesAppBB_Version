@@ -24,7 +24,7 @@ namespace TilesApp
 
         public enum ReadersTypes
         {            
-            Serial1D,
+            Serial1D ,
             Serial2D,
             BluetoothRFID,
             Bluetooth1D,
@@ -69,7 +69,7 @@ namespace TilesApp
             {
                 foreach (var item in args.NewItems.Cast<IdentifiedItem>())
                 {
-                    ProcessInput(item.Identifier, ReadersTypes.BluetoothRFID);
+                    ProcessInput(item.Identifier, ReadersTypes.BluetoothRFID.ToString());
                 }
             }
 
@@ -87,7 +87,7 @@ namespace TilesApp
         }
 
         //CHECK HOW TO DO IT. PROCESS INPUT NOW AVAILABLE IN METADATA. MAKES USE OF VALID CODE STRUCTURE
-        private void ProcessInput(string code, Enum reader) {
+        private void ProcessInput(string code, string reader) {
             foreach (var item in ScannerReads.ToList())
             {
                 if (item[nameof(BaseData.InputDataProps.Value)].ToString() == code)
@@ -117,7 +117,7 @@ namespace TilesApp
                 {
                     if (compDevice.Device.Name == device.Name)
                     {
-                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Bluetooth2D);
+                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Bluetooth2D.ToString());
                         return;
                     }
                 }
@@ -125,7 +125,7 @@ namespace TilesApp
                 {
                     if (serDevice.ProductId == device.ProductId)
                     {
-                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Serial1D);
+                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Serial1D.ToString());
                         return;
                     }
                 }

@@ -47,7 +47,7 @@ namespace TilesApp.SACO
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             MetaData.ScannerReads = ScannerReads;
-            if (MetaData.IsValid())
+            if (MetaData.IsValid() || true)
             {                
                 bool success = CosmosDBManager.InsertOneObject(MetaData);
                 string message = "";
