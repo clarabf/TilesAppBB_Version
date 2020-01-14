@@ -19,44 +19,24 @@ namespace TilesApp
     public class BasePage : ContentPage, INotifyPropertyChanged
     {
         public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
-        public BaseData BaseData  = new BaseData();
+        //public BaseData BaseData  = new BaseData();
         private ReadersViewModel readersViewModel;
 
         public enum ReadersTypes
         {            
-            Serial1D,
+            Serial1D ,
             Serial2D,
             BluetoothRFID,
             Bluetooth1D,
             Bluetooth2D
         }
-        public enum InputDataProps
-        {
-            Value,
-            Timestamp,
-            ReaderType,
-        }
+        
         public BasePage(){
             App.ViewModel.Inventory.Transponders.CollectionChanged += Transponders_CollectionChanged;
             ScannerReads.CollectionChanged += ScannerReads_CollectionChanged;
             this.readersViewModel = App.ViewModel.Readers;
-            subscribe();
-            try
-            {
-                BaseData.UserId = OdooXMLRPC.userID.ToString();
-                BaseData.UserName = OdooXMLRPC.userName;
-            }
-            catch (Exception)
-            {
-            }
-  
-
-
-            
+            subscribe();      
         }
-
-
-
 
         // OVERRIDES
         protected override void OnAppearing()
@@ -64,8 +44,6 @@ namespace TilesApp
             base.OnAppearing();
             App.ViewModel.Inventory.ClearCommand.Execute(null);
             subscribe();
-
-
         }
 
         protected override void OnDisappearing()
@@ -91,7 +69,7 @@ namespace TilesApp
             {
                 foreach (var item in args.NewItems.Cast<IdentifiedItem>())
                 {
-                    ProcessInput(item.Identifier, ReadersTypes.BluetoothRFID);
+                    ProcessInput(item.Identifier, ReadersTypes.BluetoothRFID.ToString());
                 }
             }
 
@@ -107,22 +85,22 @@ namespace TilesApp
             }
 
         }
-        private void ProcessInput(string code, Enum reader) {
+
+        //CHECK HOW TO DO IT. PROCESS INPUT NOW AVAILABLE IN METADATA. MAKES USE OF VALID CODE STRUCTURE
+        private void ProcessInput(string code, string reader) {
             foreach (var item in ScannerReads.ToList())
             {
-                if (item[nameof(InputDataProps.Value)].ToString() == code)
+                if (item[nameof(BaseData.InputDataProps.Value)].ToString() == code)
                 {
                     return;
                 }
             }
             Dictionary<string, object> input = new Dictionary<string, object>();
-            input.Add(nameof(InputDataProps.Value), code);
-            input.Add(nameof(InputDataProps.ReaderType), reader);
-            input.Add(nameof(InputDataProps.Timestamp), DateTime.Now);
+            input.Add(nameof(BaseData.InputDataProps.Value), code);
+            input.Add(nameof(BaseData.InputDataProps.ReaderType), reader);
+            input.Add(nameof(BaseData.InputDataProps.Timestamp), DateTime.Now);
             ScannerReads.Add(input);
         }      
-
-
 
         // VIRTUAL FUNCTIONS
         public virtual void ScannerReadDetected(Dictionary<string, object> input)
@@ -139,7 +117,7 @@ namespace TilesApp
                 {
                     if (compDevice.Device.Name == device.Name)
                     {
-                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Bluetooth2D);
+                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Bluetooth2D.ToString());
                         return;
                     }
                 }
@@ -147,7 +125,7 @@ namespace TilesApp
                 {
                     if (serDevice.ProductId == device.ProductId)
                     {
-                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Serial1D);
+                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.Serial1D.ToString());
                         return;
                     }
                 }

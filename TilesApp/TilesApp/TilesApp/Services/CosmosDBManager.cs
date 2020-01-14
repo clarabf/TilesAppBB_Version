@@ -19,12 +19,12 @@ namespace TilesApp.Services
         private static IMongoDatabase database = mongoClient.GetDatabase(ConfigurationManager.AppSettings["MONGODB_DB"]);
         private static IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(ConfigurationManager.AppSettings["MONGODB_COLLECTION"]);
 
-        public static bool InsertOneObject(Dictionary<string, object> metaDataDictionary)
+        public static bool InsertOneObject(object metaData)
         {
 
             try
             {
-                collection.InsertOneAsync(metaDataDictionary.ToBsonDocument()).Wait();
+                collection.InsertOneAsync(metaData.ToBsonDocument()).Wait();
                 return true;
             }
             catch

@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using TilesApp.Services;
 using TilesApp.Models.Skeletons;
 using Xamarin.Forms;
+using TilesApp.Models;
 
 namespace TilesApp.SACO
 {
-
     public partial class Link : BasePage
     {
 
@@ -21,8 +21,8 @@ namespace TilesApp.SACO
             BindingContext = this;
             MetaData = new LinkMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
-            BaseData.AppType = appNameArr[1];
-            BaseData.AppName = appNameArr[2];
+            MetaData.AppType = appNameArr[1];
+            MetaData.AppName = appNameArr[2];
             lblTest.Text = appNameArr[2] + " (Associate)";
             NavigationPage.SetHasNavigationBar(this, false);
         }
@@ -32,22 +32,18 @@ namespace TilesApp.SACO
             lblBarcode.IsVisible = true;
             btnSaveAndFinish.IsVisible = true;
             //barcode.Text = input[nameof(InputDataProps.ReaderType)].ToString() +"|"+ input[nameof(InputDataProps.Value)].ToString();
-            InputDataValues.Add(input[nameof(InputDataProps.Value)].ToString());
-            lastValue = input[nameof(InputDataProps.Value)].ToString();
+            InputDataValues.Add(input[nameof(BaseData.InputDataProps.Value)].ToString());
+            lastValue = input[nameof(BaseData.InputDataProps.Value)].ToString();
 
         }
 
 
         private async void SaveAndFinish(object sender, EventArgs args)
         {
-            // Formulate the JSON
+            //MetaData.ScannerReads = ScannerReads;
             if (MetaData.IsValid())
             {
-                Dictionary<string, Object> json = new Dictionary<string, object>();
-                json.Add("barcodes", InputDataValues);
-                json.Add("base", BaseData);
-                json.Add("meta", MetaData);
-                bool success = CosmosDBManager.InsertOneObject(json);
+                bool success = CosmosDBManager.InsertOneObject(MetaData);
                 await DisplayAlert("Component added successfully!", "<" + lastValue + "> stored in DB.", "OK");
             }
             else
@@ -62,7 +58,5 @@ namespace TilesApp.SACO
             MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             await Navigation.PopModalAsync(true);
         }
-
-
     }
 }

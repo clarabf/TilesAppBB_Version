@@ -24,8 +24,8 @@ namespace TilesApp.SACO
             
             //MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
-            BaseData.AppType = appNameArr[1];
-            BaseData.AppName = appNameArr[2];
+            MetaData.AppType = appNameArr[1];
+            MetaData.AppName = appNameArr[2];
             lblTest.Text = appNameArr[2] + " (QC)";
             appName = appNameArr[2];
             
@@ -44,7 +44,7 @@ namespace TilesApp.SACO
 
         public override void ScannerReadDetected(Dictionary<string, object> input)
         {
-            InputDataValues.Add(input[nameof(InputDataProps.Value)].ToString());
+            InputDataValues.Add(input[nameof(BaseData.InputDataProps.Value)].ToString());
         }
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
