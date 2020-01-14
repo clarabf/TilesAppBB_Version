@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TilesApp.Services;
 using TilesApp.Models.Skeletons;
 using Xamarin.Forms;
+using TilesApp.Models;
 
 namespace TilesApp.SACO
 {
@@ -27,7 +28,7 @@ namespace TilesApp.SACO
         public override void ScannerReadDetected(Dictionary<string, object> input)
         {
             lblBarcode.IsVisible = true;
-            barcode.Text = input[nameof(InputDataProps.Value)].ToString();
+            barcode.Text = input[nameof(BaseData.InputDataProps.Value)].ToString();
         }
 
         private async void SaveAndFinish(object sender, EventArgs args)

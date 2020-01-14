@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using TilesApp.Services;
 using TilesApp.Models.Skeletons;
 using Xamarin.Forms;
+using TilesApp.Models;
 
 namespace TilesApp.SACO
 {
@@ -31,16 +32,16 @@ namespace TilesApp.SACO
             if (!mainScanned)
             {
                 mainScanned = true;
-                mainCode = input[nameof(InputDataProps.Value)].ToString();
+                mainCode = input[nameof(BaseData.InputDataProps.Value)].ToString();
                 lblTitle.Text = "Scan barcode of the other components";
                 BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
                 btnSaveAndFinish.IsVisible = true;
             }
             else
             {
-                barcodes.Add(input[nameof(InputDataProps.Value)].ToString());
+                barcodes.Add(input[nameof(BaseData.InputDataProps.Value)].ToString());
                 lblTitle.Text = "Scan barcode of the other components (" + barcodes.Count + ")";
-                BarcodesScanned.Add("Item <" + input[nameof(InputDataProps.Value)].ToString() + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
+                BarcodesScanned.Add("Item <" + input[nameof(BaseData.InputDataProps.Value)].ToString() + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
             }
         }
         private async void SaveAndFinish(object sender, EventArgs args)

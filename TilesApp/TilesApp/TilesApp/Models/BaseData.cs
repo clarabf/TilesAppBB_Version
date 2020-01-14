@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using System;
 using Xamarin.Essentials;
+using TilesApp.Services;
 
 namespace TilesApp.Models
 {
@@ -9,19 +10,37 @@ namespace TilesApp.Models
         [BsonIgnoreIfNull]
         public Location Location {get; private set;}
         public string DeviceSerialNumber { get; set; }
-        public string UserId { get; set; }
-        public string UserName { get; set; }
         public string AppName { get; set; }
         public string AppType { get; set; }
         public string Station { get; set; }
-
-
-        public BaseData() {
+        public enum InputDataProps
+        {
+            Value,
+            Timestamp,
+            ReaderType,
+        }
+        public BaseData()
+        {
             getLocation(); // sets the Location property to the current location
 
             DeviceSerialNumber = App.DeviceSerialNumber!=null ? App.DeviceSerialNumber : null ;
         }
 
+        public int? UserId
+        {
+            get
+            {
+                return OdooXMLRPC.userID;
+            }
+        }
+
+        public string UserName
+        {
+            get
+            {
+                return OdooXMLRPC.userName;
+            }
+        }
 
         private async void getLocation()
         {
@@ -55,9 +74,5 @@ namespace TilesApp.Models
                 Console.WriteLine("Error: " + ex);
             }
         }
-
-        
-
-
     }
 }

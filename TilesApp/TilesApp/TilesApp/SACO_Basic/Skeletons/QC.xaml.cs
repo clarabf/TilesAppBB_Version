@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TilesApp.Services;
 using TilesApp.Models.Skeletons;
 using Xamarin.Forms;
+using TilesApp.Models;
 
 namespace TilesApp.SACO
 {
@@ -26,7 +27,7 @@ namespace TilesApp.SACO
             lblBarcode.IsVisible = true;
             btFail.IsVisible = true;
             btPass.IsVisible = true;
-            barcode.Text = input[nameof(InputDataProps.Value)].ToString();
+            barcode.Text = input[nameof(BaseData.InputDataProps.Value)].ToString();
 
         }
         private async void PassOrFail(object sender, EventArgs args)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,12 @@ namespace TilesApp.Models.Skeletons
         public bool AreQCResultDetailsMandatory { get; set; }
         [BsonIgnore]
         public bool AreAttachedFilesMandatory { get; set; }
+        [BsonIgnore]
+        private List<String> ValidCodeStructure { get; set; }
+        [BsonIgnore]
+        public bool? IsStationMandatory { get; set; }
+        //CHECK THE BEST WAY TO SAVE THE COLLECTION TO BSON
+        public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
 
         //Constructor from json string
         public QCMetaData(string jsonConfig = null) : base()
@@ -35,7 +42,29 @@ namespace TilesApp.Models.Skeletons
 
                 foreach (var prop in GetType().GetProperties())
                 {
-                    if (configData.ContainsKey(prop.Name)) { propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]); }
+                    if (configData.ContainsKey(prop.Name))
+                    {
+                        if (prop.Name == "AdditionalData" & configData[prop.Name] != null)
+                        {
+                            var content = (Dictionary<string, object>)configData[prop.Name];
+                            foreach (KeyValuePair<string, object> data in content)
+                            {
+                                AdditionalData.Add(data.Key, data.Value);
+                            }
+                        }
+                        else if (prop.Name == "ValidCodeStructure")
+                        {
+                            var content = (List<string>)configData[prop.Name];
+                            foreach (string data in content)
+                            {
+                                ValidCodeStructure.Add(data);
+                            }
+                        }
+                        else
+                        {
+                            propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);
+                        }
+                    }
                 }
             }
         }
@@ -116,11 +145,55 @@ namespace TilesApp.Models.Skeletons
                 {
                     if ((prop.Name == "QCResultDetails" & AreQCResultDetailsMandatory == true) || (prop.Name == "QCAttachedFilesHASHnURL" & AreAttachedFilesMandatory == true))
                     {
-                        isValid = false;
+                        if (!(prop.Name == "Station" & IsStationMandatory == false))
+                        {
+                            isValid = false;
+                        }
                     }
                 }
             }
             return isValid;
+        }
+        public Boolean IsValidCode(String inputUUID)
+        {
+            foreach (string filterUUID in ValidCodeStructure)
+            {
+                Boolean isValidCode = true;
+
+                if (System.Text.RegularExpressions.Regex.IsMatch(inputUUID, @"\A\b[0-9a-fA-F]+\b\Z") & inputUUID.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(filterUUID, @"\A\b[0-9a-fA-FX]+\b\Z") & filterUUID.Length == 24)
+                {
+                    for (int i = 0; i < inputUUID.Length / 2; i++)
+                    {
+                        if (filterUUID.Substring(i * 2, 2) != "XX" && inputUUID.Substring(i * 2, 2) != filterUUID.Substring(i * 2, 2))
+                        {
+                            isValidCode = false;
+                        }
+                    }
+                    if (isValidCode) { return true; }
+                }
+            }
+            return false;
+        }
+        //CHECK PROCESS INPUT
+        public void ProcessInput(string code, Enum reader)
+        {
+            //First check if it follows config file code connvention (Aka ValidCodeStructure)
+            if (IsValidCode(code))
+            {
+                //Now see if already on list
+                foreach (var item in ScannerReads.ToList())
+                {
+                    if (item[nameof(InputDataProps.Value)].ToString() == code)
+                    {
+                        return;
+                    }
+                }
+                Dictionary<string, object> input = new Dictionary<string, object>();
+                input.Add(nameof(InputDataProps.Value), code);
+                input.Add(nameof(InputDataProps.ReaderType), reader);
+                input.Add(nameof(InputDataProps.Timestamp), DateTime.Now);
+                ScannerReads.Add(input);
+            }
         }
     }
 }

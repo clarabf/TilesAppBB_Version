@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -15,8 +16,13 @@ namespace TilesApp.Models.Skeletons
         [BsonIgnore]
         public String ParentUUIDStructure { get; set; }
         [BsonIgnoreIfNull]
-        private Dictionary<string, object> AdditionalData { get; set; }
-
+        public Dictionary<string, object> AdditionalData { get; set; }
+        [BsonIgnore]
+        private List<String> ValidCodeStructure { get; set; }
+        [BsonIgnore]
+        public bool? IsStationMandatory { get; set; }
+        //CHECK THE BEST WAY TO SAVE THE COLLECTION TO BSON
+        public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         //Constructor from json string
         public JoinMetaData(string jsonConfig = null) : base()
         {
@@ -27,7 +33,29 @@ namespace TilesApp.Models.Skeletons
 
                 foreach (var prop in GetType().GetProperties())
                 {
-                    if (configData.ContainsKey(prop.Name)) { propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]); }
+                    if (configData.ContainsKey(prop.Name))
+                    {
+                        if (prop.Name == "AdditionalData" & configData[prop.Name] != null) 
+                        {
+                            Dictionary<string, object> content = (Dictionary<string, object>)configData[prop.Name];
+                            foreach (KeyValuePair<string,object> data in content)
+                            {
+                                AdditionalData.Add(data.Key, data.Value);
+                            }                            
+                        }
+                        else if (prop.Name == "ValidCodeStructure")
+                        {
+                            List<string> content = (List<string>)configData[prop.Name];
+                            foreach (string data in content)
+                            {
+                                ValidCodeStructure.Add(data);
+                            }
+                        }
+                        else
+                        {
+                            propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);
+                        }
+                    }
                 }
             }
         }
@@ -45,13 +73,37 @@ namespace TilesApp.Models.Skeletons
 
                 foreach (var prop in GetType().GetProperties())
                 {
-                    if (configData.ContainsKey(prop.Name)) { propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]); }
+                    if (configData.ContainsKey(prop.Name))
+                    {
+                        if (prop.Name == "AdditionalData" & configData[prop.Name] != null)
+                        {
+                            Dictionary<string, object> content = (Dictionary<string, object>)configData[prop.Name];
+                            foreach (KeyValuePair<string, object> data in content)
+                            {
+                                AdditionalData.Add(data.Key, data.Value);
+                            }
+                        }
+                        else if (prop.Name == "ValidCodeStructure" & configData[prop.Name] != null)
+                        {
+                            List<string> content = (List<string>)configData[prop.Name];
+                            foreach (string data in content)
+                            {
+                                ValidCodeStructure.Add(data);                                                         
+                            }
+                        }
+                        else
+                        {
+                            propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);
+                        }
+                    }
                 }
             }
         }
         //Add metadata from string
-        public void AddQRMetaData(string jsonConfig)
+        public List<string> AddQRMetaData(string jsonConfig)
         {
+            List<string> overwrittenFields = new List<string> { };
+
             try
             {
                 Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
@@ -59,22 +111,40 @@ namespace TilesApp.Models.Skeletons
 
                 foreach (var prop in GetType().GetProperties())
                 {
-                    if (prop.Name != "AdditionalData" & prop.Name != "AreQCResultDetailsMandatory" & prop.Name != "AreAttachedFilesMandatory")
+                    if (configData.ContainsKey(prop.Name))
                     {
-                        propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);
-                    }
-                    else if (prop.Name == "AdditionalData" & prop.Name != "AreQCResultDetailsMandatory" & prop.Name != "AreAttachedFilesMandatory")
-                    {
-                        foreach (var key in configData.Keys)
+                        if (prop.Name == "AdditionalData" & configData[prop.Name] != null)
                         {
-                            if (!AdditionalData.ContainsKey(key))
+                            Dictionary<string, object> content = (Dictionary<string, object>)configData[prop.Name];
+                            foreach (KeyValuePair<string, object> data in content)
                             {
-                                AdditionalData.Add(key, configData[key]);
+                                if (!AdditionalData.ContainsKey(data.Key))
+                                {
+                                    AdditionalData.Add(data.Key, data.Value);
+                                }
+                                else
+                                {
+                                    AdditionalData[data.Key] = data.Value;
+                                    overwrittenFields.Add(prop.Name + "/" + data.Key);
+                                }
                             }
-                            else
+                        }
+                        else if (prop.Name == "ValidCodeStructure")
+                        {
+                            List<string> content = (List<string>)configData[prop.Name];
+                            foreach (string data in content)
                             {
-                                AdditionalData[key] = configData[key];
+                                if (!ValidCodeStructure.Contains(data))
+                                {
+                                    ValidCodeStructure.Add(data);
+                                }
                             }
+                        }
+                        else
+                        {
+                            if (propertyType.GetProperty(prop.Name).GetValue(this) != null) { overwrittenFields.Add(prop.Name); }
+
+                            propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);                       
                         }
                     }
                 }
@@ -83,21 +153,25 @@ namespace TilesApp.Models.Skeletons
             {
                 throw new Exception("Data is not a compatible JSON");
             }
+            return overwrittenFields;
         }
         public Boolean IsValid()
         {
             var isValid = true;
 
-            foreach (var prop in this.GetType().GetProperties())
+            foreach (var prop in GetType().GetProperties())
             {
                 if (prop.GetValue(this, null) == null & prop.Name != "AdditionalData")
                 {
-                    isValid = false;
+                    if (!(prop.Name == "Station" & IsStationMandatory == false))
+                    {                        
+                        isValid = false;
+                    }                   
                 }
             }
             return isValid;
         }
-        public Boolean IsParent(String inputUUID)
+        public void IsParent(String inputUUID)
         {
             var isParent = true;
 
@@ -112,12 +186,65 @@ namespace TilesApp.Models.Skeletons
                 }
 
                 ParentUUID = isParent ? inputUUID : ParentUUID;
-                return isParent;
             }
-            else
+        }
+        public Boolean IsValidCode(String inputUUID)
+        {
+            foreach(string filterUUID in ValidCodeStructure)
             {
-                return false;
+                Boolean isValidCode = true;
+
+                if (System.Text.RegularExpressions.Regex.IsMatch(inputUUID, @"\A\b[0-9a-fA-F]+\b\Z") & inputUUID.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(filterUUID, @"\A\b[0-9a-fA-FX]+\b\Z") & filterUUID.Length == 24)
+                {
+                    for (int i = 0; i < inputUUID.Length / 2; i++)
+                    {
+                        if (filterUUID.Substring(i * 2, 2) != "XX" && inputUUID.Substring(i * 2, 2) != filterUUID.Substring(i * 2, 2))
+                        {
+                            isValidCode = false;
+                        }
+                    }
+                    if (isValidCode) { return true; }
+                }   
             }
+            return false;
+        }
+        //CHECK PROCESS INPUT
+        public List<string> ProcessInput(string code, Enum reader)
+        {
+            //First see if it is a JSON file
+            try
+            {
+                List<string> returnList = AddQRMetaData(code);
+                return returnList;
+            }
+            catch
+            {
+                //First check if it follows config file code connvention (Aka ValidCodeStructure)
+                if (IsValidCode(code))
+                {
+                    //Now check if it is parent
+                    IsParent(code);
+
+                    //Now see if already on list
+                    foreach (var item in ScannerReads.ToList())
+                    {
+                        if (item[nameof(InputDataProps.Value)].ToString() == code)
+                        {
+                            return null;
+                        }
+                    }
+                    Dictionary<string, object> input = new Dictionary<string, object>();
+                    input.Add(nameof(InputDataProps.Value), code);
+                    input.Add(nameof(InputDataProps.ReaderType), reader);
+                    input.Add(nameof(InputDataProps.Timestamp), DateTime.Now);
+                    ScannerReads.Add(input);
+                    return null;
+                }
+                else
+                {
+                    return null;
+                }
+            }            
         }
     }
 }

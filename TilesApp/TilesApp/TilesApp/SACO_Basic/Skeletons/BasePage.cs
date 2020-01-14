@@ -30,33 +30,13 @@ namespace TilesApp
             Bluetooth1D,
             Bluetooth2D
         }
-        public enum InputDataProps
-        {
-            Value,
-            Timestamp,
-            ReaderType,
-        }
+        
         public BasePage(){
             App.ViewModel.Inventory.Transponders.CollectionChanged += Transponders_CollectionChanged;
             ScannerReads.CollectionChanged += ScannerReads_CollectionChanged;
             this.readersViewModel = App.ViewModel.Readers;
-            subscribe();
-            try
-            {
-                BaseData.UserId = OdooXMLRPC.userID.ToString();
-                BaseData.UserName = OdooXMLRPC.userName;
-            }
-            catch (Exception)
-            {
-            }
-  
-
-
-            
+            subscribe();      
         }
-
-
-
 
         // OVERRIDES
         protected override void OnAppearing()
@@ -64,8 +44,6 @@ namespace TilesApp
             base.OnAppearing();
             App.ViewModel.Inventory.ClearCommand.Execute(null);
             subscribe();
-
-
         }
 
         protected override void OnDisappearing()
@@ -107,6 +85,8 @@ namespace TilesApp
             }
 
         }
+
+        //CHECK HOW TO DO IT. PROCESS INPUT NOW AVAILABLE IN METADATA. MAKES USE OF VALID CODE STRUCTURE
         private void ProcessInput(string code, Enum reader) {
             foreach (var item in ScannerReads.ToList())
             {
@@ -121,8 +101,6 @@ namespace TilesApp
             input.Add(nameof(InputDataProps.Timestamp), DateTime.Now);
             ScannerReads.Add(input);
         }      
-
-
 
         // VIRTUAL FUNCTIONS
         public virtual void ScannerReadDetected(Dictionary<string, object> input)

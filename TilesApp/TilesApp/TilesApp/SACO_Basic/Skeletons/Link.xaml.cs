@@ -4,10 +4,10 @@ using System.Collections.ObjectModel;
 using TilesApp.Services;
 using TilesApp.Models.Skeletons;
 using Xamarin.Forms;
+using TilesApp.Models;
 
 namespace TilesApp.SACO
 {
-
     public partial class Link : BasePage
     {
 
@@ -32,8 +32,8 @@ namespace TilesApp.SACO
             lblBarcode.IsVisible = true;
             btnSaveAndFinish.IsVisible = true;
             //barcode.Text = input[nameof(InputDataProps.ReaderType)].ToString() +"|"+ input[nameof(InputDataProps.Value)].ToString();
-            InputDataValues.Add(input[nameof(InputDataProps.Value)].ToString());
-            lastValue = input[nameof(InputDataProps.Value)].ToString();
+            InputDataValues.Add(input[nameof(BaseData.InputDataProps.Value)].ToString());
+            lastValue = input[nameof(BaseData.InputDataProps.Value)].ToString();
 
         }
 
@@ -62,7 +62,5 @@ namespace TilesApp.SACO
             MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             await Navigation.PopModalAsync(true);
         }
-
-
     }
 }
