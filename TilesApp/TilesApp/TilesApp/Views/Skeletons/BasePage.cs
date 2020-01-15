@@ -60,8 +60,6 @@ namespace TilesApp
             base.OnDisappearing();
         }
 
-
-
         //EVENTS
         private void Transponders_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
         {
@@ -74,6 +72,7 @@ namespace TilesApp
             }
 
         }
+
         private void ScannerReads_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems != null)
@@ -144,7 +143,6 @@ namespace TilesApp
                     readersViewModel.SerialReaders.Add(device);
                 }
             });
-
             MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceDetached", async (s, device) => {
                 if (device != null)
                 {
@@ -206,28 +204,21 @@ namespace TilesApp
                     }
                 }
             });
-
             MessagingCenter.Subscribe<Application, bool>(Application.Current, "ChargerConnected", async (s, chargerConnected) => {
                 if (chargerConnected)
                 {
                     Console.WriteLine("============Charger was connected!===========");
                 }
             });
-
             MessagingCenter.Subscribe<Application, bool>(Application.Current, "ChargerDisconnected", async (s, chargerDisconnected) => {
                 if (chargerDisconnected)
                 {
                     Console.WriteLine("============Charger was disconnected!===========");
                 }
             });
-
-           
-
-
+            MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
+                await DisplayAlert("Error", errorMessage, "Ok");
+            });
         }
-
-      
-
-
     }
 }

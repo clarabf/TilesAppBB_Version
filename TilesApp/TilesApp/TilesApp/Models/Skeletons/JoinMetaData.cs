@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
+using Xamarin.Forms;
 
 namespace TilesApp.Models.Skeletons
 {
@@ -151,7 +152,7 @@ namespace TilesApp.Models.Skeletons
             }
             catch
             {
-                throw new Exception("Data is not a compatible JSON");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Data is not a compatible JSON");
             }
             return overwrittenFields;
         }
