@@ -106,22 +106,21 @@ namespace TilesApp.Views
                 messageTitle = "Failure...";
                 messageContent = "Component(s) failed the Quality Control...";
             }
-            // Formulate the JSON
-            //if (MetaData.IsValid())
-            //{
-            //    Dictionary<string, Object> json = new Dictionary<string, object>();
-            //    json.Add("barcode", "123456");
-            //    json.Add("base", BaseData);
-            //    json.Add("meta", MetaData);
-            //    bool success = CosmosDBManager.InsertOneObject(json);
-
-            //    await DisplayAlert("Check-out of the component", message, "Ok");
-
-            //}
-            //else
-            //{
-            //    await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
-            //}
+            // Iterate over the scanned codes and process them
+            foreach (var scannerRead in ScannerReads)
+            {
+                MetaData.ProcessInput(scannerRead);
+            }
+            if (MetaData.IsValid()||true)
+            {
+                bool success = CosmosDBManager.InsertOneObject(MetaData);
+                string message = success ? "Report was submitted successfully!" : "We didn't manage to sumit your report!";
+                await DisplayAlert("QC Report Submission", message, "Ok");
+            }
+            else
+            {
+                await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
+            }
             List<Dictionary<string, string>> results = StreamToAzure.WriteJPEGStreams(photoList, appName);
             await DisplayAlert(messageTitle, messageContent, "OK");
             await Navigation.PopModalAsync(true);

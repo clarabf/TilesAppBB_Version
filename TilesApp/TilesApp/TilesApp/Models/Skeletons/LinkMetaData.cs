@@ -30,7 +30,6 @@ namespace TilesApp.Models.Skeletons
         private List<String> ValidCodeStructure { get; set; }
         [BsonIgnore]
         public bool? IsStationMandatory { get; set; }
-        //CHECK THE BEST WAY TO SAVE THE COLLECTION TO BSON
         public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
 
         //Constructor from json string
@@ -161,23 +160,19 @@ namespace TilesApp.Models.Skeletons
             return false;
         }
         //CHECK PROCESS INPUT
-        public void ProcessInput(string code, Enum reader)
+        public void ProcessInput(Dictionary<string, object> input)
         {
             //First check if it follows config file code connvention (Aka ValidCodeStructure)
-            if (IsValidCode(code))
+            if (IsValidCode(input[nameof(InputDataProps.Value)].ToString()))
             {
                 //Now see if already on list
                 foreach (var item in ScannerReads.ToList())
                 {
-                    if (item[nameof(InputDataProps.Value)].ToString() == code)
+                    if (item[nameof(InputDataProps.Value)].ToString() == input[nameof(InputDataProps.Value)].ToString())
                     {
                         return;
                     }
                 }
-                Dictionary<string, object> input = new Dictionary<string, object>();
-                input.Add(nameof(InputDataProps.Value), code);
-                input.Add(nameof(InputDataProps.ReaderType), reader);
-                input.Add(nameof(InputDataProps.Timestamp), DateTime.Now);
                 ScannerReads.Add(input);
             }
         }

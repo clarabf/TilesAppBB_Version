@@ -22,7 +22,6 @@ namespace TilesApp.Models.Skeletons
         private List<String> ValidCodeStructure { get; set; }
         [BsonIgnore]
         public bool? IsStationMandatory { get; set; }
-        //CHECK THE BEST WAY TO SAVE THE COLLECTION TO BSON
         public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         //Constructor from json string
         public JoinMetaData(string jsonConfig = null) : base()
@@ -210,34 +209,30 @@ namespace TilesApp.Models.Skeletons
             return false;
         }
         //CHECK PROCESS INPUT
-        public List<string> ProcessInput(string code, Enum reader)
+        public List<string> ProcessInput(Dictionary<string, object> input)
         {
             //First see if it is a JSON file
             try
             {
-                List<string> returnList = AddQRMetaData(code);
+                List<string> returnList = AddQRMetaData(input[nameof(InputDataProps.Value)].ToString());
                 return returnList;
             }
             catch
             {
                 //First check if it follows config file code connvention (Aka ValidCodeStructure)
-                if (IsValidCode(code))
+                if (IsValidCode(input[nameof(InputDataProps.Value)].ToString()))
                 {
                     //Now check if it is parent
-                    IsParent(code);
+                    IsParent(input[nameof(InputDataProps.Value)].ToString());
 
                     //Now see if already on list
                     foreach (var item in ScannerReads.ToList())
                     {
-                        if (item[nameof(InputDataProps.Value)].ToString() == code)
+                        if (item[nameof(InputDataProps.Value)].ToString() == input[nameof(InputDataProps.Value)].ToString())
                         {
                             return null;
                         }
                     }
-                    Dictionary<string, object> input = new Dictionary<string, object>();
-                    input.Add(nameof(InputDataProps.Value), code);
-                    input.Add(nameof(InputDataProps.ReaderType), reader);
-                    input.Add(nameof(InputDataProps.Timestamp), DateTime.Now);
                     ScannerReads.Add(input);
                     return null;
                 }
