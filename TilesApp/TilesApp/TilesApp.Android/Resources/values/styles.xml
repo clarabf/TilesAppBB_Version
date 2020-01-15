@@ -34,4 +34,6 @@
     <item name="android:windowFullscreen">true</item>
     <item name="colorPrimaryDark">#313131</item>
   </style>
+
+  <color name="colorActivatedHighlight">#E39696</color>
 </resources>
