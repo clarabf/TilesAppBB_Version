@@ -28,6 +28,7 @@
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsRefreshing}"
                 CachingStrategy="RecycleElement"
+                SeparatorColor="#979797"
                 ItemSelected="OnItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
