@@ -90,14 +90,6 @@
     <Compile Include="SplashActivity.cs" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-brands-400.woff" />
-    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-brands-400.woff2" />
-    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-regular-400.woff" />
-    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-regular-400.woff2" />
-    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-solid-900.woff" />
-    <AndroidAsset Include="Assets\Content\assets\css\webfonts\fa-solid-900.woff2" />
-    <AndroidAsset Include="Assets\Content\assets\docs\pdf\1.pdf" />
-    <AndroidAsset Include="Assets\Content\assets\docs\pdf\20190606_BlackBox_Rev04.pdf" />
     <AndroidAsset Include="Assets\fa-solid-900.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidAsset>
@@ -144,58 +136,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\Content\index_.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\js\plugins\bootstrap.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\js\plugins\jquery.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\js\plugins\popper.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\js\scripts.js" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidAsset Include="Assets\qrsound.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\index.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\css\styles.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\css\plugins\bootstrap.min.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\css\plugins\bootstrap-select.min.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\css\plugins\font-awesome.min.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\css\plugins\overlayScrollbars.min.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\css\plugins\sweetalert2.min.css" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\js\plugins\bootstrap-select.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\js\plugins\overlayScrollbars.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\js\plugins\sweetalert2.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\js\plugins\jquery.steps.min.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\Content\assets\img\SACO-Logo-White.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\Cameralw.png">
@@ -215,16 +156,13 @@
     <AndroidResource Include="Resources\drawable\loadingScreen.jpg" />
     <AndroidResource Include="Resources\drawable\splashScreen.jpg" />
     <AndroidResource Include="Resources\drawable\delete.png" />
+    <AndroidResource Include="Resources\drawable\splash.gif" />
     <None Include="Resources\drawable\CameralWhite.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Resources\drawable\Logo2.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Assets\Content\assets\img\Logo2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="connect.php" />
     <AndroidResource Include="Resources\drawable\Card.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidResource>

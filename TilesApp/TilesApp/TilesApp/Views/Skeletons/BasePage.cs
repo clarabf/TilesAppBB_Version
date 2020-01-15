@@ -50,6 +50,7 @@ namespace TilesApp
         {
             // UNSUBSRCIBE WHEN PAGE IS CLOSED
             MessagingCenter.Unsubscribe<Application, string>(Application.Current, "BarcodeScanned");
+            MessagingCenter.Unsubscribe<Application, string>(Application.Current, "EpcScanned");
             MessagingCenter.Unsubscribe<Application, UsbDevice>(Application.Current, "DeviceAttached");
             MessagingCenter.Unsubscribe<Application, UsbDevice>(Application.Current, "DeviceDetached");
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceFound");
@@ -130,6 +131,11 @@ namespace TilesApp
                 }
                 DisplayAlert("Error", "Reader not recognized!", "Ok");
             });
+            // Catch input from the RFID Reader
+            MessagingCenter.Subscribe<Application, string>(Application.Current, "EpcScanned", (s, Input) => {
+                        ProcessInput(Input, ReadersTypes.BluetoothRFID.ToString());
+                        return;                  
+            });            
             MessagingCenter.Subscribe<Application, UsbDevice>(Application.Current, "DeviceAttached", async (s, device) => {
                 if (device != null)
                 {
