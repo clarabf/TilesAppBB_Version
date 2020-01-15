@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using PCLAppConfig;
+using Xamarin.Forms;
 
 namespace TilesApp.Services
 {
@@ -29,7 +30,8 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("Something went wrong. Could not connect save to database.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong. Could not connect save to database.");
+                return false;
             }
         }
     }

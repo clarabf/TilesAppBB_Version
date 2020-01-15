@@ -12,6 +12,7 @@ namespace TilesApp.Views
     {
         public Login()
         {
+            OdooXMLRPC.Start();
             InitializeComponent();
             Setup();
             NavigationPage.SetHasNavigationBar(this, false);
@@ -24,7 +25,7 @@ namespace TilesApp.Views
                 DisplayAlert("Error recovering users", message, "OK");
             }
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
-                await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
+                 //await DisplayAlert("User <" + a.ToString() + "> scanned", "Please, wait until your App Page loads", "OK");
                 if(OdooXMLRPC.users.ContainsKey(a.ToString()))
                 {
                     OdooXMLRPC.SetCurrentUser(a.ToString()); // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL

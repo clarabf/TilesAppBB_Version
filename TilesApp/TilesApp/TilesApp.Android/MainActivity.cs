@@ -182,7 +182,9 @@ namespace TilesApp.Droid
                     MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
                 }
             }
-            catch (Exception) { }
+            catch (Exception e) {
+                //MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
+            }
         }
 
         private void GetDeviceSerialNumber()

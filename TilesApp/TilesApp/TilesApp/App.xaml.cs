@@ -19,7 +19,6 @@ namespace TilesApp
         {
             
             InitializeComponent();
-            OdooXMLRPC.Start();
             ////testing SACO app
             MainPage = new NavigationPage(new Login());
             //MainPage = new NavigationPage(new QC("App_QC_TestTakePhoto"));

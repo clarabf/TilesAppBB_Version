@@ -5,6 +5,7 @@ using System.Text;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using PCLAppConfig;
+using Xamarin.Forms;
 
 namespace TilesApp.Services
 {
@@ -19,6 +20,7 @@ namespace TilesApp.Services
         {
             storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
             string fileName = Guid.NewGuid().ToString() + ".jpeg";
+            Dictionary<string, string> resultDict = new Dictionary<string, string>();
 
             try
             {
@@ -27,7 +29,7 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("Something went wrong. Could not connect to SACO Erp File Storage.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong. Could not connect to SACO Erp File Storage.");
             }
 
             try
@@ -41,7 +43,7 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("App name is invalid. Could not create a container for the app to save files.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "App name is invalid. Could not create a container for the app to save files.");
             }
 
             try
@@ -49,22 +51,20 @@ namespace TilesApp.Services
                 outputBlob = container.GetBlockBlobReference(fileName);
                 outputBlob.Properties.ContentType = "image/jpeg";
                 outputBlob.UploadFromStreamAsync(fileStream).Wait();
-
-                return new Dictionary<string, string>()
-                {
-                    {"ContentMD5",outputBlob.Properties.ContentMD5},
-                    {"Uri",ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName.ToLower() +"/" + fileName}
-                };
+                resultDict.Add("ContentMD5", outputBlob.Properties.ContentMD5);
+                resultDict.Add("Uri", ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName.ToLower() + "/" + fileName);
             }
             catch
             {
-                throw new Exception("File could not be saved. Content might be invalid or corrupt.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "File could not be saved. Content might be invalid or corrupt.");
             }
+            return resultDict;
         }
 
         public static List<Dictionary<string, string>> WriteJPEGStreams(List<Stream> fileStreams, String appName)
         {
             storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
+            List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
 
             try
             {
@@ -73,7 +73,7 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("Something went wrong. Could not connect to SACO Erp File Storage.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong. Could not connect to SACO Erp File Storage.");
             }
 
             try
@@ -84,12 +84,12 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("App name is invalid. Could not create a container for the app to save files.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "App name is invalid. Could not create a container for the app to save files.");
             }
 
             try
             {
-                List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
+                
                 foreach (Stream str in fileStreams)
                 {
                     string fileName = Guid.NewGuid().ToString() + ".jpeg";
@@ -105,12 +105,12 @@ namespace TilesApp.Services
                         }
                     );
                 }
-                return returnList;
             }
             catch
             {
-                throw new Exception("File could not be saved. Content might be invalid or corrupt.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "File could not be saved. Content might be invalid or corrupt.");
             }
+            return returnList;
         }
     }
 }

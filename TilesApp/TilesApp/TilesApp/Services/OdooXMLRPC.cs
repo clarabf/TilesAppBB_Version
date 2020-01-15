@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 using XmlRpc;
 
 namespace TilesApp.Services
@@ -37,9 +38,14 @@ namespace TilesApp.Services
         //On start Step 1
         public static void Start(bool forceCacheUpdate = false)
         {
-            if (adminID == null) { Login(); }
-            GetUsers(forceCacheUpdate);
-            GetValidApps(forceCacheUpdate);
+            if (adminID == null) { 
+                Login(); 
+            }
+            if (adminID != null)
+            {
+                GetUsers(forceCacheUpdate);
+                GetValidApps(forceCacheUpdate);
+            }
         }
         private static void Login()
         {
@@ -56,7 +62,7 @@ namespace TilesApp.Services
 
                 if (responseLogin.IsFault())
                 {
-                    throw new Exception(responseLogin.GetFaultString());
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when logging to Odoo.");
                 }
                 else
                 {
@@ -65,7 +71,7 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("Something went wrong logging to Odoo.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when logging to Odoo.");
             }
         }
         public static void GetUsers(bool forceCacheUpdate = false)
@@ -83,85 +89,67 @@ namespace TilesApp.Services
                     Dictionary<string, object> userInfo;
                     List<object> ids;
                     List<string> id_names;
+                    client.Path = "/xmlrpc/2/object";
 
-                    client.Path = "/xmlrpc/2/common";
-
-                    try
-                    {
-                        // LOGIN IF NECESSARY
-                        if (adminID == null) { Login(); };
-
-                        // SEARCH
-                        client.Path = "/xmlrpc/2/object";
-
-                        ///////////// TAGS /////////////
-                        XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
-                        requestSearch.AddParams(db, adminID, pass, "hr.employee.category", "search_read",
+                    ///////////// TAGS /////////////
+                    XmlRpcRequest requestSearch = new XmlRpcRequest("execute_kw");
+                    requestSearch.AddParams(db, adminID, pass, "hr.employee.category", "search_read",
+                        XmlRpcParameter.AsArray(
                             XmlRpcParameter.AsArray(
-                                XmlRpcParameter.AsArray(
-                                    XmlRpcParameter.AsArray("id", ">", 0)
-                                )
-                            ),
-                            XmlRpcParameter.AsStruct(
-                                XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name"))
+                                XmlRpcParameter.AsArray("id", ">", 0)
                             )
-                        );
+                        ),
+                        XmlRpcParameter.AsStruct(
+                            XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name"))
+                        )
+                    );
 
-                        XmlRpcResponse responseSearch = client.Execute(requestSearch);
+                    XmlRpcResponse responseSearch = client.Execute(requestSearch);
 
-                        List<object> responseList = (List<object>)responseSearch.GetObject();
-                        foreach (object fields in responseList)
-                        {
-                            Dictionary<string, object> dict = (Dictionary<string, object>)fields;
-                            tags.Add(dict["id"].ToString(), dict["name"].ToString());
-                        }
+                    List<object> responseList = (List<object>)responseSearch.GetObject();
+                    foreach (object fields in responseList)
+                    {
+                        Dictionary<string, object> dict = (Dictionary<string, object>)fields;
+                        tags.Add(dict["id"].ToString(), dict["name"].ToString());
+                    }
 
-                        //USERS
-                        requestSearch = new XmlRpcRequest("execute_kw");
-                        requestSearch.AddParams(db, adminID, pass, "hr.employee", "search_read",
+                    //USERS
+                    requestSearch = new XmlRpcRequest("execute_kw");
+                    requestSearch.AddParams(db, adminID, pass, "hr.employee", "search_read",
+                        XmlRpcParameter.AsArray(
                             XmlRpcParameter.AsArray(
-                                XmlRpcParameter.AsArray(
-                                    XmlRpcParameter.AsArray("id", ">", 0)
-                                )
-                            ),
-                            XmlRpcParameter.AsStruct(
-                                XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "barcode", "category_ids"))
+                                XmlRpcParameter.AsArray("id", ">", 0)
                             )
-                        );
+                        ),
+                        XmlRpcParameter.AsStruct(
+                            XmlRpcParameter.AsMember("fields", XmlRpcParameter.AsArray("name", "barcode", "category_ids"))
+                        )
+                    );
 
-                        responseSearch = client.Execute(requestSearch);
+                    responseSearch = client.Execute(requestSearch);
 
-                        Console.WriteLine(responseSearch.GetString());
-                        responseList = (List<object>)responseSearch.GetObject();
-                        foreach (object fields in responseList)
+                    Console.WriteLine(responseSearch.GetString());
+                    responseList = (List<object>)responseSearch.GetObject();
+                    foreach (object fields in responseList)
+                    {
+                        Dictionary<string, object> dict = (Dictionary<string, object>)fields;
+                        userInfo = new Dictionary<string, object>();
+                        id_names = new List<string>();
+                        if (dict["barcode"].ToString() != "False")
                         {
-                            Dictionary<string, object> dict = (Dictionary<string, object>)fields;
-                            userInfo = new Dictionary<string, object>();
-                            id_names = new List<string>();
-                            if (dict["barcode"].ToString() != "False")
-                            {
-                                ids = (List<object>)dict["category_ids"];
-                                foreach (object id in ids) id_names.Add(tags[id.ToString()]);
-                                userInfo.Add("id", dict["id"].ToString());
-                                userInfo.Add("name", dict["name"].ToString());
-                                userInfo.Add("tags", id_names);
-                                users.Add(dict["barcode"].ToString(), userInfo);
-                            }
+                            ids = (List<object>)dict["category_ids"];
+                            foreach (object id in ids) id_names.Add(tags[id.ToString()]);
+                            userInfo.Add("id", dict["id"].ToString());
+                            userInfo.Add("name", dict["name"].ToString());
+                            userInfo.Add("tags", id_names);
+                            users.Add(dict["barcode"].ToString(), userInfo);
                         }
-                    }
-                    catch (WebServiceException)
-                    {
-                        users.Add("error", "internet");
-                    }
-                    catch (System.InvalidCastException)
-                    {
-                        users.Add("error", "odoo");
                     }
                 }
             }
-            catch
+            catch 
             {
-                throw new Exception("Something went wrong getting users from Odoo.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting users from Odoo.");
             }
         }
         private static void GetValidApps(bool forceCacheUpdate = false)
@@ -207,7 +195,7 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("Something went wrong getting valid apps from Odoo.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting valid apps from Odoo.");
             }
         }
         //Get app config Step 4
@@ -236,12 +224,14 @@ namespace TilesApp.Services
                 }
                 else
                 {
-                    throw new Exception("App config file not found in Odoo. App doesn't seem to exist.");
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "App config file not found in Odoo. App doesn't seem to exist.");
+                    return null;
                 }
             }
             catch
             {
-                throw new Exception("Something went wrong getting app config file from Odoo.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting app config file from Odoo.");
+                return null;
             }
         }
         //Once user scans barcode Step 2
@@ -260,7 +250,7 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("Something went wrong setting current user.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when setting current user.");
             }
         }
         private static void GetConfigFiles(List<String> appsList, bool forceCacheUpdate = false)
@@ -313,7 +303,7 @@ namespace TilesApp.Services
             }
             catch
             {
-                throw new Exception("Something went wrong getting app(s) config file(s) from Odoo.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting app(s) config file(s) from Odoo.");
             }
         }
     }

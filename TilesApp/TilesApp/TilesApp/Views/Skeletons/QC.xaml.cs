@@ -82,7 +82,7 @@ namespace TilesApp.Views
                 lblListPhotos.IsVisible = true;
                 numPhotos.Text = TakenPhotos.Count.ToString();
 
-                await DisplayAlert("Photo taken correctly!", "Photo storen in <" + file.Path + ">", "OK");
+                await DisplayAlert("Photo taken correctly!", "Photo stored in <" + file.Path + ">", "OK");
             }
             catch (Exception ex)
             {
@@ -99,12 +99,11 @@ namespace TilesApp.Views
                 //Update PASS info
                 messageTitle = "Success!";
                 messageContent = "Component(s) passed successfully to the next step!";
-                List<Dictionary<string, string>> results = StreamToAzure.WriteJPEGStreams(photoList, appName);
             }
             else
             {
                 //Update FAIL info
-                messageTitle = "Failure";
+                messageTitle = "Failure...";
                 messageContent = "Component(s) failed the Quality Control...";
             }
             // Formulate the JSON
@@ -123,6 +122,7 @@ namespace TilesApp.Views
             //{
             //    await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
             //}
+            List<Dictionary<string, string>> results = StreamToAzure.WriteJPEGStreams(photoList, appName);
             await DisplayAlert(messageTitle, messageContent, "OK");
             await Navigation.PopModalAsync(true);
         }

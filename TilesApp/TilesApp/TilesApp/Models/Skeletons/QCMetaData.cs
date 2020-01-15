@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
 using TilesApp.Services;
+using Xamarin.Forms;
 
 namespace TilesApp.Models.Skeletons
 {
@@ -118,7 +119,7 @@ namespace TilesApp.Models.Skeletons
             }
             catch
             {
-                throw new Exception("Data is not a JSON");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Data is not a compatible JSON");
             }
         }
         public void AddAttachedFile(Stream fileStream, String appName)
