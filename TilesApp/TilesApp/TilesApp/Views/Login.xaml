@@ -13,11 +13,11 @@
                          BackgroundColor="Transparent"  VerticalOptions="Fill" HorizontalOptions="FillAndExpand"
                          Orientation="Vertical">
                 <Grid Padding="40" StyleClass="gridLogin">
-                    <Grid.RowDefinitions> 
+                    <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
-                        <RowDefinition Height="2.75*" />
-                        <RowDefinition Height="1.25*" />
-                        <RowDefinition Height=".66*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height=".5*" />
                     </Grid.RowDefinitions>
 
                     <Image Source="logo.png"
@@ -34,8 +34,6 @@
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="Start" />
                     
-
-                    <!---->
                     <Button StyleClass="primaryButton"
                         x:Name="LoginBtn"
                         WidthRequest="500"
@@ -44,8 +42,7 @@
                         Grid.Row="2"
                         HorizontalOptions="CenterAndExpand" 
                         VerticalOptions="EndAndExpand"
-                        Clicked="GoToScan"
-                            
+                        Clicked="GoToScan"                          
                     />
 
                     <Button StyleClass="darkButton"
@@ -58,6 +55,7 @@
                         VerticalOptions="EndAndExpand"
                         Clicked="Reader_Command"
                         />
+                    
                 </Grid>
             </StackLayout>
         </AbsoluteLayout>

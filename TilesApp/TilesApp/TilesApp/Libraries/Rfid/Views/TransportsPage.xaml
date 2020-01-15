@@ -28,34 +28,31 @@
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsRefreshing}"
                 CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected"   
-                BackgroundColor="#202020"
-
-                >
+                ItemSelected="OnItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout Spacing="0" Padding="12,4" HorizontalOptions="FillAndExpand">
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding DisplayName }"
-                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemTextStyle}"
+                            <StackLayout x:Name="TransportList" Spacing="0" Padding="12,24" HorizontalOptions="FillAndExpand" BackgroundColor="#151515">
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center" >
+                                    <Label Text="{Binding DisplayName }" CharacterSpacing="1.05"
+                                           TextColor="#ffffff"
+                                           LineBreakMode="NoWrap"
                                            FontSize="Medium" FontAttributes="Bold" />
-                                    <Label Text="{Binding State }"
-                                           LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
+                                    <Label Text="{Binding State }" CharacterSpacing="1"
+                                           LineBreakMode="NoWrap"
                                            FontSize="Small" FontAttributes="Bold"
                                            HorizontalOptions="EndAndExpand" />
                                 </StackLayout>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding DisplayInfoLine }"
+                                <StackLayout Orientation="Horizontal" VerticalOptions="Center">
+                                    <Label Text="{Binding DisplayInfoLine }" CharacterSpacing="1.05"
                                            LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}"
-                                           FontSize="Small" />
+                                           FontSize="Small" FontFamily="sans-serif-light" />
                                     <Label Text="{Binding Transport }"
-                                           LineBreakMode="NoWrap"
+                                           LineBreakMode="NoWrap" CharacterSpacing="1"
                                            Style="{DynamicResource ListItemDetailTextStyle}"
-                                           FontSize="Small" FontAttributes="Italic"
-                                           HorizontalOptions="EndAndExpand" />
+                                           FontSize="Small"
+                                           HorizontalOptions="EndAndExpand" FontFamily="sans-serif-light" />
                                 </StackLayout>
-                                <!--<Label Text="{Binding Id }" LineBreakMode="NoWrap" Style="{DynamicResource ListItemDetailTextStyle}" FontSize="Micro" />-->
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
@@ -65,29 +62,10 @@
                    LineBreakMode="WordWrap"
                    FontSize="14"
                    HorizontalTextAlignment="Center"
-                   Margin="12,8"
+                   Margin="12,10"
                    TextColor="#ffffff"
                    HorizontalOptions="CenterAndExpand"
-                   StyleClass="fontLight">
-                <Label.FontFamily>
-                    <OnPlatform x:TypeArguments="x:String">
-                        <On Platform="Android" Value="OpenSans-Regular.ttf#OpenSans-Regular" />
-                    </OnPlatform>
-                </Label.FontFamily>
-            </Label>
-            <!--<Button x:Name="btCancel"
-                TextColor="Black"
-                BackgroundColor="White"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Home"
-                BorderColor="Black"
-                BorderWidth="1"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
-                Clicked="Cancel"
-            />-->
+            />
             <Button 
                 Text="&#xf015;"
                 FontFamily="{StaticResource FontAwesomeSolid}"

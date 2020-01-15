@@ -75,7 +75,7 @@ namespace TilesApp.Rfid.ViewModels
 
         public string State
         {
-            get => this.state;
+            get => this.state.ToUpper();
             set => this.Set(ref this.state, value);
         }
         private string state;

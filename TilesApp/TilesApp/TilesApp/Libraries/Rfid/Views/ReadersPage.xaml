@@ -4,7 +4,6 @@
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
              x:Class="TilesApp.Rfid.Views.ReadersPage"
               Title="Readers" >
-    <!-- x:Name="TransportsPage" -->
     <ContentPage.Content>
         <StackLayout
             Spacing="0"
@@ -25,7 +24,8 @@
                 IsPullToRefreshEnabled="false"
                 IsRefreshing="{Binding IsRefreshing}"
                 CachingStrategy="RecycleElement"
-                ItemSelected="OnItemSelected"
+                ItemSelected="None"
+                SelectionMode="None"
                 BackgroundColor="#f0f0f8"
                 IsVisible="{Binding ReadersNotEmpty}"
                 >
