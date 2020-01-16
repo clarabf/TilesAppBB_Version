@@ -109,7 +109,7 @@ namespace TilesApp.Models.Skeletons
             }
             catch
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Data is not a compatible JSON");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Data is not a compatible JSON (Reg).");
             }
         }
         public Boolean IsValid()

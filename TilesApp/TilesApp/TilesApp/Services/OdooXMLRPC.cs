@@ -130,6 +130,7 @@ namespace TilesApp.Services
 
                     Console.WriteLine(responseSearch.GetString());
                     responseList = (List<object>)responseSearch.GetObject();
+                    users.Clear();
                     foreach (object fields in responseList)
                     {
                         Dictionary<string, object> dict = (Dictionary<string, object>)fields;
@@ -147,8 +148,9 @@ namespace TilesApp.Services
                     }
                 }
             }
-            catch 
+            catch (Exception e)
             {
+                string except = e.ToString();
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting users from Odoo.");
             }
         }
@@ -180,6 +182,7 @@ namespace TilesApp.Services
                 else
                 {
                     List<object> responseList = (List<object>)responseCreate.GetObject();
+                    validAppsList.Clear();
                     foreach (object fields in responseList)
                     {
                         Dictionary<string, object> dict = (Dictionary<string, object>)fields;
@@ -193,8 +196,9 @@ namespace TilesApp.Services
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
+                string exception = e.ToString();
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting valid apps from Odoo.");
             }
         }

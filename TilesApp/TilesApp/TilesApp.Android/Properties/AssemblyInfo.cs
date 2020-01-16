@@ -34,4 +34,5 @@ using Android.App;
 [assembly: UsesPermission(Android.Manifest.Permission.WriteExternalStorage)]
 [assembly: UsesPermission(Android.Manifest.Permission.Bluetooth)]
 [assembly: UsesPermission(Android.Manifest.Permission.BluetoothAdmin)]
+[assembly: UsesPermission(Android.Manifest.Permission.Camera)]
 [assembly: UsesPermission("com.honeywell.decode.permission.DECODE")]

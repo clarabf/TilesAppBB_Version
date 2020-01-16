@@ -128,12 +128,7 @@ namespace TilesApp.Views
 
         private async void Logout_Command(object sender, EventArgs args)
         {
-            //Register logout
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                Navigation.PopModalAsync(true);
-                Navigation.PushModalAsync(new Login());
-            }); 
+            await Navigation.PopModalAsync(true);
         }
 
     }

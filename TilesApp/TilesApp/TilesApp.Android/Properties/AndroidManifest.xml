@@ -2,27 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.0" package="com.companyname.TilesApp" android:installLocation="auto" android:launchMode="singleInstance">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="27" />
 	<application android:label="TilesApp.Android">
-    <provider android:name="android.support.v4.content.FileProvider"
-          android:authorities="${applicationId}.fileprovider"
-          android:exported="false"
-          android:grantUriPermissions="true">
-          <meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
-    </provider>
-    <receiver android:name=".Classes.DeviceMonitor">
-     <intent-filter>
-          <action android:name="android.intent.action.UMS_CONNECTED" />
-          <action android:name="android.intent.action.UMS_DISCONNECTED" />
-     </intent-filter>
-  </receiver>
-  </application>
+		<provider android:name="android.support.v4.content.FileProvider" android:authorities="${applicationId}.fileprovider" android:exported="false" android:grantUriPermissions="true">
+			<meta-data android:name="android.support.FILE_PROVIDER_PATHS" android:resource="@xml/file_paths"></meta-data>
+		</provider>
+		<receiver android:name=".Classes.DeviceMonitor">
+			<intent-filter>
+				<action android:name="android.intent.action.UMS_CONNECTED" />
+				<action android:name="android.intent.action.UMS_DISCONNECTED" />
+			</intent-filter>
+		</receiver>
+	</application>
 	<uses-permission android:name="android.permission.INTERNET" />
-  <uses-permission android:name="android.permission.BLUETOOTH" />
-  <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-  <uses-feature android:name="android.hardware.usb.host" />
-  <uses-permission android:name="android.permission.USB_PERMISSION" />
-  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-  <uses-feature android:name="android.hardware.location" android:required="false" />
-  <uses-feature android:name="android.hardware.location.gps" android:required="false" />
-  <uses-feature android:name="android.hardware.location.network" android:required="false" />
+	<uses-permission android:name="android.permission.BLUETOOTH" />
+	<uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+	<uses-feature android:name="android.hardware.usb.host" />
+	<uses-permission android:name="android.permission.USB_PERMISSION" />
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+	<uses-permission android:name="android.permission.CAMERA" />
+	<uses-feature android:name="android.hardware.location" android:required="false" />
+	<uses-feature android:name="android.hardware.location.gps" android:required="false" />
+	<uses-feature android:name="android.hardware.location.network" android:required="false" />
 </manifest>
