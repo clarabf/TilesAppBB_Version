@@ -24,7 +24,6 @@
                 IsPullToRefreshEnabled="false"
                 IsRefreshing="{Binding IsRefreshing}"
                 CachingStrategy="RecycleElement"
-                ItemSelected="None"
                 SelectionMode="None"
                 BackgroundColor="#f0f0f8"
                 IsVisible="{Binding ReadersNotEmpty}"

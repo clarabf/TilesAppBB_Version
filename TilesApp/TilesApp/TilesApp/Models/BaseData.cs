@@ -20,6 +20,7 @@ namespace TilesApp.Models
             Value,
             Timestamp,
             ReaderType,
+            ReaderSerialNumber,
         }
         public BaseData()
         {

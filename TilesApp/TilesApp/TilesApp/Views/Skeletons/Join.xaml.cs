@@ -47,10 +47,11 @@ namespace TilesApp.Views
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             // Iterate over the scanned codes and process them
-            foreach (var scannerRead in ScannerReads)
+            /*foreach (var scannerRead in ScannerReads)
             {
                 MetaData.ProcessInput(scannerRead);
-            }
+            }*/
+            MetaData.ScannerReads = ScannerReads;
             if (MetaData.IsValid()||true)
             {                
                 bool success = CosmosDBManager.InsertOneObject(MetaData);
