@@ -26,9 +26,9 @@ namespace TilesApp.Rfid.Views
             this.BindingContext = this.viewModel = App.ViewModel.Readers;
         }
 
-        void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
-        {
-            this.viewModel.SelectedReader =  args.SelectedItem as ReaderViewModel;
-        }
+        //void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
+        //{
+        //    this.viewModel.SelectedReader =  args.SelectedItem as ReaderViewModel;
+        //}
     }
 }

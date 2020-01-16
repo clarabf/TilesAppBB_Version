@@ -5,8 +5,7 @@
     color: #757575;
 }
 Label {
-    font-size: 18;
-    color: coral;
+    color: #979797;
 }
 .btn-primary {
     background-color: #2780E3;
@@ -74,6 +73,6 @@ Label {
     background-color: #202020;
 }
 
-#TransportList Label, .gridTransport Span, .gridTransport Label, .gridTransport Label Span {
+/*#TransportList Label, .gridTransport Span, .gridTransport Label, .gridTransport Label Span {
     color: #979797;
-}
+}*/

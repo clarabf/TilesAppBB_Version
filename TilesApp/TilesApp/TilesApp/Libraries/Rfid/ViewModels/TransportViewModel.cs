@@ -80,7 +80,7 @@ namespace TilesApp.Rfid.ViewModels
         }
         private string state;
 
-        public string Transport => this.model.Physical.ToString();
+        public string Transport => this.model.Physical.ToString().ToUpper();
 
         private void UpdateFromTransport(IAsciiTransport transport)
         {
