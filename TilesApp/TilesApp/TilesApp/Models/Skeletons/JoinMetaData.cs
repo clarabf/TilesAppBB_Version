@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -7,240 +7,340 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
-using Xamarin.Forms;
 
 namespace TilesApp.Models.Skeletons
 {
-    public class JoinMetaData : BaseData
+    public class JoinMetaData : BaseMetaData
     {
-        public String ParentUUID { get; set; }
-        [BsonIgnore]
-        public String ParentUUIDStructure { get; set; }
+        //Variables to retreive config file parameters -> PROBABLY MOVE TO BASE MODEL
+        private Dictionary<string,Dictionary<string, dynamic>> appData = new Dictionary<string,Dictionary<string, dynamic>>{};
+        private Dictionary<string,string> appDataIndex  = new Dictionary<string,string>{};
+        private Dictionary<string,Dictionary<string, dynamic>> customData = new Dictionary<string,Dictionary<string, dynamic>>{};
+        private Dictionary<string,string> customDataIndex  = new Dictionary<string,string>{};
+        
+        //Fields properties. Maybe move this one to base clase
         [BsonIgnoreIfNull]
-        public Dictionary<string, object> AdditionalData { get; set; }
-        [BsonIgnore]
-        private List<String> ValidCodeStructure { get; set; }
-        [BsonIgnore]
-        public bool? IsStationMandatory { get; set; }
-        public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
-        //Constructor from json string
-        public JoinMetaData(string jsonConfig = null) : base()
+        public string ValidCodeFormat
         {
-            if (jsonConfig != null)
+            get
             {
-                Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
-                Type propertyType = GetType();
-
-                foreach (var prop in GetType().GetProperties())
+                if(appData[appDataIndex["ValidCodeFormat"]]["FieldIsSaved"])
                 {
-                    if (configData.ContainsKey(prop.Name))
-                    {
-                        if (prop.Name == "AdditionalData" & configData[prop.Name] != null) 
-                        {
-                            Dictionary<string, object> content = (Dictionary<string, object>)configData[prop.Name];
-                            foreach (KeyValuePair<string,object> data in content)
-                            {
-                                AdditionalData.Add(data.Key, data.Value);
-                            }                            
-                        }
-                        else if (prop.Name == "ValidCodeStructure")
-                        {
-                            List<string> content = (List<string>)configData[prop.Name];
-                            foreach (string data in content)
-                            {
-                                ValidCodeStructure.Add(data);
-                            }
-                        }
-                        else
-                        {
-                            propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);
-                        }
-                    }
-                }
-            }
-        }
-        //Constructor from json stream
-        public JoinMetaData(Stream streamConfig) : base()
-        {
-            if (streamConfig != null)
-            {                
-                StreamReader reader = new StreamReader(streamConfig);
-                string jsonConfig = reader.ReadToEnd();
-                streamConfig.Position = 0;
-
-                Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
-                Type propertyType = GetType();
-
-                foreach (var prop in GetType().GetProperties())
-                {
-                    if (configData.ContainsKey(prop.Name))
-                    {
-                        if (prop.Name == "AdditionalData" & configData[prop.Name] != null)
-                        {
-                            Dictionary<string, object> content = (Dictionary<string, object>)configData[prop.Name];
-                            foreach (KeyValuePair<string, object> data in content)
-                            {
-                                AdditionalData.Add(data.Key, data.Value);
-                            }
-                        }
-                        else if (prop.Name == "ValidCodeStructure" & configData[prop.Name] != null)
-                        {
-                            List<string> content = (List<string>)configData[prop.Name];
-                            foreach (string data in content)
-                            {
-                                ValidCodeStructure.Add(data);                                                         
-                            }
-                        }
-                        else
-                        {
-                            propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);
-                        }
-                    }
-                }
-            }
-        }
-        //Add metadata from string
-        public List<string> AddQRMetaData(string jsonConfig)
-        {
-            List<string> overwrittenFields = new List<string> { };
-
-            try
-            {
-                Dictionary<string, object> configData = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonConfig);
-                Type propertyType = GetType();
-
-                foreach (var prop in GetType().GetProperties())
-                {
-                    if (configData.ContainsKey(prop.Name))
-                    {
-                        if (prop.Name == "AdditionalData" & configData[prop.Name] != null)
-                        {
-                            Dictionary<string, object> content = (Dictionary<string, object>)configData[prop.Name];
-                            foreach (KeyValuePair<string, object> data in content)
-                            {
-                                if (!AdditionalData.ContainsKey(data.Key))
-                                {
-                                    AdditionalData.Add(data.Key, data.Value);
-                                }
-                                else
-                                {
-                                    AdditionalData[data.Key] = data.Value;
-                                    overwrittenFields.Add(prop.Name + "/" + data.Key);
-                                }
-                            }
-                        }
-                        else if (prop.Name == "ValidCodeStructure")
-                        {
-                            List<string> content = (List<string>)configData[prop.Name];
-                            foreach (string data in content)
-                            {
-                                if (!ValidCodeStructure.Contains(data))
-                                {
-                                    ValidCodeStructure.Add(data);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (propertyType.GetProperty(prop.Name).GetValue(this) != null) { overwrittenFields.Add(prop.Name); }
-
-                            propertyType.GetProperty(prop.Name).SetValue(this, configData[prop.Name]);                       
-                        }
-                    }
-                }
-            }
-            catch
-            {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Data is not a compatible JSON (Join).");
-            }
-            return overwrittenFields;
-        }
-        public Boolean IsValid()
-        {
-            var isValid = true;
-
-            foreach (var prop in GetType().GetProperties())
-            {
-                if (prop.GetValue(this, null) == null & prop.Name != "AdditionalData")
-                {
-                    if (!(prop.Name == "Station" & IsStationMandatory == false))
-                    {                        
-                        isValid = false;
-                    }                   
-                }
-            }
-            return isValid;
-        }
-        public void IsParent(String inputUUID)
-        {
-            var isParent = true;
-
-            if (System.Text.RegularExpressions.Regex.IsMatch(inputUUID, @"\A\b[0-9a-fA-F]+\b\Z") & inputUUID.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(ParentUUIDStructure, @"\A\b[0-9a-fA-FX]+\b\Z") & ParentUUIDStructure.Length == 24)
-            {
-                for (int i = 0; i < inputUUID.Length / 2; i++)
-                {
-                    if (ParentUUIDStructure.Substring(i * 2, 2) != "XX" && inputUUID.Substring(i * 2, 2) != ParentUUIDStructure.Substring(i * 2, 2))
-                    {
-                        isParent = false;
-                    }
-                }
-
-                ParentUUID = isParent ? inputUUID : ParentUUID;
-            }
-        }
-        public Boolean IsValidCode(String inputUUID)
-        {
-            foreach(string filterUUID in ValidCodeStructure)
-            {
-                Boolean isValidCode = true;
-
-                if (System.Text.RegularExpressions.Regex.IsMatch(inputUUID, @"\A\b[0-9a-fA-F]+\b\Z") & inputUUID.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(filterUUID, @"\A\b[0-9a-fA-FX]+\b\Z") & filterUUID.Length == 24)
-                {
-                    for (int i = 0; i < inputUUID.Length / 2; i++)
-                    {
-                        if (filterUUID.Substring(i * 2, 2) != "XX" && inputUUID.Substring(i * 2, 2) != filterUUID.Substring(i * 2, 2))
-                        {
-                            isValidCode = false;
-                        }
-                    }
-                    if (isValidCode) { return true; }
-                }   
-            }
-            return false;
-        }
-        //CHECK PROCESS INPUT
-        public List<string> ProcessInput(Dictionary<string, object> input)
-        {
-            //First see if it is a JSON file
-            try
-            {
-                List<string> returnList = AddQRMetaData(input[nameof(InputDataProps.Value)].ToString());
-                return returnList;
-            }
-            catch
-            {
-                //First check if it follows config file code connvention (Aka ValidCodeStructure)
-                if (IsValidCode(input[nameof(InputDataProps.Value)].ToString()))
-                {
-                    //Now check if it is parent
-                    IsParent(input[nameof(InputDataProps.Value)].ToString());
-
-                    //Now see if already on list
-                    foreach (var item in ScannerReads.ToList())
-                    {
-                        if (item[nameof(InputDataProps.Value)].ToString() == input[nameof(InputDataProps.Value)].ToString())
-                        {
-                            return null;
-                        }
-                    }
-                    ScannerReads.Add(input);
-                    return null;
+                    return appData[appDataIndex["ValidCodeFormat"]]["DefaultValue(admin)"];
                 }
                 else
                 {
                     return null;
                 }
-            }            
+            }
+        }
+        
+        //Fields properties
+        [BsonIgnoreIfNull]
+        public string ParentUUID
+        {
+            get
+            {
+                if(appData[appDataIndex["ParentUUID"]]["FieldIsSaved"])
+                {
+                    return appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        
+        [BsonIgnoreIfNull]
+        public string ParentCodeFormat
+        {
+            get
+            {
+                if(appData[appDataIndex["ParentCodeFormat"]]["FieldIsSaved"])
+                {
+                    return appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }   
+  
+        [BsonIgnoreIfNull]
+        public string IsStationRequired
+        {
+            get
+            {
+                if(appData[appDataIndex["IsStationRequired"]]["FieldIsSaved"])
+                {
+                    return appData[appDataIndex["IsStationRequired"]]["DefaultValue(admin)"];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+        
+        [BsonIgnoreIfNull]
+        public Dictionary<string,object> CustomFields
+        {
+            get
+            {  
+                Dictionary<string,object> returnDictionary = new Dictionary<string,object>{};
+                
+                foreach(Dictionary<string, dynamic> field in customData.Values)
+                {
+                    returnDictionary.Add(field["FieldName"], field["DefaultValue(admin)"]);
+                }
+                return returnDictionary;
+            }
+        }        
+             
+        //Validation before saving
+        public Boolean IsValid()
+        {
+            bool isValid = true;
+            
+            foreach(Dictionary<string, dynamic> field in appData.Values)
+            {
+                if(field["IsRequired"] & field["DefaultValue(admin)"] == null){isValid = false;}
+            }
+            foreach(Dictionary<string, dynamic> field in customData.Values)
+            {
+                if(field["DefaultValue(admin)"] == null){isValid = false;}
+            }
+
+            return isValid;
+        }
+                
+        //Constructor from json stream -> PROBABLY MOVE TO BASE MODEL
+        public JoinMetaData(Stream streamConfig) : base(streamConfig)
+        {
+            try
+            {
+                if (streamConfig != null)
+                {                
+                    StreamReader reader = new StreamReader(streamConfig);
+                    string jsonConfig = reader.ReadToEnd();
+                    streamConfig.Position = 0;
+
+                    Dictionary<string,Dictionary<string,Dictionary<string, dynamic>>> data = JsonConvert.DeserializeObject<Dictionary<string,Dictionary<string,Dictionary<string, dynamic>>>>(jsonConfig);
+
+                    //If no need to go through fields for equality
+                    appData = data["AppFields"];
+                    customData =data["CustomFields"];
+
+                    //If need to go through fields for equality
+                    foreach (KeyValuePair<string,Dictionary<string,dynamic>> field in data["AppFields"])
+                    {
+                        appDataIndex.Add(field.Value["FieldName"], field.Key);
+                        //Continue scripting to fill appData and customData if required
+                    }
+                    foreach (KeyValuePair<string,Dictionary<string,dynamic>> field in data["CustomFields"])
+                    {
+                        customDataIndex.Add(field.Value["FieldName"], field.Key);
+                        //Continue scripting if required
+                    }
+                }
+            }
+            catch
+            {
+                throw new Exception("Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");            
+            }
+        }
+        
+        //Constructor from json stream -> PROBABLY MOVE TO BASE MODEL
+        public void AddQRMetaData(Dictionary<string, dynamic> data)
+        {
+            try
+            {
+                if (data != null)
+                {
+                    //Go through fields for equality
+                    foreach (KeyValuePair<string,dynamic> field in data)
+                    {
+                        try
+                        {   
+                            if(appData.ContainsKey(field.Key))
+                            {
+                                if(field.Value.GetType().ToString().ToLower().Contains(appData[field.Key]["Type"].ToLower()))
+                                {
+                                    //Add a way to ask for confirmation when QR is going to overwrite one or several fields
+                                    appData[field.Key]["DefaultValue(admin)"] = field.Value;          
+                                }
+                                else
+                                {
+                                    throw new Exception("One or several of the fields that you are trying to write have been determined as non QR fillable in the config file. Please review QR and/or config file content");
+                                }
+                            }
+                            else if(customData.ContainsKey(field.Key))
+                            {
+                                if(field.Value.GetType().ToString().ToLower().Contains(customData[field.Key]["Type"].ToLower()))
+                                {
+                                    //Add a way to ask for confirmation when QR is going to overwrite one or several fields
+                                    customData[field.Key]["DefaultValue(admin)"] = field.Value;
+                                }
+                                else
+                                {
+                                    throw new Exception("One or several of the fields that you are trying to write have been determined as non QR fillable in the config file. Please review QR and/or config file content");
+                                }
+                            }
+                            else
+                            {
+                                throw new Exception("One or several of the fields in the QR do not exist on the config file. Please review QR content.");
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            throw e;
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                throw new Exception("QR content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type."); 
+            }
+        }   
+        
+        //
+        public override Dictionary<string, object> ProcessedScannerRead(Dictionary<string, object> scannerRead)
+        {
+            Dictionary<string, object> returnScannerRead = scannerRead;
+            //See if it is a QR.
+            try
+            {
+                Dictionary<string, dynamic> data = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(scannerRead["Value"].ToString());
+                
+                if(data != null){AddQRMetaData(data);}
+                return null;
+            }
+            //Try to process as standard read
+            catch(Exception e)
+            {   
+                string duplicatedParentEx = "Last scan had the parent code pattern, but it could not be considered a parent as there was already one assigned. Parent status will be given to the first parent scanned";
+                try
+                {
+                    bool isValidCode = true;
+                    
+                    foreach(string validContentFormat in appData[appDataIndex["ValidCodeFormat"]]["DefaultValue(admin)"])
+                    {
+                        isValidCode = true;
+                        //Apply filter
+                        if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\A\b[0-9a-fA-F]+\b\Z") & validContentFormat.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\A\b[0-9a-fA-FX]+\b\Z") & scannerRead["Value"].ToString().Length == 24)
+                        {
+                            for (int i = 0; i < 12; i++)
+                            {
+                                if (validContentFormat.Substring(i * 2, 2) != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2) != validContentFormat.Substring(i * 2, 2))
+                                {
+                                    isValidCode = false;
+                                }
+                            }
+                            if(isValidCode){break;}
+                        }
+                        else
+                        {
+                            isValidCode = false;
+                        }
+                    }
+                    
+                    //<-------This is the method override difference------>
+                    if(isValidCode & isParent(scannerRead))
+                    {     
+                        if(appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] != null)
+                        {
+                            //REPLACE WITH NOTIFICATION OF PARENT ALREADY ASSIGNED
+                            throw new Exception(duplicatedParentEx);
+                        }
+                        else
+                        {
+                            appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] = scannerRead["Value"];
+                            returnScannerRead.Add("IsParent",true);
+                            return returnScannerRead;
+                        }  
+                    }
+                    //<-------This is the method override difference------>
+                    else if(isValidCode)
+                    {
+                        return returnScannerRead;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch(Exception ex)
+                {   
+                    //If ex content)
+                    if (ex.Message == duplicatedParentEx)
+                    {
+                        throw ex;
+                    }
+                    else
+                    {
+                        throw e;
+                    }
+                }                          
+            }
+        }
+        
+        //Move this to base class. Change name of scanner
+        public virtual Dictionary<string, object> ProcessedScannerRead(Dictionary<string,object> scannerRead)
+        {
+            //See if it is a QR.
+            try
+            {
+                Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string, object>>(scannerRead["Value"].ToString());
+                
+                if(data != null){AddQRMetaData(data);}
+                return null;
+            }
+            //Try to process as standard read
+            catch(Exception e)
+            {
+                try
+                {
+                    bool isValidCode = true;
+
+                    foreach (string validContentFormat in appData[appDataIndex["ValidCodeFormat"]]["DefaultValue(admin)"])
+                    {
+                        isValidCode = true;
+
+                        //Apply filter
+                        if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\A\b[0-9a-fA-F]+\b\Z") & validContentFormat.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\A\b[0-9a-fA-FX]+\b\Z") & scannerRead["Value"].ToString().Length == 24)
+                        {
+                            for (int i = 0; i < 12; i++)
+                            {
+                                if (validContentFormat.Substring(i * 2, 2) != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2) != validContentFormat.Substring(i * 2, 2))
+                                {
+                                    isValidCode = false;
+                                }
+                            }
+                            if (isValidCode) { break; }
+                        }
+                        else
+                        {
+                            isValidCode = false;
+                        }
+                    }
+
+                    if (isValidCode)
+                    {
+                        return scannerRead;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                catch
+                {
+                    throw e;
+                }                          
+            }
         }
     }
 }
