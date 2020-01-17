@@ -18,8 +18,9 @@ namespace TilesApp
 {
     public class BasePage : ContentPage, INotifyPropertyChanged
     {
-        public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         public ReadersViewModel ReadersViewModel { get;set; }
+        public ObservableCollection<string> ViewableReads { get; set; } = new ObservableCollection<string>();
+
 
         public enum ReadersTypes
         {            
@@ -31,7 +32,6 @@ namespace TilesApp
         }
         
         public BasePage(){
-            ScannerReads.CollectionChanged += ScannerReads_CollectionChanged;
             this.ReadersViewModel = App.ViewModel.Readers;
             Subscribe();      
         }
@@ -75,21 +75,14 @@ namespace TilesApp
 
         //CHECK HOW TO DO IT. PROCESS INPUT NOW AVAILABLE IN METADATA. MAKES USE OF VALID CODE STRUCTURE
         private void ProcessInput(string code, string reader, string readerSerialNumber) {
-            foreach (var item in ScannerReads.ToList())
-            {
-                if (item[nameof(BaseData.InputDataProps.Value)].ToString() == code)
-                {
-                    return;
-                }
-            }
             Dictionary<string, object> input = new Dictionary<string, object>
             {
-                { nameof(BaseData.InputDataProps.Value), code },
-                { nameof(BaseData.InputDataProps.ReaderType), reader },
-                { nameof(BaseData.InputDataProps.ReaderSerialNumber), readerSerialNumber },
-                { nameof(BaseData.InputDataProps.Timestamp), DateTime.Now }
+                { nameof(BaseMetaData.InputDataProps.Value), code },
+                { nameof(BaseMetaData.InputDataProps.ReaderType), reader },
+                { nameof(BaseMetaData.InputDataProps.ReaderSerialNumber), readerSerialNumber },
+                { nameof(BaseMetaData.InputDataProps.Timestamp), DateTime.Now }
             };
-            ScannerReads.Add(input);
+            ScannerReadDetected(input);
         }      
 
         // VIRTUAL FUNCTIONS

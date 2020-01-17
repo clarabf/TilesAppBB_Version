@@ -10,10 +10,6 @@ namespace TilesApp.Views
 {
     public partial class Join : BasePage
     {
-        private bool mainScanned = false;
-        private string mainCode;
-        private List<string> barcodes = new List<string>();
-        public ObservableCollection<string> BarcodesScanned { get; set; } = new ObservableCollection<string>();
         public JoinMetaData MetaData { get; set; }
         public Join(string tag)
         {
@@ -29,40 +25,57 @@ namespace TilesApp.Views
 
         public override void ScannerReadDetected(Dictionary<string, object> input)
         {
-            if (!mainScanned)
+            if (MetaData.ParentUUID != null)
             {
-                mainScanned = true;
-                mainCode = input[nameof(BaseData.InputDataProps.Value)].ToString();
-                lblTitle.Text = "Scan barcode of the other components";
-                BarcodesScanned.Add("Main item <" + mainCode + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
+                if (MetaData.ParentUUID == input[nameof(BaseMetaData.InputDataProps.Value)].ToString()) return;
+            }          
+            foreach (string item in ViewableReads)
+            {
+                if (item.Equals(input[nameof(BaseMetaData.InputDataProps.Value)].ToString()))
+                {
+                    return;
+                }
+            }
+            Dictionary<string, object>  processedInput = MetaData.ProcessScannerRead(input);
+            bool isParent = false;
+            try
+            {
+                isParent = (bool)processedInput["IsParent"];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            if (isParent)
+            {
+                lblParentBarcode.IsVisible = true;
+                lblParentBarcode.Text = "Parent is: "+input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
                 btnSaveAndFinish.IsVisible = true;
             }
-            else
-            {
-                barcodes.Add(input[nameof(BaseData.InputDataProps.Value)].ToString());
-                lblTitle.Text = "Scan barcode of the other components (" + barcodes.Count + ")";
-                BarcodesScanned.Add("Item <" + input[nameof(BaseData.InputDataProps.Value)].ToString() + "> scanned (" + DateTime.Now.ToShortTimeString() + ")");
+            else {
+                ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+                lblComponents.IsVisible = true;
             }
+            
         }
         private async void SaveAndFinish(object sender, EventArgs args)
         {
-            // Iterate over the scanned codes and process them
-            /*foreach (var scannerRead in ScannerReads)
+            if (MetaData.IsValid())
             {
-                MetaData.ProcessInput(scannerRead);
-            }*/
-            MetaData.ScannerReads = ScannerReads;
-            if (MetaData.IsValid()||true)
-            {                
-                bool success = CosmosDBManager.InsertOneObject(MetaData);
-                string message = "";
-                foreach (string code in barcodes) message += code + " - ";
-                await DisplayAlert(mainCode + " was assembled successfully!", message.Substring(0, message.Length - 2), "OK");
-
+                if (CosmosDBManager.InsertOneObject(MetaData)) {
+                    string message = "";
+                    foreach (Dictionary<string, object> item in MetaData.ScannerReads)
+                    {
+                        message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
+                    }
+                    await DisplayAlert(MetaData.ParentUUID + " was assembled successfully!", message.Substring(0, message.Length - 2), "OK");
+                }
+                else
+                    await DisplayAlert(MetaData.ParentUUID + " was NOT assembled successfully!", "We could not connect to the Database Server", "OK");
             }
             else
             {
-                await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
+                await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
             }
             await Navigation.PopModalAsync(true);
         }
