@@ -22,10 +22,10 @@ namespace TilesApp.Views
             InitializeComponent();
             BindingContext = this;
             
-            //MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
+            MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
             string[] appNameArr = tag.Split('_');
-            //MetaData.AppType = appNameArr[1];
-            //MetaData.AppName = appNameArr[2];
+            MetaData.AppType = appNameArr[1];
+            MetaData.AppName = appNameArr[2];
             lblTest.Text = appNameArr[2] + " (QC)";
             appName = appNameArr[2];
             
