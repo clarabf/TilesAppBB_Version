@@ -74,7 +74,7 @@ namespace TilesApp.Models.Skeletons
                         {
                             for (int i = 0; i < 12; i++)
                             {
-                                if (validContentFormat.Substring(i * 2, 2) != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2) != validContentFormat.Substring(i * 2, 2))
+                                if (validContentFormat.Substring(i * 2, 2).ToUpper() != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2).ToUpper() != validContentFormat.Substring(i * 2, 2).ToUpper())
                                 {
                                     isValidCode = false;
                                 }
