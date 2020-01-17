@@ -5,201 +5,166 @@
              x:Class="TilesApp.Rfid.Views.ReadersPage"
               Title="Readers" >
     <ContentPage.Content>
-        <StackLayout BackgroundColor="#2f2e2e" Spacing="0">
-            <Label Text="UHF BLUETOOTH READERS" 
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="22"
-                   CharacterSpacing="1.05"
-                   TextColor="#838282" 
-                   Padding="0,12"
-                   IsVisible="{Binding ReadersNotEmpty}"
-                   />
-            <ListView x:Name="ReadessListView" 
-                ItemsSource="{Binding Readers}"
-                VerticalOptions="FillAndExpand"
-                HasUnevenRows="true"
-                RefreshCommand="{Binding RefreshReadersCommand}"
-                IsPullToRefreshEnabled="false"
-                IsRefreshing="{Binding IsRefreshing}"
-                CachingStrategy="RecycleElement"
-                SelectionMode="None"
-                BackgroundColor="#151515"
-                IsVisible="{Binding ReadersNotEmpty}"
-                >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Padding="8" Spacing="0">
-                                <!-- name -->
-                                    <Label Text="{Binding SerialNumber }" TextColor="#ffffff"                                                                                      
-                                           FontSize="22"
-                                           HorizontalOptions="Center"
-                                           CharacterSpacing="1.05"
-                                           >
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label" Binding="{Binding IsActive}" Value="True">
-                                                <Setter Property="FontAttributes" Value="Bold" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
+        <ScrollView>
+            <StackLayout BackgroundColor="#000000" Spacing="0">
+                
+                    <!--UHF BT READERS-->
+                    <Label Text="UHF BLUETOOTH READERS"                            
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontSize="20"
+                           CharacterSpacing="1.15"
+                           TextColor="#ffffff" 
+                           Padding="0,8"
+                           IsVisible="{Binding ReadersNotEmpty}"
+                           />
+                    <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" IsVisible="{Binding ReadersNotEmpty}"/>
+                    <ListView x:Name="ReadessListView" 
+                        ItemsSource="{Binding Readers}"
+                        VerticalOptions="Start"
+                        RowHeight="100"                       
+                        SelectionMode="None"
+                        BackgroundColor="#151515"
+                        IsVisible="{Binding ReadersNotEmpty}"
+                        >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                <ScrollView>
+                                    <StackLayout Spacing="0" Padding="15,20" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                        <StackLayout Spacing="5" Orientation="Horizontal">
+                                            <!-- name -->
+                                            <Label Text="{Binding SerialNumber }" 
+                                                       TextColor="#ffffff"
+                                                       CharacterSpacing="1.1"
+                                                       FontSize="17">
+                                                <Label.Triggers>
+                                                    <DataTrigger TargetType="Label" Binding="{Binding IsActive}" Value="True">
+                                                        <Setter Property="FontAttributes" Value="Bold" />
+                                                    </DataTrigger>
+                                                </Label.Triggers>
+                                            </Label>
 
-                                    <!-- Battery -->
-                                    <Label Text="{Binding BatteryPercent, StringFormat='BATTERY LEVEL: {0}%' }"
-                                           FontFamily="sans-serif-light"
-                                           HorizontalOptions="Center"
-                                           FontSize="18" />
+                                            <Label Text="{Binding ConnectionState }"
+                                                       HorizontalOptions="EndAndExpand"                                                       
+                                                       Padding="0, 5, 0, 0"
+                                                       FontSize="14" />
+                                        </StackLayout>
+                                        <StackLayout Spacing="5" Orientation="Horizontal">
+                                            <!-- Battery -->
+                                            <Label Text="{Binding BatteryPercent, StringFormat='BATTERY LEVEL: {0}%' }"
+                                                           FontFamily="sans-serif-light"
+                                                           FontSize="14" />
 
-                                    <!-- status -->
-                                    <Label Text="{Binding ConnectionState }" TextColor="#ffffff"
-                                           FontSize="20"
-                                           HorizontalOptions="Center"
-                                           >
-                                        <Label.Triggers>
-                                            <DataTrigger TargetType="Label" Binding="{Binding IsActive}" Value="True">
-                                                <Setter Property="FontAttributes" Value="Bold" />
-                                            </DataTrigger>
-                                        </Label.Triggers>
-                                    </Label>
+                                            <!-- charge status -->
+                                            <Label Text="{Binding ChargeStatus , StringFormat='CHARGE STATUS: {0}' }"
+                                                       HorizontalOptions="EndAndExpand"
+                                                       FontFamily="sans-serif-light"
+                                                       FontSize="14" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ScrollView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" IsVisible="{Binding ReadersNotEmpty}"/>
 
-                                    <!-- charge status -->
-                                <Label Text="{Binding ChargeStatus , StringFormat='CHARGE STATUS: {0}' }"
-                                           HorizontalOptions="Center"
-                                           FontFamily="sans-serif-light"
-                                           FontSize="18" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Label Text="CAMERA BLUETOOTH READERS" 
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="22"
-                   CharacterSpacing="1.05"
-                   TextColor="#838282"
-                   Padding="0,12"
-                   IsVisible="{Binding BluetoothCameraReadersNotEmpty}"
-                   />
-            <ListView x:Name="BluetoothCameraReadersListView" 
-                ItemsSource="{Binding BluetoothCameraReaders}"
-                VerticalOptions="FillAndExpand"
-                HasUnevenRows="true"
-                IsPullToRefreshEnabled="false"
-                CachingStrategy="RecycleElement"
-                SelectionMode="None"
-                BackgroundColor="#151515"
-                IsVisible="{Binding BluetoothCameraReadersNotEmpty}"
-                >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Padding="8" Spacing="0">
-                                <Label Text="{Binding Device.Name }"
-                                           LineBreakMode="NoWrap"
-                                           FontAttributes="Bold"
-                                           HorizontalOptions="Center" 
-                                           CharacterSpacing="1.05"
-                                           FontSize="22">
-                                </Label>
-                                
-                                <Label Text="{Binding Device.Address, StringFormat='ADDR.: {0}' }"
-                                           LineBreakMode="NoWrap"
-                                           HorizontalOptions="Center" 
-                                           Margin="0, 0, 0, 10"
-                                           FontSize="18" />
-                                
-                                <Label Text="{Binding State }"
-                                           LineBreakMode="NoWrap"
-                                           HorizontalOptions="Center" 
-                                           FontSize="18"
-                                           >
-                                    <Label.Triggers>
-                                        <DataTrigger TargetType="Label" Binding="{Binding IsActive}" Value="True">
-                                            <Setter Property="FontAttributes" Value="Bold" />
-                                        </DataTrigger>
-                                    </Label.Triggers>
-                                </Label>
+                    <!--CAM BT READERS-->
+                    <Label Text="CAMERA BLUETOOTH READERS" 
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           FontSize="20"
+                           CharacterSpacing="1.05"
+                           TextColor="#ffffff" 
+                           Padding="0,8"
+                           IsVisible="{Binding BluetoothCameraReadersNotEmpty}"
+                           />
+                    <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" IsVisible="{Binding BluetoothCameraReadersNotEmpty}"/>
+                    <ListView x:Name="BluetoothCameraReadersListView" 
+                        ItemsSource="{Binding BluetoothCameraReaders}"
+                        VerticalOptions="Start"
+                        RowHeight="100"
+                        SelectionMode="None"
+                        BackgroundColor="#151515"
+                        IsVisible="{Binding BluetoothCameraReadersNotEmpty}"
+                        >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                <ScrollView>
+                                    <StackLayout Spacing="0" Padding="15,20" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                        <StackLayout Spacing="5" Orientation="Horizontal">
+                                            <!-- name -->
+                                            <Label Text="{Binding Device.Name }" 
+                                                       TextColor="#ffffff"
+                                                       CharacterSpacing="1.1"
+                                                       FontAttributes="Bold"
+                                                       FontSize="16">
+                                            </Label>
 
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <Label Text="SERIAL READERS" 
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   FontSize="22"
-                   CharacterSpacing="1.05"
-                   Padding="0,12"
-                   TextColor="#838282"
-                   IsVisible="{Binding SerialReadersNotEmpty}"
-                   />
-            <ListView x:Name="SerialReadersListView" 
-                ItemsSource="{Binding SerialReaders}"
-                VerticalOptions="FillAndExpand"
-                HasUnevenRows="true"
-                IsPullToRefreshEnabled="false"
-                CachingStrategy="RecycleElement"
-                SelectionMode="None"
-                BackgroundColor="#151515"
-                IsVisible="{Binding SerialReadersNotEmpty}"
-                >
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Padding="8" Spacing="0" HorizontalOptions="Center">
-                                <!-- name -->
-                                <Label Text="{Binding ProductName }" TextColor="#ffffff"
-                                        LineBreakMode="NoWrap"
-                                        FontAttributes="Bold"                                        
-                                        Margin="0, 0, 0, 10"
-                                       HorizontalOptions="Center"
-                                        CharacterSpacing="1.05"
-                                        FontSize="22">
-                                </Label>
+                                            <Label Text="{Binding State }"
+                                                       HorizontalOptions="EndAndExpand"                                                       
+                                                       Padding="0, 5, 0, 0"
+                                                       FontSize="14" />
 
-                                <Label Text="{Binding SerialNumber, StringFormat='SN: {0}' }"
-                                        FontFamily="sans-serif-light"
-                                        HorizontalOptions="Center"
-                                        Margin="0, 0, 0, 5"
-                                        FontSize="18" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ScrollView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" IsVisible="{Binding BluetoothCameraReadersNotEmpty}"/>
+                
+                    <!--SERIAL READERS-->
+                    <Label Text="SERIAL READERS"                            
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"                           
+                           FontSize="20"
+                           CharacterSpacing="1.15"
+                           TextColor="#ffffff" 
+                           Padding="0,8"
+                           IsVisible="{Binding SerialReadersNotEmpty}"
+                           />
+                    <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" IsVisible="{Binding SerialReadersNotEmpty}"/>
+                    <ListView x:Name="SerialReadersListView"
+                        ItemsSource="{Binding SerialReaders}"
+                        VerticalOptions="Center"
+                        RowHeight="100"
+                        SelectionMode="None"
+                        BackgroundColor="#151515"
+                        IsVisible="{Binding SerialReadersNotEmpty}"                        
+                        >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <ScrollView>
+                                        <StackLayout Spacing="0" Padding="15,20" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                                            <StackLayout Spacing="0" Orientation="Horizontal">
+                                                <!-- name -->
+                                                <Label Text="{Binding ProductName }" 
+                                                       TextColor="#ffffff"
+                                                       CharacterSpacing="1.1"
+                                                       FontAttributes="Bold"
+                                                       FontSize="17">
+                                                </Label>
 
-                                <Label Text="{Binding ProductId, StringFormat='PID: {0}' }"
-                                        FontFamily="sans-serif-light"
-                                        HorizontalOptions="Center"
-                                        Margin="0, 0, 0, 5"
-                                        FontSize="18" />
-                                
-                                <Label Text="{Binding VendorId, StringFormat='VID: {0}' }"
-                                        FontFamily="sans-serif-light"
-                                        HorizontalOptions="Center"
-                                        FontSize="18" />
-
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            <!--<Label Text="Readers will appear here as Transports are connected"
-                   LineBreakMode="WordWrap"
-                   Style="{DynamicResource ListItemDetailTextStyle}"
-                   FontSize="Medium" FontAttributes="Italic"
-                   HorizontalTextAlignment="Center"
-                   Margin="12,8,12,4"
-                   HorizontalOptions="CenterAndExpand"
-                   />
-            <Label Text="Tap on a Reader row to change the active Reader or disconnect it"
-                   LineBreakMode="WordWrap"
-                   Style="{DynamicResource ListItemDetailTextStyle}"
-                   FontSize="Medium" FontAttributes="Italic"
-                   HorizontalTextAlignment="Center"
-                   Margin="12,4,12,8"
-                   HorizontalOptions="CenterAndExpand"
-                   />-->
-        </StackLayout>
+                                                <Label Text="CONNECTED"
+                                                       HorizontalOptions="EndAndExpand"                                                       
+                                                       Padding="0, 5, 0, 0"
+                                                       FontSize="14" />
+                                        </StackLayout>
+                                        </StackLayout>
+                                    </ScrollView>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        
+                    </ListView>
+                    <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" IsVisible="{Binding SerialReadersNotEmpty}"/>
+                                             
+            </StackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </d:BasePage>
