@@ -70,7 +70,7 @@ namespace TilesApp.Models.Skeletons
                     {
                         isValidCode = true;
                         //Apply filter
-                        if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\A\b[0-9a-fA-F]+\b\Z") & validContentFormat.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\A\b[0-9a-fA-FX]+\b\Z") & scannerRead["Value"].ToString().Length == 24)
+                        if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\b([a-fA-F0-9xX]+)\b") & validContentFormat.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & scannerRead["Value"].ToString().Length == 24)
                         {
                             for (int i = 0; i < 12; i++)
                             {
@@ -131,11 +131,11 @@ namespace TilesApp.Models.Skeletons
         {
             bool isParent = true;
             //Apply filter
-            if (System.Text.RegularExpressions.Regex.IsMatch(appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"], @"\A\b[0-9a-fA-F]+\b\Z") & appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\A\b[0-9a-fA-FX]+\b\Z") & scannerRead["Value"].ToString().Length == 24)
+            if (System.Text.RegularExpressions.Regex.IsMatch(appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"], @"\b([a-fA-F0-9xX]+)\b") & appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & scannerRead["Value"].ToString().Length == 24)
             {
                 for (int i = 0; i < 12; i++)
                 {
-                    if (appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Substring(i * 2, 2) != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2) != appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Substring(i * 2, 2))
+                    if (appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Substring(i * 2, 2).ToUpper() != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2).ToUpper() != appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Substring(i * 2, 2).ToUpper())
                     {
                         isParent = false;
                     }
