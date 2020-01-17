@@ -26,8 +26,11 @@ namespace TilesApp.Models
         protected Dictionary<string, string> customDataIndex = new Dictionary<string, string> { };
 
         //Fields properties
+        [BsonIgnoreIfNull]
         public string AppName { get; set; }
+        [BsonIgnoreIfNull]
         public string AppType { get; set; }
+        [BsonIgnoreIfNull]
         public int? UserId
         { 
             get
@@ -35,6 +38,7 @@ namespace TilesApp.Models
                 return OdooXMLRPC.userID;
             }
         }
+        [BsonIgnoreIfNull]
         public string UserName
         {
             get
@@ -42,6 +46,7 @@ namespace TilesApp.Models
                 return OdooXMLRPC.userName;
             }
         }
+        [BsonIgnoreIfNull]
         public string DeviceSerialNumber
         {
             get
@@ -49,7 +54,8 @@ namespace TilesApp.Models
                 return App.DeviceSerialNumber != null ? App.DeviceSerialNumber : null;
             }
         }
-        private string Station
+        [BsonIgnoreIfNull]
+        public string Station
         {
             get
             {
@@ -87,7 +93,7 @@ namespace TilesApp.Models
 
                 foreach (Dictionary<string, dynamic> field in customData.Values)
                 {
-                    returnDictionary.Add(field["FieldName"], field["DefaultValue(admin)"]);
+                    returnDictionary.Add(field["FieldName(admin)"], field["DefaultValue(admin)"]);
                 }
                 return returnDictionary;
             }
@@ -118,7 +124,7 @@ namespace TilesApp.Models
                     }
                     foreach (KeyValuePair<string, Dictionary<string, dynamic>> field in data["CustomFields"])
                     {
-                        customDataIndex.Add(field.Value["FieldName"], field.Key);
+                        customDataIndex.Add(field.Value["FieldName(admin)"], field.Key);
                         //Continue scripting if required
                     }
                 }
@@ -211,15 +217,8 @@ namespace TilesApp.Models
                             }
                             else if (customData.ContainsKey(field.Key))
                             {
-                                if (field.Value.GetType().ToString().ToLower().Contains(customData[field.Key]["Type"].ToLower()))
-                                {
-                                    //Add a way to ask for confirmation when QR is going to overwrite one or several fields
-                                    customData[field.Key]["DefaultValue(admin)"] = field.Value;
-                                }
-                                else
-                                {
-                                    throw new Exception("One or several of the fields that you are trying to write have been determined as non QR fillable in the config file. Please review QR and/or config file content");
-                                }
+                                //Add a way to ask for confirmation when QR is going to overwrite one or several fields
+                                customData[field.Key]["DefaultValue(admin)"] = field.Value;
                             }
                             else
                             {
