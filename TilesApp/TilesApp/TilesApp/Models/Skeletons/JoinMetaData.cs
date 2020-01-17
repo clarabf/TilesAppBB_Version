@@ -47,7 +47,7 @@ namespace TilesApp.Models.Skeletons
         //Constructor from json stream
         public JoinMetaData(Stream streamConfig) : base(streamConfig){}        
 
-        public override Dictionary<string, object> ProcessedScannerRead(Dictionary<string, object> scannerRead)
+        public override Dictionary<string, object> ProcessScannerRead(Dictionary<string, object> scannerRead)
         {
             Dictionary<string, object> returnScannerRead = scannerRead;
             //See if it is a QR.
