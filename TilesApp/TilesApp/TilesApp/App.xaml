@@ -15,6 +15,7 @@
                     Value="/Assets/FontAwesome5Brands.otf#Font Awesome 5 Brands" />
             </OnPlatform>
             <x:String x:Key="FontIcon">FontAwesome5Solid.otf#Regular</x:String>
+            <x:String x:Key="CustomFont">fontello.ttf#fontello</x:String>
             <OnPlatform x:TypeArguments="x:String"
                         x:Key="FontAwesomeSolid">
                 <On Platform="Android"

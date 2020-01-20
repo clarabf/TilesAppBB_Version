@@ -25,40 +25,42 @@ namespace TilesApp.Views
                 buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 Button button = new Button
                 {
+                    Text = appName,
                     TextColor = Color.FromHex("#ffffff"),
                     BackgroundColor = Color.FromHex("#bc0000"),
                     FontSize = 18,
-                    FontFamily = Application.Current.Resources["FontIcon"].ToString(),
                     WidthRequest = 500,
                     CornerRadius = 5,
+                    FontFamily = Application.Current.Resources["CustomFont"].ToString(),
                     VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.Center,
+                    HorizontalOptions = LayoutOptions.End,
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
-                    ClassId = tag
+                    ClassId = tag,
+                    Margin = new Thickness (0, 0, 0, 20)
                 };
                 switch (appType)
                 {
                     case "Link":
-                        icon = "\uf5a1";
+                        icon = "\ue803";
                         button.Clicked += Link_Command;
                         break;
                     case "Join":
-                        icon = "\uf6fa";
+                        icon = "\uf527";
                         button.Clicked += Join_Command;
                         break;
                     case "Reg":
-                        icon = "\uf753";
+                        icon = "\uf14a";
                         button.Clicked += Reg_Command;
                         break;
                     case "QC":
-                        icon = "\uf186";
+                        icon = "\uf11b";
                         button.Clicked += QC_Command;
                         break;
                     default:
                         break;
                 }
-                button.Text = appName + " " +  icon;
+                button.Text = appName + " " + icon;
                 buttonsGrid.Children.Add(button, 0, row);
                 row++;           
             }

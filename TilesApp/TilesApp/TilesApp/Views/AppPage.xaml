@@ -26,11 +26,11 @@
                         VerticalOptions="Center"
                         Grid.Row="0"
                         FontSize="30"/>
-                    <Grid x:Name="buttonsGrid" 
-                        Margin="0,20,0,0"
-                        Grid.Row="1"                      
-                        VerticalOptions="FillAndExpand" 
-                        HorizontalOptions="FillAndExpand"/>
+                    <ScrollView Grid.Row="1">
+                        <Grid x:Name="buttonsGrid" 
+                            VerticalOptions="FillAndExpand" 
+                            HorizontalOptions="FillAndExpand"/>
+                    </ScrollView>
                     <Grid Grid.Row="2" IsClippedToBounds="True" Margin="0,20,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />
@@ -40,31 +40,15 @@
                         <Grid Grid.Row="0">
                             <Button
                                 x:Name="CONF"
-                                Text="CONFIGURATION"
+                                Text="CONFIGURATION &#xe800;"
                                 TextColor="#ffffff"
-                                BackgroundColor="Transparent"                                
+                                BackgroundColor="Transparent"
+                                FontFamily="{StaticResource CustomFont}"
                                 FontSize="15"
                                 VerticalOptions="CenterAndExpand"
                                 HorizontalOptions="CenterAndExpand"                            
                                 Clicked="Config_Command"
-                                Margin="0,0,20,0"
-                                Padding="0,0,0,4"
-                                /> 
-                            <Button
-                                x:Name="CONF2"
-                                Text="&#xf044;"
-                                FontFamily="{StaticResource FontAwesomeSolid}"
-                                TextColor="#ffffff"
-                                BackgroundColor="Transparent"                                
-                                FontSize="15"
-                                VerticalOptions="CenterAndExpand"
-                                HorizontalOptions="CenterAndExpand"                            
-                                Clicked="Config_Command" 
-                                Margin="0,0,-135,0"
-                                Padding="0,0,0,5"
-                                />
-                            
-
+                             /> 
                             <BoxView 
                                 HeightRequest="1.5" 
                                 WidthRequest="170"
@@ -74,29 +58,13 @@
                                 HorizontalOptions="CenterAndExpand" />
                         </Grid>
                         <Grid Grid.Row="1">
-
                             <Button
                                 x:Name="READER"
-                                Text="READERS"                                
+                                Text="READERS &#xe801;"                                
                                 TextColor="#ffffff"
+                                FontFamily="{StaticResource CustomFont}"
                                 BackgroundColor="Transparent"                                
                                 FontSize="15"
-                                VerticalOptions="CenterAndExpand"
-                                HorizontalOptions="CenterAndExpand"
-                                Margin="0,0,25,0"
-                                Padding="0,0,0,5"
-                                Clicked="Reader_Command"                                
-                            />
-                            <Button
-                                x:Name="READER2"
-                                Text="&#xf02a;"                                
-                                FontFamily="{StaticResource FontAwesomeSolid}"
-                                TextColor="#ffffff"
-                                BackgroundColor="Transparent"
-                                FontAttributes="Bold"
-                                FontSize="15"
-                                Margin="0,0,-75,0"
-                                Padding="0,0,0,5"
                                 VerticalOptions="CenterAndExpand"
                                 HorizontalOptions="CenterAndExpand"
                                 Clicked="Reader_Command"                                
@@ -110,17 +78,15 @@
                                 HorizontalOptions="CenterAndExpand" />
                         </Grid>
                         <Grid Grid.Row="2" >
-
                             <Button
                                 x:Name="LOGOUT"
-                                Text="LOG OUT  &#xf2f5;"                                
-                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                Text="LOG OUT &#xe802;"                                
+                                FontFamily="{StaticResource CustomFont}"
                                 TextColor="#ffffff"
                                 BackgroundColor="Transparent"                                
                                 VerticalOptions="CenterAndExpand"
                                 HorizontalOptions="CenterAndExpand"
                                 Clicked="Logout_Command"
-
                             />
                             <BoxView 
                                 HeightRequest="1.5" 
