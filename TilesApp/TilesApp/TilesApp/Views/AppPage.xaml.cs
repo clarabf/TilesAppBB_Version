@@ -128,6 +128,8 @@ namespace TilesApp.Views
 
         private async void Logout_Command(object sender, EventArgs args)
         {
+            await DisplayAlert("You are abandoning this page", "Please, wait until Login page appears.", "OK");
+            MessagingCenter.Send(this, "OdooConnection");
             await Navigation.PopModalAsync(true);
         }
 

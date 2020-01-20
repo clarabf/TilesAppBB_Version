@@ -17,7 +17,6 @@
                 VerticalOptions="Fill" 
                 HorizontalOptions="FillAndExpand"
                 Orientation="Vertical">
-                <!--<ActivityIndicator x:Name="spinner" IsRunning="True"/>-->
                 <Grid Padding="40" StyleClass="gridLogin">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
