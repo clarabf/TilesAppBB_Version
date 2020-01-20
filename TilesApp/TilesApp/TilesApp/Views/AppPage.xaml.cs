@@ -21,38 +21,44 @@ namespace TilesApp.Views
                 string[] tagArr = tag.Split('_');
                 string appType = tagArr[1];
                 string appName = tagArr[2];
+                string icon = "";
                 buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 Button button = new Button
                 {
-                    Text = appName,
                     TextColor = Color.FromHex("#ffffff"),
                     BackgroundColor = Color.FromHex("#bc0000"),
                     FontSize = 18,
+                    FontFamily = Application.Current.Resources["FontIcon"].ToString(),
                     WidthRequest = 500,
                     CornerRadius = 5,
                     VerticalOptions = LayoutOptions.Center,
                     HorizontalOptions = LayoutOptions.Center,
                     BorderColor = Color.FromHex("#796f6f"),
-                    BorderWidth = 3
+                    BorderWidth = 3,
+                    ClassId = tag
                 };
-
                 switch (appType)
                 {
                     case "Link":
+                        icon = "\uf5a1";
                         button.Clicked += Link_Command;
                         break;
                     case "Join":
+                        icon = "\uf6fa";
                         button.Clicked += Join_Command;
                         break;
                     case "Reg":
+                        icon = "\uf753";
                         button.Clicked += Reg_Command;
                         break;
                     case "QC":
+                        icon = "\uf186";
                         button.Clicked += QC_Command;
                         break;
                     default:
                         break;
                 }
+                button.Text = appName + " " +  icon;
                 buttonsGrid.Children.Add(button, 0, row);
                 row++;           
             }
@@ -63,54 +69,25 @@ namespace TilesApp.Views
         private async void Link_Command(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            foreach (var tag in (OdooXMLRPC.userAppsList))
-            {
-                if (tag.Contains(b.Text)&& tag.Contains("Link"))
-                {
-                    await Navigation.PushModalAsync(new Link(tag));
-                    break;
-                }
-            }            
+            await Navigation.PushModalAsync(new Link(b.ClassId));
         }
 
         private async void Join_Command(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            foreach (var tag in (OdooXMLRPC.userAppsList))
-            {
-                if (tag.Contains(b.Text) && tag.Contains("Join"))
-                {
-                    await Navigation.PushModalAsync(new Join(tag));
-                    break;
-                }
-            }
+            await Navigation.PushModalAsync(new Join(b.ClassId));
         }
 
         private async void Reg_Command(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            foreach (var tag in (OdooXMLRPC.userAppsList))
-            {
-                if (tag.Contains(b.Text) && tag.Contains("Reg"))
-                {
-                    await Navigation.PushModalAsync(new Reg(tag));
-                    break;
-                }
-            }
+            await Navigation.PushModalAsync(new Reg(b.ClassId));
         }
-
 
         private async void QC_Command(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            foreach (var tag in (OdooXMLRPC.userAppsList))
-            {
-                if (tag.Contains(b.Text) && tag.Contains("QC"))
-                {
-                    await Navigation.PushModalAsync(new QC(tag));
-                    break;
-                }
-            }
+            await Navigation.PushModalAsync(new QC(b.ClassId));
         }
 
 
