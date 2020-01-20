@@ -50,7 +50,7 @@ namespace TilesApp.Models.Skeletons
         public override Dictionary<string, object> ProcessScannerRead(Dictionary<string, object> scannerRead)
         {
             Dictionary<string, object> returnScannerRead = base.ProcessScannerRead(scannerRead); ;
-            if(returnScannerRead != null & IsParent(scannerRead))
+            if(returnScannerRead.Count>0 & IsParent(scannerRead))
             {     
                 if(appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] != null)
                 {
@@ -66,7 +66,7 @@ namespace TilesApp.Models.Skeletons
             }
             else
             {
-                return null;
+                return new Dictionary<string, object>();
             }
         }        
 

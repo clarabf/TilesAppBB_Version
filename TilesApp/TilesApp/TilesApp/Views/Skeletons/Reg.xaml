@@ -21,15 +21,32 @@
                 VerticalOptions="EndAndExpand"
                 Grid.Row="0"
             />
-            <Label x:Name="lblTitle" 
+            <StackLayout 
+                Grid.Row="1">
+                <Label x:Name="lblTitle" 
                 Text="Scan barcode of component:"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="1"
+                VerticalOptions="CenterAndExpand"                
             />
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                         TextColor="Black"
+                FontAttributes="Bold"
+                FontSize="18"
+                        Text="Test type: "
+                        />
+                    <Label
+                         TextColor="DarkGray"
+                FontAttributes="Bold"
+                FontSize="18"
+                        x:Name="lblRegType"
+                        />
+                </StackLayout>
+            </StackLayout>
+
             <ListView ItemsSource="{Binding ViewableReads}" 
                 Grid.Row="2"
              />

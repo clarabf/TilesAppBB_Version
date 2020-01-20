@@ -128,31 +128,63 @@ namespace TilesApp.Droid
             String result = "";
             for (int i = 0; i < keyCodes.Length; i++)
             {
-                if (keyCodes[i].Length == 1)
-                {
-                    if (i >= 1)
-                    {
-                        if (keyCodes[i - 1] == "ShiftLeft")
-                        {
-                            result += keyCodes[i].ToUpper();
-                        }
-                        else
-                        {
-                            result += keyCodes[i].ToLower();
-                        }
-                    }
-                    else
-                    {
-                        result += keyCodes[i].ToLower();
-                    }
-                }
-                else if (keyCodes[i].Contains("Num"))
+                if (keyCodes[i].Contains("Num"))
                 {
                     result += keyCodes[i].Substring(keyCodes[i].Length - 1);
                 }
-                else if (keyCodes[i] == "Slash")
+                else
+                if (i >= 1 && keyCodes[i - 1] == "ShiftLeft")
+                {                            
+                    switch (keyCodes[i])
+                    {
+                        case "Apostrophe":
+                            result += "\"";
+                            break;
+                        case "LeftBracket":
+                            result += "{";
+                            break;
+                        case "Semicolon":
+                            result += ":";
+                            break;
+                        case "RightBracket":
+                            result += "}";
+                            break;
+                        default:
+                            result += keyCodes[i].ToUpper();
+                            break;
+                    }
+                }
+                else
                 {
-                    result += "/";
+                    switch (keyCodes[i])
+                    {
+                        case "Slash":
+                            result += "/";
+                            break;
+                        case "Apostrophe":
+                            result += "\'";
+                            break;
+                        case "LeftBracket":
+                            result += "[";
+                            break;
+                        case "Semicolon":
+                            result += ";";
+                            break;
+                        case "RightBracket":
+                            result += "]";
+                            break;
+                        case "Comma":
+                            result += ",";
+                            break;
+                        case "Space":
+                            result += " ";
+                            break;
+                        case "ShiftLeft":
+                            break;
+                        default:
+                            result += keyCodes[i].ToLower();
+                            break;
+                    }                    
                 }
             }
             return result;

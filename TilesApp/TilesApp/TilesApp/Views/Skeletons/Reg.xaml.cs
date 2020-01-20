@@ -17,6 +17,7 @@ namespace TilesApp.Views
             InitializeComponent();
             BindingContext = this;
             MetaData = new RegMetaData(OdooXMLRPC.GetAppConfig(tag));
+            lblRegType.Text = MetaData.Operation;
             string[] appNameArr = tag.Split('_');
             MetaData.AppType = appNameArr[1];
             MetaData.AppName = appNameArr[2];
@@ -34,9 +35,17 @@ namespace TilesApp.Views
                     return;
                 }
             }
-            btnSaveAndFinish.IsVisible = true;
-            MetaData.ProcessScannerRead(input);
-            ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+
+            Dictionary<string, object> returnedData = MetaData.ProcessScannerRead(input);
+            if (returnedData.Count > 0)
+            {
+                if (MetaData.IsValid())
+                {
+                    lblRegType.Text = MetaData.Operation;
+                    btnSaveAndFinish.IsVisible = true;
+                }
+                ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+            }
         }
 
         private async void SaveAndFinish(object sender, EventArgs args)

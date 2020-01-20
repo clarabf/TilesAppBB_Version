@@ -19,9 +19,9 @@ namespace TilesApp.Views
         public QC(string tag)
         {
             InitializeComponent();
-            BindingContext = this;
-            
+            BindingContext = this;                       
             MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
+            lblTestType.Text = MetaData.QCProcedureDetails;
             string[] appNameArr = tag.Split('_');
             MetaData.AppType = appNameArr[1];
             MetaData.AppName = appNameArr[2];
@@ -50,8 +50,17 @@ namespace TilesApp.Views
                     return;
                 }
             }
-            MetaData.ProcessScannerRead(input);
-            ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+            Dictionary<string,object> returnedData = MetaData.ProcessScannerRead(input);
+            if (returnedData.Count > 0)
+            {
+                if (MetaData.IsValid())
+                {
+                    lblTestType.Text = MetaData.QCProcedureDetails;
+                    btPass.IsEnabled = true;
+                    btPass.IsEnabled = true;
+                }
+                ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+            }            
         }
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
@@ -115,7 +124,8 @@ namespace TilesApp.Views
             }
             if (MetaData.IsValid())
             {
-                if (CosmosDBManager.InsertOneObject(MetaData))
+                bool submitted = CosmosDBManager.InsertOneObject(MetaData);
+                if (submitted)
                 {
                     string message = "";
                     foreach (Dictionary<string, object> item in MetaData.ScannerReads)
@@ -127,12 +137,17 @@ namespace TilesApp.Views
                 else
                     await DisplayAlert("Report was NOT delivered successfully!", "We could not connect to the Database Server", "OK");
             }
+            else if (MetaData.QCResultDetails.Length == 0)
+            {
+                await DisplayAlert("Error:", "Please scan operation QR!", "OK");
+                return;
+            }
             else
             {
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
             }
             List<Dictionary<string, string>> results = StreamToAzure.WriteJPEGStreams(photoList, appName);
-            await DisplayAlert(messageTitle, messageContent, "OK");
+            //await DisplayAlert(messageTitle, messageContent, "OK");
             await Navigation.PopModalAsync(true);
         }
         private async void Show_Images(object sender, EventArgs args)

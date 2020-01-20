@@ -28,16 +28,33 @@
                 Grid.Row="0"
                 Grid.ColumnSpan="2"
             />
-            <Label x:Name="lblTitle" 
+            <StackLayout 
+                Grid.Row="1"
+                Grid.ColumnSpan="2" >
+                <Label x:Name="lblTitle" 
                 Text="Scan barcode of component:"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
                 HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="1"
-                Grid.ColumnSpan="2"
+                VerticalOptions="CenterAndExpand"                
             />
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                         TextColor="Black"
+                FontAttributes="Bold"
+                FontSize="18"
+                        Text="Test type: "
+                        />
+                    <Label
+                         TextColor="DarkGray"
+                FontAttributes="Bold"
+                FontSize="18"
+                        x:Name="lblTestType"
+                        />
+                </StackLayout>
+            </StackLayout>
+            
             <ListView ItemsSource="{Binding ViewableReads}" 
                 Grid.Row="2"
                 Grid.ColumnSpan="2"
@@ -86,6 +103,7 @@
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
                 IsVisible="True"
+                IsEnabled="False"
                 Margin="60,0,0,0"
                 Grid.Row="5"
                 Grid.Column="0"
@@ -104,6 +122,7 @@
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
                 IsVisible="True"
+                    IsEnabled="False"
                 Margin="-50,0,0,0"
                 Grid.Row="5"
                 Grid.Column="1"

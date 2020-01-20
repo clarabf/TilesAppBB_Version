@@ -141,13 +141,14 @@ namespace TilesApp.Models
         //Method to process scanner reads and discriminate between: Ones with scans with not valid UUID, scans that are QR Jsons, those that are overwritting already written fields and valid scans
         public virtual Dictionary<string, object> ProcessScannerRead(Dictionary<string, object> scannerRead)
         {
+            Dictionary<string,object> result = new Dictionary<string, object>();
             //See if it is a QR.
             try
             {
                 Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string, object>>(scannerRead["Value"].ToString());
 
                 if (data != null) { AddQRMetaData(data); }
-                return null;
+                return result;
             }
             //Try to process as standard read
             catch (Exception e)
@@ -182,12 +183,9 @@ namespace TilesApp.Models
                     if (isValidCode)
                     {
                         ScannerReads.Add(scannerRead);
-                        return scannerRead;
+                        result = scannerRead;
                     }
-                    else
-                    {
-                        return null;
-                    }
+                        return result;
                 }
                 catch
                 {
