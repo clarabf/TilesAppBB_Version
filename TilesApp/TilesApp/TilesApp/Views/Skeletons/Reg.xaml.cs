@@ -26,26 +26,38 @@ namespace TilesApp.Views
 
         public override void ScannerReadDetected(Dictionary<string, object> input)
         {
-            lblBarcode.IsVisible = true;
-            barcode.Text = input[nameof(BaseData.InputDataProps.Value)].ToString();
+
+            foreach (Dictionary<string, object> item in MetaData.ScannerReads)
+            {
+                if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == input[nameof(BaseMetaData.InputDataProps.Value)].ToString())
+                {
+                    return;
+                }
+            }
             btnSaveAndFinish.IsVisible = true;
+            MetaData.ProcessScannerRead(input);
+            ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
         }
 
         private async void SaveAndFinish(object sender, EventArgs args)
         {
-            // Iterate over the scanned codes and process them
-            foreach (var scannerRead in ScannerReads)
+            if (MetaData.IsValid())
             {
-                MetaData.ProcessInput(scannerRead);
-            }
-            if (MetaData.IsValid()||true)
-            {
-                bool success = CosmosDBManager.InsertOneObject(MetaData);
-                await DisplayAlert(barcode.Text + " was regitered successfully!", barcode.Text, "OK");
+                if (CosmosDBManager.InsertOneObject(MetaData))
+                {
+                    string message = "";
+                    foreach (Dictionary<string, object> item in MetaData.ScannerReads)
+                    {
+                        message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
+                    }
+                    await DisplayAlert("Component/s were registered successfully!", message.Substring(0, message.Length - 2), "OK");
+                }
+                else
+                    await DisplayAlert("Component/s were NOT registered successfully!", "We could not connect to the Database Server", "OK");
             }
             else
             {
-                await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
+                await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
             }
             await Navigation.PopModalAsync(true);
         }

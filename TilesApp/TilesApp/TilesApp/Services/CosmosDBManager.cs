@@ -21,16 +21,16 @@ namespace TilesApp.Services
         private static IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(ConfigurationManager.AppSettings["MONGODB_COLLECTION"]);
 
         public static bool InsertOneObject(object metaData)
-        {
-
+        {            
             try
             {
-                collection.InsertOneAsync(metaData.ToBsonDocument()).Wait();
+                BsonDocument doc = metaData.ToBsonDocument();
+                collection.InsertOneAsync(doc).Wait();
                 return true;
             }
-            catch
+            catch(Exception e)
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong. Could not connect save to database.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
                 return false;
             }
         }

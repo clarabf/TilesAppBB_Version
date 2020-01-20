@@ -41,7 +41,7 @@
                 IsVisible="True"
                 Grid.Row="2"      
             />
-            <ListView ItemsSource="{Binding InputDataValues}" 
+            <ListView ItemsSource="{Binding ViewableReads}" 
                 Grid.Row="3"      
                 />
             <Button x:Name="btnSaveAndFinish"

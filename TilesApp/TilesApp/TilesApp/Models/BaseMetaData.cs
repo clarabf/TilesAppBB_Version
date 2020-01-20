@@ -5,6 +5,7 @@ using TilesApp.Services;
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 namespace TilesApp.Models
 {
@@ -84,6 +85,8 @@ namespace TilesApp.Models
                 }
             }
         }
+        [BsonIgnoreIfNull]
+        public ObservableCollection<Dictionary<string, object>> ScannerReads { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         [BsonIgnoreIfNull]
         public Dictionary<string, object> CustomFields
         {
@@ -165,6 +168,7 @@ namespace TilesApp.Models
                                 if (validContentFormat.Substring(i * 2, 2).ToUpper() != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2).ToUpper() != validContentFormat.Substring(i * 2, 2).ToUpper())
                                 {
                                     isValidCode = false;
+                                    break; // next validContentFormat
                                 }
                             }
                             if (isValidCode) { break; }
@@ -177,6 +181,7 @@ namespace TilesApp.Models
 
                     if (isValidCode)
                     {
+                        ScannerReads.Add(scannerRead);
                         return scannerRead;
                     }
                     else

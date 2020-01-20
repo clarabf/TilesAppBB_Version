@@ -49,81 +49,24 @@ namespace TilesApp.Models.Skeletons
 
         public override Dictionary<string, object> ProcessScannerRead(Dictionary<string, object> scannerRead)
         {
-            Dictionary<string, object> returnScannerRead = scannerRead;
-            //See if it is a QR.
-            try
-            {
-                Dictionary<string, dynamic> data = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(scannerRead["Value"].ToString());
-                
-                if(data != null){AddQRMetaData(data);}
-                return null;
-            }
-            //Try to process as standard read
-            catch(Exception e)
-            {   
-                string duplicatedParentEx = "Last scan had the parent code pattern, but it could not be considered a parent as there was already one assigned. Parent status will be given to the first parent scanned";
-                try
+            Dictionary<string, object> returnScannerRead = base.ProcessScannerRead(scannerRead); ;
+            if(returnScannerRead != null & IsParent(scannerRead))
+            {     
+                if(appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] != null)
                 {
-                    bool isValidCode = true;
-                    
-                    foreach(string validContentFormat in appData[appDataIndex["ValidCodeFormat"]]["DefaultValue(admin)"])
-                    {
-                        isValidCode = true;
-                        //Apply filter
-                        if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\b([a-fA-F0-9xX]+)\b") & validContentFormat.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & scannerRead["Value"].ToString().Length == 24)
-                        {
-                            for (int i = 0; i < 12; i++)
-                            {
-                                if (validContentFormat.Substring(i * 2, 2).ToUpper() != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2).ToUpper() != validContentFormat.Substring(i * 2, 2).ToUpper())
-                                {
-                                    isValidCode = false;
-                                }
-                            }
-                            if(isValidCode){break;}
-                        }
-                        else
-                        {
-                            isValidCode = false;
-                        }
-                    }
-                    
-                    //<-------This is the method override difference------>
-                    if(isValidCode & IsParent(scannerRead))
-                    {     
-                        if(appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] != null)
-                        {
-                            //REPLACE WITH NOTIFICATION OF PARENT ALREADY ASSIGNED
-                            throw new Exception(duplicatedParentEx);
-                        }
-                        else
-                        {
-                            appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] = scannerRead["Value"];
-                            returnScannerRead.Add("IsParent",true);
-                            return returnScannerRead;
-                        }  
-                    }
-                    //<-------This is the method override difference------>
-                    else if(isValidCode)
-                    {
-                        return returnScannerRead;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    //REPLACE WITH NOTIFICATION OF PARENT ALREADY ASSIGNED                   
+                    throw new Exception("Last scan had the parent code pattern, but it could not be considered a parent as there was already one assigned. Parent status will be given to the first parent scanned");
                 }
-                catch(Exception ex)
-                {   
-                    //If ex content)
-                    if (ex.Message == duplicatedParentEx)
-                    {
-                        throw ex;
-                    }
-                    else
-                    {
-                        throw e;
-                    }
-                }                          
+                else
+                {
+                    appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] = scannerRead["Value"];
+                    ScannerReads[ScannerReads.IndexOf(scannerRead)].Add("IsParent", true);
+                    return returnScannerRead;
+                }
+            }
+            else
+            {
+                return null;
             }
         }        
 

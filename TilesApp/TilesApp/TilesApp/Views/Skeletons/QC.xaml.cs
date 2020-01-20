@@ -15,7 +15,6 @@ namespace TilesApp.Views
         private string appName;
         private List<Stream> photoList = new List<Stream>();
         public QCMetaData MetaData { get; set; }
-        public ObservableCollection<string> InputDataValues { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<PhotoData> TakenPhotos { get; set; } = new ObservableCollection<PhotoData>();
         public QC(string tag)
         {
@@ -44,7 +43,15 @@ namespace TilesApp.Views
 
         public override void ScannerReadDetected(Dictionary<string, object> input)
         {
-            InputDataValues.Add(input[nameof(BaseData.InputDataProps.Value)].ToString());
+            foreach (Dictionary<string, object> item in MetaData.ScannerReads)
+            {
+                if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == input[nameof(BaseMetaData.InputDataProps.Value)].ToString())
+                {
+                    return;
+                }
+            }
+            MetaData.ProcessScannerRead(input);
+            ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
         }
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
@@ -106,20 +113,23 @@ namespace TilesApp.Views
                 messageTitle = "Failure...";
                 messageContent = "Component(s) failed the Quality Control...";
             }
-            // Iterate over the scanned codes and process them
-            foreach (var scannerRead in ScannerReads)
+            if (MetaData.IsValid())
             {
-                MetaData.ProcessInput(scannerRead);
-            }
-            if (MetaData.IsValid()||true)
-            {
-                bool success = CosmosDBManager.InsertOneObject(MetaData);
-                string message = success ? "Report was submitted successfully!" : "We didn't manage to sumit your report!";
-                await DisplayAlert("QC Report Submission", message, "Ok");
+                if (CosmosDBManager.InsertOneObject(MetaData))
+                {
+                    string message = "";
+                    foreach (Dictionary<string, object> item in MetaData.ScannerReads)
+                    {
+                        message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
+                    }
+                    await DisplayAlert("Report was delivered successfully!", message.Substring(0, message.Length - 2), "OK");
+                }
+                else
+                    await DisplayAlert("Report was NOT delivered successfully!", "We could not connect to the Database Server", "OK");
             }
             else
             {
-                await DisplayAlert("Error fetching Meta Data!", "Please contact your Odoo administrator", "OK");
+                await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
             }
             List<Dictionary<string, string>> results = StreamToAzure.WriteJPEGStreams(photoList, appName);
             await DisplayAlert(messageTitle, messageContent, "OK");

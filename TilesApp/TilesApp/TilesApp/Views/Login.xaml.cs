@@ -13,9 +13,9 @@ namespace TilesApp.Views
         public Login()
         {
             InitializeComponent();
-            //Setup();
+            OdooXMLRPC.Start();
+            Setup();
             NavigationPage.SetHasNavigationBar(this, false);
-
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 if(OdooXMLRPC.users.ContainsKey(a.ToString()))
                 {
@@ -31,20 +31,12 @@ namespace TilesApp.Views
                     await DisplayAlert("Error scanning badge", "User not found in DB...", "Ok");
                 }
             });
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            OdooXMLRPC.Start();
-            Setup();
-            //spinner.IsRunning = false;
-        }
-
-        protected override void OnDisappearing()
-        {
-            base.OnDisappearing();
-            //spinner.IsRunning = true;
+            MessagingCenter.Subscribe<AppPage>(this, "OdooConnection", async (s) => {
+                //System.Threading.Thread.Sleep(3000);
+                OdooXMLRPC.Start();
+                Setup();
+                await DisplayAlert("Welcome back to login!","Connection to Odoo sucessful!", "Ok");
+            });
         }
 
         private void GoToScan(object sender, EventArgs args)

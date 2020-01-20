@@ -22,7 +22,7 @@
                 Grid.Row="0"
             />
             <Label x:Name="lblTitle" 
-                Text="Scan barcode of Main component:"
+                Text="Scan barcode of components:"
                 TextColor="Black"
                 FontAttributes="Bold"
                 FontSize="18"
@@ -30,9 +30,39 @@
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="1"
             />
-            <ListView ItemsSource="{Binding BarcodesScanned}" 
+            <StackLayout Grid.Row="2" >
+                <Label x:Name="lblParentBarcode"
+                TextColor="Black"
+                FontSize="16"
+                Margin="20,0,20,0"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
                 Grid.Row="2"      
-                />
+                >
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <FormattedString.Spans>
+                                <Span Text="Checkpoint of component&#x0a;    &lt;" />
+                                <Span x:Name="barcode" FontAttributes="Bold" Text="12345678"/>
+                                <Span Text="&gt;&#x0a;      done successfully."/>
+                            </FormattedString.Spans>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Label 
+                    x:Name="lblComponents"
+                Text="Barcodes of components:"
+                TextColor="DarkGray"
+                FontAttributes="Bold"
+                FontSize="18"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                    IsVisible="False"
+            />
+                <ListView ItemsSource="{Binding ViewableReads}"  />
+            </StackLayout>
+            
             <Button x:Name="btnSaveAndFinish"
                 TextColor="White"
                 BackgroundColor="Black"
