@@ -99,12 +99,14 @@ namespace TilesApp.Models.Skeletons
                         {
                             appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] = scannerRead["Value"];
                             returnScannerRead.Add("IsParent",true);
+                            ScannerReads.Add(returnScannerRead);
                             return returnScannerRead;
                         }  
                     }
                     //<-------This is the method override difference------>
                     else if(isValidCode)
                     {
+                        ScannerReads.Add(returnScannerRead);
                         return returnScannerRead;
                     }
                     else

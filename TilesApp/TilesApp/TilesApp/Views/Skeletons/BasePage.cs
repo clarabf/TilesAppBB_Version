@@ -147,7 +147,7 @@ namespace TilesApp
             MessagingCenter.Subscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceFound", (s, device) => {
                 if (device != null)
                 {
-                    ComplexBluetoothDevice pairedDevice = new ComplexBluetoothDevice(device, ComplexBluetoothDevice.States.Paired);
+                    ComplexBluetoothDevice pairedDevice = new ComplexBluetoothDevice(device, ComplexBluetoothDevice.States.Disconnected);
                     foreach (var compDevice in ReadersViewModel.BluetoothCameraReaders.ToList())
                     {
                         if (compDevice.Device.Address == pairedDevice.Device.Address)

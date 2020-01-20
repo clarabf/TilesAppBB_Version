@@ -47,7 +47,7 @@ namespace TilesApp.Droid
             ZXing.Mobile.MobileBarcodeScanner.Initialize(Application);
             LoadApplication(new App());
             monitor = new DeviceMonitor();
-            //ScanBluetoothDevices();
+            ScanBluetoothDevices();
             ScanSerialDevices();
             GetDeviceSerialNumber();
         }

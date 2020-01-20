@@ -168,6 +168,7 @@ namespace TilesApp.Models
                                 if (validContentFormat.Substring(i * 2, 2).ToUpper() != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2).ToUpper() != validContentFormat.Substring(i * 2, 2).ToUpper())
                                 {
                                     isValidCode = false;
+                                    break; // next validContentFormat
                                 }
                             }
                             if (isValidCode) { break; }
