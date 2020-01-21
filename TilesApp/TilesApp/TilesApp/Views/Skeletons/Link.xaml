@@ -4,76 +4,82 @@
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
              x:Class="TilesApp.Views.Link">
     <ContentPage.Content>
-        <Grid BackgroundColor="White">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="0.4*" />
-                <RowDefinition Height="0.5*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="0.5*" />
-                <RowDefinition Height="1*" />
-            </Grid.RowDefinitions>
-            <Label x:Name="lblTest" 
-                Text="ASSOCIATE"
-                TextColor="Black"
-                FontAttributes="Bold"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="EndAndExpand"
-                Grid.Row="0"
-            />
-            <Label x:Name="lblTitle" 
-                Text="Scan barcode of component:"
-                TextColor="Black"
-                FontAttributes="Bold"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="1"
-            />
-            <Label x:Name="lblBarcode"
-                TextColor="Black"
-                Text ="Last barcode scanned"
-                FontSize="18"
-                Margin="20,0,20,0"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                IsVisible="True"
-                Grid.Row="2"      
-            />
-            <ListView ItemsSource="{Binding ViewableReads}" 
-                Grid.Row="3"      
-                />
-            <Button x:Name="btnSaveAndFinish"
-                TextColor="White"
-                BackgroundColor="Black"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Save &amp; Finish"
-                WidthRequest="250"
-                BorderColor="White"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="EndAndExpand"
-                Grid.Row="4"
-                IsVisible="False"
-                Clicked="SaveAndFinish"
-            />
-            <Button x:Name="btnCancel"
-                TextColor="Black"
-                BackgroundColor="White"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Cancel"
-                WidthRequest="250"
-                BorderColor="Black"
-                BorderWidth="1"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="5"
-                Clicked="Cancel"
-            />
-        </Grid>
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Image Source="newBackground.jpg" Aspect="Fill"/>
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"
+                         BackgroundColor="Transparent"  VerticalOptions="Fill" HorizontalOptions="FillAndExpand"
+                         Orientation="Vertical">
+                <Grid StyleClass="gridApps">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.4*" />
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="0.15*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="0.5*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Label x:Name="lblTitle" 
+                        Text="SCAN BARCODE"
+                        TextColor="#ffffff"
+                        FontAttributes="Bold"
+                        FontSize="20"
+                        CharacterSpacing="1.15"
+                        HorizontalOptions="Center"
+                        VerticalOptions="CenterAndExpand"
+                        Grid.Row="0"
+                    />
+                    <Label x:Name="lblTest" 
+                        Text="LINK"
+                        TextColor="#ffffff"
+                        CharacterSpacing="1.05"
+                        FontSize="118"
+                        HorizontalOptions="CenterAndExpand"                        
+                        Grid.Row="1"
+                    />
+                    <Label x:Name="lblBarcode"
+                        TextColor="#ffffff"
+                        Text ="LAST BARCODE SCANNED"
+                        FontSize="16"
+                        Margin="0,0,0,0"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                        IsVisible="True"
+                        Grid.Row="2"      
+                    />
+                    <BoxView 
+                        HeightRequest="1.5" 
+                        WidthRequest="1500"
+                        BackgroundColor="#bc0000" 
+                        Margin="0,0,0,0"
+                        VerticalOptions="Start"
+                        Grid.Row="3" 
+                        HorizontalOptions="CenterAndExpand" />
+                    
+                    <ListView ItemsSource="{Binding ViewableReads}" 
+                        Grid.Row="4"      
+                        />
+                    <Button x:Name="btnSaveAndFinish"                       
+                        StyleClass="primaryButton"
+                        Text="Save &amp; Finish"
+                        WidthRequest="250"
+                        HorizontalOptions="CenterAndExpand" 
+                        VerticalOptions="EndAndExpand"
+                        Grid.Row="4"
+                        IsVisible="False"
+                        Clicked="SaveAndFinish"
+                    />
+                    <Button x:Name="btnCancel"
+                        StyleClass="darkButton"
+                        Text="Cancel"
+                        WidthRequest="250"
+                        HorizontalOptions="CenterAndExpand" 
+                        VerticalOptions="CenterAndExpand"
+                        Grid.Row="5"
+                        Clicked="Cancel"
+                    />
+                </Grid>
+            </StackLayout>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </d:BasePage>
