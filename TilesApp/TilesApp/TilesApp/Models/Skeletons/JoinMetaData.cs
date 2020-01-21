@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
+using Xamarin.Forms;
 
 namespace TilesApp.Models.Skeletons
 {
@@ -55,7 +56,8 @@ namespace TilesApp.Models.Skeletons
                 if(appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] != null)
                 {
                     //REPLACE WITH NOTIFICATION OF PARENT ALREADY ASSIGNED                   
-                    throw new Exception("Last scan had the parent code pattern, but it could not be considered a parent as there was already one assigned. Parent status will be given to the first parent scanned");
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Last scan had the parent code pattern, but it could not be considered a parent as there was already one assigned. Parent status will be given to the first parent scanned");
+                    return new Dictionary<string, object>();
                 }
                 else
                 {

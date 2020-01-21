@@ -3,18 +3,41 @@ using System.Collections.Generic;
 using TilesApp.Services;
 using TilesApp.Rfid;
 using Xamarin.Forms;
+using System.Timers;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace TilesApp.Views
 {
     public partial class AppPage : ContentPage
     {
-        Dictionary<string, object> userInfo;
+        private int seconds = 0;
+        private Timer timer = new Timer();
+
+        private string _sessionTime;
+        public string SessionTime
+        {
+            get
+            {
+                return _sessionTime;
+            }
+            set
+            {
+                if (_sessionTime != value)
+                {
+                    _sessionTime = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         public AppPage()
         {
             InitializeComponent();
+            BindingContext = new ConfigInfoViewModel();
             this.BindWithLifecycle(App.ViewModel.Inventory);
             NavigationPage.SetHasNavigationBar(this, false);
+            
             int row = 0;
             foreach (string tag in OdooXMLRPC.userAppsList)
             {
@@ -25,7 +48,6 @@ namespace TilesApp.Views
                 buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 Button button = new Button
                 {
-                    Text = appName,
                     TextColor = Color.FromHex("#ffffff"),
                     BackgroundColor = Color.FromHex("#bc0000"),
                     FontSize = 18,
@@ -33,7 +55,7 @@ namespace TilesApp.Views
                     CornerRadius = 5,
                     FontFamily = Application.Current.Resources["CustomFont"].ToString(),
                     VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.End,
+                    HorizontalOptions = LayoutOptions.Center,
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
                     ClassId = tag,
@@ -50,11 +72,11 @@ namespace TilesApp.Views
                         button.Clicked += Join_Command;
                         break;
                     case "Reg":
-                        icon = "\uf14a";
+                        icon = "\uf11b";
                         button.Clicked += Reg_Command;
                         break;
                     case "QC":
-                        icon = "\uf11b";
+                        icon = "\uf14a";
                         button.Clicked += QC_Command;
                         break;
                     default:
@@ -64,6 +86,16 @@ namespace TilesApp.Views
                 buttonsGrid.Children.Add(button, 0, row);
                 row++;           
             }
+            timer.Elapsed += OnTimerEvent;
+            timer.Interval = 1000; // 1 second
+            timer.Enabled = true;
+        }
+
+        private void OnTimerEvent(object sender, ElapsedEventArgs e)
+        {
+            seconds++;
+            TimeSpan t = TimeSpan.FromSeconds(seconds);
+            SessionTime = string.Format("{0:D2} hrs {1:D2} min {2:D2} sec", t.Hours, t.Minutes, t.Seconds);
         }
 
         // Applications
@@ -97,7 +129,8 @@ namespace TilesApp.Views
 
         private async void Config_Command(object sender, EventArgs args)
         {
-            await DisplayAlert("CONFIGURATION", "Config...", "OK");
+            //await DisplayAlert("CONFIGURATION", "Config...", "OK");
+            await Navigation.PushModalAsync(new Configuration(this));
         }
 
         private async void Reader_Command(object sender, EventArgs args)
@@ -108,9 +141,19 @@ namespace TilesApp.Views
         private async void Logout_Command(object sender, EventArgs args)
         {
             await DisplayAlert("You are abandoning this page", "Please, wait until Login page appears.", "OK");
+            timer.Stop();
             MessagingCenter.Send(this, "OdooConnection");
             await Navigation.PopModalAsync(true);
         }
 
+    }
+
+    public class ConfigInfoViewModel : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string name = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

@@ -50,34 +50,43 @@ namespace TilesApp.Views
             HttpClient client = new HttpClient();
 
             // Card employee
-            if (scanType==1)
+            switch (scanType)
             {
-                if(OdooXMLRPC.users.ContainsKey(qrScanned))
-                {
-                    OdooXMLRPC.SetCurrentUser(qrScanned);
+                case 1:
+                    if (OdooXMLRPC.users.ContainsKey(qrScanned))
+                    {
+                        OdooXMLRPC.SetCurrentUser(qrScanned);
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Navigation.PopModalAsync(true);
+                            Navigation.PushModalAsync(new AppPage());
+                        });
+                    }
+                    else
+                    {
+                        Device.BeginInvokeOnMainThread(() =>
+                        {
+                            Navigation.PopModalAsync(true);
+                            DisplayAlert("Error scanning badge", "User not found in DB...", "Ok");
+                        });
+                    }
+                    break;
+                case 2:
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new AppPage());
+                        Navigation.PushModalAsync(new JSONPage(qrScanned));
                     });
-                }
-                else
-                {
+                    break;
+                case 3:
                     Device.BeginInvokeOnMainThread(() =>
                     {
+                        MessagingCenter.Send(this, "SetStation", qrScanned);
                         Navigation.PopModalAsync(true);
-                        DisplayAlert("Error scanning badge", "User not found in DB...", "Ok");
                     });
-                }
+                    break;
             }
-            else if (scanType==2)
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new JSONPage(qrScanned));
-                });
-            }
+
         }
 
     }

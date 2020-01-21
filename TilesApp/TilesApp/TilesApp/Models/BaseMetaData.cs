@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using Xamarin.Forms;
 
 namespace TilesApp.Models
 {
@@ -71,7 +72,7 @@ namespace TilesApp.Models
             }
         }
         [BsonIgnoreIfNull]
-        public Location Location
+        public Xamarin.Essentials.Location Location
         {
             get
             {
@@ -82,7 +83,7 @@ namespace TilesApp.Models
                 catch
                 {
                     return null;
-                }
+                }               
             }
         }
         [BsonIgnoreIfNull]
@@ -134,7 +135,7 @@ namespace TilesApp.Models
             }
             catch
             {
-                throw new Exception("Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");
             }
         }
 
@@ -215,7 +216,7 @@ namespace TilesApp.Models
                                 }
                                 else
                                 {
-                                    throw new Exception("One or several of the fields that you are trying to write have been determined as non QR fillable in the config file. Please review QR and/or config file content");
+                                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "One or several of the fields that you are trying to write have been determined as non QR fillable in the config file. Please review QR and/or config file content");
                                 }
                             }
                             else if (customData.ContainsKey(field.Key))
@@ -225,7 +226,7 @@ namespace TilesApp.Models
                             }
                             else
                             {
-                                throw new Exception("One or several of the fields in the QR do not exist on the config file. Please review QR content.");
+                                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "One or several of the fields in the QR do not exist on the config file. Please review QR content.");
                             }
                         }
                         catch (Exception e)
@@ -237,7 +238,7 @@ namespace TilesApp.Models
             }
             catch
             {
-                throw new Exception("QR content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "QR content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type.");
             }
         }
 
