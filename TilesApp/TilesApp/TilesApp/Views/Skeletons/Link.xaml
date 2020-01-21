@@ -4,114 +4,116 @@
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
              x:Class="TilesApp.Views.Link">
     <ContentPage.Content>
-        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <Image Source="newBackground.jpg" Aspect="Fill"/>
-            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"
-                         BackgroundColor="Transparent"  VerticalOptions="Fill" HorizontalOptions="FillAndExpand"
-                         Orientation="Vertical">
-                <Grid StyleClass="gridApps">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="0.4*" />
-                        <RowDefinition Height="0.5*" />
-                        <RowDefinition Height="0.15*" />
-                        <RowDefinition Height="0.2*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="0.5*" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
-                    <Label x:Name="lblTitle" 
-                        Text="SCAN BARCODE"
-                        TextColor="#ffffff"
-                        FontAttributes="Bold"
-                        FontSize="20"
-                        CharacterSpacing="1.15"
-                        HorizontalOptions="Center"
-                        VerticalOptions="CenterAndExpand"
-                        Grid.Row="0"
-                    />
-                    <Label x:Name="lblTest" 
-                        Text="LINK"
-                        TextColor="#ffffff"
-                        CharacterSpacing="1.05"
-                        FontSize="18"
-                        HorizontalOptions="CenterAndExpand"                        
-                        Grid.Row="1"
-                    />
-                    <Label x:Name="lblBarcode"
-                        TextColor="#ffffff"
-                        Text ="LAST BARCODE SCANNED"
-                        FontSize="16"
-                        Margin="0,0,0,0"
-                        HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="CenterAndExpand"
-                        IsVisible="True"
-                        Grid.Row="2"      
-                    />
-                    <BoxView 
-                        HeightRequest="1.5" 
-                        WidthRequest="1500"
-                        BackgroundColor="#bc0000" 
-                        Margin="0,0,0,0"
-                        VerticalOptions="Start"
-                        Grid.Row="3" 
-                        HorizontalOptions="CenterAndExpand" />
 
-                    <ListView ItemsSource="{Binding ViewableReads}" 
-                        Grid.Row="4">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout>
-                                        <Grid Grid.Row="4">
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="2*" />
-                                                <ColumnDefinition Width="0.5*" />
-                                            </Grid.ColumnDefinitions>
-                                            <Label
-                                        x:Name="Path"
-                                        FontAttributes="Bold"
-                                        Text="{Binding .}"
-                                        Grid.Column="0"
-                                        HorizontalOptions="CenterAndExpand"
-                                        VerticalOptions="CenterAndExpand"                                                
-                                    />
-                                            <ImageButton x:Name="Delete"
-                                        Grid.Column="1"
-                                        HeightRequest="20"
-                                        Padding="0"
-                                        HorizontalOptions="CenterAndExpand"
-                                        VerticalOptions="CenterAndExpand"
-                                        ClassId="{Binding .}"
-                                        Source="delete.png"
-                                        Clicked="Delete_ScannerRead"
-                                    />
-                                        </Grid>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>                              
-                    <Button x:Name="btnSaveAndFinish"                       
-                        StyleClass="primaryButton"
-                        Text="Save &amp; Finish"
-                        WidthRequest="250"
-                        HorizontalOptions="CenterAndExpand" 
-                        VerticalOptions="EndAndExpand"
-                        Grid.Row="5"
-                        IsVisible="False"
-                        Clicked="SaveAndFinish"
-                    />
-                    <Button x:Name="btnCancel"
-                        StyleClass="darkButton"
-                        Text="Cancel"
-                        WidthRequest="250"
-                        HorizontalOptions="CenterAndExpand" 
-                        VerticalOptions="CenterAndExpand"
-                        Grid.Row="6"
-                        Clicked="Cancel"
-                    />
-                </Grid>
-            </StackLayout>
-        </AbsoluteLayout>
+        <Grid BackgroundColor="#000000" StyleClass="gridApps">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="9*" />
+                <RowDefinition Height="1.5*" />
+                
+            </Grid.RowDefinitions>
+            <Label x:Name="lblTitle" 
+                Text="SCAN BARCODE"
+                TextColor="#ffffff"
+                FontAttributes="Bold"
+                FontSize="20"
+                CharacterSpacing="1.15"
+                HorizontalOptions="Center"
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="0"
+            />
+            <Label x:Name="lblTest" 
+                Text="LINK"
+                TextColor="#ffffff"
+                CharacterSpacing="1.05"
+                FontSize="18"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="Center"                        
+                Grid.Row="0"
+            />
+            <Label x:Name="lblBarcode"
+                TextColor="#ffffff"
+                Text ="LAST BARCODE SCANNED"
+                FontSize="16"
+                Margin="0,0,0,0"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                IsVisible="True"
+                Grid.Row="1"
+            />
+            <BoxView 
+                HeightRequest="1.5"
+                WidthRequest="1500"
+                BackgroundColor="#bc0000"
+                Margin="0,45,0,0"
+                VerticalOptions="Start"
+                Grid.Row="1"
+                HorizontalOptions="CenterAndExpand" />
+
+            <CollectionView Margin="0, -6, 0, 0" ItemsSource="{Binding ViewableReads}" Grid.Row="2" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+                        <Grid BackgroundColor="#151515">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="0.5*" />
+                            </Grid.ColumnDefinitions>
+                            <Label
+                                x:Name="Path"
+                                FontAttributes="Bold"
+                                Text="{Binding .}"
+                                Grid.Column="0"
+                                Padding="20"
+                                TextColor="#ffffff"
+                                FontSize="16"         
+                            />
+                            <Button 
+                                Text="&#xf1f8;"
+                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                HorizontalOptions="Center"                
+                                Clicked="Delete_ScannerRead"
+                                FontSize="16"
+                                BorderWidth="0"
+                                TextColor="#bc0000"
+                                ClassId="{Binding .}"
+                                Grid.Column="1"
+                                BackgroundColor="Transparent" />
+                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.ColumnSpan="2" VerticalOptions="End"/>
+                        </Grid>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+                <!--<CollectionView.Footer StyleClass="gridApps">
+
+                    
+
+
+                </CollectionView.Footer>-->
+            </CollectionView>
+            
+            <!--<Button x:Name="btnCancel"
+                StyleClass="darkButton"
+                Text="Cancel"
+                WidthRequest="250"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="3"
+                Clicked="Cancel"/>-->
+            
+            <Button x:Name="btnSaveAndFinish"                       
+                StyleClass="primaryButton"
+                Text="Save &amp; Finish"
+                WidthRequest="250"
+                Margin="0,0,0,10"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
+                Grid.Row="3"
+                Clicked="SaveAndFinish"/>
+
+        </Grid>
+
     </ContentPage.Content>
 </d:BasePage>
