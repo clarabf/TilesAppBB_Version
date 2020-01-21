@@ -12,14 +12,25 @@ namespace TilesApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Configuration : ContentPage
     {
-        public Configuration()
+        public Configuration(AppPage appPage)
         {
             InitializeComponent();
+            BindingContext = appPage;
             lblName.Text = OdooXMLRPC.userName;
             lblId.Text = OdooXMLRPC.userID.ToString();
+            if (App.Station!=null)
+            {
+                lblStation.Text = "Station: " + App.Station + "\nYou can change it by scanning again:";
+                btAdd.Text = "CHANGE";
+            }
+            else
+            {
+                lblStation.Text = "You haven't assigned a station. Please scan one:";
+            }
             MessagingCenter.Subscribe<Scan, string>(this, "SetStation", (s, qrContent) => {
                 lblStation.Text = "Station: " + qrContent + "\nYou can change it by scanning again:";
                 btAdd.Text = "CHANGE";
+                App.Station = qrContent;
             });
         }
 

@@ -69,9 +69,9 @@
                             <Span Text="&#x0a;Id: "/>
                             <Span x:Name="lblId" Text="12345"/>
                             <Span Text="&#x0a;Session: "/>
-                            <Span x:Name="lblSession" Text="30 min 25sec"/>
+                            <Span x:Name="lblSession" Text="{Binding SessionTime}"/>
                             <Span Text="&#x0a;Location: "/>
-                            <Span x:Name="lblLocation" Text="Red Grave City"/>
+                            <Span x:Name="lblLocation"/>
                         </FormattedString>
                     </Label.FormattedText>
                 </Label>

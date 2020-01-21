@@ -32,9 +32,9 @@ namespace TilesApp.Views
                 }
             });
             MessagingCenter.Subscribe<AppPage>(this, "OdooConnection", async (s) => {
-                //System.Threading.Thread.Sleep(3000);
                 OdooXMLRPC.Start();
                 Setup();
+                App.Station = null;
                 await DisplayAlert("Welcome back to login!","Connection to Odoo sucessful!", "Ok");
             });
         }
