@@ -71,7 +71,7 @@ namespace TilesApp.Models
             }
         }
         [BsonIgnoreIfNull]
-        public Location Location
+        public Xamarin.Essentials.Location Location
         {
             get
             {
@@ -82,7 +82,7 @@ namespace TilesApp.Models
                 catch
                 {
                     return null;
-                }
+                }               
             }
         }
         [BsonIgnoreIfNull]
