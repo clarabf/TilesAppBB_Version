@@ -15,11 +15,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content >
-        <StackLayout
-            Spacing="0"
-            Padding="0, 4"
-            BackgroundColor="#000000"
-            >
+        <StackLayout Spacing="0" Padding="0, 4" BackgroundColor="#000000">
             <ListView x:Name="TransportsListView" 
                 ItemsSource="{Binding Transports}"
                 VerticalOptions="FillAndExpand"

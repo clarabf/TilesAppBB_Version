@@ -40,7 +40,7 @@ namespace TilesApp.Views
 
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            ImageButton button = (ImageButton)sender;
+            Button button = (Button)sender;
             // Remove from both the viewable list and the ScannerReads 
             ViewableReads.Remove(button.ClassId);
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
