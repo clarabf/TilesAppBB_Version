@@ -19,7 +19,7 @@ namespace TilesApp.Views
             string[] appNameArr = tag.Split('_');
             MetaData.AppType = appNameArr[1];
             MetaData.AppName = appNameArr[2];
-            lblTest.Text = appNameArr[2] + " (Associate)";
+            lblTest.Text = appNameArr[2].ToUpper() + " (LINK)";
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
