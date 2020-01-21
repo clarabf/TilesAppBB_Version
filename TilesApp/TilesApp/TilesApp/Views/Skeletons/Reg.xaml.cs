@@ -47,7 +47,23 @@ namespace TilesApp.Views
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }
         }
-
+        private void Delete_ScannerRead(object sender, EventArgs args)
+        {
+            ImageButton button = (ImageButton)sender;
+            // Remove from both the viewable list and the ScannerReads 
+            ViewableReads.Remove(button.ClassId);
+            if (ViewableReads.Count == 0)
+            {
+                btnSaveAndFinish.IsVisible = false;
+            }
+            foreach (Dictionary<string, object> item in MetaData.ScannerReads)
+            {
+                if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == button.ClassId)
+                {
+                    return;
+                }
+            }
+        }
         private async void SaveAndFinish(object sender, EventArgs args)
         {
             if (MetaData.IsValid())

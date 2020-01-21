@@ -60,7 +60,40 @@
                 VerticalOptions="CenterAndExpand"
                     IsVisible="False"
             />
-                <ListView ItemsSource="{Binding ViewableReads}"  />
+                <ListView ItemsSource="{Binding ViewableReads}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition Width="0.5*" />
+                                        </Grid.ColumnDefinitions>
+                                        <Label
+                                        x:Name="Path"
+                                        FontAttributes="Bold"
+                                        Text="{Binding .}"
+                                        Grid.Column="0"
+                                        HorizontalOptions="CenterAndExpand"
+                                        VerticalOptions="CenterAndExpand"                                                
+                                    />
+                                        <ImageButton x:Name="Delete"
+                                        Grid.Column="1"
+                                        HeightRequest="20"
+                                        Padding="0"
+                                        HorizontalOptions="CenterAndExpand"
+                                        VerticalOptions="CenterAndExpand"
+                                        ClassId="{Binding .}"
+                                        Source="delete.png"
+                                        Clicked="Delete_ScannerRead"
+                                    />
+                                    </Grid>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackLayout>
             
             <Button x:Name="btnSaveAndFinish"

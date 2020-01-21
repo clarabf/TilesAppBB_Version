@@ -14,7 +14,7 @@
                         <RowDefinition Height="0.4*" />
                         <RowDefinition Height="0.5*" />
                         <RowDefinition Height="0.15*" />
-                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="0.2*" />
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="0.5*" />
                         <RowDefinition Height="1*" />
@@ -33,7 +33,7 @@
                         Text="LINK"
                         TextColor="#ffffff"
                         CharacterSpacing="1.05"
-                        FontSize="118"
+                        FontSize="18"
                         HorizontalOptions="CenterAndExpand"                        
                         Grid.Row="1"
                     />
@@ -55,17 +55,49 @@
                         VerticalOptions="Start"
                         Grid.Row="3" 
                         HorizontalOptions="CenterAndExpand" />
-                    
+
                     <ListView ItemsSource="{Binding ViewableReads}" 
-                        Grid.Row="4"      
-                        />
+                        Grid.Row="4">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout>
+                                        <Grid Grid.Row="4">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*" />
+                                                <ColumnDefinition Width="0.5*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Label
+                                        x:Name="Path"
+                                        FontAttributes="Bold"
+                                        Text="{Binding .}"
+                                        Grid.Column="0"
+                                        HorizontalOptions="CenterAndExpand"
+                                        VerticalOptions="CenterAndExpand"                                                
+                                    />
+                                            <ImageButton x:Name="Delete"
+                                        Grid.Column="1"
+                                        HeightRequest="20"
+                                        Padding="0"
+                                        HorizontalOptions="CenterAndExpand"
+                                        VerticalOptions="CenterAndExpand"
+                                        ClassId="{Binding .}"
+                                        Source="delete.png"
+                                        Clicked="Delete_ScannerRead"
+                                    />
+                                        </Grid>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>                              
                     <Button x:Name="btnSaveAndFinish"                       
                         StyleClass="primaryButton"
                         Text="Save &amp; Finish"
                         WidthRequest="250"
                         HorizontalOptions="CenterAndExpand" 
                         VerticalOptions="EndAndExpand"
-                        Grid.Row="4"
+                        Grid.Row="5"
                         IsVisible="False"
                         Clicked="SaveAndFinish"
                     />
@@ -75,7 +107,7 @@
                         WidthRequest="250"
                         HorizontalOptions="CenterAndExpand" 
                         VerticalOptions="CenterAndExpand"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         Clicked="Cancel"
                     />
                 </Grid>
