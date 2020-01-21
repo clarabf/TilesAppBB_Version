@@ -43,6 +43,11 @@ namespace TilesApp.Views
             ImageButton button = (ImageButton)sender;
             // Remove from both the viewable list and the ScannerReads 
             ViewableReads.Remove(button.ClassId);
+            if (ViewableReads.Count == 0)
+            {
+                lblBarcode.IsVisible = false;
+                btnSaveAndFinish.IsVisible = false;
+            }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {
                 if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == button.ClassId)

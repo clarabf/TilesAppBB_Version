@@ -57,10 +57,29 @@ namespace TilesApp.Views
                 {
                     lblTestType.Text = MetaData.QCProcedureDetails;
                     btPass.IsEnabled = true;
-                    btPass.IsEnabled = true;
+                    btFail.IsEnabled = true;
                 }
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }            
+        }
+
+        private void Delete_ScannerRead(object sender, EventArgs args)
+        {
+            ImageButton button = (ImageButton)sender;
+            // Remove from both the viewable list and the ScannerReads 
+            ViewableReads.Remove(button.ClassId);
+            if (ViewableReads.Count == 0)
+            {
+                btPass.IsEnabled = false;
+                btFail.IsEnabled = false;
+            }
+            foreach (Dictionary<string, object> item in MetaData.ScannerReads)
+            {
+                if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == button.ClassId)
+                {
+                    return;
+                }
+            }
         }
         private async void CameraButton_Clicked(object sender, EventArgs e)
         {
@@ -105,6 +124,7 @@ namespace TilesApp.Views
                 await DisplayAlert("Permission denied", "Error: " + ex.Message, "OK");
             }
         }
+
         private async void PassOrFail(object sender, EventArgs args)
         {
             Button b = (Button)sender;
