@@ -70,7 +70,7 @@
                 BackgroundColor="White"
                 FontAttributes="Bold"
                 FontSize="14"
-                Text="Come back"
+                Text="Cancel"
                 WidthRequest="250"
                 BorderColor="Black"
                 BorderWidth="1"
