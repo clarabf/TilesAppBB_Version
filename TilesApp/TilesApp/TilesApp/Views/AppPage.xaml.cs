@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using System.Timers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using TilesApp.Models;
 
 namespace TilesApp.Views
 {
@@ -140,6 +141,7 @@ namespace TilesApp.Views
 
         private async void Logout_Command(object sender, EventArgs args)
         {
+            CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout!
             await DisplayAlert("You are abandoning this page", "Please, wait until Login page appears.", "OK");
             timer.Stop();
             MessagingCenter.Send(this, "OdooConnection");

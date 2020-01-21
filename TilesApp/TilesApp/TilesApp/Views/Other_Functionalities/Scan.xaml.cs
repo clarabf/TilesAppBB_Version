@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Text;
 using XmlRpc;
 using TilesApp.Services;
+using TilesApp.Models;
 
 namespace TilesApp.Views
 {
@@ -55,6 +56,7 @@ namespace TilesApp.Views
                 case 1:
                     if (OdooXMLRPC.users.ContainsKey(qrScanned))
                     {
+                        CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
                         OdooXMLRPC.SetCurrentUser(qrScanned);
                         Device.BeginInvokeOnMainThread(() =>
                         {
