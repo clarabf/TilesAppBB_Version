@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="TilesApp.Views.Configuration">
+    <ContentPage.Content>
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Image Source="newBackground.jpg" Aspect="Fill"/>
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="Transparent"  VerticalOptions="Fill" HorizontalOptions="FillAndExpand"
+                Orientation="Vertical">
+                <Label 
+                    TextColor = "#ffffff"
+                    FontAttributes="Bold"                        
+                    Text="YOUR STATION:"
+                    FontSize="30"
+                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
+                    VerticalOptions="CenterAndExpand"
+                    Margin="20, 0, 20, 0"
+                />
+                <Label 
+                    x:Name="lblStation"
+                    Text="You haven't assigned a station. Please scan one:"
+                    TextColor = "#ffffff"
+                    FontSize="20"
+                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
+                    VerticalOptions="StartAndExpand"
+                    Margin="20, 0, 20, 0"
+                />
+                <Button
+                    x:Name="btAdd"
+                    Text="ADD"                                
+                    TextColor="#ffffff"
+                    BackgroundColor="#bc0000"
+                    BorderColor="#796f6f"
+                    WidthRequest="150"
+                    FontSize="30"
+                    CornerRadius="5"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="StartAndExpand"
+                    Clicked="GoToScan"                                
+                />
+                <Label 
+                    TextColor = "#ffffff"
+                    FontAttributes="Bold"                        
+                    Text="YOUR INFO:"
+                    FontSize="30"
+                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
+                    VerticalOptions="CenterAndExpand"
+                    Margin="20, 0, 20, 0"
+                />
+                <Label 
+                    x:Name="lblInfo"
+                    TextColor = "#ffffff"
+                    FontSize="20"
+                    HorizontalTextAlignment="Start"
+                    HorizontalOptions="Start"
+                    VerticalOptions="StartAndExpand"
+                    Margin="20, 0, 20, 0">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span Text="Name: "/>
+                            <Span x:Name="lblName" Text="Dante Sparda"/>
+                            <Span Text="&#x0a;Id: "/>
+                            <Span x:Name="lblId" Text="12345"/>
+                            <Span Text="&#x0a;Session: "/>
+                            <Span x:Name="lblSession" Text="30 min 25sec"/>
+                            <Span Text="&#x0a;Location: "/>
+                            <Span x:Name="lblLocation" Text="Red Grave City"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Button 
+                    Text="&#xf015;"
+                    FontFamily="{StaticResource FontAwesomeSolid}"
+                    HorizontalOptions="Center"                
+                    Clicked="Home"
+                    FontSize="32"
+                    TextColor="#bc0000"
+                    BackgroundColor="Transparent"
+                    VerticalOptions="Center"
+                    Margin="20, 0, 20, 20"
+                />
+            </StackLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

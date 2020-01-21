@@ -57,7 +57,7 @@ namespace TilesApp.Views
                 {
                     lblTestType.Text = MetaData.QCProcedureDetails;
                     btPass.IsEnabled = true;
-                    btPass.IsEnabled = true;
+                    btFail.IsEnabled = true;
                 }
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }            

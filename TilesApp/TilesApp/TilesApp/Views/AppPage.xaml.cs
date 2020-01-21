@@ -25,7 +25,6 @@ namespace TilesApp.Views
                 buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 Button button = new Button
                 {
-                    Text = appName,
                     TextColor = Color.FromHex("#ffffff"),
                     BackgroundColor = Color.FromHex("#bc0000"),
                     FontSize = 18,
@@ -33,7 +32,7 @@ namespace TilesApp.Views
                     CornerRadius = 5,
                     FontFamily = Application.Current.Resources["CustomFont"].ToString(),
                     VerticalOptions = LayoutOptions.Center,
-                    HorizontalOptions = LayoutOptions.End,
+                    HorizontalOptions = LayoutOptions.Center,
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
                     ClassId = tag,
@@ -50,11 +49,11 @@ namespace TilesApp.Views
                         button.Clicked += Join_Command;
                         break;
                     case "Reg":
-                        icon = "\uf14a";
+                        icon = "\uf11b";
                         button.Clicked += Reg_Command;
                         break;
                     case "QC":
-                        icon = "\uf11b";
+                        icon = "\uf14a";
                         button.Clicked += QC_Command;
                         break;
                     default:
@@ -97,7 +96,8 @@ namespace TilesApp.Views
 
         private async void Config_Command(object sender, EventArgs args)
         {
-            await DisplayAlert("CONFIGURATION", "Config...", "OK");
+            //await DisplayAlert("CONFIGURATION", "Config...", "OK");
+            await Navigation.PushModalAsync(new Configuration());
         }
 
         private async void Reader_Command(object sender, EventArgs args)
