@@ -28,19 +28,10 @@ namespace TilesApp.Services
         }
         public static async Task<Location> ReverseGeoCodeAsync(string lat, string lon)
         {
-            string resource = "https://nominatim.openstreetmap.org/reverse?format=json&lat=";
-            resource += lat;
-            resource += "&lon=";
-            resource += lon;
-            resource += "&zoom=18&addressdetails=1";
+            string uri = "https://nominatim.openstreetmap.org/reverse?format=json&lat="+lat+"&lon="+lon+"&zoom=18&addressdetails=1";
             try
             {
-                var request = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri(Client.BaseAddress, resource),
-                    Method = HttpMethod.Get,
-                };
-                var response = await Client. SendAsync(request);
+                var response =  await Client.GetAsync(uri);
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var responseString = await response.Content.ReadAsStringAsync();
@@ -61,10 +52,6 @@ namespace TilesApp.Services
             {
                 throw e;
             }
-        }
-
-        public static Location ReverseGeoCode(string lat, string lon) {
-            return ReverseGeoCodeAsync(lat, lon).Result;
         }
     }
 }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TilesApp.Models;
 using TilesApp.Services;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,6 +18,8 @@ namespace TilesApp.Views
         {
             InitializeComponent();
             BindingContext = appPage;
+            GetDeviceLocation();
+            
             lblName.Text = OdooXMLRPC.userName;
             lblId.Text = OdooXMLRPC.userID.ToString();
             if (App.Station!=null)
@@ -32,6 +36,20 @@ namespace TilesApp.Views
                 btAdd.Text = "CHANGE";
                 App.Station = qrContent;
             });
+        }
+
+        private async void GetDeviceLocation()
+        {
+            Xamarin.Essentials.Location geoLocation = new Xamarin.Essentials.Location();
+            try
+            {
+                geoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+            }
+            catch
+            {
+            }
+            Models.Location location = await HttpClientManager.ReverseGeoCodeAsync(geoLocation.Latitude.ToString(), geoLocation.Longitude.ToString());
+            lblLocation.Text = location.address["city"]+", "+ location.address["state"]+", "+ location.address["country"];
         }
 
         private async void GoToScan(object sender, EventArgs args)
