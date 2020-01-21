@@ -9,9 +9,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.5*" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="8*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="9*" />
                 <RowDefinition Height="1.5*" />
+                
             </Grid.RowDefinitions>
             <Label x:Name="lblTitle" 
                 Text="SCAN BARCODE"
@@ -93,14 +93,14 @@
                 </CollectionView.Footer>-->
             </CollectionView>
             
-            <Button x:Name="btnCancel"
+            <!--<Button x:Name="btnCancel"
                 StyleClass="darkButton"
                 Text="Cancel"
                 WidthRequest="250"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="3"
-                Clicked="Cancel"/>
+                Clicked="Cancel"/>-->
             
             <Button x:Name="btnSaveAndFinish"                       
                 StyleClass="primaryButton"
@@ -110,7 +110,7 @@
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
                 IsVisible="False"
-                Grid.Row="4"
+                Grid.Row="3"
                 Clicked="SaveAndFinish"/>
 
         </Grid>
