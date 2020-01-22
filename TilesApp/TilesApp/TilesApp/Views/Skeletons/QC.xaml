@@ -32,29 +32,28 @@
                 Grid.Row="1"
                 Grid.ColumnSpan="2" >
                 <Label x:Name="lblTitle" 
-                Text="Scan barcode of component:"
-                TextColor="Black"
-                FontAttributes="Bold"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"                
-            />
+                    Text="Scan barcode of component:"
+                    TextColor="Black"
+                    FontAttributes="Bold"
+                    FontSize="18"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="CenterAndExpand"                
+                />
                 <StackLayout Orientation="Horizontal">
                     <Label
-                         TextColor="Black"
-                FontAttributes="Bold"
-                FontSize="18"
+                        TextColor="Black"
+                        FontAttributes="Bold"
+                        FontSize="18"
                         Text="Test type: "
-                        />
+                    />
                     <Label
-                         TextColor="DarkGray"
-                FontAttributes="Bold"
-                FontSize="18"
+                        TextColor="DarkGray"
+                        FontAttributes="Bold"
+                        FontSize="18"
                         x:Name="lblTestType"
-                        />
+                    />
                 </StackLayout>
             </StackLayout>
-
             <ListView ItemsSource="{Binding ViewableReads}" 
                         Grid.Row="2" Grid.ColumnSpan="2">
                 <ListView.ItemTemplate>
@@ -90,7 +89,7 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
-            <Button x:Name="btnTakePicture"
+            <Button x:Name="btTakePicture"
                 TextColor="White"
                 BackgroundColor="Black"
                 FontAttributes="Bold"
@@ -102,13 +101,14 @@
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="3"
+                IsVisible="False"
                 Clicked="CameraButton_Clicked"
                 Grid.ColumnSpan="2"
             />
             <Label x:Name="lblListPhotos" 
                 Grid.ColumnSpan="2"
                 FontSize="12"
-                IsVisible="True"
+                IsVisible="False"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="StartAndExpand"
                 Grid.Row="4">
@@ -133,8 +133,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
-                IsVisible="True"
-                IsEnabled="False"
+                IsVisible="False"
                 Margin="60,0,0,0"
                 Grid.Row="5"
                 Grid.Column="0"
@@ -152,8 +151,7 @@
                 BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
-                IsVisible="True"
-                    IsEnabled="False"
+                IsVisible="False"
                 Margin="-50,0,0,0"
                 Grid.Row="5"
                 Grid.Column="1"

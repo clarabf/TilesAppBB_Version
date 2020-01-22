@@ -35,7 +35,8 @@ namespace TilesApp.Views
             MessagingCenter.Subscribe<PhotoDetail, ObservableCollection<PhotoData>>(this, "SendPhotos", (s, a) => {
                 TakenPhotos = a;
                 setPhotosList();
-                numPhotos.Text = a.Count.ToString();
+                if (TakenPhotos.Count > 0) numPhotos.Text = TakenPhotos.Count.ToString();
+                else lblListPhotos.IsVisible = false;
             });
 
             NavigationPage.SetHasNavigationBar(this, false);
@@ -56,8 +57,10 @@ namespace TilesApp.Views
                 if (MetaData.IsValid())
                 {
                     lblTestType.Text = MetaData.QCProcedureDetails;
-                    btPass.IsEnabled = true;
-                    btFail.IsEnabled = true;
+                    btPass.IsVisible = true;
+                    btFail.IsVisible = true;
+                    btTakePicture.IsVisible = true;
+                    if (TakenPhotos.Count > 0) lblListPhotos.IsVisible = true;
                 }
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }            
@@ -66,17 +69,21 @@ namespace TilesApp.Views
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
             ImageButton button = (ImageButton)sender;
+            string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
             ViewableReads.Remove(button.ClassId);
             if (ViewableReads.Count == 0)
             {
-                btPass.IsEnabled = false;
-                btFail.IsEnabled = false;
+                btPass.IsVisible = false;
+                btFail.IsVisible = false;
+                btTakePicture.IsVisible = false;
+                lblListPhotos.IsVisible = false;
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {
-                if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == button.ClassId)
+                if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == removedObject)
                 {
+                    MetaData.ScannerReads.Remove(item);
                     return;
                 }
             }
@@ -128,20 +135,8 @@ namespace TilesApp.Views
         private async void PassOrFail(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            string messageTitle;
-            string messageContent;
-            if (b.Text == "PASS")
-            {
-                //Update PASS info
-                messageTitle = "Success!";
-                messageContent = "Component(s) passed successfully to the next step!";
-            }
-            else
-            {
-                //Update FAIL info
-                messageTitle = "Failure...";
-                messageContent = "Component(s) failed the Quality Control...";
-            }
+            bool success = false;
+            if (b.Text == "PASS") success = true;
             if (MetaData.IsValid())
             {
                 bool submitted = CosmosDBManager.InsertOneObject(MetaData);
@@ -152,6 +147,7 @@ namespace TilesApp.Views
                     {
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
+                    //MetaData.QCPass = success;
                     await DisplayAlert("Report was delivered successfully!", message.Substring(0, message.Length - 2), "OK");
                 }
                 else
@@ -166,8 +162,9 @@ namespace TilesApp.Views
             {
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
             }
-            List<Dictionary<string, string>> results = StreamToAzure.WriteJPEGStreams(photoList, appName);
-            //await DisplayAlert(messageTitle, messageContent, "OK");
+            if (photoList.Count>0) {
+                List<Dictionary<string, string>> results = StreamToAzure.WriteJPEGStreams(photoList, appName);
+            }
             await Navigation.PopModalAsync(true);
         }
         private async void Show_Images(object sender, EventArgs args)
