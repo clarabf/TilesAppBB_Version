@@ -27,6 +27,10 @@ namespace TilesApp.Models.Skeletons
                     return null;
                 }
             }
+            set
+            {
+                appData[appDataIndex["QCPass"]]["DefaultValue(admin)"] = value;
+            }
         }
         [BsonIgnoreIfNull]
         public string QCProcedureDetails
@@ -56,6 +60,24 @@ namespace TilesApp.Models.Skeletons
                 {
                     return null;
                 }
+            }
+        }
+        [BsonIgnoreIfNull]
+        public List<string> Images
+        {
+            get
+            {
+                if (appData[appDataIndex["Images"]]["FieldIsSaved"])
+                {
+                    return appData[appDataIndex["Images"]]["DefaultValue(admin)"];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            set {
+                appData[appDataIndex["Images"]]["DefaultValue(admin)"] = value;
             }
         }
 

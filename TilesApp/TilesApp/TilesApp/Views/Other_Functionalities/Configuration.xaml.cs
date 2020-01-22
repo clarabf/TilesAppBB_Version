@@ -40,27 +40,31 @@ namespace TilesApp.Views
 
         private async void GetDeviceLocation()
         {
-            string lat = null;
-            string lon = null;
+            Xamarin.Essentials.Location rowGeoLocation = new Xamarin.Essentials.Location();
+            Models.Location location = new Models.Location();
             try
             {
-                App.GeoLocation = Geolocation.GetLastKnownLocationAsync().Result;
-                lat = App.GeoLocation.Latitude.ToString();
-                lon = App.GeoLocation.Longitude.ToString();
+                rowGeoLocation = Geolocation.GetLastKnownLocationAsync().Result;                
             }
             catch
             {
+                return;   
             }
-            if (lat.Length > 0 && lon.Length > 0)
+            if (rowGeoLocation !=null )
             {
-                try
+                if (App.GeoLocation != null)
                 {
-                    Models.Location location = await HttpClientManager.ReverseGeoCodeAsync(lat, lon);
+                    if (!App.GeoLocation.lat.Equals(rowGeoLocation.Latitude.ToString()) || !App.GeoLocation.lon.Equals(rowGeoLocation.Longitude.ToString()))
+                    {
+                        location = App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
+                        lblLocation.Text = location.address["city"] + ", " + location.address["state"] + ", " + location.address["country"];
+                    }
+                }
+                else {
+                    location = App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
                     lblLocation.Text = location.address["city"] + ", " + location.address["state"] + ", " + location.address["country"];
                 }
-                catch
-                {
-                }
+                
             }
         }
 

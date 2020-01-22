@@ -72,13 +72,13 @@ namespace TilesApp.Models
             }
         }
         [BsonIgnoreIfNull]
-        public Xamarin.Essentials.Location Location
+        public Models.Location Location
         {
             get
             {
                 try
                 {
-                    return Geolocation.GetLastKnownLocationAsync().Result;
+                    return App.GeoLocation;
                 }
                 catch
                 {
@@ -106,6 +106,7 @@ namespace TilesApp.Models
         //Constructor from json stream
         public BaseMetaData(Stream streamConfig)
         {
+            GetDeviceLocation();
             try
             {
                 if (streamConfig != null)
@@ -257,6 +258,35 @@ namespace TilesApp.Models
             }
 
             return isValid;
+        }
+
+        // Refresh Geographical location of the App
+        private async void GetDeviceLocation()
+        {
+            Xamarin.Essentials.Location rowGeoLocation = new Xamarin.Essentials.Location();
+            try
+            {
+                rowGeoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+            }
+            catch
+            {
+                return;
+            }
+            if (rowGeoLocation != null)
+            {
+                if (App.GeoLocation != null)
+                {
+                    if (!App.GeoLocation.lat.Equals(rowGeoLocation.Latitude.ToString()) || !App.GeoLocation.lon.Equals(rowGeoLocation.Longitude.ToString()))
+                    {
+                        App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
+                    }
+                }
+                else
+                {
+                    App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
+                }
+
+            }
         }
     }
 }
