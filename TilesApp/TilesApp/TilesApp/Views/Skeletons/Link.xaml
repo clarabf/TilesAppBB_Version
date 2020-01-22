@@ -8,7 +8,7 @@
         <Grid BackgroundColor="#000000" StyleClass="gridApps">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.5*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="1.5*" />
                 <RowDefinition Height="9*" />
                 <RowDefinition Height="1.5*" />
                 
@@ -27,6 +27,7 @@
                 Text="LINK"
                 TextColor="#ffffff"
                 CharacterSpacing="1.05"
+                Margin="0,0,0, -15"
                 FontSize="18"
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="Center"                        
@@ -36,18 +37,18 @@
                 TextColor="#ffffff"
                 Text ="LAST BARCODE SCANNED"
                 FontSize="16"
-                Margin="0,0,0,0"
+                Margin="0,0,0,3"
                 HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
+                VerticalOptions="End"
                 IsVisible="True"
                 Grid.Row="1"
             />
-            <BoxView 
+            <BoxView  x:Name="lblBarcodeLine"
                 HeightRequest="1.5"
                 WidthRequest="1500"
                 BackgroundColor="#bc0000"
-                Margin="0,45,0,0"
-                VerticalOptions="Start"
+                VerticalOptions="End"
+                IsVisible="True"
                 Grid.Row="1"
                 HorizontalOptions="CenterAndExpand" />
 
