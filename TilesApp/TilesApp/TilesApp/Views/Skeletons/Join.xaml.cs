@@ -62,6 +62,7 @@ namespace TilesApp.Views
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
             ImageButton button = (ImageButton)sender;
+            string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
             ViewableReads.Remove(button.ClassId);
             if (ViewableReads.Count == 0)
@@ -70,8 +71,9 @@ namespace TilesApp.Views
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {
-                if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == button.ClassId)
+                if (item[nameof(BaseMetaData.InputDataProps.Value)].ToString() == removedObject)
                 {
+                    MetaData.ScannerReads.Remove(item);
                     return;
                 }
             }

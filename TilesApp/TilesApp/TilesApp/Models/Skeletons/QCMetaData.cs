@@ -14,7 +14,7 @@ namespace TilesApp.Models.Skeletons
     {
         //Fields properties
         [BsonIgnoreIfNull]
-        public string QCPass
+        public bool QCPass
         {
             get
             {
@@ -24,7 +24,7 @@ namespace TilesApp.Models.Skeletons
                 }
                 else
                 {
-                    return null;
+                    return false;
                 }
             }
         }
