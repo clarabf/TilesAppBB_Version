@@ -5,6 +5,7 @@ using TilesApp.Services;
 using TilesApp.Rfid;
 using Xamarin.Forms;
 using XmlRpc;
+using TilesApp.Models;
 
 namespace TilesApp.Views
 {
@@ -19,7 +20,9 @@ namespace TilesApp.Views
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 if(OdooXMLRPC.users.ContainsKey(a.ToString()))
                 {
+                    
                     OdooXMLRPC.SetCurrentUser(a.ToString()); // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
+                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
                     Device.BeginInvokeOnMainThread(() =>
                     {                        
                         Navigation.PopModalAsync(true);
