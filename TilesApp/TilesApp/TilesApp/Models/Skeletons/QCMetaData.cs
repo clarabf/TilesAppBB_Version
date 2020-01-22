@@ -27,6 +27,10 @@ namespace TilesApp.Models.Skeletons
                     return false;
                 }
             }
+            set
+            {
+                appData[appDataIndex["QCPass"]]["DefaultValue(admin)"] = value;
+            }
         }
         [BsonIgnoreIfNull]
         public string QCProcedureDetails
@@ -58,6 +62,8 @@ namespace TilesApp.Models.Skeletons
                 }
             }
         }
+        [BsonIgnoreIfNull]
+        public Collection<string> Images { get; set; } = new Collection<string>();
 
         //Constructor from json stream
         public QCMetaData(Stream streamConfig) : base(streamConfig) { }

@@ -15,7 +15,7 @@ namespace TilesApp
     {
         public JSONParser jsParser = new JSONParser();
         public static string DeviceSerialNumber { get; private set; }
-        public static Xamarin.Essentials.Location GeoLocation { get; set; }
+        public static Models.Location GeoLocation { get; set; }
         public static string Station { get; set; }
         public App()
         {
