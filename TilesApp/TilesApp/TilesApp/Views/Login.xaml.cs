@@ -20,8 +20,9 @@ namespace TilesApp.Views
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 if(OdooXMLRPC.users.ContainsKey(a.ToString()))
                 {
-                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
+                    
                     OdooXMLRPC.SetCurrentUser(a.ToString()); // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
+                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
                     Device.BeginInvokeOnMainThread(() =>
                     {                        
                         Navigation.PopModalAsync(true);

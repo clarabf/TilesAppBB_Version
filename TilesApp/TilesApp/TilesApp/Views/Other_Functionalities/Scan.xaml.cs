@@ -56,8 +56,8 @@ namespace TilesApp.Views
                 case 1:
                     if (OdooXMLRPC.users.ContainsKey(qrScanned))
                     {
-                        CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
                         OdooXMLRPC.SetCurrentUser(qrScanned);
+                        CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Navigation.PopModalAsync(true);
