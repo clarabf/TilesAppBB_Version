@@ -40,16 +40,28 @@ namespace TilesApp.Views
 
         private async void GetDeviceLocation()
         {
-            Xamarin.Essentials.Location geoLocation = new Xamarin.Essentials.Location();
+            string lat = null;
+            string lon = null;
             try
             {
-                geoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+                App.GeoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+                lat = App.GeoLocation.Latitude.ToString();
+                lon = App.GeoLocation.Longitude.ToString();
             }
             catch
             {
             }
-            Models.Location location = await HttpClientManager.ReverseGeoCodeAsync(geoLocation.Latitude.ToString(), geoLocation.Longitude.ToString());
-            lblLocation.Text = location.address["city"]+", "+ location.address["state"]+", "+ location.address["country"];
+            if (lat.Length > 0 && lon.Length > 0)
+            {
+                try
+                {
+                    Models.Location location = await HttpClientManager.ReverseGeoCodeAsync(lat, lon);
+                    lblLocation.Text = location.address["city"] + ", " + location.address["state"] + ", " + location.address["country"];
+                }
+                catch
+                {
+                }
+            }
         }
 
         private async void GoToScan(object sender, EventArgs args)

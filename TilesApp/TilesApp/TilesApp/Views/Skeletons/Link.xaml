@@ -40,7 +40,7 @@
                 Margin="0,0,0,3"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="End"
-                IsVisible="True"
+                IsVisible="false"
                 Grid.Row="1"
             />
             <BoxView  x:Name="lblBarcodeLine"
@@ -48,7 +48,7 @@
                 WidthRequest="1500"
                 BackgroundColor="#bc0000"
                 VerticalOptions="End"
-                IsVisible="True"
+                IsVisible="false"
                 Grid.Row="1"
                 HorizontalOptions="CenterAndExpand" />
 
