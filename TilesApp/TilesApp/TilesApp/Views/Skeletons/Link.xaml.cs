@@ -33,6 +33,7 @@ namespace TilesApp.Views
                 }
             }
             lblBarcode.IsVisible = true;
+            lblEmptyView.IsVisible = false;
             lblBarcodeLine.IsVisible = true;
             btnSaveAndFinish.IsVisible = true;
             MetaData.ProcessScannerRead(input);
@@ -49,6 +50,7 @@ namespace TilesApp.Views
                 lblBarcode.IsVisible = false;
                 lblBarcodeLine.IsVisible = false;
                 btnSaveAndFinish.IsVisible = false;
+                lblEmptyView.IsVisible = true;
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {

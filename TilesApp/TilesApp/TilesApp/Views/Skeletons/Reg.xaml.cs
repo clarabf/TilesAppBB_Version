@@ -17,11 +17,11 @@ namespace TilesApp.Views
             InitializeComponent();
             BindingContext = this;
             MetaData = new RegMetaData(OdooXMLRPC.GetAppConfig(tag));
-            lblRegType.Text = MetaData.Operation;
+            lblRegType.Text = MetaData.Operation.ToUpper();
             string[] appNameArr = tag.Split('_');
             MetaData.AppType = appNameArr[1];
             MetaData.AppName = appNameArr[2];
-            lblTest.Text = appNameArr[2] + " (Checkpoint)";
+            lblTest.Text = appNameArr[2].ToUpper() + " (CHECKPOINT)";
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
@@ -41,7 +41,9 @@ namespace TilesApp.Views
             {
                 if (MetaData.IsValid())
                 {
-                    lblRegType.Text = MetaData.Operation;
+                    lblRegType.Text = MetaData.Operation.ToUpper();
+                    lblTitle.IsVisible = true;
+                    lblTitleLine.IsVisible = true;
                     btnSaveAndFinish.IsVisible = true;
                 }
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
@@ -49,11 +51,13 @@ namespace TilesApp.Views
         }
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            ImageButton button = (ImageButton)sender;
+            Button button = (Button)sender;
             // Remove from both the viewable list and the ScannerReads 
             ViewableReads.Remove(button.ClassId);
             if (ViewableReads.Count == 0)
             {
+                lblTitle.IsVisible = false;
+                lblTitleLine.IsVisible = false;
                 btnSaveAndFinish.IsVisible = false;
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
