@@ -63,23 +63,7 @@ namespace TilesApp.Models.Skeletons
             }
         }
         [BsonIgnoreIfNull]
-        public List<string> Images
-        {
-            get
-            {
-                if (appData[appDataIndex["Images"]]["FieldIsSaved"])
-                {
-                    return appData[appDataIndex["Images"]]["DefaultValue(admin)"];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            set {
-                appData[appDataIndex["Images"]]["DefaultValue(admin)"] = value;
-            }
-        }
+        public Collection<string> Images { get; set; } = new Collection<string>();
 
         //Constructor from json stream
         public QCMetaData(Stream streamConfig) : base(streamConfig) { }

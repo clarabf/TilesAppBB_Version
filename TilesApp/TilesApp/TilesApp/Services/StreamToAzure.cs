@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
 using Microsoft.WindowsAzure.Storage;
@@ -104,6 +105,50 @@ namespace TilesApp.Services
                             {"Uri",ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName.ToLower() +"/" + fileName}
                         }
                     );
+                }
+            }
+            catch
+            {
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "File could not be saved. Content might be invalid or corrupt.");
+            }
+            return returnList;
+        }
+
+        public static Collection<string> UpdateJPEGStreams(List<Stream> fileStreams, String appName)
+        {
+            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
+            Collection<string> returnList = new Collection<string>();
+
+            try
+            {
+                // Prepare blob connection. First client
+                client = storageAccount.CreateCloudBlobClient();
+            }
+            catch
+            {
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong. Could not connect to SACO Erp File Storage.");
+            }
+
+            try
+            {
+                // Create container if not exits
+                container = client.GetContainerReference(appName.ToLower());
+                container.CreateIfNotExistsAsync().Wait();
+            }
+            catch
+            {
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "App name is invalid. Could not create a container for the app to save files.");
+            }
+
+            try
+            {
+                foreach (Stream str in fileStreams)
+                {
+                    string fileName = Guid.NewGuid().ToString() + ".jpeg";
+                    outputBlob = container.GetBlockBlobReference(fileName);
+                    outputBlob.Properties.ContentType = "image/jpeg";
+                    outputBlob.UploadFromStreamAsync(str).Wait();
+                    returnList.Add(ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName.ToLower() + "/" + fileName);
                 }
             }
             catch

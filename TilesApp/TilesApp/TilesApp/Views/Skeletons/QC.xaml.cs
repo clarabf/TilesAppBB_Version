@@ -114,7 +114,8 @@ namespace TilesApp.Views
                         DateAndTime = DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToShortTimeString(), 
                         ImageSource = "delete.png",
                         FileContent = file.GetStream()
-                    });;
+                    });
+                    photoList.Add(file.GetStream());
                 }
                 else
                 {
@@ -139,6 +140,12 @@ namespace TilesApp.Views
             if (b.Text == "PASS") success = true;
             if (MetaData.IsValid())
             {
+                MetaData.QCPass = success;
+                if (photoList.Count > 0)
+                {
+                    Collection<string> urls = StreamToAzure.UpdateJPEGStreams(photoList, appName);
+                    if (urls.Count > 0) MetaData.Images = urls;
+                }
                 bool submitted = CosmosDBManager.InsertOneObject(MetaData);
                 if (submitted)
                 {
@@ -147,7 +154,6 @@ namespace TilesApp.Views
                     {
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
-                    //MetaData.QCPass = success;
                     await DisplayAlert("Report was delivered successfully!", message.Substring(0, message.Length - 2), "OK");
                 }
                 else
@@ -161,9 +167,6 @@ namespace TilesApp.Views
             else
             {
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
-            }
-            if (photoList.Count>0) {
-                List<Dictionary<string, string>> results = StreamToAzure.WriteJPEGStreams(photoList, appName);
             }
             await Navigation.PopModalAsync(true);
         }
