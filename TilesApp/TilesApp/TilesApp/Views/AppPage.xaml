@@ -7,20 +7,18 @@
     <ContentPage.Content>
         <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Image Source="newBackground.jpg" Aspect="Fill"/>
-            <Grid Padding="40, 25, 40, 15" x:Name="innerGrid">
+            <Grid Padding="40, 30, 40, 15" x:Name="innerGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="1*" />
-                    <RowDefinition Height="12*" />
+                    <RowDefinition Height="10*" />
                 </Grid.RowDefinitions>
                 <Label
-                    TextColor = "#ffffff"
-
+                    TextColor="#ffffff"
                     FontAttributes="Bold"                        
                     Text="MY APPS"
                     HorizontalOptions="Center"
-                    VerticalOptions="Center"
                     Grid.Row="0"
-                    Padding="0, 0, 0, 20"
+                    Margin="0, 0, 0, 25"
                     CharacterSpacing="1.15"
                     FontSize="26"/>
                 <ScrollView Grid.Row="1">
