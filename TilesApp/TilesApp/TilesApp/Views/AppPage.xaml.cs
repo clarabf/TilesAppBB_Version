@@ -14,7 +14,7 @@ namespace TilesApp.Views
     {
         private int seconds = 0;
         private Timer timer = new Timer();
-
+        private int maxLength = 18;
         private string _sessionTime;
         public string SessionTime
         {
@@ -83,6 +83,7 @@ namespace TilesApp.Views
                     default:
                         break;
                 }
+                if (appName.Length > maxLength) appName = appName.Substring(0, maxLength) + "...";
                 button.Text = appName + " " + icon;
                 buttonsGrid.Children.Add(button, 0, row);
                 row++;           
@@ -130,7 +131,6 @@ namespace TilesApp.Views
 
         private async void Config_Command(object sender, EventArgs args)
         {
-            //await DisplayAlert("CONFIGURATION", "Config...", "OK");
             await Navigation.PushModalAsync(new Configuration(this));
         }
 
