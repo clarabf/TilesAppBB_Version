@@ -38,7 +38,6 @@ namespace TilesApp.Views
                 OdooXMLRPC.Start();
                 Setup();
                 App.Station = null;
-                await DisplayAlert("Welcome back to login!","Connection to Odoo sucessful!", "Ok");
             });
         }
 

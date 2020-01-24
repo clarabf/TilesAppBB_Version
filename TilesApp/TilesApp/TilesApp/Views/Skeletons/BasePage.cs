@@ -56,6 +56,7 @@ namespace TilesApp
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "BluetoothDeviceDisconnected");
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "ChargerConnected");
             MessagingCenter.Unsubscribe<Application, BluetoothDevice>(Application.Current, "ChargerDisconnected");
+            MessagingCenter.Unsubscribe<Application, string>(Application.Current, "Error");
             base.OnDisappearing();
         }
 
