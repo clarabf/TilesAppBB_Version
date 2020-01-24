@@ -27,6 +27,10 @@ namespace TilesApp.Views
             catch
             {
                 DisplayAlert("Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.", "Ok");
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopModalAsync(true);
+                });
             }
         }
 

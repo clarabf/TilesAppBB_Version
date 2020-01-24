@@ -136,7 +136,7 @@ namespace TilesApp.Models
             }
             catch
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");
+                throw new Exception("Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");
             }
         }
 

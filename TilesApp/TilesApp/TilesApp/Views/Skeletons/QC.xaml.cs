@@ -22,17 +22,21 @@ namespace TilesApp.Views
             BindingContext = this;
             try
             {
-            MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
-            lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
-            string[] appNameArr = tag.Split('_');
-            MetaData.AppType = appNameArr[1];
-            MetaData.AppName = appNameArr[2];
-            lblTest.Text = appNameArr[2].ToUpper() + " (QC)";
-            appName = appNameArr[2];
+                MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
+                lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
+                string[] appNameArr = tag.Split('_');
+                MetaData.AppType = appNameArr[1];
+                MetaData.AppName = appNameArr[2];
+                lblTest.Text = appNameArr[2].ToUpper() + " (QC)";
+                appName = appNameArr[2];
             }
             catch
             {
                 DisplayAlert("Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.", "Ok");
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopModalAsync(true);
+                });
             }
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += Show_Images;
@@ -136,8 +140,6 @@ namespace TilesApp.Views
                 lblListPhotos.IsVisible = true;
                 hyper.IsVisible = true;
                 numPhotos.Text = TakenPhotos.Count.ToString();
-
-                await DisplayAlert("Photo taken correctly!", "Photo stored in <" + file.Path + ">", "OK");
             }
             catch (Exception ex)
             {
@@ -169,7 +171,7 @@ namespace TilesApp.Views
                     await DisplayAlert("Report was delivered successfully!", message.Substring(0, message.Length - 2), "OK");
                 }
                 else
-                    await DisplayAlert("Report was NOT delivered successfully!", "We could not connect to the Database Server", "OK");
+                    await DisplayAlert("Report was NOT delivered successfully...", "We could not connect to the Database Server", "OK");
             }
             else if (MetaData.QCResultDetails.Length == 0)
             {
