@@ -3,9 +3,6 @@
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
             x:Class="TilesApp.Views.Login">
-    <ContentPage.Resources>
-        <StyleSheet Source="../Assets/style.css"/>
-    </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Image x:Name="background" Source="newBackground.jpg" Aspect="Fill"/>

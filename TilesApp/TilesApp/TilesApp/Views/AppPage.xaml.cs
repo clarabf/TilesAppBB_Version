@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using TilesApp.Services;
 using TilesApp.Rfid;
 using Xamarin.Forms;
@@ -60,7 +59,7 @@ namespace TilesApp.Views
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
                     ClassId = tag,
-                    Margin = new Thickness (0, 0, 0, 20)
+                    Margin = new Thickness (0, 0, 0, 20),
                 };
                 switch (appType)
                 {
@@ -84,7 +83,8 @@ namespace TilesApp.Views
                         break;
                 }
                 if (appName.Length > maxLength) appName = appName.Substring(0, maxLength) + "...";
-                button.Text = appName + " " + icon;
+                button.Text = icon + " " + appName;
+                button.Padding = new Thickness(-230 + (appName.Length*10), 0, 0, 0);
                 buttonsGrid.Children.Add(button, 0, row);
                 row++;           
             }

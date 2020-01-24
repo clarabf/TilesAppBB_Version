@@ -15,12 +15,19 @@ namespace TilesApp.Views
         {
             InitializeComponent();
             BindingContext = this;
-            MetaData = new JoinMetaData(OdooXMLRPC.GetAppConfig(tag));
-            string[] appNameArr = tag.Split('_');
-            MetaData.AppType = appNameArr[1];
-            MetaData.AppName = appNameArr[2];           
-            lblTest.Text = appNameArr[2] + " (Assemble)";
             NavigationPage.SetHasNavigationBar(this, false);
+            try
+            {
+                MetaData = new JoinMetaData(OdooXMLRPC.GetAppConfig(tag));
+                string[] appNameArr = tag.Split('_');
+                MetaData.AppType = appNameArr[1];
+                MetaData.AppName = appNameArr[2];
+                lblTest.Text = appNameArr[2] + " (Assemble)";
+            }
+            catch
+            {
+                DisplayAlert("Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.", "Ok");
+            }
         }
 
         public override void ScannerReadDetected(Dictionary<string, object> input)

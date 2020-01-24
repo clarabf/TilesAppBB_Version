@@ -82,6 +82,9 @@ namespace TilesApp.Services
                 // Create container if not exits
                 container = client.GetContainerReference(appName.ToLower());
                 container.CreateIfNotExistsAsync().Wait();
+                BlobContainerPermissions permissions = container.GetPermissionsAsync().Result;
+                permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+                container.SetPermissionsAsync(permissions);
             }
             catch
             {
@@ -134,6 +137,9 @@ namespace TilesApp.Services
                 // Create container if not exits
                 container = client.GetContainerReference(appName.ToLower());
                 container.CreateIfNotExistsAsync().Wait();
+                BlobContainerPermissions permissions = container.GetPermissionsAsync().Result;
+                permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
+                container.SetPermissionsAsync(permissions);
             }
             catch
             {

@@ -19,7 +19,9 @@ namespace TilesApp.Views
         public QC(string tag)
         {
             InitializeComponent();
-            BindingContext = this;                       
+            BindingContext = this;
+            try
+            {
             MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
             lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
             string[] appNameArr = tag.Split('_');
@@ -27,7 +29,11 @@ namespace TilesApp.Views
             MetaData.AppName = appNameArr[2];
             lblTest.Text = appNameArr[2].ToUpper() + " (QC)";
             appName = appNameArr[2];
-            
+            }
+            catch
+            {
+                DisplayAlert("Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.", "Ok");
+            }
             var tapGestureRecognizer = new TapGestureRecognizer();
             tapGestureRecognizer.Tapped += Show_Images;
             hyper.GestureRecognizers.Add(tapGestureRecognizer);
