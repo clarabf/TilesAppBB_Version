@@ -87,9 +87,14 @@
                                 StyleClass="iconButton"
                                 ClassId="{Binding .}"
                                 Grid.Column="1"
-                                BackgroundColor="Transparent" >
+                                BackgroundColor="Transparent">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#bc0000" />
+                                            </VisualState.Setters>
+                                        </VisualState>
                                         <VisualState x:Name="Pressed">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor" Value="#ffffff" />
@@ -116,11 +121,15 @@
                 Clicked="CameraButton_Clicked">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                <Setter Property="TextColor" Value="#bc0000" />
+                            </VisualState.Setters>
+                        </VisualState>
                         <VisualState x:Name="Pressed">
                             <VisualState.Setters>
                                 <Setter Property="BackgroundColor" Value="#bc0000" />
-                                <Setter Property="BorderWidth" Value=".25" />
-                                <Setter Property="BorderColor" Value="#bc0000" />
                                 <Setter Property="TextColor" Value="#ffffff" />
                             </VisualState.Setters>
                         </VisualState>
@@ -153,6 +162,11 @@
                 Grid.Row="4">
                 <VisualStateManager.VisualStateGroups>
                     <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="#bc0000" />
+                            </VisualState.Setters>
+                        </VisualState>
                         <VisualState x:Name="Pressed">
                             <VisualState.Setters>
                                 <Setter Property="TextColor" Value="#ffffff" />
@@ -161,7 +175,8 @@
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
             </Button>
-            <Button x:Name="btPass"                
+
+            <Button x:Name="btPass"               
                 StyleClass="saveAsButton"
                 Text="SAVE AS PASS"
                 WidthRequest="125"

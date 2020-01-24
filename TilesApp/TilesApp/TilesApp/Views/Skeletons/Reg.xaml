@@ -87,6 +87,11 @@
                                 BackgroundColor="Transparent" >
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#bc0000" />
+                                            </VisualState.Setters>
+                                        </VisualState>
                                         <VisualState x:Name="Pressed">
                                             <VisualState.Setters>
                                                 <Setter Property="TextColor" Value="#ffffff" />
