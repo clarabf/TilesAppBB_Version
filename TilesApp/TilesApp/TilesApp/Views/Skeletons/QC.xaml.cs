@@ -21,11 +21,11 @@ namespace TilesApp.Views
             InitializeComponent();
             BindingContext = this;                       
             MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
-            lblTestType.Text = MetaData.QCProcedureDetails;
+            lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
             string[] appNameArr = tag.Split('_');
             MetaData.AppType = appNameArr[1];
             MetaData.AppName = appNameArr[2];
-            lblTest.Text = appNameArr[2] + " (QC)";
+            lblTest.Text = appNameArr[2].ToUpper() + " (QC)";
             appName = appNameArr[2];
             
             var tapGestureRecognizer = new TapGestureRecognizer();
@@ -36,7 +36,8 @@ namespace TilesApp.Views
                 TakenPhotos = a;
                 setPhotosList();
                 if (TakenPhotos.Count > 0) numPhotos.Text = TakenPhotos.Count.ToString();
-                else lblListPhotos.IsVisible = false;
+                else
+                { lblListPhotos.IsVisible = false; hyper.IsVisible = false; } 
             });
 
             NavigationPage.SetHasNavigationBar(this, false);
@@ -56,11 +57,13 @@ namespace TilesApp.Views
             {
                 if (MetaData.IsValid())
                 {
-                    lblTestType.Text = MetaData.QCProcedureDetails;
+                    lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
                     btPass.IsVisible = true;
                     btFail.IsVisible = true;
+                    lblTitle.IsVisible = true;
+                    lblTitleLine.IsVisible = true;
                     btTakePicture.IsVisible = true;
-                    if (TakenPhotos.Count > 0) lblListPhotos.IsVisible = true;
+                    if (TakenPhotos.Count > 0) { lblListPhotos.IsVisible = true; hyper.IsVisible = true; }
                 }
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }            
@@ -68,7 +71,7 @@ namespace TilesApp.Views
 
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            ImageButton button = (ImageButton)sender;
+            Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
             ViewableReads.Remove(button.ClassId);
@@ -76,8 +79,11 @@ namespace TilesApp.Views
             {
                 btPass.IsVisible = false;
                 btFail.IsVisible = false;
+                lblTitle.IsVisible = false;
+                lblTitleLine.IsVisible = false;
                 btTakePicture.IsVisible = false;
                 lblListPhotos.IsVisible = false;
+                hyper.IsVisible = false;
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {
@@ -111,8 +117,7 @@ namespace TilesApp.Views
                     string[] fileName = file.Path.Split('/');
                     TakenPhotos.Add(new PhotoData() { 
                         FileName = fileName[fileName.Length-1], 
-                        DateAndTime = DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToShortTimeString(), 
-                        ImageSource = "delete.png",
+                        DateAndTime = DateTime.Now.ToShortDateString() + " - " + DateTime.Now.ToShortTimeString(),
                         FileContent = file.GetStream()
                     });
                     photoList.Add(file.GetStream());
@@ -123,6 +128,7 @@ namespace TilesApp.Views
                 }
 
                 lblListPhotos.IsVisible = true;
+                hyper.IsVisible = true;
                 numPhotos.Text = TakenPhotos.Count.ToString();
 
                 await DisplayAlert("Photo taken correctly!", "Photo stored in <" + file.Path + ">", "OK");

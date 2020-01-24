@@ -69,6 +69,35 @@ Label {
     background-color: #bc0000;
 }
 
+
 .darkButton {
-    background-color: #202020;
+    background-color: #202020; 
 }
+
+
+#btPass {
+    color: #10940b;
+    border-color: #10940b;
+}
+
+#btFail {
+    color: #bc0000;
+    border-color: #bc0000;
+}
+
+#btTakePicture {
+    background-color: Transparent;
+    color: #bc0000;
+    border-width: 0;
+}
+
+.saveAsButton {
+    font-size: 14;
+    background-color: #000000;
+}
+
+.iconButton {
+    color: #bc0000;
+    background-color: #151515;
+}
+

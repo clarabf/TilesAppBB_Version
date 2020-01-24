@@ -4,174 +4,185 @@
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
              x:Class="TilesApp.Views.QC">
     <ContentPage.Content>
-        <Grid BackgroundColor="White">
+        <Grid BackgroundColor="#000000" StyleClass="gridApps" Padding="0, 30">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.4*" />
                 <RowDefinition Height="0.5*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="0.2*" />
                 <RowDefinition Height="0.5*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="2.5*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="0.25*" />
+                <RowDefinition Height="0.5*" />
             </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+            
+            <Label
+                TextColor="#ffffff"
+                FontAttributes="Bold"
+                FontSize="20"
+                CharacterSpacing="1.15"
+                HorizontalOptions="Center"
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="0"
+                LineBreakMode="TailTruncation"
+                Padding="10,0"
+                x:Name="lblTestType"
+                />
             <Label x:Name="lblTest" 
                 Text="QUALITY CONTROL"
-                TextColor="Black"
-                FontAttributes="Bold"
+                TextColor="#ffffff"
+                CharacterSpacing="1.05"
+                Margin="0,0,0, -15"
+                Padding="10,0"
                 FontSize="18"
-                HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
+                HorizontalOptions="Center"                        
                 Grid.Row="0"
-                Grid.ColumnSpan="2"
+                LineBreakMode="TailTruncation"
             />
-            <StackLayout 
+            
+            <Label x:Name="lblTitle" 
+                Text="SCAN BARCODE OF COMPONENT"
+                TextColor="#ffffff"
+                FontSize="16"
+                Margin="0,0,0,3"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="End"
+                IsVisible="False"
                 Grid.Row="1"
-                Grid.ColumnSpan="2" >
-                <Label x:Name="lblTitle" 
-                    Text="Scan barcode of component:"
-                    TextColor="Black"
-                    FontAttributes="Bold"
-                    FontSize="18"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="CenterAndExpand"                
+                LineBreakMode="NoWrap"               
                 />
-                <StackLayout Orientation="Horizontal">
-                    <Label
-                        TextColor="Black"
-                        FontAttributes="Bold"
-                        FontSize="18"
-                        Text="Test type: "
-                    />
-                    <Label
-                        TextColor="DarkGray"
-                        FontAttributes="Bold"
-                        FontSize="18"
-                        x:Name="lblTestType"
-                    />
-                </StackLayout>
-            </StackLayout>
-            <ListView ItemsSource="{Binding ViewableReads}" 
-                        Grid.Row="2" Grid.ColumnSpan="2">
-                <ListView.ItemTemplate>
+            <BoxView  x:Name="lblTitleLine"
+                HeightRequest="1.5"
+                WidthRequest="1500"
+                BackgroundColor="#bc0000"
+                VerticalOptions="End"
+                IsVisible="False"
+                Grid.Row="1"
+                HorizontalOptions="CenterAndExpand" />
+
+            <CollectionView Margin="0, -6, 0, 0" ItemsSource="{Binding ViewableReads}" Grid.Row="2">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <StackLayout>
-                                <Grid Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="2*" />
-                                        <ColumnDefinition Width="0.5*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label
-                                        x:Name="Path"
-                                        FontAttributes="Bold"
-                                        Text="{Binding .}"
-                                        Grid.Column="0"
-                                        HorizontalOptions="CenterAndExpand"
-                                        VerticalOptions="CenterAndExpand"                                                
-                                    />
-                                    <ImageButton x:Name="Delete"
-                                        Grid.Column="1"
-                                        HeightRequest="20"
-                                        Padding="0"
-                                        HorizontalOptions="CenterAndExpand"
-                                        VerticalOptions="CenterAndExpand"
-                                        ClassId="{Binding .}"
-                                        Source="delete.png"
-                                        Clicked="Delete_ScannerRead"
-                                    />
-                                </Grid>
-                            </StackLayout>
-                        </ViewCell>
+
+                        <Grid BackgroundColor="#151515">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="0.5*" />
+                            </Grid.ColumnDefinitions>
+                            <Label
+                                x:Name="Path"
+                                FontAttributes="Bold"
+                                Text="{Binding .}"
+                                Grid.Column="0"
+                                Padding="20"
+                                TextColor="#ffffff"
+                                FontSize="16"
+                                LineBreakMode="TailTruncation"/>
+                            <Button 
+                                Text="&#xf1f8;"
+                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                HorizontalOptions="Center"                
+                                Clicked="Delete_ScannerRead"
+                                FontSize="16"
+                                BorderWidth="0"
+                                StyleClass="iconButton"
+                                ClassId="{Binding .}"
+                                Grid.Column="1"
+                                BackgroundColor="Transparent" >
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Pressed">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#ffffff" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Button>
+                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.ColumnSpan="2" VerticalOptions="End"/>
+                        </Grid>
+                                                    
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
             <Button x:Name="btTakePicture"
-                TextColor="White"
-                BackgroundColor="Black"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="TAKE PICTURE"
+                FontFamily="{StaticResource FontAwesomeSolid}"
+                Text="TAKE PICTURE &#xf083;"
                 WidthRequest="250"
-                BorderColor="White"
-                BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="3"
                 IsVisible="False"
-                Clicked="CameraButton_Clicked"
-                Grid.ColumnSpan="2"
-            />
+                Clicked="CameraButton_Clicked">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="#bc0000" />
+                                <Setter Property="BorderWidth" Value=".25" />
+                                <Setter Property="BorderColor" Value="#bc0000" />
+                                <Setter Property="TextColor" Value="#ffffff" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Button>
             <Label x:Name="lblListPhotos" 
-                Grid.ColumnSpan="2"
                 FontSize="12"
                 IsVisible="False"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="StartAndExpand"
+                HorizontalOptions="Center"
                 Grid.Row="4">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="Taken photos: &lt;" TextColor="Black"/>
-                        <Span x:Name="numPhotos" Text="0" TextColor="Black"/>
-                        <Span Text="&gt;. " TextColor="Black"/>
-                        <Span x:Name="hyper" Text="Edit." FontAttributes="Bold" TextColor="Blue"/>
+                        <Span Text="TAKEN PHOTOS: " TextColor="#ffffff" FontFamily="sans-serif-light"/>
+                        <Span x:Name="numPhotos" Text="0" TextColor="#ffffff" FontFamily="sans-serif-light"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Button x:Name="btPass"
-                TextColor="Green"
-                BackgroundColor="White"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="PASS"
-                WidthRequest="100"
-                BorderColor="Green"
-                BorderWidth="1"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
+            <Button x:Name="hyper"
+                Text="&#xf06e;"
+                FontFamily="{StaticResource FontAwesomeRegular}"
+                HorizontalOptions="Center"                
+                FontSize="16"
+                TextColor="#bc0000"
+                Margin="145,-8,0,0"
+                BorderWidth="0"
+                BackgroundColor="Transparent"
+                IsVisible="False"
+                Clicked="Show_Images"              
+                Grid.Row="4">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="#ffffff" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Button>
+            <Button x:Name="btPass"                
+                StyleClass="saveAsButton"
+                Text="SAVE AS PASS"
+                WidthRequest="125"
+                HorizontalOptions="Start" 
                 VerticalOptions="EndAndExpand"
                 IsVisible="False"
-                Margin="60,0,0,0"
+                Margin="35,0,0,0"
+                Padding="3,10"
                 Grid.Row="5"
-                Grid.Column="0"
                 Clicked="PassOrFail"
             />
             <Button x:Name="btFail"
-                TextColor="Red"
-                BackgroundColor="White"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="FAIL"
-                WidthRequest="100"
-                BorderColor="Red"
-                BorderWidth="1"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
+                StyleClass="saveAsButton"                
+                Text="SAVE AS FAIL"
+                WidthRequest="125"
+                HorizontalOptions="End" 
                 VerticalOptions="EndAndExpand"
                 IsVisible="False"
-                Margin="-50,0,0,0"
-                Grid.Row="5"
-                Grid.Column="1"
+                Margin="0,0,35,0"
+                Grid.Row="5"                    
                 Clicked="PassOrFail"
-            />
-            <Button x:Name="btCancel"
-                TextColor="Black"
-                BackgroundColor="White"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Cancel"
-                WidthRequest="250"
-                BorderColor="Black"
-                BorderWidth="1"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="6"
-                Grid.ColumnSpan="2"
-                Clicked="Cancel"
             />
         </Grid>
     </ContentPage.Content>

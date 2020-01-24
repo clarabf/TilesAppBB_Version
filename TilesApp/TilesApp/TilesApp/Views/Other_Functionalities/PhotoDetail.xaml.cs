@@ -29,7 +29,7 @@ namespace TilesApp.Views
 
         private void Delete_Photo(object sender, EventArgs args)
         {
-            ImageButton b = (ImageButton)sender;
+            Button b = (Button)sender;
             PhotoData phD = TakenPhotos.FirstOrDefault(ph => ph.FileName == b.ClassId);
             TakenPhotos.Remove(phD);
         }

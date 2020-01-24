@@ -6,82 +6,99 @@
              mc:Ignorable="d"
              x:Class="TilesApp.Views.PhotoDetail">
     <ContentPage.Content>
-        <Grid BackgroundColor="White">
+        <Grid BackgroundColor="#000000" StyleClass="gridApps">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.4*" />
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
+
             </Grid.RowDefinitions>
             <Label x:Name="lblTest" 
-                Text="Photos Taken"
-                TextColor="Black"
+                Text="PHOTOS TAKEN"
+                TextColor="#ffffff"
                 FontAttributes="Bold"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand"
+                FontSize="20"
+                CharacterSpacing="1.15"
+                HorizontalOptions="Center"
                 VerticalOptions="EndAndExpand"
+                LineBreakMode="NoWrap"
                 Grid.Row="0"
             />
-            <ListView Grid.Row="1" 
-                ItemsSource="{Binding TakenPhotos}">
-                <ListView.ItemTemplate>
+            <BoxView
+                HeightRequest="1.5"
+                WidthRequest="1500"
+                BackgroundColor="#bc0000"
+                VerticalOptions="End"
+                Grid.Row="0"
+                HorizontalOptions="CenterAndExpand" />
+            <CollectionView Margin="0, -6, 0, 0" Grid.Row="1" ItemsSource="{Binding TakenPhotos}">
+                <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <ViewCell>
-                            <StackLayout>
-                                <Grid Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="0.5*" />
-                                    </Grid.ColumnDefinitions>
-                                    <Label
-                                        x:Name="Path"
-                                        FontAttributes="Bold"
-                                        Text="{Binding FileName}"
-                                        Grid.Column="0"
-                                        HorizontalOptions="CenterAndExpand"
-                                        VerticalOptions="CenterAndExpand"
-                                    />
-                                    <Label 
-                                        x:Name="TimeLabel"
-                                        FontAttributes="Bold"
-                                        Text="{Binding DateAndTime}"
-                                        Grid.Column="1"
-                                        HorizontalOptions="CenterAndExpand" 
-                                        VerticalOptions="CenterAndExpand"
-                                    />
-                                    <ImageButton x:Name="Delete"
-                                        Grid.Column="2"
-                                        HeightRequest="20"
-                                        Padding="0"
-                                        HorizontalOptions="CenterAndExpand"
-                                        VerticalOptions="CenterAndExpand"
-                                        ClassId="{Binding FileName}"
-                                        Source="{Binding ImageSource}"
-                                        Clicked="Delete_Photo"
-                                    />
-                                </Grid>
-                            </StackLayout>
-                        </ViewCell>
+
+                        <Grid BackgroundColor="#151515">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1.25*" />
+                                <ColumnDefinition Width="0.25*" />
+                            </Grid.ColumnDefinitions>
+                            <Label
+                                x:Name="Path"
+                                FontAttributes="Bold"
+                                Text="{Binding FileName}"
+                                Grid.Column="0"
+                                Padding="10,20"
+                                TextColor="#ffffff"
+                                FontSize="14"
+                                LineBreakMode="TailTruncation"/>
+                            <Label 
+                                x:Name="TimeLabel"
+                                FontAttributes="Bold"
+                                Text="{Binding DateAndTime}"
+                                Grid.Column="1"
+                                Padding="10,20"
+                                TextColor="#ffffff"
+                                FontSize="14"
+                                LineBreakMode="TailTruncation"/>
+                            <Button x:Name="Delete"
+                                Text="&#xf1f8;"
+                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                Grid.Column="2"
+                                FontSize="14"
+                                BorderWidth="0"
+                                TextColor="#bc0000"
+                                HorizontalOptions="Center"
+                                BackgroundColor="Transparent"
+                                ClassId="{Binding FileName}"                                        
+                                Clicked="Delete_Photo">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Pressed">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#ffffff" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Button>
+                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.ColumnSpan="3" VerticalOptions="End"/>
+                        </Grid>
+
                     </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            
             <Button x:Name="btnSaveAndFinish"
-                TextColor="White"
-                BackgroundColor="Black"
-                FontAttributes="Bold"
-                FontSize="14"
+                StyleClass="primaryButton"
                 Text="Save &amp; Finish"
                 WidthRequest="250"
-                BorderColor="White"
-                BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="EndAndExpand"
                 Grid.Row="2"
+                Margin="0,0,0,20"
                 IsVisible="True"
                 Clicked="SaveAndFinish"
             />
-            <Button x:Name="btnCancel"
+            <!--<Button x:Name="btnCancel"
                 TextColor="Black"
                 BackgroundColor="White"
                 FontAttributes="Bold"
@@ -95,7 +112,7 @@
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="3"
                 Clicked="Cancel"
-            />
+            />-->
         </Grid>
     </ContentPage.Content>
 </ContentPage>

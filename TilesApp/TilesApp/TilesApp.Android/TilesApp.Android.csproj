@@ -118,10 +118,7 @@
     <AndroidResource Include="Resources\mipmap-anydpi-v26\icon_round.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable-hdpi\" />
-    <Folder Include="Resources\drawable-xhdpi\" />
-    <Folder Include="Resources\drawable-xxhdpi\" />
-    <Folder Include="Resources\drawable-xxxhdpi\" />
+    <AndroidResource Include="Resources\drawable-nodpi\sherpaLogo.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\TilesApp\TilesApp.csproj">
@@ -133,52 +130,13 @@
     <AndroidAsset Include="Assets\qrsound.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Cameralw.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\logoC.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\xml\file_paths.xml" />
-    <AndroidResource Include="Resources\drawable\_LoadingScreen.png" />
-    <AndroidResource Include="Resources\drawable\LoadingScreen_centered.xml" />
+    <AndroidResource Include="Resources\drawable-nodpi\LoadingScreen_centered.xml" />
     <AndroidResource Include="Resources\xml\device_filter.xml" />
-    <AndroidResource Include="Resources\drawable\sherpaLogo.png" />
-    <AndroidResource Include="Resources\drawable\newBackground.jpg" />
-    <AndroidResource Include="Resources\drawable\loadingScreen.jpg" />
-    <AndroidResource Include="Resources\drawable\splashScreen.jpg" />
-    <AndroidResource Include="Resources\drawable\delete.png" />
-    <AndroidResource Include="Resources\drawable\splash.gif" />
-    <None Include="Resources\drawable\CameralWhite.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\drawable\Logo2.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <AndroidResource Include="Resources\drawable\Card.png">
+    <AndroidResource Include="Resources\drawable-nodpi\splashScreen.jpg" />
+    <AndroidResource Include="Resources\drawable-nodpi\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\CameraLens.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\logo.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\Camera.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\Cameral.png">
-      <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <Generator>MSBuild:UpdateGeneratedFiles</Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable\Background.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\splashScreen2.gif" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\mipmap-xxxhdpi\app_icon.png" />
@@ -209,6 +167,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\mipmap-hdpi\app_icon_round.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable-nodpi\newBackground.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\drawable-hdpi\" />
+    <Folder Include="Resources\drawable-ldpi\" />
+    <Folder Include="Resources\drawable-mdpi\" />
+    <Folder Include="Resources\drawable-xhdpi\" />
+    <Folder Include="Resources\drawable-xxhdpi\" />
+    <Folder Include="Resources\drawable-xxxhdpi\" />
+    <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

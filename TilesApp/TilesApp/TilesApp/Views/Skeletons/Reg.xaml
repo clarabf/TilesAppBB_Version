@@ -24,7 +24,7 @@
                 Padding="10,0"
                 />
             <Label x:Name="lblTest" 
-                Text="SAMPLESAMPLESAMPLE (CHECKPOINT)"
+                Text="CHECKPOINT"
                 TextColor="#ffffff"
                 CharacterSpacing="1.05"
                 Margin="0,0,0, -15"
@@ -84,7 +84,17 @@
                                 TextColor="#bc0000"
                                 ClassId="{Binding .}"
                                 Grid.Column="1"
-                                BackgroundColor="Transparent" />
+                                BackgroundColor="Transparent" >
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Pressed">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#ffffff" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Button>
                             <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.ColumnSpan="2" VerticalOptions="End"/>
                         </Grid>
 
