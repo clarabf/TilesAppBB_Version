@@ -76,11 +76,11 @@ namespace TilesApp.Models.Skeletons
         {
             bool isParent = true;
             //Apply filter
-            if (System.Text.RegularExpressions.Regex.IsMatch(appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"], @"\b([a-fA-F0-9xX]+)\b") & appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & scannerRead["Value"].ToString().Length == 24)
+            if (System.Text.RegularExpressions.Regex.IsMatch(appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"], @"\b([a-fA-F0-9xX]+)\b") & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Length == scannerRead["Value"].ToString().Length )
             {
-                for (int i = 0; i < 12; i++)
+                for (int i = 0; i < appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Length; i++)
                 {
-                    if (appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Substring(i * 2, 2).ToUpper() != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2).ToUpper() != appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].Substring(i * 2, 2).ToUpper())
+                    if (appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].ToUpper()[i] != 'X' && scannerRead["Value"].ToString().ToUpper()[i] != appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"].ToUpper()[i])
                     {
                         isParent = false;
                     }

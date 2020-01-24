@@ -20,7 +20,7 @@ namespace TilesApp.Views
             try
             {
                 MetaData = new RegMetaData(OdooXMLRPC.GetAppConfig(tag));
-                lblRegType.Text = MetaData.Operation.ToUpper();
+                lblRegType.Text = MetaData.Registry.ToUpper();
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
@@ -52,7 +52,7 @@ namespace TilesApp.Views
             {
                 if (MetaData.IsValid())
                 {
-                    lblRegType.Text = MetaData.Operation.ToUpper();
+                    lblRegType.Text = MetaData.Registry.ToUpper();
                     lblTitle.IsVisible = true;
                     lblTitleLine.IsVisible = true;
                     btnSaveAndFinish.IsVisible = true;
