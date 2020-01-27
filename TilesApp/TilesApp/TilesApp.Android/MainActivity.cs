@@ -180,6 +180,7 @@ namespace TilesApp.Droid
                             result += " ";
                             break;
                         case "ShiftLeft":
+                        case "Back":
                             break;
                         default:
                             result += keyCodes[i].ToLower();

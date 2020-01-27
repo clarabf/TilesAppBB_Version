@@ -37,5 +37,17 @@ namespace TilesApp.Rfid.Views
             await Navigation.PopAsync(true);
             this.OnBackButtonPressed();
         }
+
+        private void ConnectDevice(object sender, EventArgs args)
+        {
+            if (this.ViewModel.DisplayName.Contains("1128"))
+            {
+                this.ViewModel.ConnectCommand.Execute(null);
+            }
+            else
+            {
+                App.ViewModel.Transports.AddNewCommand.Execute(null);
+            }            
+        }
     }
 }
