@@ -68,7 +68,7 @@ namespace TilesApp.Models.Skeletons
             }
             else
             {
-                return new Dictionary<string, object>();
+                return returnScannerRead;
             }
         }        
 

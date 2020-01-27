@@ -84,7 +84,7 @@ namespace TilesApp.Views
                 }
                 if (appName.Length > maxLength) appName = appName.Substring(0, maxLength) + "...";
                 button.Text = icon + " " + appName;
-                button.Padding = new Thickness(-230 + (appName.Length*10), 0, 0, 0);
+                button.Padding = new Thickness(-220 + (appName.Length*10), 0, 0, 0);
                 buttonsGrid.Children.Add(button, 0, row);
                 row++;           
             }

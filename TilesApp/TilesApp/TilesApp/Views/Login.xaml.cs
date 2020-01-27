@@ -43,13 +43,9 @@ namespace TilesApp.Views
             });
         }
 
-        private void GoToScan(object sender, EventArgs args)
+        private async void GoToScan(object sender, EventArgs args)
         {
-            Device.BeginInvokeOnMainThread(() =>
-            {
-                Navigation.PopModalAsync(true);
-                Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, OdooXMLRPC.users));
-            });
+            await Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, OdooXMLRPC.users));
         }
 
         private async void Reader_Command(object sender, EventArgs args)
