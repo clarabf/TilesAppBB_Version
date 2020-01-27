@@ -4,118 +4,156 @@
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
             x:Class="TilesApp.Views.Join">
     <ContentPage.Content>
-        <Grid BackgroundColor="White">
+        <Grid BackgroundColor="#000000" StyleClass="gridApps">
             <Grid.RowDefinitions>
-                <RowDefinition Height="0.4*" />
-                <RowDefinition Height="0.5*" />
-                <RowDefinition Height="2*" />
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="1*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="9*" />
+                <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
+
             <Label x:Name="lblTest" 
                 Text="ASSEMBLE"
-                TextColor="Black"
-                FontAttributes="Bold"
+                TextColor="#ffffff"
+                CharacterSpacing="1.05"
+                Margin="0,0,0, -15"
+                Padding="10,0"
                 FontSize="18"
-                HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
+                HorizontalOptions="Center"                        
                 Grid.Row="0"
+                LineBreakMode="TailTruncation"
             />
+
             <Label x:Name="lblTitle" 
-                Text="Scan barcode of components:"
-                TextColor="Black"
-                FontAttributes="Bold"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="1"
-            />
-            <StackLayout Grid.Row="2" >
-                <Label x:Name="lblParentBarcode"
-                TextColor="Black"
+                Text="SCANNED ITEM(S)"
+                TextColor="#ffffff"
                 FontSize="16"
-                Margin="20,0,20,0"
+                Margin="0,0,0,3"
                 HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
+                VerticalOptions="End"
                 IsVisible="False"
-                Grid.Row="2"      
-                />
-                <Label 
-                    x:Name="lblComponents"
-                Text="Barcodes of components:"
-                TextColor="DarkGray"
-                FontAttributes="Bold"
-                FontSize="18"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="CenterAndExpand"
-                    IsVisible="False"
+                Grid.Row="1"
+                LineBreakMode="NoWrap"
             />
-                <ListView ItemsSource="{Binding ViewableReads}">
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <ViewCell>
-                                <StackLayout>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="2*" />
-                                            <ColumnDefinition Width="0.5*" />
-                                        </Grid.ColumnDefinitions>
-                                        <Label
-                                        x:Name="Path"
-                                        FontAttributes="Bold"
-                                        Text="{Binding .}"
-                                        Grid.Column="0"
-                                        HorizontalOptions="CenterAndExpand"
-                                        VerticalOptions="CenterAndExpand"                                                
-                                    />
-                                        <ImageButton x:Name="Delete"
-                                        Grid.Column="1"
-                                        HeightRequest="20"
-                                        Padding="0"
-                                        HorizontalOptions="CenterAndExpand"
-                                        VerticalOptions="CenterAndExpand"
-                                        ClassId="{Binding .}"
-                                        Source="delete.png"
-                                        Clicked="Delete_ScannerRead"
-                                    />
-                                    </Grid>
-                                </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </StackLayout>
-            
+            <BoxView x:Name="lblTitleLine"
+                HeightRequest="1.5"
+                WidthRequest="1500"
+                BackgroundColor="#bc0000"
+                VerticalOptions="End"
+                IsVisible="False"
+                Grid.Row="1"
+                HorizontalOptions="CenterAndExpand" />
+
+            <CollectionView Margin="0, -6, 0, 0" ItemsSource="{Binding ViewableReads}" Grid.Row="2">
+
+                <CollectionView.Header>
+
+                    <Grid x:Name="lblParent" BackgroundColor="#000" IsVisible="False">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*" />
+                            <ColumnDefinition Width="0.5*" />
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="lblParentBarcode"
+                            TextColor="#bc0000"
+                            FontAttributes="Bold"
+                            FontSize="16"
+                            Padding="20"                           
+                            LineBreakMode="TailTruncation"
+                            />
+                        <Button
+                            Text="&#xf1f8;"
+                            FontFamily="{StaticResource FontAwesomeSolid}"
+                            HorizontalOptions="Center"
+                            Clicked="Delete_ScannerRead"
+                            FontSize="16"
+                            BorderWidth="0"
+                            TextColor="#bc0000"
+                            ClassId="{Binding .}"
+                            Grid.Column="1"
+                            BackgroundColor="Transparent">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <VisualState.Setters>
+                                            <Setter Property="TextColor" Value="#bc0000" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <VisualState.Setters>
+                                            <Setter Property="TextColor" Value="#ffffff" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Button>
+                        <BoxView BackgroundColor="#bc0000" HeightRequest=".5" Grid.ColumnSpan="2" VerticalOptions="End"/>
+
+                    </Grid>
+
+                </CollectionView.Header>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+
+                        <Grid BackgroundColor="#151515">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="0.5*" />
+                            </Grid.ColumnDefinitions>
+                            <Label
+                                x:Name="Path"                                
+                                Text="{Binding .}"
+                                Grid.Column="0"
+                                Padding="20"
+                                TextColor="#ffffff"
+                                FontSize="16"
+                                LineBreakMode="TailTruncation"/>
+                            <Button
+                                Text="&#xf1f8;"
+                                FontFamily="{StaticResource FontAwesomeSolid}"
+                                HorizontalOptions="Center"                
+                                Clicked="Delete_ScannerRead"
+                                FontSize="16"
+                                BorderWidth="0"
+                                TextColor="#bc0000"
+                                ClassId="{Binding .}"
+                                Grid.Column="1"
+                                BackgroundColor="Transparent" >
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#bc0000" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#ffffff" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Button>
+                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.ColumnSpan="2" VerticalOptions="End"/>
+                        </Grid>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+
             <Button x:Name="btnSaveAndFinish"
-                TextColor="White"
-                BackgroundColor="Black"
-                FontAttributes="Bold"
-                FontSize="14"
+                StyleClass="primaryButton"
                 Text="Save &amp; Finish"
                 WidthRequest="250"
-                BorderColor="White"
-                BorderRadius="8"
                 HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="EndAndExpand"
+                VerticalOptions="CenterAndExpand"
                 Grid.Row="3"
+                Margin="0,0,0,10"
                 IsVisible="False"
                 Clicked="SaveAndFinish"
             />
-            <Button x:Name="btnCancel"
-                TextColor="Black"
-                BackgroundColor="White"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Cancel"
-                WidthRequest="250"
-                BorderColor="Black"
-                BorderWidth="1"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="4"
-                Clicked="Cancel"
-            />
+
         </Grid>
     </ContentPage.Content>
 </d:BasePage>

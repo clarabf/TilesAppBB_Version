@@ -19,7 +19,6 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <Label Grid.Row="0" HorizontalOptions="Center" TextColor="#ffffff" FontFamily="sans-serif-light" FontSize="20">
@@ -69,10 +68,8 @@
 
                     <Button Grid.Row="5" Text="Connect"  Clicked="ConnectDevice" WidthRequest="200" HorizontalOptions="Center" StyleClass="primaryButton"/>
                     <Button Grid.Row="6" Text="Disconnect" Command="{Binding DisconnectCommand}" WidthRequest="200" HorizontalOptions="Center" StyleClass="primaryButton"  Margin="0, 10, 0, 10"/>
-                    <Button Grid.Row="7" Text="Back" Clicked="Cancel" WidthRequest="200" HorizontalOptions="Center" StyleClass="primaryButton"/>
 
-
-                    <Button Grid.Row="8" x:Name="forgetButton" Text="Forget" Command="{Binding ForgetCommand}" Margin="12,8" VerticalOptions="EndAndExpand" HorizontalOptions="Center">
+                    <Button Grid.Row="7" x:Name="forgetButton" Text="Forget" Command="{Binding ForgetCommand}" Margin="12,8" VerticalOptions="EndAndExpand" HorizontalOptions="Center">
                         <Button.Triggers>
                             <DataTrigger TargetType="Button" Binding="{Binding Source={x:Reference forgetButton}, Path=IsEnabled}" Value="False">
                                 <Setter Property="VisualElement.IsVisible" Value="false" />

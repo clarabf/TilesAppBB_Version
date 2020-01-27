@@ -67,7 +67,6 @@
                             </Grid.ColumnDefinitions>
                             <Label
                                 x:Name="Path"
-                                FontAttributes="Bold"
                                 Text="{Binding .}"
                                 Grid.Column="0"
                                 Padding="20"
@@ -84,7 +83,7 @@
                                 TextColor="#bc0000"
                                 ClassId="{Binding .}"
                                 Grid.Column="1"
-                                BackgroundColor="Transparent" >
+                                BackgroundColor="Transparent">
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup x:Name="CommonStates">
                                         <VisualState x:Name="Normal">

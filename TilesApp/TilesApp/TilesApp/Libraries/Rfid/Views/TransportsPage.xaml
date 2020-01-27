@@ -63,15 +63,7 @@
                    TextColor="#ffffff"
                    HorizontalOptions="CenterAndExpand"
             />
-            <Button 
-                Text="&#xf015;"
-                FontFamily="{StaticResource FontAwesomeSolid}"
-                HorizontalOptions="Center"                
-                Clicked="Cancel"
-                FontSize="32"
-                TextColor="#bc0000"
-                BackgroundColor="Transparent"
-                VerticalOptions="Center" />
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
