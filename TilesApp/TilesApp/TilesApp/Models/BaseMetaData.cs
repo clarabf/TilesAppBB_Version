@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 
 namespace TilesApp.Models
 {
@@ -274,7 +276,26 @@ namespace TilesApp.Models
             Xamarin.Essentials.Location rowGeoLocation = new Xamarin.Essentials.Location();
             try
             {
-                rowGeoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                if (status != PermissionStatus.Granted)
+                {
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                    status = results[Permission.Location];
+                }
+
+                if (status == PermissionStatus.Granted)
+                {
+                    rowGeoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+                }
+                else if (status != PermissionStatus.Unknown)
+                {
+                    Console.WriteLine("Location Denied", "Can not continue, try again.", "OK");
+                }
+
+            }
+            catch (PermissionException pEx)
+            {
+                // Handle permission exception
             }
             catch
             {

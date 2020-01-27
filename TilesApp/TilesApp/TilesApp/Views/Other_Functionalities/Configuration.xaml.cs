@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Plugin.Permissions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ using TilesApp.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using Plugin.Permissions.Abstractions;
 
 namespace TilesApp.Views
 {
@@ -44,7 +46,32 @@ namespace TilesApp.Views
             Models.Location location = new Models.Location();
             try
             {
-                rowGeoLocation = Geolocation.GetLastKnownLocationAsync().Result;                
+                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                if (status != PermissionStatus.Granted)
+                {
+                    /*
+                    if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Location))
+                    {
+                        await DisplayAlert("Location Permission", "We need to access your location", "OK");
+                    }
+                    */
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                    status = results[Permission.Location];
+                }
+
+                if (status == PermissionStatus.Granted)
+                {
+                    rowGeoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+                }
+                else if (status != PermissionStatus.Unknown)
+                {
+                    await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
+                }
+                
+            }
+            catch (PermissionException pEx)
+            {
+                // Handle permission exception
             }
             catch
             {
