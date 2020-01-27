@@ -43,6 +43,10 @@ namespace TilesApp.Rfid.Views
             await Navigation.PushAsync(new InventoryPage() { ViewModel = App.ViewModel.Inventory });
         }
 
-
+        protected override bool OnBackButtonPressed()
+        {
+            Navigation.PushAsync(new InventoryPage() { ViewModel = App.ViewModel.Inventory });
+            return true;
+        }
     }
 }

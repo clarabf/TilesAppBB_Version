@@ -40,9 +40,11 @@ namespace TilesApp.Rfid.Views
 
         private void ConnectDevice(object sender, EventArgs args)
         {
+            Button connectBtn = (Button)sender;
             if (this.ViewModel.DisplayName.Contains("1128"))
             {
-                this.ViewModel.ConnectCommand.Execute(null);
+                connectBtn.SetBinding(Button.CommandProperty, new Binding() { Source = ViewModel, Path = "ConnectCommand" });
+                ViewModel.ConnectCommand.Execute(null);
             }
             else
             {
