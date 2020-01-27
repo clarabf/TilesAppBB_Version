@@ -6,6 +6,8 @@ using TilesApp.Rfid;
 using Xamarin.Forms;
 using XmlRpc;
 using TilesApp.Models;
+using System.Threading.Tasks;
+using Android.OS;
 
 namespace TilesApp.Views
 {
@@ -58,6 +60,19 @@ namespace TilesApp.Views
         private void Setup()
         {
             this.BindWithLifecycle(App.ViewModel.Inventory);
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                if (await DisplayAlert("You are closing the application", "Are you sure you want to leave?", "OK", "Cancel"))
+                {
+                    base.OnBackButtonPressed();
+                    Process.KillProcess(Process.MyPid());
+                }
+            });
+            return true;
         }
     }
 }

@@ -59,7 +59,7 @@ namespace TilesApp.Views
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
                     ClassId = tag,
-                    Margin = new Thickness (0, 0, 0, 20),
+                    Margin = new Thickness (0, 0, 0, 20)
                 };
                 switch (appType)
                 {
@@ -141,11 +141,28 @@ namespace TilesApp.Views
 
         private async void Logout_Command(object sender, EventArgs args)
         {
-            CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout!
-            await DisplayAlert("You are abandoning this page", "Please, wait until Login page appears.", "OK");
-            timer.Stop();
-            MessagingCenter.Send(this, "OdooConnection");
-            await Navigation.PopModalAsync(true);
+            if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
+            {
+                CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout!
+                timer.Stop();
+                MessagingCenter.Send(this, "OdooConnection");
+                await Navigation.PopModalAsync(true);
+            }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
+                {
+                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout!
+                    timer.Stop();
+                    MessagingCenter.Send(this, "OdooConnection");
+                    await Navigation.PopModalAsync(true);
+                }
+            });
+            return true;
         }
 
     }

@@ -14,13 +14,13 @@ namespace TilesApp.Models.Skeletons
     {
         //Fields properties
         [BsonIgnoreIfNull]
-        public string Operation
+        public string Registry
         {
             get
             {
-                if (appData[appDataIndex["Operation"]]["FieldIsSaved"])
+                if (appData[appDataIndex["Registry"]]["FieldIsSaved"])
                 {
-                    return appData[appDataIndex["Operation"]]["DefaultValue(admin)"];
+                    return appData[appDataIndex["Registry"]]["DefaultValue(admin)"];
                 }
                 else
                 {
@@ -29,13 +29,13 @@ namespace TilesApp.Models.Skeletons
             }
         }
         [BsonIgnoreIfNull]
-        public string OperationDetails
+        public string RegistryDetails
         {
             get
             {
-                if (appData[appDataIndex["OperationDetails"]]["FieldIsSaved"])
+                if (appData[appDataIndex["RegistryDetails"]]["FieldIsSaved"])
                 {
-                    return appData[appDataIndex["OperationDetails"]]["DefaultValue(admin)"];
+                    return appData[appDataIndex["RegistryDetails"]]["DefaultValue(admin)"];
                 }
                 else
                 {

@@ -136,7 +136,7 @@ namespace TilesApp.Models
             }
             catch
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");
+                throw new Exception("Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");
             }
         }
 
@@ -164,11 +164,11 @@ namespace TilesApp.Models
                         isValidCode = true;
 
                         //Apply filter
-                        if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\b([a-fA-F0-9xX]+)\b") & validContentFormat.Length == 24 & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & scannerRead["Value"].ToString().Length == 24)
+                        if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\b([a-fA-F0-9xX]+)\b") & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & validContentFormat.Length == scannerRead["Value"].ToString().Length)
                         {
-                            for (int i = 0; i < 12; i++)
+                            for (int i = 0; i < validContentFormat.Length; i++)
                             {
-                                if (validContentFormat.Substring(i * 2, 2).ToUpper() != "XX" && scannerRead["Value"].ToString().Substring(i * 2, 2).ToUpper() != validContentFormat.Substring(i * 2, 2).ToUpper())
+                                if (validContentFormat.ToUpper()[i] != 'X' && scannerRead["Value"].ToString().ToUpper()[i] != validContentFormat.ToUpper()[i])
                                 {
                                     isValidCode = false;
                                     break; // next validContentFormat

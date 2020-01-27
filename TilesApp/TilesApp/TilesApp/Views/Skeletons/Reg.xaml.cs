@@ -20,7 +20,7 @@ namespace TilesApp.Views
             try
             {
                 MetaData = new RegMetaData(OdooXMLRPC.GetAppConfig(tag));
-                lblRegType.Text = MetaData.Operation.ToUpper();
+                lblRegType.Text = MetaData.Registry.ToUpper();
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
@@ -29,6 +29,10 @@ namespace TilesApp.Views
             catch
             {
                 DisplayAlert("Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.", "Ok");
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Navigation.PopModalAsync(true);
+                });
             }
         }
 
@@ -48,7 +52,7 @@ namespace TilesApp.Views
             {
                 if (MetaData.IsValid())
                 {
-                    lblRegType.Text = MetaData.Operation.ToUpper();
+                    lblRegType.Text = MetaData.Registry.ToUpper();
                     lblTitle.IsVisible = true;
                     lblTitleLine.IsVisible = true;
                     btnSaveAndFinish.IsVisible = true;
