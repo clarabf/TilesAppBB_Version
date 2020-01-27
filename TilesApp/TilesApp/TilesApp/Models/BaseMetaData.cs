@@ -70,6 +70,10 @@ namespace TilesApp.Models
                     return null;
                 }
             }
+            set
+            {
+                appData[appDataIndex["Station"]]["DefaultValue(admin)"] = value;
+            }
         }
         [BsonIgnoreIfNull]
         public Models.Location Location
@@ -250,11 +254,15 @@ namespace TilesApp.Models
 
             foreach (Dictionary<string, dynamic> field in appData.Values)
             {
-                if (field["IsRequired"] & field["DefaultValue(admin)"] == null) { isValid = false; }
+                if (field["IsRequired"] & field["DefaultValue(admin)"] == null) { 
+                    isValid = false; 
+                }
             }
             foreach (Dictionary<string, dynamic> field in customData.Values)
             {
-                if (field["DefaultValue(admin)"] == null) { isValid = false; }
+                if (field["DefaultValue(admin)"] == null) { 
+                    isValid = false; 
+                }
             }
 
             return isValid;

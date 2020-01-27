@@ -22,6 +22,7 @@ namespace TilesApp.Views
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
+                MetaData.Station = App.Station;
                 lblTest.Text = appNameArr[2].ToUpper() + " (JOIN)";
             }
             catch
@@ -64,7 +65,7 @@ namespace TilesApp.Views
                 btnSaveAndFinish.IsVisible = true;
                 lblParent.IsVisible = true;
             }
-            else
+            else if (processedInput.Count>0)
             {
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }
@@ -121,6 +122,15 @@ namespace TilesApp.Views
         private async void Cancel(object sender, EventArgs args)
         {
             await Navigation.PopModalAsync(true);
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Navigation.PopModalAsync(true);
+            });
+            return true;
         }
 
     }
