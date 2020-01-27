@@ -70,7 +70,6 @@
                             </Grid.ColumnDefinitions>
                             <Label
                                 x:Name="Path"
-                                FontAttributes="Bold"
                                 Text="{Binding .}"
                                 Grid.Column="0"
                                 Padding="20"
@@ -112,8 +111,9 @@
 
             <Button x:Name="btTakePicture"
                 FontFamily="{StaticResource FontAwesomeSolid}"
-                Text="TAKE PICTURE &#xf083;"
-                WidthRequest="250"
+                Text="&#xf083;"
+                BackgroundColor="Transparent"
+                FontSize="40"
                 HorizontalOptions="CenterAndExpand" 
                 VerticalOptions="CenterAndExpand"
                 Grid.Row="3"
@@ -123,58 +123,31 @@
                     <VisualStateGroup x:Name="CommonStates">
                         <VisualState x:Name="Normal">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="Transparent" />
                                 <Setter Property="TextColor" Value="#bc0000" />
                             </VisualState.Setters>
                         </VisualState>
                         <VisualState x:Name="Pressed">
                             <VisualState.Setters>
-                                <Setter Property="BackgroundColor" Value="#bc0000" />
                                 <Setter Property="TextColor" Value="#ffffff" />
                             </VisualState.Setters>
                         </VisualState>
                     </VisualStateGroup>
                 </VisualStateManager.VisualStateGroups>
             </Button>
-            <Label x:Name="lblListPhotos" 
+            <Label x:Name="hyper" 
+                TextDecorations="Underline"
                 FontSize="12"
                 IsVisible="False"
                 HorizontalOptions="Center"
                 Grid.Row="4">
                 <Label.FormattedText>
                     <FormattedString>
-                        <Span Text="TAKEN PHOTOS: " TextColor="#ffffff" FontFamily="sans-serif-light"/>
                         <Span x:Name="numPhotos" Text="0" TextColor="#ffffff" FontFamily="sans-serif-light"/>
+                        <Span Text=" PHOTO(S) ADDED" TextColor="#ffffff" FontFamily="sans-serif-light"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
-            <Button x:Name="hyper"
-                Text="&#xf06e;"
-                FontFamily="{StaticResource FontAwesomeRegular}"
-                HorizontalOptions="Center"                
-                FontSize="16"
-                TextColor="#bc0000"
-                Margin="145,-8,0,0"
-                BorderWidth="0"
-                BackgroundColor="Transparent"
-                IsVisible="False"
-                Clicked="Show_Images"              
-                Grid.Row="4">
-                <VisualStateManager.VisualStateGroups>
-                    <VisualStateGroup x:Name="CommonStates">
-                        <VisualState x:Name="Normal">
-                            <VisualState.Setters>
-                                <Setter Property="TextColor" Value="#bc0000" />
-                            </VisualState.Setters>
-                        </VisualState>
-                        <VisualState x:Name="Pressed">
-                            <VisualState.Setters>
-                                <Setter Property="TextColor" Value="#ffffff" />
-                            </VisualState.Setters>
-                        </VisualState>
-                    </VisualStateGroup>
-                </VisualStateManager.VisualStateGroups>
-            </Button>
+            
 
             <Button x:Name="btPass"               
                 StyleClass="saveAsButton"

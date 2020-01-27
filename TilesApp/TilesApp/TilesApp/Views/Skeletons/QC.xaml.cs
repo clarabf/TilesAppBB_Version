@@ -42,8 +42,8 @@ namespace TilesApp.Views
                 TakenPhotos = a;
                 setPhotosList();
                 if (TakenPhotos.Count > 0) numPhotos.Text = TakenPhotos.Count.ToString();
-                else
-                { lblListPhotos.IsVisible = false; hyper.IsVisible = false; } 
+                //else
+                //{ hyper.IsVisible = false; } 
             });
 
             NavigationPage.SetHasNavigationBar(this, false);
@@ -69,7 +69,8 @@ namespace TilesApp.Views
                     lblTitle.IsVisible = true;
                     lblTitleLine.IsVisible = true;
                     btTakePicture.IsVisible = true;
-                    if (TakenPhotos.Count > 0) { lblListPhotos.IsVisible = true; hyper.IsVisible = true; }
+                    hyper.IsVisible = true;
+                    //if (TakenPhotos.Count > 0) {  }
                 }
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }            
@@ -88,7 +89,6 @@ namespace TilesApp.Views
                 lblTitle.IsVisible = false;
                 lblTitleLine.IsVisible = false;
                 btTakePicture.IsVisible = false;
-                lblListPhotos.IsVisible = false;
                 hyper.IsVisible = false;
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
@@ -132,9 +132,7 @@ namespace TilesApp.Views
                 {
                     return;
                 }
-
-                lblListPhotos.IsVisible = true;
-                hyper.IsVisible = true;
+                
                 numPhotos.Text = TakenPhotos.Count.ToString();
 
                 await DisplayAlert("Photo taken correctly!", "Photo stored in <" + file.Path + ">", "OK");

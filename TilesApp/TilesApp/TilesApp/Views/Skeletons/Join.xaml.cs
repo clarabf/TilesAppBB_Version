@@ -22,7 +22,7 @@ namespace TilesApp.Views
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
-                lblTest.Text = appNameArr[2] + " (Assemble)";
+                lblTest.Text = appNameArr[2].ToUpper() + " (JOIN)";
             }
             catch
             {
@@ -35,7 +35,7 @@ namespace TilesApp.Views
             if (MetaData.ParentUUID != null)
             {
                 if (MetaData.ParentUUID == input[nameof(BaseMetaData.InputDataProps.Value)].ToString()) return;
-            }          
+            }
             foreach (string item in ViewableReads)
             {
                 if (item.Equals(input[nameof(BaseMetaData.InputDataProps.Value)].ToString()))
@@ -43,7 +43,7 @@ namespace TilesApp.Views
                     return;
                 }
             }
-            Dictionary<string, object>  processedInput = MetaData.ProcessScannerRead(input);
+            Dictionary<string, object> processedInput = MetaData.ProcessScannerRead(input);
             bool isParent = false;
             try
             {
@@ -55,26 +55,32 @@ namespace TilesApp.Views
             }
             if (isParent)
             {
-                lblParentBarcode.IsVisible = true;
-                lblParentBarcode.Text = "Parent is: "+input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
+                
+                lblParentBarcode.Text = input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
                 btnSaveAndFinish.IsVisible = true;
+                lblParent.IsVisible = true;
             }
-            else {
+            else
+            {
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
-                lblComponents.IsVisible = true;
             }
-            
+            lblTitle.IsVisible = true;
+            lblTitleLine.IsVisible = true;
+
         }
 
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            ImageButton button = (ImageButton)sender;
+            Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
             ViewableReads.Remove(button.ClassId);
             if (ViewableReads.Count == 0)
             {
                 btnSaveAndFinish.IsVisible = false;
+                lblTitle.IsVisible = false;
+                lblTitleLine.IsVisible = false;
+                lblParent.IsVisible = false;
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {
@@ -89,7 +95,8 @@ namespace TilesApp.Views
         {
             if (MetaData.IsValid())
             {
-                if (CosmosDBManager.InsertOneObject(MetaData)) {
+                if (CosmosDBManager.InsertOneObject(MetaData))
+                {
                     string message = "";
                     foreach (Dictionary<string, object> item in MetaData.ScannerReads)
                     {

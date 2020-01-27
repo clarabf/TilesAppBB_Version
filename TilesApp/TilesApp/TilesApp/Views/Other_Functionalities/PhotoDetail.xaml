@@ -98,21 +98,7 @@
                 IsVisible="True"
                 Clicked="SaveAndFinish"
             />
-            <!--<Button x:Name="btnCancel"
-                TextColor="Black"
-                BackgroundColor="White"
-                FontAttributes="Bold"
-                FontSize="14"
-                Text="Cancel"
-                WidthRequest="250"
-                BorderColor="Black"
-                BorderWidth="1"
-                BorderRadius="8"
-                HorizontalOptions="CenterAndExpand" 
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="3"
-                Clicked="Cancel"
-            />-->
+
         </Grid>
     </ContentPage.Content>
 </ContentPage>
