@@ -20,11 +20,11 @@ namespace TilesApp.Views
             try
             {
                 MetaData = new RegMetaData(OdooXMLRPC.GetAppConfig(tag));
-                lblRegType.Text = MetaData.Registry.ToUpper();
+                if (MetaData.Registry != null) lblRegType.Text = MetaData.Registry.ToUpper();
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
-                MetaData.Station = App.Station;
+                if (MetaData.Station == null) MetaData.Station = App.Station;
                 lblTest.Text = appNameArr[2].ToUpper() + " (CHECKPOINT)";
             }
             catch
@@ -51,17 +51,29 @@ namespace TilesApp.Views
             Dictionary<string, object> returnedData = MetaData.ProcessScannerRead(input);
             if (returnedData.Count > 0)
             {
-                if (MetaData.IsValid())
-                {
-                    lblRegType.Text = MetaData.Registry.ToUpper();
-                    lblTitle.IsVisible = true;
-                    lblTitleLine.IsVisible = true;
-                    lblEmptyView.IsVisible = false;
-                    lblEmptyViewAnimation.IsVisible = false;
-                    btnSaveAndFinish.IsVisible = true;
-                }
+                lblTitle.IsVisible = true;
+                lblTitleLine.IsVisible = true;
+                btnSaveAndFinish.IsVisible = true;
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }
+            //QR has been scanned
+            else
+            {
+                if (ViewableReads.Count > 0)
+                {
+                    if (MetaData.IsValid())
+                    {
+                        lblRegType.Text = MetaData.Registry.ToUpper();
+                        DisplayAlert("Success!", "QR scanned successfully!", "Ok");
+                    }
+                    else
+                    {
+                        DisplayAlert("Warning", "QR scanned successfully but some fields missing in config file...", "Ok");
+                    }
+                }
+            }
+            lblEmptyView.IsVisible = false;
+            lblEmptyViewAnimation.IsVisible = false;
         }
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
@@ -98,15 +110,27 @@ namespace TilesApp.Views
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
                     await DisplayAlert("Component/s were registered successfully!", message.Substring(0, message.Length - 2), "OK");
+                    lblTitle.IsVisible = false;
+                    lblTitleLine.IsVisible = false;
+                    lblEmptyView.IsVisible = true;
+                    lblEmptyViewAnimation.IsVisible = true;
+                    btnSaveAndFinish.IsVisible = false;
+                    ViewableReads.Clear();
+                    MetaData.ScannerReads.Clear();
                 }
                 else
                     await DisplayAlert("Component/s were NOT registered successfully!", "We could not connect to the Database Server", "OK");
             }
+            else if (MetaData.RegistryDetails == null)
+            {
+                await DisplayAlert("Error:", "Please scan operation QR!", "OK");
+                return;
+            }
             else
             {
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
+                await Navigation.PopModalAsync(true);
             }
-            await Navigation.PopModalAsync(true);
         }
         private async void Come_Back(object sender, EventArgs args)
         {

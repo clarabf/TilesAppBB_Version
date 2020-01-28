@@ -22,7 +22,7 @@ namespace TilesApp.Views
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
-                MetaData.Station = App.Station;
+                if (MetaData.Station == null) MetaData.Station = App.Station;
                 lblTest.Text = appNameArr[2].ToUpper() + " (JOIN)";
             }
             catch
