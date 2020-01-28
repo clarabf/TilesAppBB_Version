@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 using TilesApp.Rfid;
+using Lottie.Forms.Droid;
 
 namespace TilesApp.Droid
 {
@@ -50,6 +51,7 @@ namespace TilesApp.Droid
             ScanBluetoothDevices();
             ScanSerialDevices();
             GetDeviceSerialNumber();
+            AnimationViewRenderer.Init();
         }
         private IAndroidLifecycle TslLifecycle
         {
