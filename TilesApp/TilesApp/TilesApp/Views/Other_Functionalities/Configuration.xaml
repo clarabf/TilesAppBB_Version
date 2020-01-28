@@ -8,85 +8,115 @@
     <ContentPage.Content>
         <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
             <Image Source="newBackground.jpg" Aspect="Fill"/>
-            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All"
-                BackgroundColor="Transparent"  VerticalOptions="Fill" HorizontalOptions="FillAndExpand"
-                Orientation="Vertical">
+            <Grid Padding="30, 0, 30, 15" StyleClass="gridConfig">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="1.5*" />
+                    <RowDefinition Height="1*" />
+                </Grid.RowDefinitions>
+
                 <Label 
                     TextColor = "#ffffff"
-                    FontAttributes="Bold"                        
-                    Text="YOUR STATION:"
-                    FontSize="30"
-                    HorizontalTextAlignment="Start"
-                    HorizontalOptions="Start"
-                    VerticalOptions="CenterAndExpand"
-                    Margin="20, 0, 20, 0"
+                    FontAttributes="Bold"
+                    Text="YOUR STATION"
+                    FontSize="20"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="EndAndExpand"
+                    CharacterSpacing="1.15"
+                    Grid.Row="0"
                 />
+                
                 <Label 
                     x:Name="lblStation"
                     Text="You haven't assigned a station. Please scan one:"
                     TextColor = "#ffffff"
-                    FontSize="20"
-                    HorizontalTextAlignment="Start"
-                    HorizontalOptions="Start"
-                    VerticalOptions="StartAndExpand"
-                    Margin="20, 0, 20, 0"
+                    FontSize="16"
+                    HorizontalOptions="StartAndExpand"
+                    VerticalOptions="CenterAndExpand"
+                    Grid.Row="1"
                 />
+                
                 <Button
                     x:Name="btAdd"
-                    Text="ADD"                                
-                    TextColor="#ffffff"
-                    BackgroundColor="#bc0000"
-                    BorderColor="#796f6f"
+                    Text="ADD &#xe815;"
+                    FontFamily="{StaticResource CustomFont}"
+                    StyleClass="primaryButton"
                     WidthRequest="150"
-                    FontSize="30"
-                    CornerRadius="5"
                     HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="StartAndExpand"
-                    Clicked="GoToScan"                                
+                    VerticalOptions="CenterAndExpand"
+                    Clicked="GoToScan"
+                    Grid.Row="2"
                 />
+                
                 <Label 
                     TextColor = "#ffffff"
                     FontAttributes="Bold"                        
-                    Text="YOUR INFO:"
-                    FontSize="30"
-                    HorizontalTextAlignment="Start"
-                    HorizontalOptions="Start"
-                    VerticalOptions="CenterAndExpand"
-                    Margin="20, 0, 20, 0"
-                />
-                <Label 
-                    x:Name="lblInfo"
-                    TextColor = "#ffffff"
+                    Text="YOUR INFO"
                     FontSize="20"
-                    HorizontalTextAlignment="Start"
-                    HorizontalOptions="Start"
-                    VerticalOptions="StartAndExpand"
-                    Margin="20, 0, 20, 0">
-                    <Label.FormattedText>
-                        <FormattedString>
-                            <Span Text="Name: "/>
-                            <Span x:Name="lblName" Text="Dante Sparda"/>
-                            <Span Text="&#x0a;Id: "/>
-                            <Span x:Name="lblId" Text="12345"/>
-                            <Span Text="&#x0a;Session: "/>
-                            <Span x:Name="lblSession" Text="{Binding SessionTime}"/>
-                            <Span Text="&#x0a;Location: "/>
-                            <Span x:Name="lblLocation"/>
-                        </FormattedString>
-                    </Label.FormattedText>
-                </Label>
-                <Button 
-                    Text="&#xf015;"
-                    FontFamily="{StaticResource FontAwesomeSolid}"
-                    HorizontalOptions="Center"                
-                    Clicked="Home"
-                    FontSize="32"
-                    TextColor="#bc0000"
-                    BackgroundColor="Transparent"
-                    VerticalOptions="Center"
-                    Margin="20, 0, 20, 20"
+                    HorizontalOptions="CenterAndExpand"
+                    VerticalOptions="EndAndExpand"
+                    CharacterSpacing="1.15"
+                    Margin="0, 0, 0, 15"
+                    Grid.Row="3"
                 />
-            </StackLayout>
+                <Grid Grid.Row="4">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".5*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+                    <Label
+                        TextColor = "#ffffff"
+                        FontSize="14"
+                        Text="Name "   
+                        Grid.Column="0"
+                        Grid.Row="0"
+                    />
+                    <Label x:Name="lblName"
+                        TextColor = "#ffffff"
+                        FontSize="14"
+                        Text="asdfasfsfff"  
+                        Grid.Column="1"
+                        Grid.Row="0"
+                    />
+                    <Label
+                        TextColor = "#ffffff"
+                        FontSize="14"
+                        Text="Session "  
+                        Grid.Column="0"
+                        Grid.Row="1"
+                    />
+                    <Label x:Name="lblSession"
+                        TextColor = "#ffffff"
+                        FontSize="14"
+                        Text="{Binding SessionTime}"
+                        Grid.Column="1"
+                        Grid.Row="1"
+                    />
+                    <Label
+                        TextColor = "#ffffff"
+                        FontSize="14"
+                        Text="Location "   
+                        Grid.Column="0"
+                        Grid.Row="2"
+                    />
+                    <Label x:Name="lblLocation"
+                        TextColor = "#ffffff"
+                        FontSize="14"
+                        Grid.Column="1"
+                        Grid.Row="2"
+                    />
+                    
+                </Grid>
+
+                
+            </Grid>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

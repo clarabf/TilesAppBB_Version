@@ -13,32 +13,21 @@
                 <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
             
-            <Label x:Name="lblRegType"
-                TextColor="#ffffff"
-                FontAttributes="Bold"
-                FontSize="20"
-                CharacterSpacing="1.15"
-                HorizontalOptions="Center"
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="0"
-                LineBreakMode="TailTruncation"
-                Padding="10,0"
-                />
             <Label x:Name="lblTest" 
                 Text="CHECKPOINT"
                 TextColor="#ffffff"
-                CharacterSpacing="1.05"
-                Margin="0,0,0, -15"
+                FontAttributes="Bold"
+                CharacterSpacing="1.15"
                 Padding="10,0"
-                FontSize="18"
+                FontSize="20"
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="Center"                        
                 Grid.Row="0"
-                LineBreakMode="TailTruncation"
+                LineBreakMode="MiddleTruncation"
                 />
 
             <Label x:Name="lblTitle" 
-                Text="SCAN BARCODE OF COMPONENT"
+                Text="SCANNED ITEM(S)"
                 TextColor="#ffffff"
                 FontSize="16"
                 Margin="0,0,0,3"

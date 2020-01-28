@@ -14,32 +14,23 @@
                 <RowDefinition Height="1.5*" />
                 
             </Grid.RowDefinitions>
-            <Label x:Name="lblTitle" 
-                TextColor="#ffffff"
-                FontAttributes="Bold"
-                FontSize="20"
-                CharacterSpacing="1.15"
-                HorizontalOptions="Center"
-                VerticalOptions="CenterAndExpand"
-                Grid.Row="0"
-                LineBreakMode="NoWrap"
-            />
+
             <Label x:Name="lblTest" 
                 Text="LINK"
                 TextColor="#ffffff"
-                CharacterSpacing="1.05"
-                Margin="0,0,0, -15"
-                FontSize="18"
+                CharacterSpacing="1.15"
+                FontAttributes="Bold"
+                FontSize="20"
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="Center"                        
                 Grid.Row="0"
-                LineBreakMode="TailTruncation"
+                LineBreakMode="MiddleTruncation"
                 Padding="10,0"
             />
 
             <Label x:Name="lblBarcode"
                 TextColor="#ffffff"
-                Text ="LAST BARCODE SCANNED"
+                Text ="SCANNED ITEM(S)"
                 FontSize="16"
                 Margin="0,0,0,3"
                 HorizontalOptions="CenterAndExpand"

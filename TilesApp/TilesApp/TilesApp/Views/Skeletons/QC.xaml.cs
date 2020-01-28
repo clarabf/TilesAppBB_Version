@@ -23,7 +23,6 @@ namespace TilesApp.Views
             try
             {
                 MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
-                lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
@@ -66,7 +65,6 @@ namespace TilesApp.Views
             Dictionary<string,object> returnedData = MetaData.ProcessScannerRead(input);
             if (returnedData.Count > 0)
             {
-                lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
                 btPass.IsVisible = true;
                 btFail.IsVisible = true;
                 lblTitle.IsVisible = true;
