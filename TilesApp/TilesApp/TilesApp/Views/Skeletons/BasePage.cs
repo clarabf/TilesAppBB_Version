@@ -16,7 +16,7 @@ using Xamarin.Forms;
 
 namespace TilesApp
 {
-    public class BasePage : ContentPage, INotifyPropertyChanged
+    public class BasePage : ContentPage, INotifyPropertyChanged, IDisposable
     {
         public ReadersViewModel ReadersViewModel { get;set; }
         public ObservableCollection<string> ViewableReads { get; set; } = new ObservableCollection<string>();
@@ -60,21 +60,17 @@ namespace TilesApp
             base.OnDisappearing();
         }
 
-        //EVENTS
-
-        private void ScannerReads_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+        public void Dispose()
         {
-            if (args.NewItems != null)
-            {
-                foreach (var item in args.NewItems.Cast<Dictionary<string, object>>())
-                {
-                    ScannerReadDetected(item);
-                }
-            }
-
+            ReadersViewModel = null;
+            ViewableReads.Clear();
+        }
+        protected override bool OnBackButtonPressed()
+        {
+            Navigation.RemovePage(this);
+            return true;
         }
 
-        //CHECK HOW TO DO IT. PROCESS INPUT NOW AVAILABLE IN METADATA. MAKES USE OF VALID CODE STRUCTURE
         private void ProcessInput(string code, string reader, string readerSerialNumber) {
             Dictionary<string, object> input = new Dictionary<string, object>
             {
