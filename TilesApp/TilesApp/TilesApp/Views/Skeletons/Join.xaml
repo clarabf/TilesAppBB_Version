@@ -16,14 +16,14 @@
             <Label x:Name="lblTest" 
                 Text="ASSEMBLE"
                 TextColor="#ffffff"
-                CharacterSpacing="1.05"
-                Margin="0,0,0, -15"
+                CharacterSpacing="1.15"
+                FontAttributes="Bold"
                 Padding="10,0"
-                FontSize="18"
+                FontSize="20"
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="Center"                        
                 Grid.Row="0"
-                LineBreakMode="TailTruncation"
+                LineBreakMode="MiddleTruncation"
             />
 
             <Label x:Name="lblTitle" 

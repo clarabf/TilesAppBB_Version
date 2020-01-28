@@ -23,11 +23,10 @@ namespace TilesApp.Views
             GetDeviceLocation();
             
             lblName.Text = OdooXMLRPC.userName;
-            lblId.Text = OdooXMLRPC.userID.ToString();
             if (App.Station!=null)
             {
                 lblStation.Text = "Station: " + App.Station + "\nYou can change it by scanning again:";
-                btAdd.Text = "CHANGE";
+                btAdd.Text = "CHANGE \uf0ec";
             }
             else
             {
@@ -35,7 +34,7 @@ namespace TilesApp.Views
             }
             MessagingCenter.Subscribe<Scan, string>(this, "SetStation", (s, qrContent) => {
                 lblStation.Text = "Station: " + qrContent + "\nYou can change it by scanning again:";
-                btAdd.Text = "CHANGE";
+                btAdd.Text = "CHANGE \uf0ec";
                 App.Station = qrContent;
             });
         }

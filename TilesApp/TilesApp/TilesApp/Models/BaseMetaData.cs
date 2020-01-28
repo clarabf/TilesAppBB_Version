@@ -253,20 +253,27 @@ namespace TilesApp.Models
         public Boolean IsValid()
         {
             bool isValid = true;
-
-            foreach (Dictionary<string, dynamic> field in appData.Values)
+            try
             {
-                if (field["IsRequired"] & field["DefaultValue(admin)"] == null) { 
-                    isValid = false; 
+                foreach (Dictionary<string, dynamic> field in appData.Values)
+                {
+                    if (field["IsRequired"] & field["DefaultValue(admin)"] == null)
+                    {
+                        isValid = false;
+                    }
+                }
+                foreach (Dictionary<string, dynamic> field in customData.Values)
+                {
+                    if (field["IsRequired(admin)"] && field["DefaultValue(admin)"] == null)
+                    {
+                        isValid = false;
+                    }
                 }
             }
-            foreach (Dictionary<string, dynamic> field in customData.Values)
+            catch
             {
-                if (field["DefaultValue(admin)"] == null) { 
-                    isValid = false; 
-                }
+                isValid = false;
             }
-
             return isValid;
         }
 

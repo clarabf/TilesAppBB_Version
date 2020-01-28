@@ -22,7 +22,7 @@ namespace TilesApp.Views
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
-                MetaData.Station = App.Station;
+                if (MetaData.Station == null) MetaData.Station = App.Station;
                 lblTest.Text = appNameArr[2].ToUpper() + " (LINK)";
             }
             catch
@@ -44,13 +44,16 @@ namespace TilesApp.Views
                     return;
                 }
             }
-            lblBarcode.IsVisible = true;
-            lblEmptyView.IsVisible = false;
-            lblEmptyViewAnimation.IsVisible = false;
-            lblBarcodeLine.IsVisible = true;
-            btnSaveAndFinish.IsVisible = true;
-            MetaData.ProcessScannerRead(input);
-            ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+            Dictionary<string, object> returnedData = MetaData.ProcessScannerRead(input);
+            if (returnedData.Count > 0)
+            {
+                lblBarcode.IsVisible = true;
+                lblEmptyView.IsVisible = false;
+                lblEmptyViewAnimation.IsVisible = false;
+                lblBarcodeLine.IsVisible = true;
+                btnSaveAndFinish.IsVisible = true;
+                ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+            }
         }
 
         private void Delete_ScannerRead(object sender, EventArgs args)
@@ -88,6 +91,13 @@ namespace TilesApp.Views
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
                     await DisplayAlert(" Component/s were associated to their barcodes successfully!", message.Substring(0, message.Length - 2), "OK");
+                    lblBarcode.IsVisible = false;
+                    lblBarcodeLine.IsVisible = false;
+                    btnSaveAndFinish.IsVisible = false;
+                    lblEmptyView.IsVisible = true;
+                    lblEmptyViewAnimation.IsVisible = true;
+                    ViewableReads.Clear();
+                    MetaData.ScannerReads.Clear();
                 }
                 else
                     await DisplayAlert(" Component/s were NOT associated to their barcodes successfully!", "We could not connect to the Database Server", "OK");
@@ -96,7 +106,6 @@ namespace TilesApp.Views
             {
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
             }
-            await Navigation.PopModalAsync(true);
         }
 
         private async void Cancel(object sender, EventArgs args)
