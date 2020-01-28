@@ -26,7 +26,7 @@ namespace TilesApp.Views
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
-                MetaData.Station = App.Station;
+                if (MetaData.Station == null) MetaData.Station = App.Station;
                 lblTest.Text = appNameArr[2].ToUpper() + " (QC)";
                 appName = appNameArr[2];
             }
@@ -104,6 +104,7 @@ namespace TilesApp.Views
             {
                 btPass.IsVisible = false;
                 btFail.IsVisible = false;
+                btnSaveAndFinish.IsVisible = false;
                 lblTitle.IsVisible = false;
                 lblTitleLine.IsVisible = false;
                 btTakePicture.IsVisible = false;
@@ -168,11 +169,9 @@ namespace TilesApp.Views
             else if (b.Text == "SAVE AS FAIL") MetaData.QCPass = false;
             if (MetaData.IsValid())
             {
-                if (photoList.Count > 0)
-                {
-                    Collection<string> urls = StreamToAzure.UpdateJPEGStreams(photoList, appName);
-                    if (urls.Count > 0) MetaData.Images = urls;
-                }
+                Collection<string> urls = new Collection<string>();
+                if (photoList.Count > 0) urls = StreamToAzure.UpdateJPEGStreams(photoList, appName);
+                MetaData.Images = urls;
                 bool submitted = CosmosDBManager.InsertOneObject(MetaData);
                 if (submitted)
                 {
@@ -182,11 +181,22 @@ namespace TilesApp.Views
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
                     await DisplayAlert("Report was delivered successfully!", message.Substring(0, message.Length - 2), "OK");
+                    btPass.IsVisible = false;
+                    btFail.IsVisible = false;
+                    btnSaveAndFinish.IsVisible = false;
+                    lblTitle.IsVisible = false;
+                    lblTitleLine.IsVisible = false;
+                    btTakePicture.IsVisible = false;
+                    hyper.IsVisible = false;
+                    lblEmptyView.IsVisible = true;
+                    lblEmptyViewAnimation.IsVisible = true;
+                    ViewableReads.Clear();
+                    MetaData.ScannerReads.Clear();
                 }
                 else
                     await DisplayAlert("Report was NOT delivered successfully...", "We could not connect to the Database Server", "OK");
             }
-            else if (MetaData.QCResultDetails.Length == 0)
+            else if (MetaData.QCResultDetails == null)
             {
                 await DisplayAlert("Error:", "Please scan operation QR!", "OK");
                 return;
@@ -194,8 +204,8 @@ namespace TilesApp.Views
             else
             {
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
+                await Navigation.PopModalAsync(true);
             }
-            await Navigation.PopModalAsync(true);
         }
         private async void Show_Images(object sender, EventArgs args)
         {

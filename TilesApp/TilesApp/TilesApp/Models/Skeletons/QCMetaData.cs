@@ -73,7 +73,7 @@ namespace TilesApp.Models.Skeletons
                 }
                 else
                 {
-                    return null;
+                    return new Collection<string>();
                 }
             }
             set

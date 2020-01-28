@@ -22,7 +22,7 @@ namespace TilesApp.Views
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
-                MetaData.Station = App.Station;
+                if (MetaData.Station == null) MetaData.Station = App.Station;
                 lblTest.Text = appNameArr[2].ToUpper() + " (JOIN)";
             }
             catch
@@ -64,16 +64,21 @@ namespace TilesApp.Views
                 lblParentBarcode.Text = input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
                 btnSaveAndFinish.IsVisible = true;
                 lblParent.IsVisible = true;
+                
+                lblTitle.IsVisible = true;
+                lblTitleLine.IsVisible = true;
+                lblEmptyView.IsVisible = false;
+                lblEmptyViewAnimation.IsVisible = false;
             }
             else if (processedInput.Count>0)
             {
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+                
+                lblTitle.IsVisible = true;
+                lblTitleLine.IsVisible = true;
+                lblEmptyView.IsVisible = false;
+                lblEmptyViewAnimation.IsVisible = false;
             }
-            lblTitle.IsVisible = true;
-            lblTitleLine.IsVisible = true;
-            lblEmptyView.IsVisible = false;
-            lblEmptyViewAnimation.IsVisible = false;
-
         }
 
         private void Delete_ScannerRead(object sender, EventArgs args)
@@ -112,6 +117,14 @@ namespace TilesApp.Views
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
                     await DisplayAlert(MetaData.ParentUUID + " was assembled successfully!", message.Substring(0, message.Length - 2), "OK");
+                    btnSaveAndFinish.IsVisible = false;
+                    lblEmptyView.IsVisible = true;
+                    lblEmptyViewAnimation.IsVisible = true;
+                    lblTitle.IsVisible = false;
+                    lblTitleLine.IsVisible = false;
+                    lblParent.IsVisible = false;
+                    ViewableReads.Clear();
+                    MetaData.ScannerReads.Clear();
                 }
                 else
                     await DisplayAlert(MetaData.ParentUUID + " was NOT assembled successfully!", "We could not connect to the Database Server", "OK");
@@ -119,8 +132,8 @@ namespace TilesApp.Views
             else
             {
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
+                await Navigation.PopModalAsync(true);
             }
-            await Navigation.PopModalAsync(true);
         }
 
         private async void Cancel(object sender, EventArgs args)
