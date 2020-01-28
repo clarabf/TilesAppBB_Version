@@ -2,7 +2,8 @@
 <d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
-            x:Class="TilesApp.Views.Join">
+            x:Class="TilesApp.Views.Join"
+            xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms">
     <ContentPage.Content>
         <Grid BackgroundColor="#000000" StyleClass="gridApps">
             <Grid.RowDefinitions>
@@ -44,6 +45,24 @@
                 IsVisible="False"
                 Grid.Row="1"
                 HorizontalOptions="CenterAndExpand" />
+
+            <Label x:Name="lblEmptyView"
+                TextColor="#ffffff"
+                Text ="START SCAN!"
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand"
+                Grid.Row="2"
+                LineBreakMode="NoWrap"
+            />
+            <forms:AnimationView  x:Name="lblEmptyViewAnimation"
+                Animation="qr-scan.json" Grid.Row="2"
+                AutoPlay="True" Loop="true"
+                HeightRequest="200"                                      
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" 
+            />
 
             <CollectionView Margin="0, -6, 0, 0" ItemsSource="{Binding ViewableReads}" Grid.Row="2">
 
@@ -140,7 +159,6 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-
 
             <Button x:Name="btnSaveAndFinish"
                 StyleClass="primaryButton"

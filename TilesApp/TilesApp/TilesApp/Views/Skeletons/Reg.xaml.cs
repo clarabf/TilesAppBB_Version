@@ -56,6 +56,8 @@ namespace TilesApp.Views
                     lblRegType.Text = MetaData.Registry.ToUpper();
                     lblTitle.IsVisible = true;
                     lblTitleLine.IsVisible = true;
+                    lblEmptyView.IsVisible = false;
+                    lblEmptyViewAnimation.IsVisible = false;
                     btnSaveAndFinish.IsVisible = true;
                 }
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
@@ -71,6 +73,8 @@ namespace TilesApp.Views
             {
                 lblTitle.IsVisible = false;
                 lblTitleLine.IsVisible = false;
+                lblEmptyView.IsVisible = true;
+                lblEmptyViewAnimation.IsVisible = true;
                 btnSaveAndFinish.IsVisible = false;
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)

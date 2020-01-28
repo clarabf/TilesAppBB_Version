@@ -71,6 +71,8 @@ namespace TilesApp.Views
             }
             lblTitle.IsVisible = true;
             lblTitleLine.IsVisible = true;
+            lblEmptyView.IsVisible = false;
+            lblEmptyViewAnimation.IsVisible = false;
 
         }
 
@@ -83,6 +85,8 @@ namespace TilesApp.Views
             if (ViewableReads.Count == 0)
             {
                 btnSaveAndFinish.IsVisible = false;
+                lblEmptyView.IsVisible = true;
+                lblEmptyViewAnimation.IsVisible = true;
                 lblTitle.IsVisible = false;
                 lblTitleLine.IsVisible = false;
                 lblParent.IsVisible = false;

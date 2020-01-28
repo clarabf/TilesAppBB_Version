@@ -78,7 +78,7 @@ namespace TilesApp.Views
             //QR has been scanned
             else
             {
-                if (ViewableReads.Count>0) {
+                if (ViewableReads.Count > 0) {
                     if (MetaData.IsValid())
                     {
                         btPass.IsVisible = false;
@@ -92,6 +92,8 @@ namespace TilesApp.Views
                     }
                 }
             }
+            lblEmptyView.IsVisible = false;
+            lblEmptyViewAnimation.IsVisible = false;
         }
 
         private void Delete_ScannerRead(object sender, EventArgs args)
@@ -108,6 +110,8 @@ namespace TilesApp.Views
                 lblTitleLine.IsVisible = false;
                 btTakePicture.IsVisible = false;
                 hyper.IsVisible = false;
+                lblEmptyView.IsVisible = true;
+                lblEmptyViewAnimation.IsVisible = true;
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {
