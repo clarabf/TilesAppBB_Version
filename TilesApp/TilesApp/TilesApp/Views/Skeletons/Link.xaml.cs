@@ -44,13 +44,16 @@ namespace TilesApp.Views
                     return;
                 }
             }
-            lblBarcode.IsVisible = true;
-            lblEmptyView.IsVisible = false;
-            lblEmptyViewAnimation.IsVisible = false;
-            lblBarcodeLine.IsVisible = true;
-            btnSaveAndFinish.IsVisible = true;
-            MetaData.ProcessScannerRead(input);
-            ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+            Dictionary<string, object> returnedData = MetaData.ProcessScannerRead(input);
+            if (returnedData.Count > 0)
+            {
+                lblBarcode.IsVisible = true;
+                lblEmptyView.IsVisible = false;
+                lblEmptyViewAnimation.IsVisible = false;
+                lblBarcodeLine.IsVisible = true;
+                btnSaveAndFinish.IsVisible = true;
+                ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+            }
         }
 
         private void Delete_ScannerRead(object sender, EventArgs args)
@@ -88,6 +91,11 @@ namespace TilesApp.Views
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
                     await DisplayAlert(" Component/s were associated to their barcodes successfully!", message.Substring(0, message.Length - 2), "OK");
+                    lblBarcode.IsVisible = false;
+                    lblBarcodeLine.IsVisible = false;
+                    btnSaveAndFinish.IsVisible = false;
+                    lblEmptyView.IsVisible = true;
+                    lblEmptyViewAnimation.IsVisible = true;
                     ViewableReads.Clear();
                     MetaData.ScannerReads.Clear();
                 }
