@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-            xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
+            xmlns:local="clr-namespace:TilesApp"
             x:Class="TilesApp.Views.Login">
     <ContentPage.Content>
         <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -62,4 +62,4 @@
             </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>
-</d:BasePage>
+</ContentPage>

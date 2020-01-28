@@ -1,17 +1,19 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using TilesApp.Services;
 using TilesApp.Rfid;
 using Xamarin.Forms;
-using XmlRpc;
 using TilesApp.Models;
-using System.Threading.Tasks;
 using Android.OS;
+using Android.Bluetooth;
+using Android.Hardware.Usb;
+using Android.Views;
+using System.Linq;
+using TilesApp.Rfid.ViewModels;
 
 namespace TilesApp.Views
 {
-    public partial class Login : BasePage
+    public partial class Login : ContentPage
     {
         public Login()
         {
@@ -19,14 +21,15 @@ namespace TilesApp.Views
             OdooXMLRPC.Start();
             Setup();
             NavigationPage.SetHasNavigationBar(this, false);
+
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
-                if(OdooXMLRPC.users.ContainsKey(a.ToString()))
+                if (OdooXMLRPC.users.ContainsKey(a.ToString()))
                 {
-                    
+
                     OdooXMLRPC.SetCurrentUser(a.ToString()); // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
                     CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
                     Device.BeginInvokeOnMainThread(() =>
-                    {                        
+                    {
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new AppPage());
                     });
@@ -40,6 +43,9 @@ namespace TilesApp.Views
                 OdooXMLRPC.Start();
                 Setup();
                 App.Station = null;
+            });
+            MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
+                await DisplayAlert("Error", errorMessage, "Ok");
             });
         }
 
@@ -70,5 +76,6 @@ namespace TilesApp.Views
             });
             return true;
         }
+        
     }
 }

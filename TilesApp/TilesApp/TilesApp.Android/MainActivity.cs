@@ -119,7 +119,7 @@ namespace TilesApp.Droid
                     Dictionary<string, object> InputWithDevice = new Dictionary<string, object>();
                     InputWithDevice.Add("Device", e.Device);
                     InputWithDevice.Add("Value", barcode);
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "BarcodeScanned", InputWithDevice); 
+                    App.Inventory.Add(InputWithDevice);
                 }
             }
             return base.OnKeyDown(keyCode, e);
