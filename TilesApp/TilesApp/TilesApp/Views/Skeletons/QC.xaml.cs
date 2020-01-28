@@ -27,6 +27,7 @@ namespace TilesApp.Views
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
+                MetaData.Station = App.Station;
                 lblTest.Text = appNameArr[2].ToUpper() + " (QC)";
                 appName = appNameArr[2];
             }
@@ -65,19 +66,32 @@ namespace TilesApp.Views
             Dictionary<string,object> returnedData = MetaData.ProcessScannerRead(input);
             if (returnedData.Count > 0)
             {
-                if (MetaData.IsValid())
-                {
-                    lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
-                    btPass.IsVisible = true;
-                    btFail.IsVisible = true;
-                    lblTitle.IsVisible = true;
-                    lblTitleLine.IsVisible = true;
-                    btTakePicture.IsVisible = true;
-                    hyper.IsVisible = true;
-                    //if (TakenPhotos.Count > 0) {  }
-                }
+                lblTestType.Text = MetaData.QCProcedureDetails.ToUpper();
+                btPass.IsVisible = true;
+                btFail.IsVisible = true;
+                lblTitle.IsVisible = true;
+                lblTitleLine.IsVisible = true;
+                btTakePicture.IsVisible = true;
+                hyper.IsVisible = true;
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
-            }            
+            }
+            //QR has been scanned
+            else
+            {
+                if (ViewableReads.Count>0) {
+                    if (MetaData.IsValid())
+                    {
+                        btPass.IsVisible = false;
+                        btFail.IsVisible = false;
+                        btnSaveAndFinish.IsVisible = true;
+                        DisplayAlert("Success!", "QR scanned successfully!", "Ok");
+                    }
+                    else
+                    {
+                        DisplayAlert("Warning", "QR scanned successfully but some fields missing in config file...", "Ok");
+                    }
+                }
+            }
         }
 
         private void Delete_ScannerRead(object sender, EventArgs args)
@@ -148,11 +162,10 @@ namespace TilesApp.Views
         private async void PassOrFail(object sender, EventArgs args)
         {
             Button b = (Button)sender;
-            bool success = false;
-            if (b.Text == "PASS") success = true;
+            if (b.Text == "SAVE AS PASS") MetaData.QCPass = true;
+            else if (b.Text == "SAVE AS FAIL") MetaData.QCPass = false;
             if (MetaData.IsValid())
             {
-                MetaData.QCPass = success;
                 if (photoList.Count > 0)
                 {
                     Collection<string> urls = StreamToAzure.UpdateJPEGStreams(photoList, appName);
@@ -197,6 +210,15 @@ namespace TilesApp.Views
             {
                 photoList.Add(phD.FileContent);
             }
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Navigation.PopModalAsync(true);
+            });
+            return true;
         }
 
     }

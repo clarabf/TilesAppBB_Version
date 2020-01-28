@@ -1,6 +1,7 @@
 ﻿
 namespace TilesApp.Rfid.ViewModels
 {
+    using PCLAppConfig;
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -28,12 +29,12 @@ namespace TilesApp.Rfid.ViewModels
         private IAsciiTransportEnumerator addNewEnumerator;
 
         private bool wasHostBarcodeEnabled;
-
+        private List<string> ouiVendorIds = new List<string>();
         public TransportsViewModel(IAsciiTransportsManager transportsManager, IHostBarcodeHandler hostBarcode)
         {
             this.transportsManager = transportsManager ?? throw new ArgumentNullException("transportsManager");
             this.hostBarcode = hostBarcode;
-
+            ouiVendorIds = new List<string>(ConfigurationManager.AppSettings["OUI_VENDOR_IDS"].Split(new char[] { ';' }));
             this.Enumerators = this.transportsManager.Enumerators.Select(e => new EnumeratorViewModel(e)).ToList();
 
             // Progress relays the progress.Report call to the UI thread. i.e. transportsManagerDispatcher.Report() calls TransportUpdated with e.Transport but on the UI thread
@@ -137,13 +138,20 @@ namespace TilesApp.Rfid.ViewModels
 
         private void TransportUpdated(IAsciiTransport transport)
         {
+            string[] mac;
+            string oui;
             if (transport.State == ConnectionState.Available)
             {
                 var viewModel = this.Transports.Where(vm => vm.Id == transport.Id).FirstOrDefault();
                 if (viewModel == null)
                 {
                     viewModel = new TransportViewModel(this.transportsManager, transport);
-                    this.Transports.Add(viewModel);
+                    mac = viewModel.DisplayInfoLine.Split(':');
+                    oui = mac[0] + mac[1] + mac[2];
+                    if (ouiVendorIds.Contains(oui))
+                    { 
+                        this.Transports.Add(viewModel);
+                    }
                 }
             }
         }

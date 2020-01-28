@@ -22,6 +22,7 @@ namespace TilesApp.Views
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];
+                MetaData.Station = App.Station;
                 lblTest.Text = appNameArr[2].ToUpper() + " (LINK)";
             }
             catch
@@ -102,6 +103,15 @@ namespace TilesApp.Views
         {
             MessagingCenter.Unsubscribe<Application, String>(Application.Current, "BarcodeScanned");
             await Navigation.PopModalAsync(true);
+        }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                await Navigation.PopModalAsync(true);
+            });
+            return true;
         }
     }
 }

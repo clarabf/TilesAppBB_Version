@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 
 namespace TilesApp.Models
 {
@@ -69,6 +71,10 @@ namespace TilesApp.Models
                 {
                     return null;
                 }
+            }
+            set
+            {
+                appData[appDataIndex["Station"]]["DefaultValue(admin)"] = value;
             }
         }
         [BsonIgnoreIfNull]
@@ -250,11 +256,15 @@ namespace TilesApp.Models
 
             foreach (Dictionary<string, dynamic> field in appData.Values)
             {
-                if (field["IsRequired"] & field["DefaultValue(admin)"] == null) { isValid = false; }
+                if (field["IsRequired"] & field["DefaultValue(admin)"] == null) { 
+                    isValid = false; 
+                }
             }
             foreach (Dictionary<string, dynamic> field in customData.Values)
             {
-                if (field["DefaultValue(admin)"] == null) { isValid = false; }
+                if (field["DefaultValue(admin)"] == null) { 
+                    isValid = false; 
+                }
             }
 
             return isValid;
@@ -266,7 +276,26 @@ namespace TilesApp.Models
             Xamarin.Essentials.Location rowGeoLocation = new Xamarin.Essentials.Location();
             try
             {
-                rowGeoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+                var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+                if (status != PermissionStatus.Granted)
+                {
+                    var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Location);
+                    status = results[Permission.Location];
+                }
+
+                if (status == PermissionStatus.Granted)
+                {
+                    rowGeoLocation = Geolocation.GetLastKnownLocationAsync().Result;
+                }
+                else if (status != PermissionStatus.Unknown)
+                {
+                    Console.WriteLine("Location Denied", "Can not continue, try again.", "OK");
+                }
+
+            }
+            catch (PermissionException pEx)
+            {
+                // Handle permission exception
             }
             catch
             {

@@ -16,7 +16,14 @@ namespace TilesApp.Rfid.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class TransportsPage : ContentPage
     {
+
         TransportsViewModel viewModel;
+        InventoryViewModel inventoryViewModel;
+        public InventoryViewModel InventoryViewModel
+        {
+            get => this.inventoryViewModel;
+            set => this.BindingContext = this.inventoryViewModel = value;
+        }
 
         public TransportsPage()
         {
@@ -38,11 +45,11 @@ namespace TilesApp.Rfid.Views
             }
         }
 
-        private async void Cancel(object sender, EventArgs args)
+        protected override bool OnBackButtonPressed()
         {
-            await Navigation.PushAsync(new InventoryPage() { ViewModel = App.ViewModel.Inventory });
+            //Navigation.PushAsync(new InventoryPage() { ViewModel = App.ViewModel.Inventory });
+            InventoryViewModel = App.ViewModel.Inventory;
+            return base.OnBackButtonPressed();
         }
-
-
     }
 }

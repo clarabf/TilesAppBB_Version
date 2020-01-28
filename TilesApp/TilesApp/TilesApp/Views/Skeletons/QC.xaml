@@ -172,6 +172,17 @@
                 Grid.Row="5"                    
                 Clicked="PassOrFail"
             />
+            <Button x:Name="btnSaveAndFinish"                       
+                StyleClass="primaryButton"
+                Text="SAVE"
+                WidthRequest="250"
+                Margin="0,0,0,10"
+                HorizontalOptions="CenterAndExpand" 
+                VerticalOptions="CenterAndExpand"
+                IsVisible="False"
+                Grid.Row="5"
+                Clicked="PassOrFail"
+            />
         </Grid>
     </ContentPage.Content>
 </d:BasePage>
