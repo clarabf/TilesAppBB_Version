@@ -53,6 +53,8 @@ namespace TilesApp.Views
                 lblTitle.IsVisible = true;
                 lblTitleLine.IsVisible = true;
                 btnSaveAndFinish.IsVisible = true;
+                lblEmptyView.IsVisible = false;
+                lblEmptyViewAnimation.IsVisible = false;
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }
             //QR has been scanned
@@ -60,18 +62,30 @@ namespace TilesApp.Views
             {
                 if (ViewableReads.Count > 0)
                 {
-                    if (MetaData.IsValid())
+                    if (returnedData.Count == 0)
                     {
-                        DisplayAlert("Success!", "QR scanned successfully!", "Ok");
+                        if (MetaData.IsValid())
+                        {
+                            btnSaveAndFinish.IsVisible = true;
+                            DisplayAlert("Success!", "QR scanned successfully!", "Ok");
+                        }
+                        else
+                        {
+                            DisplayAlert("Warning", "QR scanned successfully but some fields missing in config file...", "Ok");
+                        }
                     }
                     else
                     {
-                        DisplayAlert("Warning", "QR scanned successfully but some fields missing in config file...", "Ok");
+                        try
+                        {
+                            DisplayAlert("Error", returnedData["Error"].ToString(), "Ok");
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
             }
-            lblEmptyView.IsVisible = false;
-            lblEmptyViewAnimation.IsVisible = false;
         }
         private void Delete_ScannerRead(object sender, EventArgs args)
         {

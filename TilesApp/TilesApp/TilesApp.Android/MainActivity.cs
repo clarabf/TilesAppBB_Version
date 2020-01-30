@@ -176,7 +176,11 @@ namespace TilesApp.Droid
                         case "Space":
                             result += " ";
                             break;
+                        case "ShiftLeft":
+                        case "Back":
+                            break;
                         default:
+                            result += keyCodes[i].ToLower();
                             break;
                     }                    
                 }
