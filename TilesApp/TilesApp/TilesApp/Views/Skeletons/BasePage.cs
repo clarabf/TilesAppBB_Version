@@ -17,7 +17,6 @@ namespace TilesApp
         public ReadersViewModel ReadersViewModel { get;set; }
         public ObservableCollection<string> ViewableReads { get; set; } = new ObservableCollection<string>();
 
-
         public enum ReadersTypes
         {            
             Serial1D ,
@@ -28,16 +27,16 @@ namespace TilesApp
         }
         
         public BasePage(){
-            this.ReadersViewModel = App.ViewModel.Readers;   
+            this.ReadersViewModel = App.ViewModel.Readers;
+            App.ViewModel.Inventory.ClearCommand.Execute(null);
+            App.Inventory.Clear();
         }
 
         // OVERRIDES
         protected override void OnAppearing()
         {
-            base.OnAppearing();
-            App.ViewModel.Inventory.ClearCommand.Execute(null);
-            App.Inventory.Clear();
             App.Inventory.CollectionChanged += Inventory_CollectionChanged;
+            base.OnAppearing();
         }
 
         private void Inventory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
@@ -79,8 +78,6 @@ namespace TilesApp
             // UNSUBSRCIBE WHEN PAGE IS CLOSED
             //Unsubscribe();
             App.Inventory.CollectionChanged -= Inventory_CollectionChanged;
-            ReadersViewModel = null;
-            ViewableReads.Clear();
             base.OnDisappearing();
         }
         private void ProcessInput(string code, string reader, string readerSerialNumber) {
@@ -92,7 +89,13 @@ namespace TilesApp
                 { nameof(BaseMetaData.InputDataProps.Timestamp), DateTime.Now }
             };
             ScannerReadDetected(input);
-        }      
+        }     
+        
+        public void CleanReaders()
+        {
+            ReadersViewModel = null;
+            ViewableReads.Clear();
+        }
 
         // VIRTUAL FUNCTIONS
         public virtual void ScannerReadDetected(Dictionary<string, object> input)
