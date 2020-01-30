@@ -64,8 +64,7 @@ namespace TilesApp.Views
                 
                 lblParentBarcode.Text = input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
                 btnSaveAndFinish.IsVisible = true;
-                lblParent.IsVisible = true;
-                
+                lblParent.IsVisible = true;                
                 lblTitle.IsVisible = true;
                 lblTitleLine.IsVisible = true;
                 lblEmptyView.IsVisible = false;

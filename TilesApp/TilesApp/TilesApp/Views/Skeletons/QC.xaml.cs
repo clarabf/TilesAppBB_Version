@@ -63,7 +63,7 @@ namespace TilesApp.Views
                 }
             }
             Dictionary<string,object> returnedData = MetaData.ProcessScannerRead(input);
-            if (returnedData.Count > 0)
+            if (returnedData.Count > 1)
             {
                 btPass.IsVisible = true;
                 btFail.IsVisible = true;
@@ -71,27 +71,41 @@ namespace TilesApp.Views
                 lblTitleLine.IsVisible = true;
                 btTakePicture.IsVisible = true;
                 hyper.IsVisible = true;
+                lblEmptyView.IsVisible = false;
+                lblEmptyViewAnimation.IsVisible = false;
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }
             //QR has been scanned
             else
             {
-                if (ViewableReads.Count > 0) {
-                    if (MetaData.IsValid())
-                    {
-                        btPass.IsVisible = false;
-                        btFail.IsVisible = false;
-                        btnSaveAndFinish.IsVisible = true;
-                        DisplayAlert("Success!", "QR scanned successfully!", "Ok");
+                if (ViewableReads.Count > 0)
+                {
+                    if (returnedData.Count == 0)
+                    {                        
+                        if (MetaData.IsValid())
+                        {
+                            btPass.IsVisible = false;
+                            btFail.IsVisible = false;
+                            btnSaveAndFinish.IsVisible = true;
+                            DisplayAlert("Success!", "QR scanned successfully!", "Ok");
+                        }
+                        else
+                        {
+                            DisplayAlert("Warning", "QR scanned successfully but some fields missing in config file...", "Ok");
+                        }
                     }
                     else
                     {
-                        DisplayAlert("Warning", "QR scanned successfully but some fields missing in config file...", "Ok");
+                        try
+                        {
+                            DisplayAlert("Error", returnedData["Error"].ToString(), "Ok");
+                        }
+                        catch
+                        {
+                        }
                     }
                 }
             }
-            lblEmptyView.IsVisible = false;
-            lblEmptyViewAnimation.IsVisible = false;
         }
 
         private void Delete_ScannerRead(object sender, EventArgs args)

@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
 using PCLAppConfig;
+using TilesApp.Models;
 using Xamarin.Forms;
 
 namespace TilesApp.Droid
@@ -27,11 +28,13 @@ namespace TilesApp.Droid
         List<string> vendorIds = new List<string>();
         List<string> productIds = new List<string>();
         List<string> ouiVendorIds = new List<string>();
+        List<string> ouiTransportIds = new List<string>();
         public DeviceMonitor()
         {
             vendorIds = new List<string>(ConfigurationManager.AppSettings["VENDOR_IDS"].Split(new char[] { ';' }));
             productIds = new List<string>(ConfigurationManager.AppSettings["PRODUCT_IDS"].Split(new char[] { ';' }));
             ouiVendorIds = new List<string>(ConfigurationManager.AppSettings["OUI_VENDOR_IDS"].Split(new char[] { ';' }));
+            ouiTransportIds = new List<string>(ConfigurationManager.AppSettings["OUI_TRANSPORTS_IDS"].Split(new char[] { ';' }));
         }
 
         public override void OnReceive(Context context, Intent intent)
@@ -56,12 +59,25 @@ namespace TilesApp.Droid
                     }
                     if (vendorIds.Contains(device.VendorId.ToString()) && productIds.Contains(device.ProductId.ToString()))
                     {
-                        MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
+                        foreach (var serialDevice in App.ViewModel.Readers.SerialReaders.ToList())
+                        {
+                            if (serialDevice.SerialNumber == device.SerialNumber)
+                            {
+                                return;
+                            }
+                        }
+                        App.ViewModel.Readers.SerialReaders.Add(device);
                     }
                     
                     break;
                 case UsbManager.ActionUsbDeviceDetached:
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceDetached", device);
+                    foreach (var serialDevice in App.ViewModel.Readers.SerialReaders.ToList())
+                    {
+                        if (serialDevice.SerialNumber == device.SerialNumber)
+                        {
+                            App.ViewModel.Readers.SerialReaders.Remove(serialDevice);
+                        }
+                    }
                     device = MainActivity.device = null;
                     break;
                 case BluetoothDevice.ActionFound:
@@ -69,28 +85,73 @@ namespace TilesApp.Droid
                     bluetoothDevice = (BluetoothDevice)intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
                     mac = bluetoothDevice.Address.Split(':');
                     oui = mac[0] + mac[1] + mac[2];
-                    if (ouiVendorIds.Contains(oui))
-                        MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceFound", bluetoothDevice);
+                    if (ouiTransportIds.Contains(oui))
+                    {
+                        return;
+                    }
+                    else if (ouiVendorIds.Contains(oui))
+                    {
+                        ComplexBluetoothDevice pairedDevice = new ComplexBluetoothDevice(bluetoothDevice, ComplexBluetoothDevice.States.Paired);
+                        foreach (var compDevice in App.ViewModel.Readers.BluetoothCameraReaders.ToList())
+                        {
+                            if (compDevice.Device.Address == pairedDevice.Device.Address)
+                            {
+                                int i = App.ViewModel.Readers.BluetoothCameraReaders.IndexOf(compDevice);
+                                if (i != -1)
+                                    App.ViewModel.Readers.BluetoothCameraReaders[i].State = pairedDevice.State;
+                                return;
+                            }
+                        }
+                        App.ViewModel.Readers.BluetoothCameraReaders.Add(pairedDevice);
+                    }
                     break;
                 case BluetoothDevice.ActionAclConnected:
                     // Get connected bluetooth device
                     bluetoothDevice = (BluetoothDevice)intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
                     mac = bluetoothDevice.Address.Split(':');
                     oui = mac[0] + mac[1] + mac[2];
-                    if (ouiVendorIds.Contains(oui))
-                        MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceConnected", bluetoothDevice);
+                    if (ouiTransportIds.Contains(oui))
+                    {
+                        return;
+                    }
+                    else if (ouiVendorIds.Contains(oui))
+                    {
+                        ComplexBluetoothDevice activeDevice = new ComplexBluetoothDevice(bluetoothDevice, ComplexBluetoothDevice.States.Active);
+                        foreach (var compDevice in App.ViewModel.Readers.BluetoothCameraReaders.ToList())
+                        {
+                            if (compDevice.Device.Address == activeDevice.Device.Address)
+                            {
+                                int i = App.ViewModel.Readers.BluetoothCameraReaders.IndexOf(compDevice);
+                                if (i != -1)
+                                    App.ViewModel.Readers.BluetoothCameraReaders[i].State = activeDevice.State;
+                                return;
+                            }
+                        }
+                        App.ViewModel.Readers.BluetoothCameraReaders.Add(activeDevice);
+                    }
                     break;
                 case BluetoothDevice.ActionAclDisconnected:
                     // Get disconnected bluetooth device
                     bluetoothDevice = (BluetoothDevice)intent.GetParcelableExtra(BluetoothDevice.ExtraDevice);
                     if (bluetoothDevice.Type == BluetoothDeviceType.Le)
-                        MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceDisconnected", bluetoothDevice);
+                    {
+                        ComplexBluetoothDevice inActiveDevice = new ComplexBluetoothDevice(bluetoothDevice, ComplexBluetoothDevice.States.Disconnected);
+                        foreach (var compDevice in App.ViewModel.Readers.BluetoothCameraReaders.ToList())
+                        {
+                            if (compDevice.Device.Address == inActiveDevice.Device.Address)
+                            {
+                                int i = App.ViewModel.Readers.BluetoothCameraReaders.IndexOf(compDevice);
+                                if (i != -1)
+                                    App.ViewModel.Readers.BluetoothCameraReaders[i].State = inActiveDevice.State;
+                            }
+                        }
+                    }
                     break;
                 case Intent.ActionPowerConnected:
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "ChargerConnected", true);
+                    // Charger connected
                     break;
                 case Intent.ActionPowerDisconnected:
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "ChargerDisconnected", true);
+                    // Charger disconnected
                     break;
                 default:
                     break;

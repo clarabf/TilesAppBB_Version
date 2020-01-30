@@ -154,8 +154,7 @@ namespace TilesApp.Models
             try
             {
                 Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string, object>>(scannerRead["Value"].ToString());
-
-                if (data != null) { AddQRMetaData(data); }
+                if (data != null) { result = AddQRMetaData(data); }
                 return result;
             }
             //Try to process as standard read
@@ -203,8 +202,9 @@ namespace TilesApp.Models
         }
 
         //Add metadata from QR Json method
-        public void AddQRMetaData(Dictionary<string, dynamic> data)
+        public Dictionary<string, object> AddQRMetaData(Dictionary<string, dynamic> data)
         {
+            Dictionary<string, object> result = new Dictionary<string, object>();
             try
             {
                 if (data != null)
@@ -222,8 +222,9 @@ namespace TilesApp.Models
                                     appData[field.Key]["DefaultValue(admin)"] = field.Value;
                                 }
                                 else
-                                {
-                                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "One or several of the fields that you are trying to write have been determined as non QR fillable in the config file. Please review QR and/or config file content");
+                                {                                    
+                                    result.Add( "Error", "One or several of the fields that you are trying to write have been determined as non QR fillable in the config file. Please review QR and/or config file content");
+                                    return result;
                                 }
                             }
                             else if (customData.ContainsKey(field.Key))
@@ -233,20 +234,24 @@ namespace TilesApp.Models
                             }
                             else
                             {
-                                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "One or several of the fields in the QR do not exist on the config file. Please review QR content.");
+                                result.Add("Error", "One or several of the fields in the QR do not exist on the config file. Please review QR content.");
+                                return result;
                             }
                         }
                         catch (Exception e)
                         {
-                            throw e;
+                            result.Add("Error", e.Message);
+                            return result;
                         }
                     }
                 }
             }
             catch
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "QR content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type.");
+                result.Add("Error", "QR content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type.");
+                return result;
             }
+            return result;
         }
 
         //Validation before saving
