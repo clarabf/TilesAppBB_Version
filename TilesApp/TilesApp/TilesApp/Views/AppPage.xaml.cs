@@ -46,7 +46,7 @@ namespace TilesApp.Views
                 string appName = tagArr[2];
                 string icon = "";
                 buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                Button button = new Button
+                ExtendedButton button = new ExtendedButton
                 {
                     TextColor = Color.FromHex("#ffffff"),
                     BackgroundColor = Color.FromHex("#bc0000"),
@@ -58,6 +58,7 @@ namespace TilesApp.Views
                     HorizontalOptions = LayoutOptions.Center,
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
+                    HorizontalTextAlignment = TextAlignment.Start,
                     ClassId = tag,
                     Margin = new Thickness (0, 0, 0, 20)
                 };
@@ -84,7 +85,7 @@ namespace TilesApp.Views
                 }
                 if (appName.Length > maxLength) appName = appName.Substring(0, maxLength) + "...";
                 button.Text = icon + " " + appName;
-                button.Padding = new Thickness(-220 + (appName.Length*10), 0, 0, 0);
+                button.Padding = new Thickness(10, 15, 0, 0);
                 buttonsGrid.Children.Add(button, 0, row);
                 row++;           
             }
