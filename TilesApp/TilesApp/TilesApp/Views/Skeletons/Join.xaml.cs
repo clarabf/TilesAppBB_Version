@@ -30,6 +30,7 @@ namespace TilesApp.Views
                 DisplayAlert("Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.", "Ok");
                 Device.BeginInvokeOnMainThread(async () =>
                 {
+                    CleanReaders();
                     await Navigation.PopModalAsync(true);
                 });
             }
@@ -131,20 +132,17 @@ namespace TilesApp.Views
             }
             else
             {
+                CleanReaders();
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
                 await Navigation.PopModalAsync(true);
             }
-        }
-
-        private async void Cancel(object sender, EventArgs args)
-        {
-            await Navigation.PopModalAsync(true);
         }
 
         protected override bool OnBackButtonPressed()
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
+                CleanReaders();
                 await Navigation.PopModalAsync(true);
             });
             return true;

@@ -35,6 +35,8 @@ namespace TilesApp.Views
                 DisplayAlert("Error", "Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.", "Ok");
                 Device.BeginInvokeOnMainThread(async () =>
                 {
+                    CleanReaders();
+                    MessagingCenter.Unsubscribe<PhotoDetail, ObservableCollection<PhotoData>>(this, "SendPhotos");
                     await Navigation.PopModalAsync(true);
                 });
             }
@@ -42,12 +44,10 @@ namespace TilesApp.Views
             tapGestureRecognizer.Tapped += Show_Images;
             hyper.GestureRecognizers.Add(tapGestureRecognizer);
 
-            MessagingCenter.Subscribe<PhotoDetail, ObservableCollection<PhotoData>>(this, "SendPhotos", (s, a) => {
+            MessagingCenter.Subscribe<PhotoDetail, ObservableCollection<PhotoData>>(this, "SendPhotos", (s, a) =>
+            {
                 TakenPhotos = a;
-                setPhotosList();
-                if (TakenPhotos.Count > 0) numPhotos.Text = TakenPhotos.Count.ToString();
-                //else
-                //{ hyper.IsVisible = false; } 
+                numPhotos.Text = TakenPhotos.Count.ToString();
             });
 
             NavigationPage.SetHasNavigationBar(this, false);
@@ -170,6 +170,7 @@ namespace TilesApp.Views
             if (MetaData.IsValid())
             {
                 Collection<string> urls = new Collection<string>();
+                setPhotosList();
                 if (photoList.Count > 0) urls = StreamToAzure.UpdateJPEGStreams(photoList, appName);
                 MetaData.Images = urls;
                 bool submitted = CosmosDBManager.InsertOneObject(MetaData);
@@ -203,6 +204,8 @@ namespace TilesApp.Views
             }
             else
             {
+                CleanReaders();
+                MessagingCenter.Unsubscribe<PhotoDetail, ObservableCollection<PhotoData>>(this, "SendPhotos");
                 await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
                 await Navigation.PopModalAsync(true);
             }
@@ -210,10 +213,6 @@ namespace TilesApp.Views
         private async void Show_Images(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new PhotoDetail(TakenPhotos));
-        }
-        private async void Cancel(object sender, EventArgs args)
-        {
-            await Navigation.PopModalAsync(true);
         }
         private void setPhotosList()
         {
@@ -228,6 +227,8 @@ namespace TilesApp.Views
         {
             Device.BeginInvokeOnMainThread(async () =>
             {
+                CleanReaders();
+                MessagingCenter.Unsubscribe<PhotoDetail, ObservableCollection<PhotoData>>(this, "SendPhotos");
                 await Navigation.PopModalAsync(true);
             });
             return true;
