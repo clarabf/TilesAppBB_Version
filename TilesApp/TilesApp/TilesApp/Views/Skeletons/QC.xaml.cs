@@ -108,8 +108,9 @@ namespace TilesApp.Views
             }
         }
 
-        private void Delete_ScannerRead(object sender, EventArgs args)
+        public override void Delete_ScannerRead(object sender, EventArgs args)
         {
+            base.Delete_ScannerRead(sender, args);
             Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 

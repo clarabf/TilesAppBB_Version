@@ -196,7 +196,7 @@ namespace TilesApp.Models
                 }
                 catch
                 {
-                    throw e;
+                    return result;
                 }
             }
         }

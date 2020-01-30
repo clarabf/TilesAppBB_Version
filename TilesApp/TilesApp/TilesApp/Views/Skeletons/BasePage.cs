@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using TilesApp.Models;
+using TilesApp.Rfid.Models;
 using TilesApp.Rfid.ViewModels;
 using Xamarin.Forms;
 
@@ -102,5 +103,21 @@ namespace TilesApp
         {
             // This function should be implemented in child classes
         }
+
+
+        public virtual void Delete_ScannerRead(object sender, EventArgs args)
+        {
+            Button button = (Button)sender;            
+            foreach (IdentifiedItem item in App.ViewModel.Inventory.Transponders)
+            {
+                if (item.Identifier == button.ClassId)
+                {
+                    App.ViewModel.Inventory.Transponders.Remove(item);
+                    return;
+                }
+            }
+        }
+
     }
+
 }

@@ -46,7 +46,7 @@ namespace TilesApp.Views
                 }
             }
             Dictionary<string, object> returnedData = MetaData.ProcessScannerRead(input);
-            if (returnedData.Count > 0)
+            if (returnedData.Count > 1)
             {
                 lblBarcode.IsVisible = true;
                 lblEmptyView.IsVisible = false;
@@ -55,10 +55,21 @@ namespace TilesApp.Views
                 btnSaveAndFinish.IsVisible = true;
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }
+            else
+            {
+                try
+                {
+                    DisplayAlert("Error", returnedData["Error"].ToString(), "Ok");
+                }
+                catch
+                {
+                }
+            }
         }
 
-        private void Delete_ScannerRead(object sender, EventArgs args)
+        public override void Delete_ScannerRead(object sender, EventArgs args)
         {
+            base.Delete_ScannerRead(sender, args);
             Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 

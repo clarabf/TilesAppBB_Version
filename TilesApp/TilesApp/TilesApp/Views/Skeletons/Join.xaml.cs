@@ -50,39 +50,53 @@ namespace TilesApp.Views
                 }
             }
             Dictionary<string, object> processedInput = MetaData.ProcessScannerRead(input);
-            bool isParent = false;
-            try
+            if (processedInput.Count > 1)
             {
-                isParent = (bool)processedInput["IsParent"];
+                bool isParent = false;
+                try
+                {
+                    isParent = (bool)processedInput["IsParent"];
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                if (isParent)
+                {
+
+                    lblParentBarcode.Text = input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
+                    btnSaveAndFinish.IsVisible = true;
+                    lblParent.IsVisible = true;
+                    lblTitle.IsVisible = true;
+                    lblTitleLine.IsVisible = true;
+                    lblEmptyView.IsVisible = false;
+                    lblEmptyViewAnimation.IsVisible = false;
+                }
+                else
+                {
+                    ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
+
+                    lblTitle.IsVisible = true;
+                    lblTitleLine.IsVisible = true;
+                    lblEmptyView.IsVisible = false;
+                    lblEmptyViewAnimation.IsVisible = false;
+                }
             }
-            catch (Exception e)
+            else
             {
-                Console.WriteLine(e.Message);
-            }
-            if (isParent)
-            {
-                
-                lblParentBarcode.Text = input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
-                btnSaveAndFinish.IsVisible = true;
-                lblParent.IsVisible = true;                
-                lblTitle.IsVisible = true;
-                lblTitleLine.IsVisible = true;
-                lblEmptyView.IsVisible = false;
-                lblEmptyViewAnimation.IsVisible = false;
-            }
-            else if (processedInput.Count>0)
-            {
-                ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
-                
-                lblTitle.IsVisible = true;
-                lblTitleLine.IsVisible = true;
-                lblEmptyView.IsVisible = false;
-                lblEmptyViewAnimation.IsVisible = false;
+                try
+                {
+                    DisplayAlert("Error", processedInput["Error"].ToString(), "Ok");
+                }
+                catch
+                {
+                }
             }
         }
 
-        private void Delete_ScannerRead(object sender, EventArgs args)
+        public override void Delete_ScannerRead(object sender, EventArgs args)
         {
+            base.Delete_ScannerRead(sender, args);
             Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
