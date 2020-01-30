@@ -91,6 +91,7 @@ namespace TilesApp.Views
             timer.Elapsed += OnTimerEvent;
             timer.Interval = 1000; // 1 second
             timer.Enabled = true;
+
         }
 
         private void OnTimerEvent(object sender, ElapsedEventArgs e)
@@ -131,6 +132,7 @@ namespace TilesApp.Views
 
         private async void Config_Command(object sender, EventArgs args)
         {
+
             await Navigation.PushModalAsync(new Configuration(this));
         }
 
