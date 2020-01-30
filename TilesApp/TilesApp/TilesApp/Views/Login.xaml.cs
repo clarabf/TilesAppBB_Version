@@ -18,7 +18,7 @@ namespace TilesApp.Views
         public Login()
         {
             InitializeComponent();
-            OdooXMLRPC.Start();
+            //OdooXMLRPC.Start();
             Setup();
             NavigationPage.SetHasNavigationBar(this, false);
 
