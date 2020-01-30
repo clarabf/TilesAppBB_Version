@@ -43,15 +43,14 @@ namespace TilesApp.Droid
 
             base.OnCreate(savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
-            ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
-            Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
+            //ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
+            //Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);
             ZXing.Net.Mobile.Forms.Android.Platform.Init();
             ZXing.Mobile.MobileBarcodeScanner.Initialize(Application);
             LoadApplication(new App());
             monitor = new DeviceMonitor();
             ScanBluetoothDevices();
             ScanSerialDevices();            
-            AnimationViewRenderer.Init();
             App.DeviceSerialNumber = Android.OS.Build.Serial;
         }
         private IAndroidLifecycle TslLifecycle

@@ -10,6 +10,10 @@ using Android.Support.V7.App;
 using Android.Util;
 using Android.Animation;
 using Com.Airbnb.Lottie;
+using System.Threading.Tasks;
+using TilesApp.Services;
+using Xamarin.Forms;
+using PCLAppConfig;
 
 namespace TilesApp.Droid
 {
@@ -24,7 +28,24 @@ namespace TilesApp.Droid
             animationView = FindViewById<LottieAnimationView>(Resource.Id.splashScreen);
             animationView.AddAnimatorListener(this);
             animationView.RepeatCount = 1;
-            animationView.PlayAnimation();
+            animationView.Loop(true);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            Task.Run(() => Startup());
+        }
+
+        // Simulates background work that happens behind the splash screen
+        void Startup()
+        {
+            Task.Run(async () =>
+            {
+                ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
+                OdooXMLRPC.Start();
+            }).Wait();
+            StartActivity(new Intent(Android.App.Application.Context, typeof(MainActivity)));
         }
 
         public void OnAnimationCancel(Animator animation)

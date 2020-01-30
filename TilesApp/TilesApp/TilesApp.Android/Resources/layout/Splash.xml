@@ -10,7 +10,7 @@
         android:id="@+id/splashScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:lottie_fileName="qr-scan.json"
+        app:lottie_fileName="splash-screen.json"
         app:lottie_loop="true"
         app:lottie_autoPlay="true"
         android:gravity="center" />
