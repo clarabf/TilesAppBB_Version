@@ -22,6 +22,7 @@ namespace TilesApp.Droid
     using System.Threading;
     using TechnologySolutions.Rfid.AsciiProtocol.Extensions;
     using TechnologySolutions.Rfid.AsciiProtocol.Transports;
+    using TilesApp.Models;
 
     [Activity(Label = "TilesApp", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = false, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsAppCompatActivity
@@ -49,9 +50,9 @@ namespace TilesApp.Droid
             LoadApplication(new App());
             monitor = new DeviceMonitor();
             ScanBluetoothDevices();
-            ScanSerialDevices();
-            GetDeviceSerialNumber();
+            ScanSerialDevices();            
             AnimationViewRenderer.Init();
+            App.DeviceSerialNumber = Android.OS.Build.Serial;
         }
         private IAndroidLifecycle TslLifecycle
         {
@@ -60,13 +61,7 @@ namespace TilesApp.Droid
                 if (this.lifecyle == null)
                 {
                     AsciiTransportsManager manager = Locator.Default.Locate<IAsciiTransportsManager>() as AsciiTransportsManager;
-
-                    // AndrdoidLifecycleNone provides a no action IAndroidLifecycle instance to call in OnPause, OnResume so we don't keep
-                    // attempting to resolve the AsciiTransportManager as the IAndroidLifecycle if it is not being used in this project
                     this.lifecyle = (IAndroidLifecycle)manager ?? new AndroidLifecycleNone();
-
-                    // If the HostBarcodeHandler has been registered with the locator then it will be the Android type that needs IAndroidLifecycle calls
-                    // Register the HostBarcodeHandler lifecycle with the AsciiTransportsManager
                     manager.RegisterLifecycle(Locator.Default.Locate<IHostBarcodeHandler>() as HostBarcodeHandler);
                 }
 
@@ -181,11 +176,7 @@ namespace TilesApp.Droid
                         case "Space":
                             result += " ";
                             break;
-                        case "ShiftLeft":
-                        case "Back":
-                            break;
                         default:
-                            result += keyCodes[i].ToLower();
                             break;
                     }                    
                 }
@@ -196,12 +187,31 @@ namespace TilesApp.Droid
         private void ScanBluetoothDevices(){
             BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
             List<string>  ouiVendorIds = new List<string>(ConfigurationManager.AppSettings["OUI_VENDOR_IDS"].Split(new char[] { ';' }));
-            foreach (BluetoothDevice bluetoothDevice in adapter.BondedDevices)
+            List<string> ouiTransportIds = new List<string>(ConfigurationManager.AppSettings["OUI_TRANSPORTS_IDS"].Split(new char[] { ';' }));
+            List<BluetoothDevice> btDevices = adapter.BondedDevices.ToList();
+            for (int i = 0; i < btDevices.Count; i++)
             {
-                string[] mac = bluetoothDevice.Address.Split(':');
+                string[] mac = btDevices[i].Address.Split(':');
                 string oui = mac[0] + mac[1] + mac[2];
-                if (ouiVendorIds.Contains(oui))
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "BluetoothDeviceFound", bluetoothDevice);
+                if (ouiTransportIds.Contains(oui))
+                {
+                    continue;
+                }
+                else if (ouiVendorIds.Contains(oui))
+                {
+                    ComplexBluetoothDevice pairedDevice = new ComplexBluetoothDevice(btDevices[i], ComplexBluetoothDevice.States.Paired);
+                    foreach (var compDevice in App.ViewModel.Readers.BluetoothCameraReaders.ToList())
+                    {
+                        if (compDevice.Device.Address == pairedDevice.Device.Address)
+                        {
+                            int j = App.ViewModel.Readers.BluetoothCameraReaders.IndexOf(compDevice);
+                            if (j != -1)
+                                App.ViewModel.Readers.BluetoothCameraReaders[j].State = pairedDevice.State;
+                            break;
+                        }
+                    }
+                    App.ViewModel.Readers.BluetoothCameraReaders.Add(pairedDevice);
+                }
             }
         }
 
@@ -214,22 +224,21 @@ namespace TilesApp.Droid
             {
                 device = MainActivity.device = (manager.DeviceList.Values.ToArray())[0];
                 if (vendorIds.Contains(device.VendorId.ToString()) && productIds.Contains(device.ProductId.ToString()))
-                { 
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "DeviceAttached", device);
+                {
+                    foreach (var serialDevice in App.ViewModel.Readers.SerialReaders.ToList())
+                    {
+                        if (serialDevice.SerialNumber == device.SerialNumber)
+                        {
+                            return;
+                        }
+                    }
+                    App.ViewModel.Readers.SerialReaders.Add(device);
                 }
             }
             catch (Exception e) {
                 //MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
             }
         }
-
-        private void GetDeviceSerialNumber()
-        {
-            MessagingCenter.Send(Xamarin.Forms.Application.Current, "FetchedDeviceSerialNumber", Android.OS.Build.Serial);
-            return;          
-        }
-
-
 
     }
 }
