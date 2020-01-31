@@ -92,7 +92,7 @@ namespace TilesApp.Views
             timer.Elapsed += OnTimerEvent;
             timer.Interval = 1000; // 1 second
             timer.Enabled = true;
-
+            CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
         }
 
         private void OnTimerEvent(object sender, ElapsedEventArgs e)

@@ -30,6 +30,13 @@ namespace TilesApp.Rfid.Views
         public TransportDetailPage()
         {
             InitializeComponent();
+
+
+        }
+
+        private void ConnectBtn_Clicked(object sender, EventArgs e)
+        {
+            App.ViewModel.Transports.AddNewCommand.Execute(null);
         }
 
         private async void Cancel(object sender, EventArgs args)
@@ -38,18 +45,17 @@ namespace TilesApp.Rfid.Views
             this.OnBackButtonPressed();
         }
 
-        private void ConnectDevice(object sender, EventArgs args)
+        protected override void OnAppearing()
         {
-            Button connectBtn = (Button)sender;
+            base.OnAppearing();
             if (this.ViewModel.DisplayName.Contains("1128"))
             {
-                connectBtn.SetBinding(Button.CommandProperty, new Binding() { Source = ViewModel, Path = "ConnectCommand" });
-                ViewModel.ConnectCommand.Execute(null);
+                ConnectBtn.SetBinding(Button.CommandProperty, new Binding() { Source = ViewModel, Path = "ConnectCommand" });
             }
             else
             {
-                App.ViewModel.Transports.AddNewCommand.Execute(null);
-            }            
+                ConnectBtn.Clicked += ConnectBtn_Clicked;
+            }
         }
     }
 }
