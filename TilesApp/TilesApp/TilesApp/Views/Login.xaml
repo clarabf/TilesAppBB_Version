@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:local="clr-namespace:TilesApp"
+            xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
             x:Class="TilesApp.Views.Login">
     <ContentPage.Content>
         <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -57,7 +58,12 @@
                         VerticalOptions="EndAndExpand"
                         Clicked="Reader_Command"
                         />
-                    
+                    <forms:AnimationView 
+                        Animation="qr-scan.json"
+                        AutoPlay="False"
+                        IsVisible="False"
+                    />
+
                 </Grid>
             </StackLayout>
         </AbsoluteLayout>
