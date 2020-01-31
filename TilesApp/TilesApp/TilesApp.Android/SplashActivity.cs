@@ -21,14 +21,13 @@ namespace TilesApp.Droid
     public class SplashActivity : Activity, Animator.IAnimatorListener
     {
         LottieAnimationView animationView;
+        
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.Splash);
             animationView = FindViewById<LottieAnimationView>(Resource.Id.splashScreen);
             animationView.AddAnimatorListener(this);
-            animationView.RepeatCount = 1;
-            animationView.Loop(true);
         }
 
         protected override void OnResume()
@@ -46,6 +45,7 @@ namespace TilesApp.Droid
                 OdooXMLRPC.Start();
             }).Wait();
             StartActivity(new Intent(Android.App.Application.Context, typeof(MainActivity)));
+            animationView.CancelAnimation();
         }
 
         public void OnAnimationCancel(Animator animation)
@@ -54,7 +54,7 @@ namespace TilesApp.Droid
 
         public void OnAnimationEnd(Animator animation)
         {
-            StartActivity(typeof(MainActivity));
+
         }
 
         public void OnAnimationRepeat(Animator animation)
@@ -64,5 +64,7 @@ namespace TilesApp.Droid
         public void OnAnimationStart(Animator animation)
         {
         }
+        public override void OnBackPressed() { }
+
     }
 }
