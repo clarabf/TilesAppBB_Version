@@ -64,7 +64,7 @@ namespace TilesApp.Views
                 if (isParent)
                 {
 
-                    lblParentBarcode.Text = input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
+                    lblParentBarcode.Text = ParentDelBtn.ClassId =  input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
                     btnSaveAndFinish.IsVisible = true;
                     lblParent.IsVisible = true;
                     lblTitle.IsVisible = true;
@@ -96,19 +96,29 @@ namespace TilesApp.Views
 
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            Delete_UHFScannerRead(sender, args);
+            App.ViewModel.Inventory.ClearCommand.Execute(null);
             Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
-            ViewableReads.Remove(button.ClassId);
+            if (ViewableReads.Contains(button.ClassId))
+            {
+                ViewableReads.Remove(button.ClassId);
+            } else if (lblParentBarcode.Text.Equals(button.ClassId)) {
+                lblParent.IsVisible = false;
+                lblParentBarcode.Text = "";
+                MetaData.ParentUUID = null;
+                btnSaveAndFinish.IsVisible = false;
+            }
             if (ViewableReads.Count == 0)
             {
                 btnSaveAndFinish.IsVisible = false;
-                lblEmptyView.IsVisible = true;
-                lblEmptyViewAnimation.IsVisible = true;
-                lblTitle.IsVisible = false;
-                lblTitleLine.IsVisible = false;
-                lblParent.IsVisible = false;
+                if (lblParentBarcode.Text == "")
+                {
+                    lblEmptyView.IsVisible = true;
+                    lblEmptyViewAnimation.IsVisible = true;
+                    lblTitle.IsVisible = false;
+                    lblTitleLine.IsVisible = false;
+                }               
             }
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {

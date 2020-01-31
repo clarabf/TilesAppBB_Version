@@ -34,5 +34,9 @@ namespace TilesApp.Services
                 return false;
             }
         }
+
+        public static void init() {
+            collection.CountDocumentsAsync(new BsonDocument());
+        }
     }
 }

@@ -28,6 +28,10 @@ namespace TilesApp.Models.Skeletons
                     return null;
                 }
             }
+            set
+            {
+                appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] = value;
+            }
         }        
         [BsonIgnoreIfNull]
         public string ParentCodeFormat

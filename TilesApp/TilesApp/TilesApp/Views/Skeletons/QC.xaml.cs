@@ -110,7 +110,7 @@ namespace TilesApp.Views
 
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            Delete_UHFScannerRead(sender, args);
+            App.ViewModel.Inventory.ClearCommand.Execute(null);
             Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
