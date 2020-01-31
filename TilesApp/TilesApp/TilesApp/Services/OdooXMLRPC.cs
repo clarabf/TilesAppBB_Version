@@ -62,7 +62,7 @@ namespace TilesApp.Services
 
                 if (responseLogin.IsFault())
                 {
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when logging to Odoo.");
+                    throw new Exception("Something went wrong when logging to Odoo.");
                 }
                 else
                 {
@@ -71,8 +71,10 @@ namespace TilesApp.Services
             }
             catch
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when logging to Odoo.");
+                throw new Exception("Something went wrong when logging to Odoo.");
             }
+            //To simulate Odoo error in SplashScreen
+            //throw new Exception("Something went wrong when logging to Odoo.");
         }
         public static void GetUsers(bool forceCacheUpdate = false)
         {
@@ -151,7 +153,7 @@ namespace TilesApp.Services
             catch (Exception e)
             {
                 string except = e.ToString();
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting users from Odoo.");
+                throw new Exception("Something went wrong when getting users from Odoo.");
             }
         }
         private static void GetValidApps(bool forceCacheUpdate = false)
@@ -199,7 +201,7 @@ namespace TilesApp.Services
             catch (Exception e)
             {
                 string exception = e.ToString();
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting valid apps from Odoo.");
+                throw new Exception("Something went wrong when getting valid apps from Odoo.");
             }
         }
         //Get app config Step 4
