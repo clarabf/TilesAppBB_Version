@@ -3,6 +3,7 @@
 
   <style name="MainTheme" parent="MainTheme.Base">
     <item name="android:windowBackground">@color/launcher_background</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
   </style>
   <!-- Base theme applied no matter what API -->
   <style name="MainTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -32,6 +33,7 @@
   <style name="Theme.Splash" parent="android:Theme">
     <item name="android:windowNoTitle">true</item>
     <item name="android:windowFullscreen">true</item>
+    <item name="android:navigationBarColor">@android:color/transparent</item>
     <item name="android:windowBackground">@color/launcher_background</item>
   </style>
 
