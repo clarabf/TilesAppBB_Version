@@ -105,17 +105,25 @@ namespace TilesApp
         }
 
 
-        public virtual void Delete_ScannerRead(object sender, EventArgs args)
+        public void Delete_UHFScannerRead(object sender, EventArgs args)
         {
-            Button button = (Button)sender;            
-            foreach (IdentifiedItem item in App.ViewModel.Inventory.Transponders)
+            Button button = (Button)sender;
+            try
             {
-                if (item.Identifier == button.ClassId)
+                foreach (IdentifiedItem item in App.ViewModel.Inventory.Transponders)
                 {
-                    App.ViewModel.Inventory.Transponders.Remove(item);
-                    return;
+                    if (item.Identifier == button.ClassId)
+                    {
+                        App.ViewModel.Inventory.Transponders.Remove(item);
+                        return;
+                    }
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
         }
 
     }

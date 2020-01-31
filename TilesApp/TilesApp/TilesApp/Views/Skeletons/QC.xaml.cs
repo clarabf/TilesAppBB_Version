@@ -108,9 +108,9 @@ namespace TilesApp.Views
             }
         }
 
-        public override void Delete_ScannerRead(object sender, EventArgs args)
+        private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            base.Delete_ScannerRead(sender, args);
+            Delete_UHFScannerRead(sender, args);
             Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
