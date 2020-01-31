@@ -28,24 +28,26 @@ namespace TilesApp.Droid
             SetContentView(Resource.Layout.Splash);
             animationView = FindViewById<LottieAnimationView>(Resource.Id.splashScreen);
             animationView.AddAnimatorListener(this);
-        }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-            Task.Run(() => Startup());
+            Startup();
+            animationView.CancelAnimation();
         }
 
         // Simulates background work that happens behind the splash screen
-        void Startup()
+        async void Startup()
         {
-            Task.Run(async () =>
-            {
+            var task = Task.Run(() => {
                 ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
                 OdooXMLRPC.Start();
-            }).Wait();
-            StartActivity(new Intent(Android.App.Application.Context, typeof(MainActivity)));
-            animationView.CancelAnimation();
+            });
+            try
+            {
+                await task;
+                StartActivity(new Intent(Android.App.Application.Context, typeof(MainActivity)));
+            }
+            catch (Exception e)
+            {
+                StartActivity(typeof(Error));
+            }
         }
 
         public void OnAnimationCancel(Animator animation)
