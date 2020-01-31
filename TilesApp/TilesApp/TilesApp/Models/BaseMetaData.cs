@@ -255,31 +255,31 @@ namespace TilesApp.Models
         }
 
         //Validation before saving
-        public Boolean IsValid()
+        public List<string> IsValid()
         {
-            bool isValid = true;
+            List<string> result = new List<string>();
             try
             {
                 foreach (Dictionary<string, dynamic> field in appData.Values)
                 {
                     if (field["IsRequired"] & field["DefaultValue(admin)"] == null)
                     {
-                        isValid = false;
+                        result.Add(field["FieldName"]);
                     }
                 }
                 foreach (Dictionary<string, dynamic> field in customData.Values)
                 {
                     if (field["IsRequired(admin)"] && field["DefaultValue(admin)"] == null)
                     {
-                        isValid = false;
+                        result.Add(field["FieldName(admin)"]);
                     }
                 }
             }
             catch
             {
-                isValid = false;
+                result.Add("Unknown-field-name");
             }
-            return isValid;
+            return result;
         }
 
         // Refresh Geographical location of the App
