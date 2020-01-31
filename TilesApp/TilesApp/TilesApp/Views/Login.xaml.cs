@@ -48,6 +48,11 @@ namespace TilesApp.Views
             });
         }
 
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            CosmosDBManager.init();
+        }
         private async void GoToScan(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, OdooXMLRPC.users));

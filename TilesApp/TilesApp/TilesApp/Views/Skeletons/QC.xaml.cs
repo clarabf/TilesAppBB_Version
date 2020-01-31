@@ -81,8 +81,9 @@ namespace TilesApp.Views
                 if (ViewableReads.Count > 0)
                 {
                     if (returnedData.Count == 0)
-                    {                        
-                        if (MetaData.IsValid())
+                    {
+                        List<string> errorsList = MetaData.IsValid();
+                        if (errorsList.Count==0)
                         {
                             btPass.IsVisible = false;
                             btFail.IsVisible = false;
@@ -91,7 +92,9 @@ namespace TilesApp.Views
                         }
                         else
                         {
-                            DisplayAlert("Warning", "QR scanned successfully but some fields missing in config file...", "Ok");
+                            string message = "QR scanned successfully but some fields missing in config file:\n";
+                            foreach (string error in errorsList) message += error + ", ";
+                            DisplayAlert("Warning", message.Substring(0, message.Length - 2), "OK");
                         }
                     }
                     else
@@ -110,7 +113,7 @@ namespace TilesApp.Views
 
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            Delete_UHFScannerRead(sender, args);
+            App.ViewModel.Inventory.ClearCommand.Execute(null);
             Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
@@ -182,7 +185,8 @@ namespace TilesApp.Views
             Button b = (Button)sender;
             if (b.Text == "SAVE AS PASS") MetaData.QCPass = true;
             else if (b.Text == "SAVE AS FAIL") MetaData.QCPass = false;
-            if (MetaData.IsValid())
+            List<string> errorsList = MetaData.IsValid();
+            if (errorsList.Count==0)
             {
                 Collection<string> urls = new Collection<string>();
                 setPhotosList();
@@ -212,17 +216,11 @@ namespace TilesApp.Views
                 else
                     await DisplayAlert("Report was NOT delivered successfully...", "We could not connect to the Database Server", "OK");
             }
-            else if (MetaData.QCResultDetails == null)
-            {
-                await DisplayAlert("Error:", "Please scan operation QR!", "OK");
-                return;
-            }
             else
             {
-                CleanReaders();
-                MessagingCenter.Unsubscribe<PhotoDetail, ObservableCollection<PhotoData>>(this, "SendPhotos");
-                await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
-                await Navigation.PopModalAsync(true);
+                string message = "The following fields are not completed:\n";
+                foreach (string error in errorsList) message += error + ", ";
+                await DisplayAlert("Error processing Meta Data!", message.Substring(0, message.Length - 2), "OK");
             }
         }
         private async void Show_Images(object sender, EventArgs args)

@@ -64,14 +64,17 @@ namespace TilesApp.Views
                 {
                     if (returnedData.Count == 0)
                     {
-                        if (MetaData.IsValid())
+                        List<string> errorsList = MetaData.IsValid();
+                        if (errorsList.Count==0)
                         {
                             btnSaveAndFinish.IsVisible = true;
                             DisplayAlert("Success!", "QR scanned successfully!", "Ok");
                         }
                         else
                         {
-                            DisplayAlert("Warning", "QR scanned successfully but some fields missing in config file...", "Ok");
+                            string message = "QR scanned successfully but some fields missing in config file:\n";
+                            foreach (string error in errorsList) message += error + ", ";
+                            DisplayAlert("Warning", message.Substring(0, message.Length - 2), "OK");
                         }
                     }
                     else
@@ -89,7 +92,7 @@ namespace TilesApp.Views
         }
         private void Delete_ScannerRead(object sender, EventArgs args)
         {
-            Delete_UHFScannerRead(sender, args);
+            App.ViewModel.Inventory.ClearCommand.Execute(null);
             Button button = (Button)sender;
             string removedObject = button.ClassId;
             // Remove from both the viewable list and the ScannerReads 
@@ -113,7 +116,8 @@ namespace TilesApp.Views
         }
         private async void SaveAndFinish(object sender, EventArgs args)
         {
-            if (MetaData.IsValid())
+            List<string> errorsList = MetaData.IsValid();
+            if (errorsList.Count == 0)
             {
                 if (CosmosDBManager.InsertOneObject(MetaData))
                 {
@@ -142,7 +146,9 @@ namespace TilesApp.Views
             else
             {
                 CleanReaders();
-                await DisplayAlert("Error processing Meta Data!", "Please contact your Odoo administrator", "OK");
+                string message = "The following fields are not completed:\n";
+                foreach (string error in errorsList) message += error + ", ";
+                await DisplayAlert("Error processing Meta Data!", message.Substring(0, message.Length - 2), "OK");
                 await Navigation.PopModalAsync(true);
             }
         }
