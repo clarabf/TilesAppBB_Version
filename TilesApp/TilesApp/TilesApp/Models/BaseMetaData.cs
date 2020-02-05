@@ -28,6 +28,7 @@ namespace TilesApp.Models
         protected Dictionary<string, string> appDataIndex = new Dictionary<string, string> { };
         protected Dictionary<string, Dictionary<string, dynamic>> customData = new Dictionary<string, Dictionary<string, dynamic>> { };
         protected Dictionary<string, string> customDataIndex = new Dictionary<string, string> { };
+        protected Dictionary<string, Dictionary<string, dynamic>> predefinedData = new Dictionary<string, Dictionary<string, dynamic>> { };
 
         //Fields properties
         [BsonIgnoreIfNull]
@@ -126,6 +127,9 @@ namespace TilesApp.Models
                     //If no need to go through fields for equality
                     appData = data["AppFields"];
                     customData = data["CustomFields"];
+                    if (data.ContainsKey("PredefinedValues")) {
+                        predefinedData = data["PredefinedValues"];
+                    }
 
                     //If need to go through fields for equality
                     foreach (KeyValuePair<string, Dictionary<string, dynamic>> field in data["AppFields"])
@@ -154,55 +158,72 @@ namespace TilesApp.Models
             try
             {
                 Dictionary<string, object> data = JsonConvert.DeserializeObject<Dictionary<string, object>>(scannerRead["Value"].ToString());
-                if (data != null) { result = AddQRMetaData(data); }
+                if (data != null) { result = AddAddiontalMetaData(data, "QR"); }
                 return result;
             }
-            //Try to process as standard read
+            //Try to process as a barcode (barcode with predefined values or standard read)
             catch (Exception e)
             {
-                try
+                if (predefinedData.ContainsKey(scannerRead["Value"].ToString()))
                 {
-                    bool isValidCode = true;
-
-                    foreach (string validContentFormat in appData[appDataIndex["ValidCodeFormat"]]["DefaultValue(admin)"])
+                    try
                     {
-                        isValidCode = true;
-
-                        //Apply filter
-                        if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\b([a-fA-F0-9xX]+)\b") & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & validContentFormat.Length == scannerRead["Value"].ToString().Length)
-                        {
-                            for (int i = 0; i < validContentFormat.Length; i++)
-                            {
-                                if (validContentFormat.ToUpper()[i] != 'X' && scannerRead["Value"].ToString().ToUpper()[i] != validContentFormat.ToUpper()[i])
-                                {
-                                    isValidCode = false;
-                                    break; // next validContentFormat
-                                }
-                            }
-                            if (isValidCode) { break; }
-                        }
-                        else
-                        {
-                            isValidCode = false;
-                        }
-                    }
-
-                    if (isValidCode)
-                    {
-                        ScannerReads.Add(scannerRead);
-                        result = scannerRead;
-                    }
+                        Dictionary<string, object> data = predefinedData[scannerRead["Value"].ToString()];
+                        if (data != null) { result = AddAddiontalMetaData(data, "barcode"); }
                         return result;
+                    }
+                    catch (Exception e2)
+                    {
+                        result.Add("Error", e2.Message);
+                        return result;
+                    }
                 }
-                catch
+                else
                 {
-                    return result;
-                }
+                    try
+                    {
+                        bool isValidCode = true;
+
+                        foreach (string validContentFormat in appData[appDataIndex["ValidCodeFormat"]]["DefaultValue(admin)"])
+                        {
+                            isValidCode = true;
+
+                            //Apply filter
+                            if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\b([a-fA-F0-9xX]+)\b") & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & validContentFormat.Length == scannerRead["Value"].ToString().Length)
+                            {
+                                for (int i = 0; i < validContentFormat.Length; i++)
+                                {
+                                    if (validContentFormat.ToUpper()[i] != 'X' && scannerRead["Value"].ToString().ToUpper()[i] != validContentFormat.ToUpper()[i])
+                                    {
+                                        isValidCode = false;
+                                        break; // next validContentFormat
+                                    }
+                                }
+                                if (isValidCode) { break; }
+                            }
+                            else
+                            {
+                                isValidCode = false;
+                            }
+                        }
+
+                        if (isValidCode)
+                        {
+                            ScannerReads.Add(scannerRead);
+                            result = scannerRead;
+                        }
+                        return result;
+                    }
+                    catch
+                    {
+                        return result;
+                    }
+                }  
             }
         }
 
         //Add metadata from QR Json method
-        public Dictionary<string, object> AddQRMetaData(Dictionary<string, dynamic> data)
+        public Dictionary<string, object> AddAddiontalMetaData(Dictionary<string, dynamic> data, string type)
         {
             Dictionary<string, object> result = new Dictionary<string, object>();
             try
@@ -223,7 +244,7 @@ namespace TilesApp.Models
                                 }
                                 else
                                 {                                    
-                                    result.Add( "Error", "One or several of the fields that you are trying to write have been determined as non QR fillable in the config file. Please review QR and/or config file content");
+                                    result.Add( "Error", "One or several of the fields that you are trying to write have been determined as non fillable in the config file. Please review " + type + " and/or config file content");
                                     return result;
                                 }
                             }
@@ -234,7 +255,7 @@ namespace TilesApp.Models
                             }
                             else
                             {
-                                result.Add("Error", "One or several of the fields in the QR do not exist on the config file. Please review QR content.");
+                                result.Add("Error", "One or several of the fields in the " + type + " do not exist on the config file. Please review " + type + " content.");
                                 return result;
                             }
                         }
@@ -248,7 +269,7 @@ namespace TilesApp.Models
             }
             catch
             {
-                result.Add("Error", "QR content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type.");
+                result.Add("Error", type + " content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type.");
                 return result;
             }
             return result;
