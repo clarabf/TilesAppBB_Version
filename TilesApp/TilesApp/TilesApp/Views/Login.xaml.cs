@@ -39,6 +39,7 @@ namespace TilesApp.Views
                 }
             });
             MessagingCenter.Subscribe<AppPage>(this, "OdooConnection", async (s) => {
+                OdooXMLRPC.CleanAppCache();
                 OdooXMLRPC.Start();
                 Setup();
                 App.Station = null;

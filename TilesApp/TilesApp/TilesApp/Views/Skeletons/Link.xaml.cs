@@ -117,11 +117,11 @@ namespace TilesApp.Views
             }
             else
             {
-                CleanReaders();
+                //CleanReaders();
                 string message = "The following fields are not completed:\n";
                 foreach (string error in errorsList) message += error + ", ";
                 await DisplayAlert("Error processing Meta Data!", message.Substring(0, message.Length - 2), "OK");
-                await Navigation.PopModalAsync(true);
+                //await Navigation.PopModalAsync(true);
             }
         }
 

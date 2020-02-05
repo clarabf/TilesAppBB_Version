@@ -312,5 +312,10 @@ namespace TilesApp.Services
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting app(s) config file(s) from Odoo.");
             }
         }
+
+        public static void CleanAppCache()
+        {
+            appsConfigs.Clear();
+        }
     }
 }
