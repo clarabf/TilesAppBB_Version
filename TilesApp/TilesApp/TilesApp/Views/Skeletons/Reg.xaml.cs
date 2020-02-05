@@ -57,7 +57,7 @@ namespace TilesApp.Views
                 lblEmptyViewAnimation.IsVisible = false;
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }
-            //QR has been scanned
+            //Additional data has been scanned
             else
             {
                 if (ViewableReads.Count > 0)
@@ -68,11 +68,11 @@ namespace TilesApp.Views
                         if (errorsList.Count==0)
                         {
                             btnSaveAndFinish.IsVisible = true;
-                            DisplayAlert("Success!", "QR scanned successfully!", "Ok");
+                            DisplayAlert("Success!", "Additional data scanned successfully!", "Ok");
                         }
                         else
                         {
-                            string message = "QR scanned successfully but some fields missing in config file:\n";
+                            string message = "Additional data scanned successfully but some fields missing in config file:\n";
                             foreach (string error in errorsList) message += error + ", ";
                             DisplayAlert("Warning", message.Substring(0, message.Length - 2), "OK");
                         }
