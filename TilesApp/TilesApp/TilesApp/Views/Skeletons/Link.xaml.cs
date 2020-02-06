@@ -55,14 +55,36 @@ namespace TilesApp.Views
                 btnSaveAndFinish.IsVisible = true;
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
             }
+            //Additional data has been scanned
             else
             {
-                try
+                if (ViewableReads.Count > 0)
                 {
-                    DisplayAlert("Error", returnedData["Error"].ToString(), "Ok");
-                }
-                catch
-                {
+                    if (returnedData.Count == 0)
+                    {
+                        List<string> errorsList = MetaData.IsValid();
+                        if (errorsList.Count == 0)
+                        {
+                            btnSaveAndFinish.IsVisible = true;
+                            DisplayAlert("Success!", "Additional data scanned successfully!", "Ok");
+                        }
+                        else
+                        {
+                            string message = "Additional data scanned successfully but some fields missing in config file:\n";
+                            foreach (string error in errorsList) message += error + ", ";
+                            DisplayAlert("Warning", message.Substring(0, message.Length - 2), "OK");
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            DisplayAlert("Error", returnedData["Error"].ToString(), "Ok");
+                        }
+                        catch
+                        {
+                        }
+                    }
                 }
             }
         }
