@@ -175,9 +175,12 @@ namespace TilesApp.Droid
                         case "Space":
                             result += " ";
                             break;
+                        case "Minus":
+                            result += "-";
+                            break;
                         case "ShiftLeft":
                         case "Back":
-                        case "MediaEject":
+                        case "MediaEject":                        
                             break;
                         default:
                             result += keyCodes[i].ToLower();

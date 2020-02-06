@@ -21,9 +21,10 @@ namespace TilesApp.Views
             InitializeComponent();
             BindingContext = appPage;
             GetDeviceLocation();
-            
+            App.Inventory.Clear();
+
             lblName.Text = OdooXMLRPC.userName;
-            if (App.Station!=null)
+            if (App.Station != null)
             {
                 lblStation.Text = "Station: " + App.Station + "\nYou can change it by scanning again:";
                 btAdd.Text = "CHANGE \uf0ec";
@@ -66,7 +67,7 @@ namespace TilesApp.Views
                 {
                     await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
                 }
-                
+
             }
             catch (PermissionException pEx)
             {
@@ -74,9 +75,9 @@ namespace TilesApp.Views
             }
             catch
             {
-                return;   
+                return;
             }
-            if (rowGeoLocation !=null )
+            if (rowGeoLocation != null)
             {
                 if (App.GeoLocation != null)
                 {
@@ -90,7 +91,7 @@ namespace TilesApp.Views
                     location = App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
                     lblLocation.Text = location.address["city"] + ", " + location.address["state"] + ", " + location.address["country"];
                 }
-                
+
             }
         }
 
@@ -102,6 +103,32 @@ namespace TilesApp.Views
         private async void Home(object sender, EventArgs args)
         {
             await Navigation.PopModalAsync(true);
+        }
+
+        // OVERRIDES
+        protected override void OnAppearing()
+        {
+            App.Inventory.CollectionChanged += Inventory_CollectionChanged;
+            base.OnAppearing();
+        }
+        protected override void OnDisappearing()
+        {
+            // UNSUBSRCIBE WHEN PAGE IS CLOSED
+            //Unsubscribe();
+            App.Inventory.CollectionChanged -= Inventory_CollectionChanged;
+            base.OnDisappearing();
+        }
+        private void Inventory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems != null)
+            {
+                foreach (var InputWithDevice in args.NewItems.Cast<Dictionary<string, object>>())
+                {
+                    lblStation.Text = "Station: " + (string)InputWithDevice["Value"] + "\nYou can change it by scanning again:";
+                    btAdd.Text = "CHANGE \uf0ec";
+                    App.Station = (string)InputWithDevice["Value"];
+                }
+            }
         }
     }
 }
