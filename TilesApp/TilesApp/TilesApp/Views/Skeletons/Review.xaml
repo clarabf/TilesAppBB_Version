@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<d:BasePage xmlns="http://xamarin.com/schemas/2014/forms" 
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="clr-namespace:TilesApp;assembly=TilesApp"
+            x:Class="TilesApp.Views.Review"
+            xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms">
+    <ContentPage.Content>
+        <Grid BackgroundColor="#000000" StyleClass="gridApps">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="9*" />
+            </Grid.RowDefinitions>
+            
+            <Label x:Name="lblTest" 
+                Text="REVIEW"
+                TextColor="#ffffff"
+                FontAttributes="Bold"
+                CharacterSpacing="1.15"
+                Padding="10,0"
+                FontSize="20"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="Center"                        
+                Grid.Row="0"
+                LineBreakMode="MiddleTruncation"
+                />
+
+            <Label x:Name="lblTitle" 
+                Text="SCANNED ITEM"
+                TextColor="#ffffff"
+                FontSize="16"
+                Margin="0,0,0,3"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="End"
+                IsVisible="False"
+                Grid.Row="1"
+                LineBreakMode="NoWrap"
+                />
+            <BoxView  x:Name="lblTitleLine"
+                HeightRequest="1.5"
+                WidthRequest="1500"
+                BackgroundColor="#bc0000"
+                VerticalOptions="End"
+                IsVisible="False"
+                Grid.Row="1"
+                HorizontalOptions="CenterAndExpand" />
+
+            <Label x:Name="lblEmptyView"
+                TextColor="#ffffff"
+                Text ="START SCAN!"
+                FontSize="24"
+                FontAttributes="Bold"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand"
+                Grid.Row="2"
+                LineBreakMode="NoWrap"
+            />
+            <forms:AnimationView  x:Name="lblEmptyViewAnimation"
+                Animation="qr-scan.json" Grid.Row="2"
+                AutoPlay="True" Loop="true"
+                HeightRequest="200"                                      
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand" 
+            />
+            <Label x:Name="lblData" 
+                Text="SCANNED ITEM"
+                TextColor="#ffffff"
+                FontSize="16"
+                Margin="0,0,0,3"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="End"
+                IsVisible="False"
+                Grid.Row="2"
+                LineBreakMode="NoWrap"
+                />
+        </Grid>
+    </ContentPage.Content>
+</d:BasePage>

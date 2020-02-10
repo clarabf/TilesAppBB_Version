@@ -150,6 +150,7 @@ namespace TilesApp.Views
                     lblParent.IsVisible = false;
                     ViewableReads.Clear();
                     MetaData.ScannerReads.Clear();
+                    MetaData.ParentUUID = null;
                 }
                 else
                     await DisplayAlert(MetaData.ParentUUID + " was NOT assembled successfully!", "We could not connect to the Database Server", "OK");

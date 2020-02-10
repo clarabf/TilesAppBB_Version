@@ -144,7 +144,7 @@ namespace TilesApp.Models
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
                 throw new Exception("Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");
             }

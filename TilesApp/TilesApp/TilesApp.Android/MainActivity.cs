@@ -145,6 +145,9 @@ namespace TilesApp.Droid
                         case "RightBracket":
                             result += "}";
                             break;
+                        case "Minus":
+                            result += "_";
+                            break;
                         default:
                             result += keyCodes[i].ToUpper();
                             break;

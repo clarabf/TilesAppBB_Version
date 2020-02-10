@@ -52,7 +52,7 @@ namespace TilesApp.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            CosmosDBManager.init();
+            CosmosDBManager.Init();
         }
         private async void GoToScan(object sender, EventArgs args)
         {

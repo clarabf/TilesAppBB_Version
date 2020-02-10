@@ -80,6 +80,10 @@ namespace TilesApp.Views
                         icon = "\uf14a";
                         button.Clicked += QC_Command;
                         break;
+                    case "Review":
+                        icon = "\uf14a";
+                        button.Clicked += Review_Command;
+                        break;
                     default:
                         break;
                 }
@@ -126,6 +130,12 @@ namespace TilesApp.Views
         {
             Button b = (Button)sender;
             await Navigation.PushModalAsync(new QC(b.ClassId));
+        }
+
+        private async void Review_Command(object sender, EventArgs args)
+        {
+            Button b = (Button)sender;
+            await Navigation.PushModalAsync(new Review(b.ClassId));
         }
 
 
