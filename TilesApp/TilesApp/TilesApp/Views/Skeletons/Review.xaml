@@ -62,17 +62,44 @@
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" 
             />
-            <Label x:Name="lblData" 
-                Text="SCANNED ITEM"
-                TextColor="#ffffff"
-                FontSize="16"
-                Margin="0,0,0,3"
-                HorizontalOptions="CenterAndExpand"
-                VerticalOptions="End"
-                IsVisible="False"
-                Grid.Row="2"
-                LineBreakMode="NoWrap"
-                />
+            <CollectionView Margin="0, -6, 0, 0" ItemsSource="{Binding ViewableReads}" Grid.Row="2" >
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid BackgroundColor="#151515">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+                            <Label
+                                Text="{Binding AppType}"
+                                Grid.Column="0"
+                                Padding="20"
+                                TextColor="#ffffff"
+                                FontSize="16"    
+                                LineBreakMode="TailTruncation"
+                            />
+                            <Label
+                                Text="{Binding AppName}"
+                                Grid.Column="1"
+                                Padding="20"
+                                TextColor="#ffffff"
+                                FontSize="16"    
+                                LineBreakMode="TailTruncation"
+                            />
+                            <Label
+                                Text="{Binding Time}"
+                                Grid.Column="2"
+                                Padding="20"
+                                TextColor="#ffffff"
+                                FontSize="16"    
+                                LineBreakMode="TailTruncation"
+                            />
+                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.ColumnSpan="2" VerticalOptions="End"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
         </Grid>
     </ContentPage.Content>
 </d:BasePage>

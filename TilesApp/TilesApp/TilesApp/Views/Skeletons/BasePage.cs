@@ -68,7 +68,14 @@ namespace TilesApp
                     }
                     catch
                     {
-                        ProcessInput((string)InputWithDevice["Value"], ReadersTypes.BluetoothRFID.ToString(), App.ViewModel.Readers.Readers.FirstOrDefault().SerialNumber);
+                        try
+                        {
+                            ProcessInput((string)InputWithDevice["Value"], ReadersTypes.BluetoothRFID.ToString(), App.ViewModel.Readers.Readers.FirstOrDefault().SerialNumber);
+                        }
+                        catch (Exception e)
+                        {
+                            DisplayAlert("Error", e.Message, "Ok");
+                        }
                     }
                 }
             }

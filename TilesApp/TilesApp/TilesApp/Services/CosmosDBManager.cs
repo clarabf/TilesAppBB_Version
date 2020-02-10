@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using MongoDB.Bson;
@@ -41,22 +42,18 @@ namespace TilesApp.Services
             collection.CountDocumentsAsync(new BsonDocument());
         }
 
-        public static Dictionary<string, object> FetchData(string barcode, Collection<string> Apps) {
-            Dictionary<string, object> result = new Dictionary<string, object>();
+        public async static Task<List<Dictionary<string, object>>> FetchData(string barcode, Collection<string> Apps) {
+            List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
+            Dictionary<string, object> dict = new Dictionary<string, object>();
             try
             {
                 // Fetch data from cosmo
                 foreach (string app in Apps)
                 {
-                    var filter = $"{{AppName : {app}, " +
-                        $"ScannerReads:[" +
-                        $"{{Value: {barcode} " +
-                        $"}}" +
-                        $"]" +
-                        $"}}";
-                    collection.Find(filter).ForEachAsync(document => {
-                        Dictionary<string, object> data = BsonSerializer.Deserialize<Dictionary<string, object>>(document);
-                        result.Add("Location", data["Location"]);
+                    var filter = $"{{\"AppName\": \"{app}\", ScannerReads: {{ $elemMatch: {{ Value : \"{barcode}\" }}}}}}";
+                    await collection.Find(filter).ForEachAsync(document => {
+                        dict = BsonSerializer.Deserialize<Dictionary<string, object>>(document);
+                        result.Add(dict);
                     });
                 }                
             }

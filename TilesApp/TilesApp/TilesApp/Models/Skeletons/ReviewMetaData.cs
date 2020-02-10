@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace TilesApp.Models.Skeletons
 {
@@ -19,7 +20,8 @@ namespace TilesApp.Models.Skeletons
             {
                 if (appData[appDataIndex["Apps"]]["FieldIsSaved"])
                 {
-                    return appData[appDataIndex["Apps"]]["DefaultValue(admin)"];
+                    JArray result = (JArray)appData[appDataIndex["Apps"]]["DefaultValue(admin)"];
+                    return result.ToObject<Collection<string>>();
                 }
                 else
                 {

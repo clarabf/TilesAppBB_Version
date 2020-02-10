@@ -189,11 +189,11 @@ namespace TilesApp.Models
                             isValidCode = true;
 
                             //Apply filter
-                            if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\b([a-fA-F0-9xX]+)\b") & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([a-fA-F0-9]+)\b") & validContentFormat.Length == scannerRead["Value"].ToString().Length)
+                            if (System.Text.RegularExpressions.Regex.IsMatch(validContentFormat, @"\b([\w$_-]+)\b") & System.Text.RegularExpressions.Regex.IsMatch(scannerRead["Value"].ToString(), @"\b([\w_-]+)\b") & validContentFormat.Length == scannerRead["Value"].ToString().Length)
                             {
                                 for (int i = 0; i < validContentFormat.Length; i++)
                                 {
-                                    if (validContentFormat.ToUpper()[i] != 'X' && scannerRead["Value"].ToString().ToUpper()[i] != validContentFormat.ToUpper()[i])
+                                    if (validContentFormat.ToUpper()[i] != '$' && scannerRead["Value"].ToString().ToUpper()[i] != validContentFormat.ToUpper()[i])
                                     {
                                         isValidCode = false;
                                         break; // next validContentFormat

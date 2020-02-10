@@ -4,6 +4,8 @@ using TilesApp.Services;
 using TilesApp.Models.Skeletons;
 using Xamarin.Forms;
 using TilesApp.Models;
+using System.Collections.ObjectModel;
+using System.Dynamic;
 
 namespace TilesApp.Views
 {
@@ -11,6 +13,8 @@ namespace TilesApp.Views
     {
 
         public ReviewMetaData MetaData { get; set; }
+        public ObservableCollection<ViewableElement> Elements { get; set; } = new ObservableCollection<ViewableElement>();
+
         public Review(string tag)
         {
             InitializeComponent();
@@ -55,20 +59,58 @@ namespace TilesApp.Views
                 lblEmptyView.IsVisible = false;
                 lblEmptyViewAnimation.IsVisible = false;
                 ViewableReads.Add(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
-                Dictionary<string, object> data = CosmosDBManager.FetchData(input[nameof(BaseMetaData.InputDataProps.Value)].ToString(),MetaData.Apps);
-                try
-                {
-                    lblData.Text = ((Location)data["Location"]).display_name;
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
+                FetchData(input[nameof(BaseMetaData.InputDataProps.Value)].ToString());
 
             }
-        }    
+        }
+        public async void FetchData(string barcode) {
+            List<Dictionary<string, object>> data = await CosmosDBManager.FetchData(barcode, MetaData.Apps);
+            foreach (var dict in data)
+            {
+                ViewableElement elm = new ViewableElement();
+                try
+                {
+                    foreach (KeyValuePair<string, object> item in dict)
+                    {
+                        switch (item.Key)
+                        {
+                            case "AppName":
+                                elm.AppName = item.Value.ToString();
+                                break;
+                            case "AppType":
+                                elm.AppType = item.Value.ToString();
+                                break;
+                            case "ScannerReads":
+                                var scannerReads = (List<object>)item.Value;
+                                foreach (var sr in scannerReads)
+                                {
+                                    IDictionary<string, object> scannerRead = (ExpandoObject)sr;
+                                    try
+                                    {
+                                        if (((string)scannerRead["Value"]).Equals(barcode))
+                                    {
+                                            elm.Time = (DateTime)scannerRead["Timestamp"];
+                                        }
+                                    }
 
+                                    catch
+                                    {
+                                    }
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    Elements.Add(elm);
+                }
+                catch (Exception e)
+                {
+                    await DisplayAlert("Error",e.Message,"OK");
+                }
+            }
+            
+        }
         protected override bool OnBackButtonPressed()
         {
             Device.BeginInvokeOnMainThread(async () =>
@@ -78,5 +120,13 @@ namespace TilesApp.Views
             });
             return true;
         }
+    }
+
+
+    public class ViewableElement
+    {
+        public string AppType { get; set; }
+        public string AppName { get; set; }
+        public DateTime Time { get; set; }
     }
 }
