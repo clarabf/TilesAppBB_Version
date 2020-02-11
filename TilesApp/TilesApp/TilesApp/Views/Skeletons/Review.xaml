@@ -11,7 +11,7 @@
                 <RowDefinition Height="1.5*" />
                 <RowDefinition Height="9*" />
             </Grid.RowDefinitions>
-            
+
             <Label x:Name="lblTest" 
                 Text="REVIEW"
                 TextColor="#ffffff"
@@ -71,49 +71,82 @@
                                 <ColumnDefinition Width="3*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="0.5*" />
                                 <RowDefinition Height="1*" />
-                                <RowDefinition Height="0.5*" />
-                                <RowDefinition Height="0.5*" />
                                 <RowDefinition Height="0.3*" />
                             </Grid.RowDefinitions>
-                            <Label
-                                Text="{Binding AppType}"
+                            <StackLayout
                                 Grid.Row="0"
-                                Grid.Column="0"
-                                Padding="5"
+                                Grid.ColumnSpan="2"
+                                Orientation="Horizontal">
+                                <Label
+                                Text="{Binding [AppType]}"
                                 TextColor="#ffffff"
                                 FontSize="16"    
                                 FontAttributes="Bold"
-                                LineBreakMode="TailTruncation"
                             />
-                            <Label
-                                Text="{Binding AppName}"
-                                Grid.Row="0"
-                                Grid.Column="1"
-                                Padding="5"
+                                <Label
+                                Text="-"
                                 TextColor="#ffffff"
                                 FontSize="16"    
-                                LineBreakMode="TailTruncation"
+                                FontAttributes="Bold"
                             />
-                            <Label
-                                Text="{Binding User}"
+                                <Label
+                                Text="{Binding [AppName]}"
+                                TextColor="#ffffff"
+                                FontSize="16"    
+                            />
+                            </StackLayout>
+                            <StackLayout
                                 Grid.Row="1"
-                                Grid.ColumnSpan="2"
-                                Padding="5"
-                                TextColor="#e8e8e8"
-                                FontSize="16"    
-                                LineBreakMode="TailTruncation"
-                            />
-                            <Label
-                                Text="{Binding Time}"
-                                Grid.Row="2"
-                                Grid.ColumnSpan="2"
-                                Padding="5"
-                                TextColor="#e8e8e8"
-                                FontSize="16"    
-                                LineBreakMode="TailTruncation"
-                            />
-                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.Row="3" Grid.ColumnSpan="2" VerticalOptions="End"/>
+                                Grid.ColumnSpan="2"                                
+                                Orientation="Vertical">
+                                    <StackLayout                                                                
+                                    Orientation="Horizontal">
+                                        <Label
+                                        Text="By: "
+                                        TextColor="#ffffff"
+                                        FontSize="14"    
+                                        LineBreakMode="TailTruncation"
+                                    />
+                                            <Label
+                                        Text="{Binding [UserName]}"
+                                        TextColor="#e8e8e8"
+                                        FontSize="14"    
+                                        LineBreakMode="TailTruncation"
+                                    />
+                                            <Label
+                                        Text=", in: "
+                                        TextColor="#ffffff"
+                                        FontSize="14"    
+                                        LineBreakMode="TailTruncation"
+                                    />
+                                            <Label
+                                        Text="{Binding [Station]}"
+                                        TextColor="#e8e8e8"
+                                        FontSize="14"    
+                                        LineBreakMode="TailTruncation"
+                                    />
+                                        </StackLayout>
+                                        <StackLayout
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="2"                                
+                                        Orientation="Horizontal">
+                                    <Label
+                                        Text="At: "
+                                        TextColor="#ffffff"
+                                        FontSize="14"    
+                                        LineBreakMode="TailTruncation"
+                                    />
+                                    <Label
+                                        Text="{Binding [OperationAt]}"
+                                        TextColor="#e8e8e8"
+                                        FontSize="14"    
+                                        LineBreakMode="TailTruncation"
+                                    />
+                                </StackLayout>
+                            </StackLayout>
+                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.Row="2" Grid.ColumnSpan="2" VerticalOptions="End"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

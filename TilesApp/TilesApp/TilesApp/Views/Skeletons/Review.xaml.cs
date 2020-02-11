@@ -6,6 +6,7 @@ using Xamarin.Forms;
 using TilesApp.Models;
 using System.Collections.ObjectModel;
 using System.Dynamic;
+using System.Text;
 
 namespace TilesApp.Views
 {
@@ -13,7 +14,7 @@ namespace TilesApp.Views
     {
 
         public ReviewMetaData MetaData { get; set; }
-        public ObservableCollection<ViewableElement> Elements { get; set; } = new ObservableCollection<ViewableElement>();
+        public ObservableCollection<Dictionary<string, object>> Elements { get; set; } = new ObservableCollection<Dictionary<string, object>>();
 
         public Review(string tag)
         {
@@ -63,56 +64,31 @@ namespace TilesApp.Views
 
             }
         }
-        public async void FetchData(string barcode) {
+        public async void FetchData(string barcode)
+        {
             List<Dictionary<string, object>> data = await CosmosDBManager.FetchData(barcode, MetaData.Apps);
             foreach (var dict in data)
             {
-                ViewableElement elm = new ViewableElement();
                 try
                 {
-                    foreach (KeyValuePair<string, object> item in dict)
+                    foreach (var pair in dict)
                     {
-                        switch (item.Key)
+                        if (pair.Key.Equals("ScannerReads"))
                         {
-                            case "AppName":
-                                elm.AppName = item.Value.ToString();
-                                break;
-                            case "AppType":
-                                elm.AppType = item.Value.ToString();
-                                break;
-                            case "UserName":
-                                elm.User = item.Value.ToString();
-                                break;
-                            case "ScannerReads":
-                                var scannerReads = (List<object>)item.Value;
-                                foreach (var sr in scannerReads)
-                                {
-                                    IDictionary<string, object> scannerRead = (ExpandoObject)sr;
-                                    try
-                                    {
-                                        if (((string)scannerRead["Value"]).Equals(barcode))
-                                    {
-                                            elm.Time = (DateTime)scannerRead["Timestamp"];
-                                        }
-                                    }
-
-                                    catch
-                                    {
-                                    }
-                                }
-                                break;
-                            default:
-                                break;
+                            foreach (var item in (List<object>)pair.Value)
+                            {
+                                IDictionary<string, object> scannerRead = (IDictionary<string, object>)item;
+                                if (barcode.Equals((string)scannerRead["Value"]))
+                                    dict.Add("OperationAt", (DateTime)scannerRead["Timestamp"]);
+                            }
                         }
                     }
-                    Elements.Add(elm);
                 }
-                catch (Exception e)
+                catch
                 {
-                    await DisplayAlert("Error",e.Message,"OK");
                 }
+                Elements.Add(dict);
             }
-            
         }
         protected override bool OnBackButtonPressed()
         {
@@ -123,14 +99,5 @@ namespace TilesApp.Views
             });
             return true;
         }
-    }
-
-
-    public class ViewableElement
-    {
-        public string AppType { get; set; }
-        public string AppName { get; set; }
-        public string User { get; set; }
-        public DateTime Time { get; set; }
     }
 }
