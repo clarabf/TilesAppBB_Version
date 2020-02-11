@@ -80,6 +80,9 @@ namespace TilesApp.Views
                             case "AppType":
                                 elm.AppType = item.Value.ToString();
                                 break;
+                            case "UserName":
+                                elm.User = item.Value.ToString();
+                                break;
                             case "ScannerReads":
                                 var scannerReads = (List<object>)item.Value;
                                 foreach (var sr in scannerReads)
@@ -127,6 +130,7 @@ namespace TilesApp.Views
     {
         public string AppType { get; set; }
         public string AppName { get; set; }
+        public string User { get; set; }
         public DateTime Time { get; set; }
     }
 }

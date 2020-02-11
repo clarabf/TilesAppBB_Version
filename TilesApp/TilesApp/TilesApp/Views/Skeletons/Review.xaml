@@ -26,7 +26,7 @@
                 />
 
             <Label x:Name="lblTitle" 
-                Text="SCANNED ITEM"
+                Text="ITEM HISTORY"
                 TextColor="#ffffff"
                 FontSize="16"
                 Margin="0,0,0,3"
@@ -62,40 +62,58 @@
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" 
             />
-            <CollectionView Margin="0, -6, 0, 0" ItemsSource="{Binding ViewableReads}" Grid.Row="2" >
+            <CollectionView Margin="0, -6, 0, 0" ItemsSource="{Binding Elements}" Grid.Row="2" >
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
                         <Grid BackgroundColor="#151515">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
-                                <ColumnDefinition Width="1*" />
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition Width="3*" />
                             </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="1*" />
+                                <RowDefinition Height="0.5*" />
+                                <RowDefinition Height="0.5*" />
+                                <RowDefinition Height="0.3*" />
+                            </Grid.RowDefinitions>
                             <Label
                                 Text="{Binding AppType}"
+                                Grid.Row="0"
                                 Grid.Column="0"
-                                Padding="20"
+                                Padding="5"
+                                TextColor="#ffffff"
+                                FontSize="16"    
+                                FontAttributes="Bold"
+                                LineBreakMode="TailTruncation"
+                            />
+                            <Label
+                                Text="{Binding AppName}"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Padding="5"
                                 TextColor="#ffffff"
                                 FontSize="16"    
                                 LineBreakMode="TailTruncation"
                             />
                             <Label
-                                Text="{Binding AppName}"
-                                Grid.Column="1"
-                                Padding="20"
-                                TextColor="#ffffff"
+                                Text="{Binding User}"
+                                Grid.Row="1"
+                                Grid.ColumnSpan="2"
+                                Padding="5"
+                                TextColor="#e8e8e8"
                                 FontSize="16"    
                                 LineBreakMode="TailTruncation"
                             />
                             <Label
                                 Text="{Binding Time}"
-                                Grid.Column="2"
-                                Padding="20"
-                                TextColor="#ffffff"
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2"
+                                Padding="5"
+                                TextColor="#e8e8e8"
                                 FontSize="16"    
                                 LineBreakMode="TailTruncation"
                             />
-                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.ColumnSpan="2" VerticalOptions="End"/>
+                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.Row="3" Grid.ColumnSpan="2" VerticalOptions="End"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
