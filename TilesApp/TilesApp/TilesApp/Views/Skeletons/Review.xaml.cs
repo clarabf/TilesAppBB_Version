@@ -43,6 +43,12 @@ namespace TilesApp.Views
                 });
             }
         }
+        public Review(string tag, string barcode) : this(tag)
+        {
+            Dictionary<string, object> input = new Dictionary<string, object>();
+            input.Add("Value", barcode);
+            ScannerReadDetected(input);
+        }
         protected override void OnAppearing()
         {
             base.OnAppearing();
