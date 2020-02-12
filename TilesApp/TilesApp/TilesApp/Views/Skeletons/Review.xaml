@@ -7,9 +7,8 @@
     <ContentPage.Content>
         <Grid BackgroundColor="#000000" StyleClass="gridApps">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1*" />
-                <RowDefinition Height="0.5*" />
-                <RowDefinition Height=".3*" />
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1.5*" />
                 <RowDefinition Height="9*" />
                 <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
@@ -43,7 +42,7 @@
                 BackgroundColor="#bc0000"
                 VerticalOptions="End"
                 IsVisible="False"
-                Grid.Row="2"
+                Grid.Row="1"
                 HorizontalOptions="CenterAndExpand" />
 
             <Label x:Name="lblEmptyView"
@@ -53,130 +52,115 @@
                 FontAttributes="Bold"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="StartAndExpand"
-                Grid.Row="3"
+                Grid.Row="2"
                 LineBreakMode="NoWrap"
             />
             <forms:AnimationView  x:Name="lblEmptyViewAnimation"
-                Animation="qr-scan.json" Grid.Row="3"
+                Animation="qr-scan.json" Grid.Row="2"
                 AutoPlay="True" Loop="true"
                 HeightRequest="200"                                      
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" 
             />
-            <CollectionView x:Name="Cview" Margin="0, -6, 0, 0" ItemsSource="{Binding Elements}" Grid.Row="3" SelectionMode="Single" ItemsLayout="VerticalList">
+            
+            <CollectionView x:Name="Cview" Margin="0, -6, 0, 0" ItemsSource="{Binding Elements}" Grid.Row="2" SelectionMode="Single" ItemsLayout="VerticalList">
                 <CollectionView.ItemTemplate >
                     <DataTemplate >
                         <Grid BackgroundColor="#151515" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="2*" />
                             </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*" />
-                                <RowDefinition Height="1*" />
-                                <RowDefinition Height="0.3*" />
+                                <RowDefinition Height="32" />
+                                <RowDefinition Height="32" />
                             </Grid.RowDefinitions>
-                            <StackLayout
+
+                            <Label
+                                Text=""
+                                TextColor="#ffffff"
+                                FontSize="16"
+                                CharacterSpacing="1.15"                                
                                 Grid.Row="0"
-                                Grid.ColumnSpan="2"
-                                Orientation="Horizontal">
-                                <Label
-                                Text="{Binding [AppType]}"
-                                TextColor="#ffffff"
-                                FontSize="16"    
-                                FontAttributes="Bold"
+                                Grid.Column="0"
+                                Padding="12,0,0,0"
+                                VerticalOptions="EndAndExpand"
+                                LineBreakMode="TailTruncation">
+                                <Label.FormattedText>
+                                    <FormattedString>
+                                        <FormattedString.Spans>
+                                            <Span FontSize="18" FontAttributes="Bold" Text="{Binding [AppType]}" />
+                                            <Span FontAttributes="Bold" Text=" - " />
+                                            <Span Text="{Binding [AppName]}" />
+                                        </FormattedString.Spans>
+                                    </FormattedString>
+                                </Label.FormattedText>
+
+                            </Label>
+                            <Label
+                                Text="{Binding [OperationAt]}"                              
+                                FontSize="14"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Padding="0,0,12,0"
+                                HorizontalOptions="EndAndExpand"
+                                VerticalOptions="EndAndExpand"
+                                LineBreakMode="TailTruncation"
                             />
-                                <Label
-                                Text="-"
-                                TextColor="#ffffff"
-                                FontSize="16"    
-                                FontAttributes="Bold"
-                            />
-                                <Label
-                                Text="{Binding [AppName]}"
-                                TextColor="#ffffff"
-                                FontSize="16"    
-                            />
-                            </StackLayout>
-                            <StackLayout
+
+                            <Label
+                                Text="{Binding [Station]}"
+                                FontSize="14"
                                 Grid.Row="1"
-                                Grid.ColumnSpan="2"                                
-                                Orientation="Vertical">
-                                    <StackLayout                                                                
-                                    Orientation="Horizontal">
-                                        <Label
-                                        Text="By: "
-                                        TextColor="#ffffff"
-                                        FontSize="14"    
-                                        LineBreakMode="TailTruncation"
-                                    />
-                                            <Label
-                                        Text="{Binding [UserName]}"
-                                        TextColor="#e8e8e8"
-                                        FontSize="14"    
-                                        LineBreakMode="TailTruncation"
-                                    />
-                                            <Label
-                                        Text=", in: "
-                                        TextColor="#ffffff"
-                                        FontSize="14"    
-                                        LineBreakMode="TailTruncation"
-                                    />
-                                            <Label
-                                        Text="{Binding [Station]}"
-                                        TextColor="#e8e8e8"
-                                        FontSize="14"    
-                                        LineBreakMode="TailTruncation"
-                                    />
-                                        </StackLayout>
-                                        <StackLayout
-                                        Grid.Row="1"
-                                        Grid.ColumnSpan="2"                                
-                                        Orientation="Horizontal">
-                                    <Label
-                                        Text="At: "
-                                        TextColor="#ffffff"
-                                        FontSize="14"    
-                                        LineBreakMode="TailTruncation"
-                                    />
-                                    <Label
-                                        Text="{Binding [OperationAt]}"
-                                        TextColor="#e8e8e8"
-                                        FontSize="14"    
-                                        LineBreakMode="TailTruncation"
-                                    />
-                                </StackLayout>
-                            </StackLayout>
+                                Grid.Column="0"                              
+                                Padding="12,0,0,0"
+                                VerticalOptions="CenterAndExpand"
+                                FontFamily="sans-serif-light"
+                                LineBreakMode="TailTruncation"
+                            />
+
+                            <Label
+                                Text="{Binding [UserName]}"
+                                FontSize="14"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Padding="0,0,12,0"
+                                HorizontalOptions="EndAndExpand"
+                                VerticalOptions="CenterAndExpand"
+                                FontFamily="sans-serif-light"
+                                LineBreakMode="TailTruncation"
+                            />
+
                             <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.Row="2" Grid.ColumnSpan="2" VerticalOptions="End"/>
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
-            <StackLayout Orientation="Horizontal" Grid.Row="4">
-                <Button x:Name="btParent"               
+
+            <Button x:Name="btParent" ClassId="btParent"               
                 StyleClass="saveAsButton"
-                Text="Parent"
+                Text="See Parent"
                 WidthRequest="125"
                 HorizontalOptions="Start" 
-                VerticalOptions="EndAndExpand"
                 IsVisible="False"
                 Margin="35,0,0,0"
-                Padding="3,10"
-                Grid.Row="5"
+                Padding="8"
+                Grid.Row="3"
                 Clicked="goToFamily"
-            />
-                <Button x:Name="btChildren"
+                />
+
+            <Button x:Name="btChildren" ClassId="btChildren"
                 StyleClass="saveAsButton"                
-                Text="Children"
+                Text="See Children"
                 WidthRequest="125"
                 HorizontalOptions="End" 
-                VerticalOptions="EndAndExpand"
+                Margin="0,0,35,15"
+                Padding="8"
                 IsVisible="False"
-                Margin="0,0,35,0"
-                Grid.Row="5"                    
+                Grid.Row="3"                    
                 Clicked="goToFamily"
-            />
-            </StackLayout>
+                />
+
         </Grid>
     </ContentPage.Content>
 </d:BasePage>

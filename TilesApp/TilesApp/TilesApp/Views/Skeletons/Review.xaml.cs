@@ -28,8 +28,8 @@ namespace TilesApp.Views
             {
                 MetaData = new ReviewMetaData(OdooXMLRPC.GetAppConfig(tag));
                 string[] appNameArr = tag.Split('_');
-                MetaData.AppType = appNameArr[1];
-                MetaData.AppName = appNameArr[2];
+                MetaData.AppType = appNameArr[1].ToUpper();
+                MetaData.AppName = appNameArr[2].ToUpper();
                 if (MetaData.Station == null) MetaData.Station = App.Station;
                 lblApp.Text = appNameArr[2].ToUpper() + " (REVIEW)";
             }
@@ -69,7 +69,7 @@ namespace TilesApp.Views
             if (returnedData.Count > 0)
             {
                 string barcode = input[nameof(BaseMetaData.InputDataProps.Value)].ToString();
-                lblTitle.Text = "Item History(.." + barcode.Substring(barcode.Length - 4) + ")";
+                lblTitle.Text = "ITEM HISTORY(.." + barcode.Substring(barcode.Length - 4) + ")";
                 lblTitle.IsVisible = true;
                 lblTitleLine.IsVisible = true;
                 lblEmptyView.IsVisible = false;
@@ -162,13 +162,13 @@ namespace TilesApp.Views
         }
         async void goToFamily(object sender, EventArgs args) {
             Button b = (Button)sender;
-            if (b.Text == "Parent")
+            if (b.ClassId == "btParent")
             {
                 ObservableCollection<Dictionary<string, object>> tempList = new ObservableCollection<Dictionary<string, object>>();
                 tempList.Add(ParentDict);
                 await Navigation.PushModalAsync(new FamilyList(tempList));
             }
-            else if(b.Text == "Children")
+            else if(b.ClassId == "btChildren")
             {
                 await Navigation.PushModalAsync(new FamilyList(ChildrenDicts));
             }

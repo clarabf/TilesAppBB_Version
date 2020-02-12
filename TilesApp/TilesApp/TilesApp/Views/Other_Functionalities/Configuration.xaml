@@ -81,7 +81,7 @@
                     <Label x:Name="lblName"
                         TextColor = "#ffffff"
                         FontSize="14"
-                        Text="asdfasfsfff"  
+                        Text="name"  
                         Grid.Column="1"
                         Grid.Row="0"
                     />
