@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            x:Class="TilesApp.Views.ReviewDetailed"
+            xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms">
+    <ContentPage.Content>
+        <Grid BackgroundColor="#000000" StyleClass="gridApps">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="9*" />
+            </Grid.RowDefinitions>
+            <Label x:Name="lblTitle" 
+                Text="(DETAILED REVIEW)"
+                TextColor="#ffffff"
+                FontSize="16"
+                Margin="0,0,0,3"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="End"
+                IsVisible="True"
+                Grid.Row="0"
+                LineBreakMode="NoWrap"
+                />
+            <BoxView  x:Name="lblTitleLine"
+                HeightRequest="1.5"
+                WidthRequest="1500"
+                BackgroundColor="#bc0000"
+                VerticalOptions="End"
+                IsVisible="True"
+                Grid.Row="1"
+                HorizontalOptions="CenterAndExpand" />
+            <StackLayout x:Name="Details" Grid.Row="2"/>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

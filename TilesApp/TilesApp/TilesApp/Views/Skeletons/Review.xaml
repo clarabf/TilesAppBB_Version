@@ -7,26 +7,27 @@
     <ContentPage.Content>
         <Grid BackgroundColor="#000000" StyleClass="gridApps">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.5*" />
-                <RowDefinition Height="1.5*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height=".3*" />
                 <RowDefinition Height="9*" />
+                <RowDefinition Height="1.5*" />
             </Grid.RowDefinitions>
 
-            <Label x:Name="lblTest" 
+            <Label x:Name="lblApp" 
                 Text="REVIEW"
                 TextColor="#ffffff"
                 FontAttributes="Bold"
                 CharacterSpacing="1.15"
-                Padding="10,0"
+                Padding="2"
                 FontSize="20"
-                VerticalOptions="EndAndExpand"
+                VerticalOptions="End"
                 HorizontalOptions="Center"                        
                 Grid.Row="0"
                 LineBreakMode="MiddleTruncation"
                 />
 
             <Label x:Name="lblTitle" 
-                Text="ITEM HISTORY"
                 TextColor="#ffffff"
                 FontSize="16"
                 Margin="0,0,0,3"
@@ -37,12 +38,12 @@
                 LineBreakMode="NoWrap"
                 />
             <BoxView  x:Name="lblTitleLine"
-                HeightRequest="1.5"
+                HeightRequest="0.3"
                 WidthRequest="1500"
                 BackgroundColor="#bc0000"
                 VerticalOptions="End"
                 IsVisible="False"
-                Grid.Row="1"
+                Grid.Row="2"
                 HorizontalOptions="CenterAndExpand" />
 
             <Label x:Name="lblEmptyView"
@@ -52,20 +53,20 @@
                 FontAttributes="Bold"
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="StartAndExpand"
-                Grid.Row="2"
+                Grid.Row="3"
                 LineBreakMode="NoWrap"
             />
             <forms:AnimationView  x:Name="lblEmptyViewAnimation"
-                Animation="qr-scan.json" Grid.Row="2"
+                Animation="qr-scan.json" Grid.Row="3"
                 AutoPlay="True" Loop="true"
                 HeightRequest="200"                                      
                 VerticalOptions="CenterAndExpand"
                 HorizontalOptions="CenterAndExpand" 
             />
-            <CollectionView Margin="0, -6, 0, 0" ItemsSource="{Binding Elements}" Grid.Row="2" >
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid BackgroundColor="#151515">
+            <CollectionView x:Name="Cview" Margin="0, -6, 0, 0" ItemsSource="{Binding Elements}" Grid.Row="3" SelectionMode="Single" ItemsLayout="VerticalList">
+                <CollectionView.ItemTemplate >
+                    <DataTemplate >
+                        <Grid BackgroundColor="#151515" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="3*" />
@@ -151,6 +152,31 @@
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
+            <StackLayout Orientation="Horizontal" Grid.Row="4">
+                <Button x:Name="btParent"               
+                StyleClass="saveAsButton"
+                Text="Parent"
+                WidthRequest="125"
+                HorizontalOptions="Start" 
+                VerticalOptions="EndAndExpand"
+                IsVisible="False"
+                Margin="35,0,0,0"
+                Padding="3,10"
+                Grid.Row="5"
+                Clicked="goToFamily"
+            />
+                <Button x:Name="btChildren"
+                StyleClass="saveAsButton"                
+                Text="Children"
+                WidthRequest="125"
+                HorizontalOptions="End" 
+                VerticalOptions="EndAndExpand"
+                IsVisible="False"
+                Margin="0,0,35,0"
+                Grid.Row="5"                    
+                Clicked="goToFamily"
+            />
+            </StackLayout>
         </Grid>
     </ContentPage.Content>
 </d:BasePage>

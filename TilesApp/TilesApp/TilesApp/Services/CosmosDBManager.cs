@@ -48,14 +48,11 @@ namespace TilesApp.Services
             try
             {
                 // Fetch data from cosmo
-                foreach (string app in Apps)
-                {
-                    var filter = $"{{\"AppName\": \"{app}\", ScannerReads: {{ $elemMatch: {{ Value : \"{barcode}\" }}}}}}";
-                    await collection.Find(filter).ForEachAsync(document => {
-                        dict = BsonSerializer.Deserialize<Dictionary<string, object>>(document);
-                        result.Add(dict);
-                    });
-                }                
+                var filter = $"{{\"AppName\": {{$in:['{string.Join("','", Apps)}'] }}, ScannerReads: {{ $elemMatch: {{ Value : \"{barcode}\" }}}}}}";
+                await collection.Find(filter).ForEachAsync(document => {
+                    dict = BsonSerializer.Deserialize<Dictionary<string, object>>(document);
+                    result.Add(dict);
+                });              
             }
             catch (Exception e)
             {
@@ -64,5 +61,6 @@ namespace TilesApp.Services
 
             return result;
         }
+
     }
 }

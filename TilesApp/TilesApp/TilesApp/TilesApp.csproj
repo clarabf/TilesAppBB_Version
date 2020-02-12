@@ -46,6 +46,12 @@
     <Compile Update="Views\Skeletons\QC.xaml.cs">
       <DependentUpon>QC.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Skeletons\FamliyList.xaml.cs">
+      <DependentUpon>FamliyList.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\Skeletons\ReviewDetailed.xaml.cs">
+      <DependentUpon>ReviewDetailed.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Skeletons\Review.xaml.cs">
       <DependentUpon>Review.xaml</DependentUpon>
     </Compile>
