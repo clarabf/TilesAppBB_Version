@@ -42,7 +42,12 @@ namespace TilesApp.Views
             try
             {
                 var selectedItem = args.CurrentSelection[0] as Dictionary<string, object>;
-                await Navigation.PushModalAsync(new Review((string)selectedItem["Value"]));
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Navigation.PopModalAsync(true);
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new Review("App_Review_Initial Tests", (string)selectedItem["Value"]));
+                });
             }
             catch (Exception e)
             {
