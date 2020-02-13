@@ -14,6 +14,7 @@ namespace TilesApp.Views
     {
         protected Dictionary<string, object> _dict;
         protected string _barcode;
+        protected int counter = 0;
         public Dictionary<string, object> Dict
         {
             get => this._dict;
@@ -80,22 +81,40 @@ namespace TilesApp.Views
             }
             else
             {
-                Label lbl = new Label();
-                lbl.FontSize = 14;
-                lbl.TextColor = Color.White;
-                lbl.Padding = 3;
-                lbl.Text = kvp.Key + ": " + kvp.Value.ToString();
-                Details.Children.Add(lbl);
-                BoxView bx = new BoxView();
-                bx.HeightRequest = 0.5;
-                bx.Color = Color.White;
-                bx.Opacity = 40;
-                Details.Children.Add(bx);
+                if(kvp.Key.ToString() == "AppName")
+                {
+                    lblTitle.Text = kvp.Value.ToString().ToUpper() + " REVIEW";
+                }
+                else
+                {
+                    //adding row dynamically
+                    int rowHeight = 40;
+                    rowHeight = kvp.Key.ToString() == "Address" ? 100 : rowHeight;
+                    Details.RowDefinitions.Add(new RowDefinition { Height = new GridLength(rowHeight) });
+
+                    //key label
+                    Label lblKey = new Label();                
+                    lblKey.FontSize = 14;
+                    lblKey.FontAttributes = FontAttributes.Bold;
+                    lblKey.TextColor = Color.White;
+                    lblKey.Padding = new Thickness(15, 8);
+                    lblKey.Text = kvp.Key.ToString().ToUpper();
+                    Details.Children.Add(lblKey, 0, counter);
+                
+                    //value label
+                    Label lblValue = new Label();
+                    lblValue.FontSize = 14;
+                    lblValue.TextColor = Color.White;
+                    lblValue.Padding = new Thickness(8);
+                    lblValue.FontFamily = "sans-serif-light";
+                    lblValue.Text = kvp.Value.ToString();
+                    Details.Children.Add(lblValue, 1, counter);
+                    counter++;
+                }               
+                
             }
             
         }
-
-
 
     }
 }
