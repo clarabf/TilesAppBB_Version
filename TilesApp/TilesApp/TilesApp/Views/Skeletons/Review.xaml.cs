@@ -90,40 +90,46 @@ namespace TilesApp.Views
             List<Dictionary<string, object>> data = await CosmosDBManager.FetchData(barcode, MetaData.Apps);
             foreach (var dict in data.ToArray())
             {
+                Dictionary<string, object> tempDict = new Dictionary<string, object>();
                 try
                 {
-                    KeyValuePair<string,object> operationAt;
                     foreach (var pair in dict)
                     {
-                        if (pair.Key.Equals("ScannerReads"))
+                        KeyValuePair<string, object> tempKvp = new KeyValuePair<string, object>(pair.Key,pair.Value);
+
+                        if (pair.Key.Equals("AppType"))
+                        {
+                            tempDict.Add(tempKvp.Key, tempKvp.Value.ToString().ToUpper());
+                            continue;
+                        }
+                            if (pair.Key.Equals("ScannerReads"))
                         {
                             foreach (var item in (List<object>)pair.Value)
                             {
                                 IDictionary<string, object> scannerRead = (IDictionary<string, object>)item;
                                 if (barcode.Equals((string)scannerRead["Value"]))
-                                    operationAt = new KeyValuePair<string, object>("OperationAt",(DateTime)scannerRead["Timestamp"]);                                
+                                    tempDict.Add("OperationAt",(DateTime)scannerRead["Timestamp"]);                                
                             }
                         }
+                        tempDict.Add(tempKvp.Key,tempKvp.Value);
                     }
-                    if(operationAt.Key !=null)
-                    dict.Add(operationAt.Key,operationAt.Value);
                 }
                 catch(Exception e)
                 {
                     Console.WriteLine(e.Message);
                 }
-                Elements.Add(dict);
+                Elements.Add(tempDict);
                 // PROCESS PARENT AND CHILDREN
                 try
                 {
-                    if (((string)dict["AppType"]).Equals("Join"))
+                    if (((string)tempDict["AppType"]).Equals("JOIN"))
                     {
-                        if (!((string)dict["ParentUUID"]).Equals(barcode))
+                        if (!((string)tempDict["ParentUUID"]).Equals(barcode))
                         {
-                            ParentDict.Add("Value", (string)dict["ParentUUID"]);
+                            ParentDict.Add("Value", (string)tempDict["ParentUUID"]);
                             try
                             {
-                                ParentDict.Add("Timestamp", dict["OperationAt"]);
+                                ParentDict.Add("Timestamp", tempDict["OperationAt"]);
                                 btParent.IsVisible = true;
                             }
                             catch (Exception e)
@@ -133,7 +139,7 @@ namespace TilesApp.Views
                         }
                         else
                         {
-                            foreach (var item in (List<object>)dict["ScannerReads"])
+                            foreach (var item in (List<object>)tempDict["ScannerReads"])
                             {
                                 Dictionary<string, object> scannerRead = new Dictionary<string, object>((IDictionary<string, object>)item);
                                 if (!barcode.Equals((string)scannerRead["Value"]))
