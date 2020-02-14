@@ -38,7 +38,7 @@ namespace TilesApp.Views
                     await DisplayAlert("Error scanning badge", "User not found in DB...", "Ok");
                 }
             });
-            MessagingCenter.Subscribe<AppPage>(this, "OdooConnection", async (s) => {
+            MessagingCenter.Subscribe<AppPage>(this, "OdooConnection", (s) => {
                 OdooXMLRPC.CleanAppCache();
                 OdooXMLRPC.Start();
                 Setup();

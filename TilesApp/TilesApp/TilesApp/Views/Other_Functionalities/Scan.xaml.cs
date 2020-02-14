@@ -34,7 +34,7 @@ namespace TilesApp.Views
             NavigationPage.SetHasNavigationBar(this, false);
         }
 
-        private async void ZXingScannerView_OnOnScanResult(Result result)
+        private void ZXingScannerView_OnOnScanResult(Result result)
         {
             // Stop camera
             zxing.IsAnalyzing = false;

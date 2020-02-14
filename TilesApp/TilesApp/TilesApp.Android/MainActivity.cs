@@ -245,7 +245,7 @@ namespace TilesApp.Droid
                     App.ViewModel.Readers.SerialReaders.Add(device);
                 }
             }
-            catch (Exception e) {
+            catch (Exception) {
                 //MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
             }
         }

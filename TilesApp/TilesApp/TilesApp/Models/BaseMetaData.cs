@@ -144,7 +144,7 @@ namespace TilesApp.Models
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception("Config file is not valid. Maybe there are syntax issues or one or several field names are duplicated.");
             }
@@ -162,7 +162,7 @@ namespace TilesApp.Models
                 return result;
             }
             //Try to process as a barcode (barcode with predefined values or standard read)
-            catch (Exception e)
+            catch (Exception)
             {
                 if (predefinedData.ContainsKey(scannerRead["Value"].ToString()))
                 {
@@ -326,7 +326,7 @@ namespace TilesApp.Models
                 }
 
             }
-            catch (PermissionException pEx)
+            catch (PermissionException)
             {
                 // Handle permission exception
             }

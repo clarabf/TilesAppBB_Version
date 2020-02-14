@@ -5,7 +5,7 @@ namespace TilesApp
 {
     public partial class AlertPage : ContentPage
     {
-        Boolean ActiveBopup=false;
+        //Boolean ActiveBopup=false;
         public AlertPage()
         {
             InitializeComponent();

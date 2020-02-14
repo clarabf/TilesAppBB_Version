@@ -69,7 +69,7 @@ namespace TilesApp.Views
                 }
 
             }
-            catch (PermissionException pEx)
+            catch (PermissionException)
             {
                 // Handle permission exception
             }

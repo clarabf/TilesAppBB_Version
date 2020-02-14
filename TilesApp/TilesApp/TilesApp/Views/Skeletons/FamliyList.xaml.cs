@@ -20,13 +20,19 @@ namespace TilesApp.Views
                 this._items = value;             
             }           
         }
-        public bool ParentPageIsRoot { get; set; }
-        public FamilyList(ObservableCollection<Dictionary<string, object>> items, bool parentPageIsRoot)
+        public string RootPageBarcode { get; set; }
+        public FamilyList(ObservableCollection<Dictionary<string, object>> items, Dictionary<string,object> parentPageIsRoot)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             Items = items;
-            ParentPageIsRoot = parentPageIsRoot;
+            try
+            {
+                RootPageBarcode = (string)parentPageIsRoot["Value"];
+            }
+            catch {
+                RootPageBarcode = "";
+            }
         }
         protected override void OnAppearing()
         {            
@@ -39,17 +45,16 @@ namespace TilesApp.Views
             Cview.SelectionChanged -= OnItemSelected;
         }
 
-        async void OnItemSelected(object sender, SelectionChangedEventArgs args)
+        void OnItemSelected(object sender, SelectionChangedEventArgs args)
         {
             try
             {
                 var selectedItem = args.CurrentSelection[0] as Dictionary<string, object>;
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    if (!ParentPageIsRoot) {
+                    if (RootPageBarcode.Equals("")|| RootPageBarcode.Equals((string)selectedItem["Value"])) {
                         Navigation.PopModalAsync(true);
                     }
-
                     Navigation.PopModalAsync(true);
                     Navigation.PushModalAsync(new Review("App_Review_Initial Tests", (string)selectedItem["Value"]));
                 });

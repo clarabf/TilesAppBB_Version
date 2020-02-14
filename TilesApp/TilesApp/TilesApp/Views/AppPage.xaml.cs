@@ -58,7 +58,7 @@ namespace TilesApp.Views
                     HorizontalOptions = LayoutOptions.Center,
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
-                    HorizontalTextAlignment = TextAlignment.Start,
+                    //HorizontalTextAlignment = TextAlignment.Start,
                     ClassId = tag,
                     Margin = new Thickness (0, 0, 0, 20)
                 };
