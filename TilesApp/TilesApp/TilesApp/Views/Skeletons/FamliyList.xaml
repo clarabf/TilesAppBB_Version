@@ -7,7 +7,6 @@
         <Grid BackgroundColor="#000000" StyleClass="gridApps">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1.5*" />
-                <RowDefinition Height="0.5*" />
                 <RowDefinition Height="9*" />
             </Grid.RowDefinitions>
             <Label x:Name="lblTitle" 
@@ -23,24 +22,16 @@
                 />
             <BoxView  x:Name="lblTitleLine"
                 HeightRequest="1.5"
-                WidthRequest="1500"
                 BackgroundColor="#bc0000"
                 VerticalOptions="End"
-                IsVisible="True"
-                Grid.Row="1"
-                HorizontalOptions="CenterAndExpand" />
-            <CollectionView x:Name="Cview" Margin="0, -6, 0, 0"  Grid.Row="2" SelectionMode="Single" ItemsLayout="VerticalList">
+                Grid.Row="0"/>
+            <CollectionView x:Name="Cview" Margin="0, -6, 0, 0"  Grid.Row="1" SelectionMode="Single" ItemsLayout="VerticalList">
                 <CollectionView.ItemTemplate >
                     <DataTemplate >
                         <Grid BackgroundColor="#151515" >
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*" />
-                                <ColumnDefinition Width="3*" />
-                            </Grid.ColumnDefinitions>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="0.5*" />
-                                <RowDefinition Height="1*" />
-                                <RowDefinition Height="0.3*" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="20" />
                             </Grid.RowDefinitions>
                             <Label
                                 Text="{Binding [Value]}"
@@ -48,26 +39,17 @@
                                 FontSize="16"    
                                 FontAttributes="Bold"
                                 Grid.Row="0"
-                                Grid.ColumnSpan="2"
+                                Padding="15, 10, 0, 0"
                             />
-                            <StackLayout
-                                        Grid.Row="1"
-                                        Grid.ColumnSpan="2"                                
-                                        Orientation="Horizontal">
-                                <Label
-                                        Text="At: "
-                                        TextColor="#ffffff"
-                                        FontSize="14"    
-                                        LineBreakMode="TailTruncation"
-                                    />
-                                <Label
-                                        Text="{Binding [Timestamp]}"
-                                        TextColor="#e8e8e8"
-                                        FontSize="14"    
-                                        LineBreakMode="TailTruncation"
-                                    />
-                            </StackLayout>
-                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.Row="2" Grid.ColumnSpan="2" VerticalOptions="End"/>
+                            <Label
+                                Text="{Binding [Timestamp]}"
+                                FontSize="14"    
+                                LineBreakMode="TailTruncation"
+                                FontFamily="sans-serif-light"
+                                Grid.Row="1"
+                                Padding="15, 0, 0, 0"
+                            />
+                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.Row="2" />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
