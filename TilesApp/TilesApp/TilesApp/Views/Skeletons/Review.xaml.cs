@@ -19,6 +19,7 @@ namespace TilesApp.Views
         public Dictionary<string, object> ParentDict { get; set; } = new Dictionary<string, object>();
         public ObservableCollection<Dictionary<string, object>> ChildrenDicts { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         public List<string> ChildrenCodes { get; set; } = new List<string>();
+        public bool IsRootPage { get; set; } = true;
         public Review(string tag)
         {
             InitializeComponent();
@@ -48,6 +49,7 @@ namespace TilesApp.Views
             Dictionary<string, object> input = new Dictionary<string, object>();
             input.Add("Value", barcode);
             ScannerReadDetected(input);
+            IsRootPage = false;
         }
         protected override void OnAppearing()
         {
@@ -62,6 +64,14 @@ namespace TilesApp.Views
         }
         public override void ScannerReadDetected(Dictionary<string, object> input)
         {
+            // Reset all visual components
+            Elements.Clear();
+            ParentDict.Clear();
+            btParent.IsVisible = false;
+            ChildrenDicts.Clear();
+            ChildrenCodes.Clear();
+            btChildren.IsVisible = false;
+            MetaData.ScannerReads.Clear();
 
             foreach (Dictionary<string, object> item in MetaData.ScannerReads)
             {
@@ -178,11 +188,11 @@ namespace TilesApp.Views
             {
                 ObservableCollection<Dictionary<string, object>> tempList = new ObservableCollection<Dictionary<string, object>>();
                 tempList.Add(ParentDict);
-                await Navigation.PushModalAsync(new FamilyList(tempList));
+                await Navigation.PushModalAsync(new FamilyList(tempList, IsRootPage));
             }
             else if(b.ClassId == "btChildren")
             {
-                await Navigation.PushModalAsync(new FamilyList(ChildrenDicts));
+                await Navigation.PushModalAsync(new FamilyList(ChildrenDicts, IsRootPage));
             }
                 
         }

@@ -20,11 +20,13 @@ namespace TilesApp.Views
                 this._items = value;             
             }           
         }
-        public FamilyList(ObservableCollection<Dictionary<string, object>> items)
+        public bool ParentPageIsRoot { get; set; }
+        public FamilyList(ObservableCollection<Dictionary<string, object>> items, bool parentPageIsRoot)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             Items = items;
+            ParentPageIsRoot = parentPageIsRoot;
         }
         protected override void OnAppearing()
         {            
@@ -44,7 +46,10 @@ namespace TilesApp.Views
                 var selectedItem = args.CurrentSelection[0] as Dictionary<string, object>;
                 Device.BeginInvokeOnMainThread(() =>
                 {
-                    Navigation.PopModalAsync(true);
+                    if (!ParentPageIsRoot) {
+                        Navigation.PopModalAsync(true);
+                    }
+
                     Navigation.PopModalAsync(true);
                     Navigation.PushModalAsync(new Review("App_Review_Initial Tests", (string)selectedItem["Value"]));
                 });
