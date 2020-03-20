@@ -27,7 +27,7 @@ namespace TilesApp.Models
         {
             get
             {
-                return OdooXMLRPC.userID;
+                return PHPApi.userID;
             }
         }
         [BsonIgnoreIfNull]
@@ -35,7 +35,7 @@ namespace TilesApp.Models
         {
             get
             {
-                return OdooXMLRPC.userName;
+                return PHPApi.userName;
             }
         }
         [BsonIgnoreIfNull]

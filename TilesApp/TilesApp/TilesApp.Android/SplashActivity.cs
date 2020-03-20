@@ -37,7 +37,7 @@ namespace TilesApp.Droid
         {
             var task = Task.Run(() => {
                 ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
-                OdooXMLRPC.Start();
+                PHPApi.Start();
             });
             try
             {

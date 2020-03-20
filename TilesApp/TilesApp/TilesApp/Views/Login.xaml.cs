@@ -23,10 +23,10 @@ namespace TilesApp.Views
             NavigationPage.SetHasNavigationBar(this, false);
 
             MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
-                if (OdooXMLRPC.users.ContainsKey(a.ToString()))
+                if (PHPApi.users.ContainsKey(a.ToString()))
                 {
 
-                    OdooXMLRPC.SetCurrentUser(a.ToString()); // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
+                    PHPApi.SetCurrentUser(a.ToString()); // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
@@ -39,8 +39,7 @@ namespace TilesApp.Views
                 }
             });
             MessagingCenter.Subscribe<AppPage>(this, "OdooConnection", (s) => {
-                OdooXMLRPC.CleanAppCache();
-                OdooXMLRPC.Start();
+                PHPApi.Start();
                 Setup();
                 App.Station = null;
             });
@@ -56,7 +55,7 @@ namespace TilesApp.Views
         }
         private async void GoToScan(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, OdooXMLRPC.users));
+            await Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, PHPApi.users));
         }
 
         private async void Reader_Command(object sender, EventArgs args)

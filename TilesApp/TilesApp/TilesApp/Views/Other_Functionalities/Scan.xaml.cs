@@ -5,7 +5,6 @@ using Xamarin.Forms;
 using ZXing;
 using Newtonsoft.Json;
 using System.Text;
-using XmlRpc;
 using TilesApp.Services;
 using TilesApp.Models;
 
@@ -54,9 +53,9 @@ namespace TilesApp.Views
             switch (scanType)
             {
                 case 1:
-                    if (OdooXMLRPC.users.ContainsKey(qrScanned))
+                    if (PHPApi.users.ContainsKey(qrScanned))
                     {
-                        OdooXMLRPC.SetCurrentUser(qrScanned);
+                        PHPApi.SetCurrentUser(qrScanned);
                         Device.BeginInvokeOnMainThread(() =>
                         {
                             Navigation.PopModalAsync(true);

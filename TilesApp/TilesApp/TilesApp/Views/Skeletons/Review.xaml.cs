@@ -27,7 +27,7 @@ namespace TilesApp.Views
             NavigationPage.SetHasNavigationBar(this, false);
             try
             {
-                MetaData = new ReviewMetaData(OdooXMLRPC.GetAppConfig(tag));
+                MetaData = new ReviewMetaData(PHPApi.GetAppConfig(tag));
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1].ToUpper();
                 MetaData.AppName = appNameArr[2].ToUpper();

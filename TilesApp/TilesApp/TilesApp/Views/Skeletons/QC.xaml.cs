@@ -22,7 +22,7 @@ namespace TilesApp.Views
             BindingContext = this;
             try
             {
-                MetaData = new QCMetaData(OdooXMLRPC.GetAppConfig(tag));
+                MetaData = new QCMetaData(PHPApi.GetAppConfig(tag));
                 string[] appNameArr = tag.Split('_');
                 MetaData.AppType = appNameArr[1];
                 MetaData.AppName = appNameArr[2];

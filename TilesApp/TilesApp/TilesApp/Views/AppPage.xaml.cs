@@ -39,7 +39,7 @@ namespace TilesApp.Views
             NavigationPage.SetHasNavigationBar(this, false);
             
             int row = 0;
-            foreach (string tag in OdooXMLRPC.userAppsList)
+            foreach (string tag in PHPApi.userAppsList)
             {
                 string[] tagArr = tag.Split('_');
                 string appType = tagArr[1];
