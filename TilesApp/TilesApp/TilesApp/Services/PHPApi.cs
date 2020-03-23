@@ -58,7 +58,7 @@ namespace TilesApp.Services
                     // OTHERWISE DO
                     List<string> names = new List<string>();
 
-                    Dictionary<string, string> tags = new Dictionary<string, string>();
+                    List<string> tags = new List<string>();
                     Dictionary<string, object> userInfo;
                   
                     users.Clear();

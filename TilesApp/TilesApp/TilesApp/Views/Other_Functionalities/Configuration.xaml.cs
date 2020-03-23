@@ -23,7 +23,7 @@ namespace TilesApp.Views
             GetDeviceLocation();
             App.Inventory.Clear();
 
-            lblName.Text = OdooXMLRPC.userName;
+            lblName.Text = PHPApi.userName;
             if (App.Station != null)
             {
                 lblStation.Text = "Station: " + App.Station + "\nYou can change it by scanning again:";

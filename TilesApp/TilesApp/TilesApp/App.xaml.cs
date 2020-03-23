@@ -27,7 +27,7 @@ namespace TilesApp
             
             InitializeComponent();
             ////testing SACO app
-            MainPage = new NavigationPage(new Login());
+            MainPage = new NavigationPage(new Main());
             //MainPage = new NavigationPage(new QC("App_QC_TestTakePhoto"));
 
             ////testing generated JSON

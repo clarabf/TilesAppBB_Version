@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local="clr-namespace:TilesApp"
+            xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
+            x:Class="TilesApp.Views.Main">
+    <ContentPage.Content>
+        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <Image x:Name="background" Source="newBackground.jpg" Aspect="Fill"/>
+            <StackLayout 
+                x:Name="mainLayout"
+                AbsoluteLayout.LayoutBounds="0,0,1,1" 
+                AbsoluteLayout.LayoutFlags="All"
+                BackgroundColor="Transparent"  
+                VerticalOptions="Fill" 
+                HorizontalOptions="FillAndExpand"
+                Orientation="Vertical">
+                <Grid Padding="40" StyleClass="gridLogin">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="2*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height=".5*" />
+                    </Grid.RowDefinitions>
+
+                    <Image Source="logo.png"
+                        HeightRequest="250" 
+                        WidthRequest="200"
+                        Grid.Row="0"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="Start" 
+                       />
+                    
+                    <Image Source="sherpaLogo.png"
+                        Margin="0, 50, 0, 0"
+                        Grid.Row="1"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="Start" />
+                    
+                    <Button StyleClass="primaryButton"
+                        x:Name="LoginBtn"
+                        WidthRequest="500"
+                        Text="LOG IN (CAMERA)"
+                        Padding="0,15,0,15"
+                        Grid.Row="2"
+                        HorizontalOptions="CenterAndExpand" 
+                        VerticalOptions="EndAndExpand"
+                        Clicked="GoToLogin"                          
+                    />
+
+                    <Button StyleClass="darkButton"
+                        x:Name="READER"
+                        Text="Check connected readers"                        
+                        WidthRequest="500"
+                        Padding="0,15,0,15"
+                        Grid.Row="3"
+                        HorizontalOptions="CenterAndExpand"
+                        VerticalOptions="EndAndExpand"
+                        Clicked="Reader_Command"
+                        />
+                    <forms:AnimationView 
+                        Animation="qr-scan.json"
+                        AutoPlay="False"
+                        IsVisible="False"
+                    />
+
+                </Grid>
+            </StackLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>
