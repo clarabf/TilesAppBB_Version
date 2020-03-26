@@ -107,7 +107,8 @@ namespace TilesApp.Views
 
         private void Entry_Unfocused(object sender, FocusEventArgs e)
         {
-            if (usernameEntry.Text != null && passwordEntry.Text != null) LoginBtn.IsEnabled = true;
+            if (usernameEntry.Text != "" && passwordEntry.Text != "") LoginBtn.IsEnabled = true;
+            else LoginBtn.IsEnabled = false;
         }
     }
 }

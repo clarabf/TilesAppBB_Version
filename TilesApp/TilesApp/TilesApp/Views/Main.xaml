@@ -19,9 +19,9 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="2*" />
-                        <RowDefinition Height="3*" />
-                        <RowDefinition Height=".5*" />
-                        <RowDefinition Height=".5*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="0.5*" />
                     </Grid.RowDefinitions>
 
                     <Image Source="logo.png"
@@ -30,77 +30,47 @@
                         Grid.Row="0"
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="Start" 
-                       />
+                        />
 
                     <Image Source="sherpaLogo.png"
                         Margin="0, 50, 0, 0"
                         Grid.Row="1"
                         HorizontalOptions="CenterAndExpand"
-                        VerticalOptions="Start" />
-                    <StackLayout 
+                        VerticalOptions="Start"
+                        />
+
+                    <Entry x:Name="usernameEntry"
                         Grid.Row="2"
-                BackgroundColor="Transparent"  
-                VerticalOptions="Fill" 
-                HorizontalOptions="FillAndExpand"
-                Orientation="Vertical">
-                        <Label 
-                    TextColor = "#ffffff"
-                    FontAttributes="Bold"
-                    Text="Username"
-                    FontSize="20"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="CenterAndExpand"
-                    CharacterSpacing="1.15"
-                />
-                        <Entry x:Name="usernameEntry" 
-                    Placeholder="username" 
-                    PlaceholderColor="#ffffff"
-                    TextColor="#ffffff"
-                               BackgroundColor="#460404"
-                               Unfocused="Entry_Unfocused"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="CenterAndExpand"
-                />
-                        <Label 
-                    TextColor = "#ffffff"
-                    FontAttributes="Bold"
-                    Text="Password"
-                    FontSize="20"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="CenterAndExpand"
-                    CharacterSpacing="1.15"
-                />
-                        <Entry x:Name="passwordEntry" 
-                    IsPassword="true" 
-                    PlaceholderColor="#ffffff"
-                    TextColor="#ffffff"
-                               BackgroundColor="#460404"
-                               Unfocused="Entry_Unfocused"
-                    HorizontalOptions="FillAndExpand"
-                    VerticalOptions="CenterAndExpand"
-                />
-                    </StackLayout>
+                        Placeholder="username" 
+                        PlaceholderColor="#A9A9A9"
+                        TextColor="#ffffff"
+                        BackgroundColor="#460404"
+                        Unfocused="Entry_Unfocused"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="EndAndExpand"
+                    />
+                    <Entry x:Name="passwordEntry"
+                        Grid.Row="3"
+                        IsPassword="true" 
+                        Placeholder="password" 
+                        PlaceholderColor="#A9A9A9"
+                        TextColor="#ffffff"
+                        BackgroundColor="#460404"
+                        Unfocused="Entry_Unfocused"
+                        HorizontalOptions="FillAndExpand"
+                        VerticalOptions="CenterAndExpand"
+                    />
                     <Button StyleClass="primaryButton"
-                            IsEnabled="False"
+                        IsEnabled="False"
                         x:Name="LoginBtn"
                         WidthRequest="500"
                         Text="LOG IN"
                         Padding="0,15,0,15"
-                        Grid.Row="3"
+                        Grid.Row="4"
                         HorizontalOptions="CenterAndExpand" 
                         VerticalOptions="EndAndExpand"
                         Clicked="LoginClicked"                            
                     />
-                    <Label 
-                         Grid.Row="4"
-                    x:Name="messageLabel"
-                    TextColor = "#ffffff"
-                    FontAttributes="Bold"
-                    FontSize="20"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="CenterAndExpand"
-                    CharacterSpacing="1.15"
-                />
                 </Grid>
             </StackLayout>
         </AbsoluteLayout>
