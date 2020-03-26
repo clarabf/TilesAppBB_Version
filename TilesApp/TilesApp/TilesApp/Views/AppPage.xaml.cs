@@ -158,7 +158,10 @@ namespace TilesApp.Views
             {
                 CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout!
                 timer.Stop();
-                MessagingCenter.Send(this, "OdooConnection");
+                //MessagingCenter.Send(this, "OdooConnection");
+                App.User = new UserData();
+                Application.Current.Properties.Clear();
+                App.ActiveSession = false;
                 await Navigation.PopModalAsync(true);
             }
         }

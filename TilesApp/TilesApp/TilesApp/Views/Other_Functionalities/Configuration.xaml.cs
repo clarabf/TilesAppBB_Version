@@ -23,7 +23,7 @@ namespace TilesApp.Views
             GetDeviceLocation();
             App.Inventory.Clear();
 
-            lblName.Text = PHPApi.userName;
+            lblName.Text = App.User.DisplayName;
             if (App.Station != null)
             {
                 lblStation.Text = "Station: " + App.Station + "\nYou can change it by scanning again:";

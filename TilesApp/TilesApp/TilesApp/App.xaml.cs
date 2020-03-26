@@ -21,13 +21,17 @@ namespace TilesApp
         public static string DeviceSerialNumber { get; set; }
         public static Models.Location GeoLocation { get; set; }
         public static string Station { get; set; }
+        public static UserData User { get; set; } = new UserData();
+        public static bool ActiveSession { get; set; } = false;
         public static ObservableCollection<Dictionary<string, object>> Inventory { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         public App()
         {
             
             InitializeComponent();
-            ////testing SACO app
+            
             MainPage = new NavigationPage(new Main());
+
+            ////testing SACO app
             //MainPage = new NavigationPage(new QC("App_QC_TestTakePhoto"));
 
             ////testing generated JSON

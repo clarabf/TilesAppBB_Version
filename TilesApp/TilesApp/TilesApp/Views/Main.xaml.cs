@@ -20,9 +20,17 @@ namespace TilesApp.Views
             InitializeComponent();
             //OdooXMLRPC.Start();
             Setup();
+            // Check if the user has a valid token
             NavigationPage.SetHasNavigationBar(this, false);
-
-            MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
+            if (AuthHelper.CheckIfTokenIsValid()) {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    App.ActiveSession = true;
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new AppPage());
+                });
+            }
+                MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 if (PHPApi.users.ContainsKey(a.ToString()))
                 {
 
@@ -58,9 +66,16 @@ namespace TilesApp.Views
             await Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, PHPApi.users));
         }
 
-        private async void GoToLogin(object sender, EventArgs args)
+        private async void LoginClicked(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new Login());
+            App.ActiveSession = await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
+            if (App.ActiveSession) {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new AppPage());
+                });
+            }
         }
 
         private async void Reader_Command(object sender, EventArgs args)
@@ -85,6 +100,10 @@ namespace TilesApp.Views
             });
             return true;
         }
-        
+
+        private void Entry_Unfocused(object sender, FocusEventArgs e)
+        {
+            if (usernameEntry.Text != null && passwordEntry.Text != null) LoginBtn.IsEnabled = true;
+        }
     }
 }

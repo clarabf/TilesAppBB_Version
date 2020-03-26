@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using TilesApp.Services;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -19,6 +19,7 @@ namespace TilesApp.Views
 
 		async void OnLoginButtonClicked(object sender, EventArgs e)
 		{
+			 await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
 			//var user = new User
 			//{
 			//	Username = usernameEntry.Text,
