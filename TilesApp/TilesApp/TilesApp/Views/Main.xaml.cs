@@ -60,6 +60,10 @@ namespace TilesApp.Views
         {
             base.OnAppearing();
             CosmosDBManager.Init();
+            usernameEntry.Text = "";
+            usernameEntry.Placeholder = "username";
+            passwordEntry.Text = "";
+            passwordEntry.Placeholder = "password";
         }
         private async void GoToScan(object sender, EventArgs args)
         {
