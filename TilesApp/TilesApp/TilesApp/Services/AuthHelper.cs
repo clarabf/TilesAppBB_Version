@@ -21,9 +21,9 @@ namespace TilesApp.Services
         public static async Task<bool> Login(string username, string password) {
             App.User.UserToken = await LoginWithUsernameAndPassword(username, password);
             App.User.OBOToken = await GetOBOToken(username, password);
-            string content = await GetHttpContentWithTokenAsync((string)App.User.UserToken["access_token"]);
-            if (!string.IsNullOrEmpty(content) && content != "error")
+            if (App.User.UserToken.ContainsKey("access_token"))
             {
+                string content = await GetHttpContentWithTokenAsync((string)App.User.UserToken["access_token"]);
                 JObject user = JObject.Parse(content);
                 try
                 {

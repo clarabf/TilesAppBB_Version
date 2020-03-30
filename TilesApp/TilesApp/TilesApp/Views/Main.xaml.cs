@@ -30,7 +30,7 @@ namespace TilesApp.Views
                     Navigation.PushModalAsync(new AppPage());
                 });
             }
-                MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
+            MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
                 if (PHPApi.users.ContainsKey(a.ToString()))
                 {
 
@@ -79,6 +79,10 @@ namespace TilesApp.Views
                     Navigation.PopModalAsync(true);
                     Navigation.PushModalAsync(new AppPage());
                 });
+            }
+            else
+            {
+                await DisplayAlert("Login Error", "User name and/or password may be incorrect.", "Ok");
             }
         }
 
