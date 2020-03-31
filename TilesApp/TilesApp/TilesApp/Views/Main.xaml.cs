@@ -10,16 +10,21 @@ using Android.Hardware.Usb;
 using Android.Views;
 using System.Linq;
 using TilesApp.Rfid.ViewModels;
+using Nito.AsyncEx;
+using TilesApp.Models.DataModels;
 
 namespace TilesApp.Views
 {
     public partial class Main : ContentPage
     {
+        private bool rememberUser;
         public Main()
         {
             InitializeComponent();
             //OdooXMLRPC.Start();
             Setup();
+            // Get last user from data base
+            AsyncContext.Run(() => GetLastUseFromDB());
             // Check if the user has a valid token
             NavigationPage.SetHasNavigationBar(this, false);
             if (AuthHelper.CheckIfTokenIsValid()) {
@@ -56,14 +61,32 @@ namespace TilesApp.Views
             });
         }
 
+        private async void GetLastUseFromDB() {
+            // Get the last logeed in user
+            User tempUser = await App.Database.GetLastLoggedInUserAsync();
+            if (tempUser != null) App.User = tempUser;
+        }
         protected override void OnAppearing()
         {
             base.OnAppearing();
             CosmosDBManager.Init();
-            usernameEntry.Text = "";
-            usernameEntry.Placeholder = "username";
-            passwordEntry.Text = "";
-            passwordEntry.Placeholder = "password";
+            if (App.Current.Properties.ContainsKey("username"))
+            {
+                usernameEntry.Text = App.Current.Properties["username"] as string;
+            }
+            else
+            {
+                usernameEntry.Placeholder = "username";
+            }
+            if (App.Current.Properties.ContainsKey("password"))
+            {
+                passwordEntry.Text = App.Current.Properties["password"] as string;
+                LoginBtn.IsEnabled = true;
+            }
+            else
+            {
+                passwordEntry.Placeholder = "password";
+            }
         }
         private async void GoToScan(object sender, EventArgs args)
         {
@@ -72,6 +95,14 @@ namespace TilesApp.Views
 
         private async void LoginClicked(object sender, EventArgs args)
         {
+            // Check the RememberUser flag to decide wether to store their data or not
+            if (rememberUser)
+            {
+                Application.Current.Properties.Add("username", usernameEntry.Text);
+                Application.Current.Properties.Add("password", passwordEntry.Text);
+                await Application.Current.SavePropertiesAsync();
+            }
+            // Start log in process
             App.ActiveSession = await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
             if (App.ActiveSession) {
                 Device.BeginInvokeOnMainThread(() =>
@@ -90,7 +121,10 @@ namespace TilesApp.Views
         {
             await Navigation.PushModalAsync(new Rfid.Views.MainPage());
         }
-
+        void OnCheckBoxCheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            rememberUser = e.Value;
+        }
         private void Setup()
         {
             this.BindWithLifecycle(App.ViewModel.Inventory);

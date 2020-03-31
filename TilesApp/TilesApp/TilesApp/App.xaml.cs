@@ -10,6 +10,8 @@ using Android.Bluetooth;
 using Android.Hardware.Usb;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.IO;
+using TilesApp.Models.DataModels;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -21,9 +23,21 @@ namespace TilesApp
         public static string DeviceSerialNumber { get; set; }
         public static Models.Location GeoLocation { get; set; }
         public static string Station { get; set; }
-        public static UserData User { get; set; } = new UserData();
+        public static User User { get; set; } = new User();
         public static bool ActiveSession { get; set; } = false;
         public static ObservableCollection<Dictionary<string, object>> Inventory { get; set; } = new ObservableCollection<Dictionary<string, object>>();
+        private static LocalDatabase database;
+        public static LocalDatabase Database
+        {
+            get
+            {
+                if (database == null)
+                {
+                    database = new LocalDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Local.db3"));
+                }
+                return database;
+            }
+        }
         public App()
         {
             
@@ -75,7 +89,7 @@ namespace TilesApp
 
         protected override void OnStart()
         {
-            // Handle when your app starts
+
         }
 
         protected override void OnSleep()

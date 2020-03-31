@@ -6,6 +6,7 @@ using System.Timers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TilesApp.Models;
+using TilesApp.Models.DataModels;
 
 namespace TilesApp.Views
 {
@@ -159,7 +160,7 @@ namespace TilesApp.Views
                 CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout!
                 timer.Stop();
                 //MessagingCenter.Send(this, "OdooConnection");
-                App.User = new UserData();
+                App.User = new User();
                 Application.Current.Properties.Clear();
                 App.ActiveSession = false;
                 await Navigation.PopModalAsync(true);

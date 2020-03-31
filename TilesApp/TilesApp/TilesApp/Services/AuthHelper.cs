@@ -19,20 +19,37 @@ namespace TilesApp.Services
 
         #region PUBLIC METHODS
         public static async Task<bool> Login(string username, string password) {
-            App.User.UserToken = await LoginWithUsernameAndPassword(username, password);
-            App.User.OBOToken = await GetOBOToken(username, password);
-            if (App.User.UserToken.ContainsKey("access_token"))
+            // GET USER ACCESS TOKEN
+            Dictionary<string, object> userToken = await LoginWithUsernameAndPassword(username, password);
+            if (userToken.ContainsKey("access_token"))
             {
-                string content = await GetHttpContentWithTokenAsync((string)App.User.UserToken["access_token"]);
+                App.User.UserToken = (string)userToken["access_token"];
+                App.User.UserTokenExpiresAt = (DateTime)userToken["expires_at"];
+                // GET USER INFO
+                string content = await GetHttpContentWithTokenAsync((string)userToken["access_token"]);
                 JObject user = JObject.Parse(content);
                 try
                 {
                     App.User.DisplayName = user["displayName"].ToString();
                     App.User.GivenName = user["givenName"].ToString();
-                    App.User.ID = user["id"].ToString();
+                    App.User.MSID = user["id"].ToString();
                     App.User.Surname = user["surname"].ToString();
                     App.User.UserPrincipalName = user["userPrincipalName"].ToString();
-                    return true;
+                    // GET ON BEHALF OF USER ACCESS TOKEN
+                    Dictionary<string, object> oBOToken = await GetOBOToken(username, password);
+                    if (userToken.ContainsKey("access_token"))
+                    {
+                        App.User.OBOToken = (string)oBOToken["access_token"];
+                        App.User.OBOTokenExpiresAt = (DateTime)oBOToken["expires_at"];
+                        await App.Database.SaveUserAsync(App.User);
+                        return true;
+                    }
+                    else 
+                    {
+                        // there was an error
+                        return false;
+                    }
+                   
                 }
                 catch (Exception)
                 {
@@ -56,8 +73,7 @@ namespace TilesApp.Services
             {
                 try
                 {
-                    DateTime exp = (DateTime)App.User.UserToken["expires_at"];
-                    int res = DateTime.Compare(exp, DateTime.Now);
+                    int res = DateTime.Compare(App.User.UserTokenExpiresAt, DateTime.Now);
                     if (res >= 0)
                     {
                         return true;
