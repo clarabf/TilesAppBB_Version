@@ -6,7 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TilesApp.Models.DataModels;
 using Xamarin.Forms;
+using static System.Environment;
 
 namespace TilesApp.Services
 {
@@ -23,7 +25,8 @@ namespace TilesApp.Services
         public static int? adminID;
         public static Dictionary<string, object> users = new Dictionary<string, object> { };
         public static List<string> validAppsList = new List<string> { };
-        public static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
+        //public static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
+        public static List<ConfigFile> dbConfigs = new List<ConfigFile>();
 
         //CURRENT USER DATA
         public static int? userID;
@@ -34,19 +37,56 @@ namespace TilesApp.Services
         //On start Step 1
         public static void Start(bool forceCacheUpdate = false)
         {
-            if (adminID == null)
-            {
-                Login();
-            }
-            if (adminID != null)
-            {
-                GetUsers(forceCacheUpdate);
-                GetValidApps(forceCacheUpdate);
-            }
+            Download();
+            GetUsers(forceCacheUpdate);
+            GetValidApps(forceCacheUpdate);
         }
-        private static void Login()
+        private static void Download()
         {
-            
+            var ApplicationDataPath = GetFolderPath(SpecialFolder.LocalApplicationData);
+
+            // Here we will download the config files from the web
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_QC_testQC.json"), "QC");
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Link_testLink.json"), "Link");
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Join_testJoin.json"), "Join");
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Reg_testReg.json"), "Reg");
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Review_testReview.json"), "Review");
+
+            //File.Delete(Path.Combine(ApplicationDataPath, "test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_QC_Test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_Link_Test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_Join_Test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_Reg_Test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_Review_Test.json"));
+
+            string[] filesNames = Directory.GetFiles(ApplicationDataPath);
+
+            for (int i = 0; i < filesNames.Length; i++)
+            {
+
+                string[] appNameArr = filesNames[i].Split('/');
+
+                string fileName = appNameArr[appNameArr.Length - 1];
+                string filePath = filesNames[i];
+                string[] typeAndName = fileName.Split('_');
+
+                if (fileName.Contains(".json") && typeAndName.Length == 3)
+                {
+                    FileStream fs = File.OpenRead(filesNames[i]);
+                    MemoryStream stream = new MemoryStream();
+                    fs.CopyTo(stream);
+
+                    ConfigFile cf = new ConfigFile()
+                    {
+                        FileName = typeAndName[2],
+                        FilePath = filePath,
+                        FileContent = stream,
+                        AppType = typeAndName[1],
+                    };
+
+                    dbConfigs.Add(cf);
+                }
+            }
         }
         public static void GetUsers(bool forceCacheUpdate = false)
         {
@@ -79,7 +119,6 @@ namespace TilesApp.Services
         {
             try
             {
-                
                 validAppsList.Clear();
                 // List<string> validAppsList => name of the apps (jsons)
             }
@@ -93,30 +132,35 @@ namespace TilesApp.Services
         {
             try
             {
-                if (!forceCacheUpdate & appsConfigs.ContainsKey(appName))
-                {
-                    return appsConfigs[appName];
-                }
-                else
-                {
-                    if (validAppsList.Count <= 10)
-                    {
-                        GetConfigFiles(validAppsList);
-                    }
-                    else
-                    {
-                        GetConfigFiles(new List<string> { appName });
-                    }
-                }
-                if (appsConfigs.ContainsKey(appName))
-                {
-                    return appsConfigs[appName];
-                }
-                else
-                {
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "App config file not found in Web. App doesn't seem to exist.");
-                    return null;
-                }
+                //Ask for file in DB. If conexion error, return stream from db
+                return null;
+
+                //Search file in DB
+
+                //if (!forceCacheUpdate & appsConfigs.ContainsKey(appName))
+                //{
+                //    return appsConfigs[appName];
+                //}
+                //else
+                //{
+                //    if (validAppsList.Count <= 10)
+                //    {
+                //        GetConfigFiles(validAppsList);
+                //    }
+                //    else
+                //    {
+                //        GetConfigFiles(new List<string> { appName });
+                //    }
+                //}
+                //if (appsConfigs.ContainsKey(appName))
+                //{
+                //    return appsConfigs[appName];
+                //}
+                //else
+                //{
+                //    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "App config file not found in Web. App doesn't seem to exist.");
+                //    return null;
+                //}
             }
             catch
             {
@@ -135,6 +179,7 @@ namespace TilesApp.Services
                 userID = Int32.Parse(selectedUser["id"].ToString());
                 foreach (string userApp in (List<string>)selectedUser["tags"])
                 {
+                    //check if is valid
                     if (validAppsList.Contains(userApp)) { userAppsList.Add(userApp); }
                 }
             }
@@ -154,7 +199,7 @@ namespace TilesApp.Services
                     requestList.Add(requestApp + ".json");
                 }
 
-                appsConfigs.Clear();
+                //appsConfigs.Clear();
                 //Dictionary<string, Stream> appsConfigs => key: nameOfApp - value: stream
 
             }

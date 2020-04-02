@@ -53,7 +53,6 @@ namespace TilesApp.Services
         }
         #endregion
 
-
         #region CONFIGURATIONS FILES METHODS
         public async Task<List<ConfigFile>> GetUserConfigFilesAsync(int userId)
         {

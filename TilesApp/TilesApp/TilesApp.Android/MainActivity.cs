@@ -77,7 +77,6 @@ namespace TilesApp.Droid
 
             (this.Lifecycle as IDisposable).Dispose();
         }
-
         protected override void OnPause()
         {
             base.OnPause();
@@ -85,19 +84,16 @@ namespace TilesApp.Droid
             this.TslLifecycle.OnPause();
             //UnregisterReceiver(monitor);
         }
-
         protected override void OnResume()
         {
             base.OnResume();
             this.TslLifecycle.OnResume(this);
         }
-
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Android.Content.PM.Permission[] grantResults)
         {
             Plugin.Permissions.PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
             ZXing.Net.Mobile.Android.PermissionsHandler.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
-
         public override bool OnKeyDown(Keycode keyCode, KeyEvent e)
         {
             if (e.KeyCode.ToString() != "Enter")
@@ -118,7 +114,6 @@ namespace TilesApp.Droid
             }
             return base.OnKeyDown(keyCode, e);
         }
-
         private string TranslateKeyCodes(string[] keyCodes)
         {
             String result = "";
@@ -193,7 +188,6 @@ namespace TilesApp.Droid
             }
             return result;
         }
-
         private void ScanBluetoothDevices(){
             BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
             List<string>  ouiVendorIds = new List<string>(ConfigurationManager.AppSettings["OUI_VENDOR_IDS"].Split(new char[] { ';' }));
@@ -224,7 +218,6 @@ namespace TilesApp.Droid
                 }
             }
         }
-
         private void ScanSerialDevices()
         {
             List<string> vendorIds = new List<string>(ConfigurationManager.AppSettings["VENDOR_IDS"].Split(new char[] { ';' }));
