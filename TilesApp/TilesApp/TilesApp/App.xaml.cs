@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.IO;
 using TilesApp.Models.DataModels;
+using Xamarin.Essentials;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -25,6 +26,7 @@ namespace TilesApp
         public static string Station { get; set; }
         public static User User { get; set; } = new User();
         public static bool ActiveSession { get; set; } = false;
+        public static bool IsConnected { get; set; } = false;
         public static ObservableCollection<Dictionary<string, object>> Inventory { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         private static LocalDatabase database;
         public static LocalDatabase Database
@@ -89,12 +91,11 @@ namespace TilesApp
 
         protected override void OnStart()
         {
-
+            
         }
 
         protected override void OnSleep()
         {
-            // Handle when your app sleeps
         }
 
         protected override void OnResume()
@@ -102,7 +103,6 @@ namespace TilesApp
             // Handle when your app resumes
         }
 
-       
 
     }
 }

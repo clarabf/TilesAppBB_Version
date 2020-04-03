@@ -42,6 +42,7 @@ namespace TilesApp.Droid
             CrossCurrentActivity.Current.Init(this, savedInstanceState);
 
             base.OnCreate(savedInstanceState);
+            Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             Xamarin.Forms.Forms.Init(this, savedInstanceState);
             //ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
             //Android.Webkit.WebView.SetWebContentsDebuggingEnabled(true);

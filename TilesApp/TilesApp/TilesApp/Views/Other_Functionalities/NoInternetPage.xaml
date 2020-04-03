@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="TilesApp.Views.Other_Functionalities.NoInternetPage">
+    <ContentPage.Content>
+        <StackLayout BackgroundColor="DarkGray">
+            <Label Text="Oops, looks like you don't have internet connection!"
+                   TextColor="White"
+                   HorizontalOptions="CenterAndExpand"
+                   Margin="20"/>
+            <Button StyleClass="primaryButton"
+                        x:Name="ContinueBtn"
+                        WidthRequest="500"
+                        Text="Continue"
+                        Padding="0,15,0,15"
+                        Grid.Row="5"
+                        HorizontalOptions="CenterAndExpand" 
+                        VerticalOptions="EndAndExpand"
+                    IsVisible="False"
+                        Clicked="ContinueClicked"                            
+                    />
+            <Label Text="Note: If you fix your internet connection, we will take you back to the Login page"
+                   TextColor="#460404"
+                   HorizontalOptions="CenterAndExpand"
+                   Margin="20"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

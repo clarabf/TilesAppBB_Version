@@ -97,7 +97,10 @@ namespace TilesApp.Views
             timer.Elapsed += OnTimerEvent;
             timer.Interval = 1000; // 1 second
             timer.Enabled = true;
-            CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login!
+            if (App.IsConnected)
+            {
+                CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login! 
+            }
         }
 
         private void OnTimerEvent(object sender, ElapsedEventArgs e)
@@ -157,13 +160,21 @@ namespace TilesApp.Views
         {
             if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
             {
-                CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout!
+
+                if (App.IsConnected)
+                {
+                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
+                }
                 timer.Stop();
                 //MessagingCenter.Send(this, "OdooConnection");
-                App.User = new User();
-                Application.Current.Properties.Clear();
-                App.ActiveSession = false;
-                await Navigation.PopModalAsync(true);
+                int res = await App.Database.DeleteUserAsync(App.User);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    App.User = new User();
+                    App.ActiveSession = false;
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new Main());
+                });
             }
         }
 
@@ -173,10 +184,19 @@ namespace TilesApp.Views
             {
                 if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
                 {
-                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout!
+                    if (App.IsConnected)
+                    {
+                        CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
+                    }
                     timer.Stop();
-                    MessagingCenter.Send(this, "OdooConnection");
-                    await Navigation.PopModalAsync(true);
+                    int res = await App.Database.DeleteUserAsync(App.User);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        App.User = new User();
+                        App.ActiveSession = false;
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new Main());
+                    });
                 }
             });
             return true;

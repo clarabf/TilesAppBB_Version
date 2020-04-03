@@ -12,6 +12,8 @@ using System.Linq;
 using TilesApp.Rfid.ViewModels;
 using Nito.AsyncEx;
 using TilesApp.Models.DataModels;
+using TilesApp.Views.Other_Functionalities;
+using Xamarin.Essentials;
 
 namespace TilesApp.Views
 {
@@ -24,44 +26,41 @@ namespace TilesApp.Views
             //OdooXMLRPC.Start();
             Setup();
             // Get last user from data base
-            AsyncContext.Run(() => GetLastUseFromDB());
+            if (App.User.GivenName == null)
+            {
+                AsyncContext.Run(() => GetLastUserFromDB()); 
+            }
             // Check if the user has a valid token
             NavigationPage.SetHasNavigationBar(this, false);
-            if (AuthHelper.CheckIfTokenIsValid()) {
-                Device.BeginInvokeOnMainThread(() =>
+            if (App.IsConnected)
+            {
+                if (AuthHelper.CheckIfTokenIsValid())
                 {
-                    App.ActiveSession = true;
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new AppPage());
-                });
-            }
-            MessagingCenter.Subscribe<Application, String>(Application.Current, "UserScanned", async (s, a) => {
-                if (PHPApi.users.ContainsKey(a.ToString()))
-                {
-
-                    PHPApi.SetCurrentUser(a.ToString()); // SETS THE INFORMATION OF THE USER ON APPLICATION LEVEL
                     Device.BeginInvokeOnMainThread(() =>
                     {
+                        App.ActiveSession = true;
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new AppPage());
                     });
                 }
-                else
+            }
+            else
+            {
+                Device.BeginInvokeOnMainThread(() =>
                 {
-                    await DisplayAlert("Error scanning badge", "User not found in DB...", "Ok");
-                }
-            });
-            MessagingCenter.Subscribe<AppPage>(this, "OdooConnection", (s) => {
-                PHPApi.Start();
-                Setup();
-                App.Station = null;
-            });
+                    App.ActiveSession = true;
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new NoInternetPage());
+                });
+            }
+           
+
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("Error", errorMessage, "Ok");
             });
         }
 
-        private async void GetLastUseFromDB() {
+        private async void GetLastUserFromDB() {
             // Get the last logeed in user
             User tempUser = await App.Database.GetLastLoggedInUserAsync();
             if (tempUser != null) App.User = tempUser;
@@ -69,7 +68,11 @@ namespace TilesApp.Views
         protected override void OnAppearing()
         {
             base.OnAppearing();
-            CosmosDBManager.Init();
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            if (App.IsConnected)
+            {
+                CosmosDBManager.Init(); 
+            }
             if (App.Current.Properties.ContainsKey("username"))
             {
                 usernameEntry.Text = App.Current.Properties["username"] as string;
@@ -88,6 +91,11 @@ namespace TilesApp.Views
                 passwordEntry.Placeholder = "password";
             }
         }
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
+        }
         private async void GoToScan(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, PHPApi.users));
@@ -105,6 +113,8 @@ namespace TilesApp.Views
             // Start log in process
             App.ActiveSession = await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
             if (App.ActiveSession) {
+
+                // @CLARA => make your call to php api here
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);
@@ -128,6 +138,7 @@ namespace TilesApp.Views
         private void Setup()
         {
             this.BindWithLifecycle(App.ViewModel.Inventory);
+            App.IsConnected = Connectivity.NetworkAccess == NetworkAccess.Internet;
         }
 
         protected override bool OnBackButtonPressed()
@@ -148,5 +159,11 @@ namespace TilesApp.Views
             if (usernameEntry.Text != "" && passwordEntry.Text != "") LoginBtn.IsEnabled = true;
             else LoginBtn.IsEnabled = false;
         }
+
+        void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            App.IsConnected = e.NetworkAccess == NetworkAccess.Internet;
+        }
+
     }
 }
