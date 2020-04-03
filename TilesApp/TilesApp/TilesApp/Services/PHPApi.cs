@@ -80,7 +80,7 @@ namespace TilesApp.Services
                     {
                         FileName = typeAndName[2],
                         FilePath = filePath,
-                        FileContent = stream,
+                        //FileContent = stream,
                         AppType = typeAndName[1],
                     };
 

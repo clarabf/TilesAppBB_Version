@@ -167,7 +167,8 @@ namespace TilesApp.Views
                 }
                 timer.Stop();
                 //MessagingCenter.Send(this, "OdooConnection");
-                int res = await App.Database.DeleteUserAsync(App.User);
+                App.User.UserTokenExpiresAt = DateTime.Now;
+                int res = await App.Database.SaveUserAsync(App.User);
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     App.User = new User();
@@ -192,8 +193,8 @@ namespace TilesApp.Views
                     int res = await App.Database.DeleteUserAsync(App.User);
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        App.User = new User();
-                        App.ActiveSession = false;
+                                            App.User = new User();
+                    App.ActiveSession = false;
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new Main());
                     });

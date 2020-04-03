@@ -89,9 +89,9 @@ namespace TilesApp
         /// </summary>
         public static ViewModelLocator ViewModel { get; } = new ViewModelLocator();
 
-        protected override void OnStart()
+        protected async override void OnStart()
         {
-            
+
         }
 
         protected override void OnSleep()

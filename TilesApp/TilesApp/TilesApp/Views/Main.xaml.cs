@@ -38,6 +38,8 @@ namespace TilesApp.Views
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
+                        App.Database.DeleteAllConfigFilesAsync();
+                        App.Database.DeleteAllUserAppsAsync();
                         App.ActiveSession = true;
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new AppPage());
@@ -65,13 +67,20 @@ namespace TilesApp.Views
             User tempUser = await App.Database.GetLastLoggedInUserAsync();
             if (tempUser != null) App.User = tempUser;
         }
-        protected override void OnAppearing()
+        protected async override void OnAppearing()
         {
             base.OnAppearing();
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             if (App.IsConnected)
             {
-                CosmosDBManager.Init(); 
+                CosmosDBManager.Init();
+                // Save CONFIG FILES TO THE DATA BASE @Clara
+                foreach (var configFile in PHPApi.dbConfigs)
+                {
+                    int id = await App.Database.SaveConfigFileAsync(configFile);
+                    UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
+                    await App.Database.SaveUserAppAsync(userApp);
+                }
             }
             if (App.Current.Properties.ContainsKey("username"))
             {
@@ -163,6 +172,16 @@ namespace TilesApp.Views
         void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             App.IsConnected = e.NetworkAccess == NetworkAccess.Internet;
+            if (!App.IsConnected)
+            {
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    App.ActiveSession = true;
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new NoInternetPage());
+                });
+            }
+
         }
 
     }

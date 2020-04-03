@@ -15,7 +15,17 @@ namespace TilesApp.Services
         public LocalDatabase(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
-            _database.CreateTableAsync<User>().Wait();
+            try
+            {
+                _database.CreateTableAsync<User>().Wait();
+                _database.CreateTableAsync<ConfigFile>().Wait();
+                _database.CreateTableAsync<UserApp>().Wait();
+                _database.CreateTableAsync<PendingOperation>().Wait();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         #region USER METHODS
@@ -50,6 +60,10 @@ namespace TilesApp.Services
         public Task<int> DeleteUserAsync(User User)
         {
             return _database.DeleteAsync(User);
+        }
+
+        public Task<int> DeleteAllUsersAsync() {
+            return _database.DropTableAsync<User>();
         }
         #endregion
 
@@ -92,6 +106,10 @@ namespace TilesApp.Services
         {
             return _database.DeleteAsync(ConfigFile);
         }
+        public Task<int> DeleteAllConfigFilesAsync()
+        {
+            return _database.DropTableAsync<ConfigFile>();
+        }
         #endregion
 
         #region USER APPS METHODS
@@ -127,6 +145,45 @@ namespace TilesApp.Services
         public Task<int> DeleteUserAppsByConfigFileIdAndUserIdAsync(int ConfigFileId, int UserId)
         {
             return _database.DeleteAsync(GetUserAppsByConfigFileIdAndUserIdAsync(ConfigFileId,UserId));
+        }
+        public Task<int> DeleteAllUserAppsAsync()
+        {
+            return _database.DropTableAsync<UserApp>();
+        }
+        #endregion
+
+        #region PENDING OPERATIONS METHODS
+        public Task<List<PendingOperation>> GetPendingOperationsAsync()
+        {
+            return _database.Table<PendingOperation>().ToListAsync();
+        }
+
+        public Task<PendingOperation> GetPendingOperationAsync(int id)
+        {
+            return _database.Table<PendingOperation>()
+                            .Where(i => i.Id == id)
+                            .FirstOrDefaultAsync();
+        }
+
+        public Task<int> SavePendingOperationAsync(PendingOperation PendingOperation)
+        {
+            if (PendingOperation.Id != 0)
+            {
+                return _database.UpdateAsync(PendingOperation);
+            }
+            else
+            {
+                return _database.InsertAsync(PendingOperation);
+            }
+        }
+
+        public Task<int> DeletePendingOperationAsync(PendingOperation PendingOperation)
+        {
+            return _database.DeleteAsync(PendingOperation);
+        }
+        public Task<int> DeleteAllPendingOperationsAsync()
+        {
+            return _database.DropTableAsync<PendingOperation>();
         }
         #endregion
     }
