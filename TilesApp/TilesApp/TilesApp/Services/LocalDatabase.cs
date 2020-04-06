@@ -90,15 +90,17 @@ namespace TilesApp.Services
                             .FirstOrDefaultAsync();
         }
 
-        public Task<int> SaveConfigFileAsync(ConfigFile ConfigFile)
+        public async Task<int> SaveConfigFileAsync(ConfigFile ConfigFile)
         {
             if (ConfigFile.Id != 0)
             {
-                return _database.UpdateAsync(ConfigFile);
+                 await _database.UpdateAsync(ConfigFile);
+                return -1;
             }
             else
             {
-                return _database.InsertAsync(ConfigFile);
+                await _database.InsertAsync(ConfigFile);
+                return ConfigFile.Id;
             }
         }
 
