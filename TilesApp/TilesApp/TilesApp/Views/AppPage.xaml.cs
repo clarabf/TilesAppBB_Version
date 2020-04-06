@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using TilesApp.Models;
 using TilesApp.Models.DataModels;
+using System.Collections.Generic;
 
 namespace TilesApp.Views
 {
@@ -40,11 +41,10 @@ namespace TilesApp.Views
             NavigationPage.SetHasNavigationBar(this, false);
             
             int row = 0;
-            foreach (string tag in PHPApi.userAppsList)
+            foreach (ConfigFile cf in PHPApi.userAppsList)
             {
-                string[] tagArr = tag.Split('_');
-                string appType = tagArr[1];
-                string appName = tagArr[2];
+                string appType = cf.AppType;
+                string appName = cf.FileName;
                 string icon = "";
                 buttonsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 ExtendedButton button = new ExtendedButton
@@ -59,8 +59,8 @@ namespace TilesApp.Views
                     HorizontalOptions = LayoutOptions.Center,
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
-                    //HorizontalTextAlignment = TextAlignment.Start,
-                    ClassId = tag,
+                    HorizontalTextAlignment = TextAlignment.Start,
+                    ClassId = "App_" + appType + "_" + appName,
                     Margin = new Thickness (0, 0, 0, 20)
                 };
                 switch (appType)
@@ -147,7 +147,6 @@ namespace TilesApp.Views
 
         private async void Config_Command(object sender, EventArgs args)
         {
-
             await Navigation.PushModalAsync(new Configuration(this));
         }
 
@@ -202,7 +201,6 @@ namespace TilesApp.Views
             });
             return true;
         }
-
     }
 
     public class ConfigInfoViewModel : INotifyPropertyChanged

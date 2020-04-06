@@ -17,6 +17,10 @@ namespace TilesApp.Services
             _database = new SQLiteAsyncConnection(dbPath);
             try
             {
+                DeleteAllUsersAsync();
+                DeleteAllUserAppsAsync();
+                DeleteAllConfigFilesAsync();
+                DeleteAllUserAppsAsync();
                 _database.CreateTableAsync<User>().Wait();
                 _database.CreateTableAsync<ConfigFile>().Wait();
                 _database.CreateTableAsync<UserApp>().Wait();
@@ -186,6 +190,16 @@ namespace TilesApp.Services
         public Task<int> DeleteAllPendingOperationsAsync()
         {
             return _database.DropTableAsync<PendingOperation>();
+        }
+        #endregion
+
+        #region
+        public void DeleteDatabase()
+        {
+            DeleteAllUsersAsync();
+            DeleteAllUserAppsAsync();
+            DeleteAllConfigFilesAsync();
+            DeleteAllUserAppsAsync();
         }
         #endregion
     }

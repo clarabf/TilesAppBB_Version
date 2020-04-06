@@ -25,13 +25,36 @@ namespace TilesApp.Views
             InitializeComponent();
             //OdooXMLRPC.Start();
             Setup();
+            
             // Get last user from data base
             if (App.User.GivenName == null)
             {
                 AsyncContext.Run(() => GetLastUserFromDB()); 
             }
+
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            
             // Check if the user has a valid token
             NavigationPage.SetHasNavigationBar(this, false);
+
+            if (App.Current.Properties.ContainsKey("username"))
+            {
+                usernameEntry.Text = App.Current.Properties["username"] as string;
+            }
+            else
+            {
+                usernameEntry.Placeholder = "username";
+            }
+            if (App.Current.Properties.ContainsKey("password"))
+            {
+                passwordEntry.Text = App.Current.Properties["password"] as string;
+                LoginBtn.IsEnabled = true;
+            }
+            else
+            {
+                passwordEntry.Placeholder = "password";
+            }
+
             if (App.IsConnected)
             {
                 if (AuthHelper.CheckIfTokenIsValid())
@@ -55,8 +78,6 @@ namespace TilesApp.Views
                     Navigation.PushModalAsync(new NoInternetPage());
                 });
             }
-           
-
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("Error", errorMessage, "Ok");
             });
@@ -67,38 +88,11 @@ namespace TilesApp.Views
             User tempUser = await App.Database.GetLastLoggedInUserAsync();
             if (tempUser != null) App.User = tempUser;
         }
+
         protected async override void OnAppearing()
         {
             base.OnAppearing();
-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-            if (App.IsConnected)
-            {
-                CosmosDBManager.Init();
-                // Save CONFIG FILES TO THE DATA BASE @Clara
-                foreach (var configFile in PHPApi.dbConfigs)
-                {
-                    int id = await App.Database.SaveConfigFileAsync(configFile);
-                    UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
-                    await App.Database.SaveUserAppAsync(userApp);
-                }
-            }
-            if (App.Current.Properties.ContainsKey("username"))
-            {
-                usernameEntry.Text = App.Current.Properties["username"] as string;
-            }
-            else
-            {
-                usernameEntry.Placeholder = "username";
-            }
-            if (App.Current.Properties.ContainsKey("password"))
-            {
-                passwordEntry.Text = App.Current.Properties["password"] as string;
-                LoginBtn.IsEnabled = true;
-            }
-            else
-            {
-                passwordEntry.Placeholder = "password";
-            }
+            
         }
         protected override void OnDisappearing()
         {
@@ -121,6 +115,7 @@ namespace TilesApp.Views
             }
             // Start log in process
             App.ActiveSession = await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
+            PHPApi.userAppsList = await App.Database.GetUserConfigFilesAsync(App.User.Id);
             if (App.ActiveSession) {
 
                 // @CLARA => make your call to php api here
