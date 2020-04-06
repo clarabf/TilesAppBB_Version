@@ -25,14 +25,14 @@ namespace TilesApp.Services
         public static int? adminID;
         public static Dictionary<string, object> users = new Dictionary<string, object> { };
         public static List<string> validAppsList = new List<string> { };
-        //public static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
+        public static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
         public static List<ConfigFile> dbConfigs = new List<ConfigFile>();
 
         //CURRENT USER DATA
         public static int? userID;
         public static string userName;
         //Get user validated apps Step 3
-        public static List<string> userAppsList = new List<string> { };
+        public static List<ConfigFile> userAppsList = new List<ConfigFile> { };
 
         //On start Step 1
         public static void Start(bool forceCacheUpdate = false)
@@ -60,6 +60,7 @@ namespace TilesApp.Services
             //File.Delete(Path.Combine(ApplicationDataPath, "App_Review_Test.json"));
 
             string[] filesNames = Directory.GetFiles(ApplicationDataPath);
+            appsConfigs.Clear();
 
             for (int i = 0; i < filesNames.Length; i++)
             {
@@ -68,23 +69,30 @@ namespace TilesApp.Services
 
                 string fileName = appNameArr[appNameArr.Length - 1];
                 string filePath = filesNames[i];
-                string[] typeAndName = fileName.Split('_');
 
-                if (fileName.Contains(".json") && typeAndName.Length == 3)
+                if (fileName.Contains(".json"))
                 {
-                    FileStream fs = File.OpenRead(filesNames[i]);
-                    MemoryStream stream = new MemoryStream();
-                    fs.CopyTo(stream);
+                    fileName = fileName.Substring(0, fileName.Length - 5);
+                    string[] typeAndName = fileName.Split('_');
 
-                    ConfigFile cf = new ConfigFile()
+                    if (typeAndName.Length == 3)
                     {
-                        FileName = typeAndName[2],
-                        FilePath = filePath,
-                        //FileContent = stream,
-                        AppType = typeAndName[1],
-                    };
+                        FileStream fs = File.OpenRead(filesNames[i]);
+                        MemoryStream stream = new MemoryStream();
+                        fs.CopyTo(stream);
 
-                    dbConfigs.Add(cf);
+                        appsConfigs.Add(fileName, stream);
+
+                        ConfigFile cf = new ConfigFile()
+                        {
+                            FileName = typeAndName[2],
+                            FilePath = filePath,
+                            //FileContent = stream,
+                            AppType = typeAndName[1],
+                        };
+
+                        dbConfigs.Add(cf);
+                    }
                 }
             }
         }
@@ -180,7 +188,7 @@ namespace TilesApp.Services
                 foreach (string userApp in (List<string>)selectedUser["tags"])
                 {
                     //check if is valid
-                    if (validAppsList.Contains(userApp)) { userAppsList.Add(userApp); }
+                    //if (validAppsList.Contains(userApp)) { userAppsList.Add(userApp); }
                 }
             }
             catch

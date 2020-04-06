@@ -47,16 +47,6 @@ namespace TilesApp
             
             MainPage = new NavigationPage(new Main());
 
-            ////testing SACO app
-            //MainPage = new NavigationPage(new QC("App_QC_TestTakePhoto"));
-
-            ////testing generated JSON
-            //string json = jsParser.GenerateJSON();
-            //MainPage = new NavigationPage(new JSONPage(json));
-
-            ////testing JSON scanned from QR
-            //MainPage = new NavigationPage(new JSONPageInit());
-
             NavigationPage.SetHasNavigationBar(this, false);
 
         }
@@ -91,7 +81,17 @@ namespace TilesApp
 
         protected async override void OnStart()
         {
-
+            if (App.IsConnected)
+            {
+                CosmosDBManager.Init();
+                // Save CONFIG FILES TO THE DATA BASE @Clara
+                foreach (var configFile in PHPApi.dbConfigs)
+                {
+                    int id = await App.Database.SaveConfigFileAsync(configFile);
+                    UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
+                    await App.Database.SaveUserAppAsync(userApp);
+                }
+            }
         }
 
         protected override void OnSleep()
