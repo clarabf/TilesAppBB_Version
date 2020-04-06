@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TilesApp.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -27,8 +28,9 @@ namespace TilesApp.Views.Other_Functionalities
                 ContinueBtn.Text = "Continue as " + App.User.GivenName;
             }
         }
-        private void ContinueClicked(object sender, EventArgs args)
+        private async void ContinueClicked(object sender, EventArgs args)
         {
+            PHPApi.userAppsList = await App.Database.GetUserConfigFilesAsync(App.User.Id);
             Device.BeginInvokeOnMainThread(() =>
             {
                 Navigation.PopModalAsync(true);

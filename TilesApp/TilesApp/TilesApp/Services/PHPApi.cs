@@ -43,10 +43,12 @@ namespace TilesApp.Services
         }
         private static void Download()
         {
+
+            var JSONParser = new JSONParser();
             var ApplicationDataPath = GetFolderPath(SpecialFolder.LocalApplicationData);
 
             // Here we will download the config files from the web
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_QC_testQC.json"), "QC");
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_QC_testQC.json"), JSONParser.GenerateQCJSON());
             File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Link_testLink.json"), "Link");
             File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Join_testJoin.json"), "Join");
             File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Reg_testReg.json"), "Reg");
@@ -141,7 +143,7 @@ namespace TilesApp.Services
             try
             {
                 //Ask for file in DB. If conexion error, return stream from db
-                return null;
+                return appsConfigs[appName];
 
                 //Search file in DB
 

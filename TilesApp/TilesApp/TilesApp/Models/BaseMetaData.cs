@@ -118,9 +118,9 @@ namespace TilesApp.Models
             {
                 if (streamConfig != null)
                 {
+                    streamConfig.Position = 0;
                     StreamReader reader = new StreamReader(streamConfig);
                     string jsonConfig = reader.ReadToEnd();
-                    streamConfig.Position = 0;
 
                     Dictionary<string, Dictionary<string, Dictionary<string, dynamic>>> data = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Dictionary<string, dynamic>>>>(jsonConfig);
 
