@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Android.OS;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,5 +48,19 @@ namespace TilesApp.Views.Other_Functionalities
                 });
             }
         }
+
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                if (await DisplayAlert("You are closing the application", "Are you sure you want to leave?", "OK", "Cancel"))
+                {
+                    base.OnBackButtonPressed();
+                    Process.KillProcess(Process.MyPid());
+                }
+            });
+            return true;
+        }
+
     }
 }

@@ -189,7 +189,8 @@ namespace TilesApp.Views
                         CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
                     }
                     timer.Stop();
-                    int res = await App.Database.DeleteUserAsync(App.User);
+                    App.User.UserTokenExpiresAt = DateTime.Now;
+                    int res = await App.Database.SaveUserAsync(App.User);
                     Device.BeginInvokeOnMainThread(() =>
                     {
                                             App.User = new User();

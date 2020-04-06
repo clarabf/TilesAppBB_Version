@@ -85,6 +85,7 @@ namespace TilesApp.Views
 
         private async void GetLastUserFromDB() {
             // Get the last logeed in user
+            //int x = await App.Database._database.Table<User>().CountAsync();
             User tempUser = await App.Database.GetLastLoggedInUserAsync();
             if (tempUser != null) App.User = tempUser;
         }

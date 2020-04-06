@@ -35,7 +35,7 @@ namespace TilesApp
             {
                 if (database == null)
                 {
-                    database = new LocalDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Local.db3"));
+                 database = new LocalDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Local.db3"));
                 }
                 return database;
             }

@@ -10,17 +10,17 @@ namespace TilesApp.Services
 {
     public class LocalDatabase
     {
-        readonly SQLiteAsyncConnection _database;
+        public SQLiteAsyncConnection _database;
 
         public LocalDatabase(string dbPath)
         {
             _database = new SQLiteAsyncConnection(dbPath);
             try
             {
-                DeleteAllUsersAsync();
-                DeleteAllUserAppsAsync();
-                DeleteAllConfigFilesAsync();
-                DeleteAllUserAppsAsync();
+                //DeleteAllUsersAsync();
+                //DeleteAllUserAppsAsync();
+                //DeleteAllConfigFilesAsync();
+                //DeleteAllUserAppsAsync();
                 _database.CreateTableAsync<User>().Wait();
                 _database.CreateTableAsync<ConfigFile>().Wait();
                 _database.CreateTableAsync<UserApp>().Wait();
