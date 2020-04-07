@@ -48,8 +48,8 @@ namespace TilesApp.Services
             var ApplicationDataPath = GetFolderPath(SpecialFolder.LocalApplicationData);
 
             // Here we will download the config files from the web
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_QC_testQC.json"), JSONParser.GenerateQCJSON());
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Link_testLink.json"), "Link");
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_QC_testQC.json"), JSONParser.QC_JSON());
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Link_testLink.json"), JSONParser.Link_JSON());
             File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Join_testJoin.json"), "Join");
             File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Reg_testReg.json"), "Reg");
             File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Review_testReview.json"), "Review");
@@ -89,7 +89,6 @@ namespace TilesApp.Services
                         {
                             FileName = typeAndName[2],
                             FilePath = filePath,
-                            //FileContent = stream,
                             AppType = typeAndName[1],
                         };
 
