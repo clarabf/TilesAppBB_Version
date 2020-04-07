@@ -58,23 +58,23 @@ namespace TilesApp.Views
 
             if (App.IsConnected)
             {
+                if (App.FirstLaunch)
+                {
+                    App.FirstLaunch = false;
+                    App.Database.DeleteAllUserApps();
+                    App.Database.DeleteAllConfigFiles();
+                    foreach (var configFile in PHPApi.dbConfigs)
+                    {
+                        int id = App.Database.SaveConfigFile(configFile);
+                        UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
+                        App.Database.SaveUserApp(userApp);
+                        PHPApi.userAppsList.Add(configFile);
+                    }
+                }
                 if (AuthHelper.CheckIfTokenIsValid())
                 {
                     Device.BeginInvokeOnMainThread(() =>
-                    {
-                        if (App.FirstLaunch)
-                        {
-                            App.FirstLaunch = false;
-                            App.Database.DeleteAllUserApps();
-                            App.Database.DeleteAllConfigFiles();
-                            foreach (var configFile in PHPApi.dbConfigs)
-                            {
-                                int id = App.Database.SaveConfigFile(configFile);
-                                UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
-                                App.Database.SaveUserApp(userApp);
-                                PHPApi.userAppsList.Add(configFile);
-                            }
-                        }
+                    {                        
                         App.ActiveSession = true;
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new AppPage());
@@ -95,7 +95,7 @@ namespace TilesApp.Views
             });
         }
 
-        private async void GetLastUserFromDB() {
+        private void GetLastUserFromDB() {
             // Get the last logeed in user
             //int x = await App.Database._database.Table<User>().CountAsync();
             User tempUser = App.Database.GetLastLoggedInUser();
