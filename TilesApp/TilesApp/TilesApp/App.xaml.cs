@@ -27,6 +27,7 @@ namespace TilesApp
         public static User User { get; set; } = new User();
         public static bool ActiveSession { get; set; } = false;
         public static bool IsConnected { get; set; } = false;
+        public static bool FirstLaunch { get; set; } = true;
         public static ObservableCollection<Dictionary<string, object>> Inventory { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         private static LocalDatabase database;
         public static LocalDatabase Database
@@ -83,14 +84,7 @@ namespace TilesApp
         {
             if (App.IsConnected)
             {
-                CosmosDBManager.Init();
-                // Save CONFIG FILES TO THE DATA BASE @Clara
-                foreach (var configFile in PHPApi.dbConfigs)
-                {
-                    int id = await App.Database.SaveConfigFileAsync(configFile);
-                    UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
-                    await App.Database.SaveUserAppAsync(userApp);
-                }
+                CosmosDBManager.Init();               
             }
         }
 

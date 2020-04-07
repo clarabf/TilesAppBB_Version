@@ -10,21 +10,17 @@ namespace TilesApp.Services
 {
     public class LocalDatabase
     {
-        public SQLiteAsyncConnection _database;
+        public SQLiteConnection _database;
 
         public LocalDatabase(string dbPath)
         {
-            _database = new SQLiteAsyncConnection(dbPath);
+            _database = new SQLiteConnection(dbPath);
             try
             {
-                //DeleteAllUsersAsync();
-                //DeleteAllUserAppsAsync();
-                //DeleteAllConfigFilesAsync();
-                //DeleteAllUserAppsAsync();
-                _database.CreateTableAsync<User>().Wait();
-                _database.CreateTableAsync<ConfigFile>().Wait();
-                _database.CreateTableAsync<UserApp>().Wait();
-                _database.CreateTableAsync<PendingOperation>().Wait();
+                _database.CreateTable<User>();
+                _database.CreateTable<ConfigFile>();
+                _database.CreateTable<UserApp>();
+                _database.CreateTable<PendingOperation>();
             }
             catch (Exception e)
             {
@@ -33,48 +29,48 @@ namespace TilesApp.Services
         }
 
         #region USER METHODS
-        public Task<List<User>> GetUsersAsync()
+        public List<User> GetUsers()
         {
-            return _database.Table<User>().ToListAsync();
+            return _database.Table<User>().ToList();
         }
 
-        public Task<User> GetUserAsync(int id)
+        public User GetUser(int id)
         {
             return _database.Table<User>()
                             .Where(i => i.Id == id)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefault();
         }
-        public Task<User> GetLastLoggedInUserAsync()
+        public User GetLastLoggedInUser()
         {
-            return _database.Table<User>().OrderByDescending(u => u.LastLogIn).FirstOrDefaultAsync();
+            return _database.Table<User>().OrderByDescending(u => u.LastLogIn).FirstOrDefault();
         }
 
-        public Task<int> SaveUserAsync(User User)
+        public int SaveUser(User User)
         {
             if (User.Id != 0)
             {
-                return _database.UpdateAsync(User);
+                return _database.Update(User);
             }
             else
             {
-                return _database.InsertAsync(User);
+                return _database.Insert(User);
             }
         }
 
-        public Task<int> DeleteUserAsync(User User)
+        public int DeleteUser(User User)
         {
-            return _database.DeleteAsync(User);
+            return _database.Delete(User);
         }
 
-        public Task<int> DeleteAllUsersAsync() {
-            return _database.DropTableAsync<User>();
+        public int DeleteAllUsers() {
+            return _database.DeleteAll<User>();
         }
         #endregion
 
         #region CONFIGURATIONS FILES METHODS
-        public async Task<List<ConfigFile>> GetUserConfigFilesAsync(int userId)
+        public List<ConfigFile> GetUserConfigFiles(int userId)
         {
-            List<UserApp> userApps =await GetUserAppsAsync(userId);
+            List<UserApp> userApps = GetUserApps(userId);
             List<int> userAppsIds = new List<int>();
             foreach (var item in userApps)
             {
@@ -84,122 +80,121 @@ namespace TilesApp.Services
             {
 
             }
-            return await _database.Table<ConfigFile>().Where(i => userAppsIds.Contains( i.Id)).ToListAsync();
+            return  _database.Table<ConfigFile>().Where(i => userAppsIds.Contains( i.Id)).ToList();
         }
 
-        public Task<ConfigFile> GetConfigFileAsync(int id)
+        public ConfigFile GetConfigFile(int id)
         {
             return _database.Table<ConfigFile>()
                             .Where(i => i.Id == id)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefault();
         }
 
-        public async Task<int> SaveConfigFileAsync(ConfigFile ConfigFile)
+        public int SaveConfigFile(ConfigFile ConfigFile)
         {
             if (ConfigFile.Id != 0)
             {
-                 await _database.UpdateAsync(ConfigFile);
+                  _database.Update(ConfigFile);
                 return -1;
             }
             else
             {
-                await _database.InsertAsync(ConfigFile);
+                 _database.Insert(ConfigFile);
                 return ConfigFile.Id;
             }
         }
 
-        public Task<int> DeleteConfigFileAsync(ConfigFile ConfigFile)
+        public int DeleteConfigFile(ConfigFile ConfigFile)
         {
-            return _database.DeleteAsync(ConfigFile);
+            return _database.Delete(ConfigFile);
         }
-        public Task<int> DeleteAllConfigFilesAsync()
+        public int DeleteAllConfigFiles()
         {
-            return _database.DropTableAsync<ConfigFile>();
+            return _database.DeleteAll<ConfigFile>();
         }
         #endregion
 
         #region USER APPS METHODS
-        public Task<List<UserApp>> GetUserAppsAsync(int userId)
+        public List<UserApp> GetUserApps(int userId)
         {
             return _database.Table<UserApp>()
                             .Where(i => i.UserId == userId).
-                            ToListAsync();
+                            ToList();
         }
-        public Task<UserApp> GetUserAppsByConfigFileIdAndUserIdAsync(int ConfigFileId,int UserId)
+        public UserApp GetUserAppsByConfigFileIdAndUserId(int ConfigFileId,int UserId)
         {
             return _database.Table<UserApp>()
                             .Where(i => i.ConfigFileId == ConfigFileId && i.UserId == UserId).
-                            FirstOrDefaultAsync();
+                            FirstOrDefault();
         }
 
-        public Task<int> SaveUserAppAsync(UserApp UserApp)
+        public int SaveUserApp(UserApp UserApp)
         {
             if (UserApp.Id != 0)
             {
-                return _database.UpdateAsync(UserApp);
+                return _database.Update(UserApp);
             }
             else
             {
-                return _database.InsertAsync(UserApp);
+                return _database.Insert(UserApp);
             }
         }
 
-        public Task<int> DeleteUserAppAsync(UserApp UserApp)
+        public int DeleteUserApp(UserApp UserApp)
         {
-            return _database.DeleteAsync(UserApp);
+            return _database.Delete(UserApp);
         }
-        public Task<int> DeleteUserAppsByConfigFileIdAndUserIdAsync(int ConfigFileId, int UserId)
+        public int DeleteUserAppsByConfigFileIdAndUserId(int ConfigFileId, int UserId)
         {
-            return _database.DeleteAsync(GetUserAppsByConfigFileIdAndUserIdAsync(ConfigFileId,UserId));
+            return _database.Delete(GetUserAppsByConfigFileIdAndUserId(ConfigFileId,UserId));
         }
-        public Task<int> DeleteAllUserAppsAsync()
+        public int DeleteAllUserApps()
         {
-            return _database.DropTableAsync<UserApp>();
+            return _database.DeleteAll<UserApp>();
         }
         #endregion
 
         #region PENDING OPERATIONS METHODS
-        public Task<List<PendingOperation>> GetPendingOperationsAsync()
+        public List<PendingOperation> GetPendingOperations()
         {
-            return _database.Table<PendingOperation>().ToListAsync();
+            return _database.Table<PendingOperation>().ToList();
         }
 
-        public Task<PendingOperation> GetPendingOperationAsync(int id)
+        public PendingOperation GetPendingOperation(int id)
         {
             return _database.Table<PendingOperation>()
                             .Where(i => i.Id == id)
-                            .FirstOrDefaultAsync();
+                            .FirstOrDefault();
         }
 
-        public Task<int> SavePendingOperationAsync(PendingOperation PendingOperation)
+        public int SavePendingOperation(PendingOperation PendingOperation)
         {
             if (PendingOperation.Id != 0)
             {
-                return _database.UpdateAsync(PendingOperation);
+                return _database.Update(PendingOperation);
             }
             else
             {
-                return _database.InsertAsync(PendingOperation);
+                return _database.Insert(PendingOperation);
             }
         }
 
-        public Task<int> DeletePendingOperationAsync(PendingOperation PendingOperation)
+        public int DeletePendingOperation(PendingOperation PendingOperation)
         {
-            return _database.DeleteAsync(PendingOperation);
+            return _database.Delete(PendingOperation);
         }
-        public Task<int> DeleteAllPendingOperationsAsync()
+        public int DeleteAllPendingOperations()
         {
-            return _database.DropTableAsync<PendingOperation>();
+            return _database.DeleteAll<PendingOperation>();
         }
         #endregion
 
         #region
         public void DeleteDatabase()
         {
-            DeleteAllUsersAsync();
-            DeleteAllUserAppsAsync();
-            DeleteAllConfigFilesAsync();
-            DeleteAllUserAppsAsync();
+            DeleteAllUsers();
+            DeleteAllUserApps();
+            DeleteAllConfigFiles();
         }
         #endregion
     }

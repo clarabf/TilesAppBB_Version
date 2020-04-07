@@ -167,7 +167,7 @@ namespace TilesApp.Views
                 timer.Stop();
                 //MessagingCenter.Send(this, "OdooConnection");
                 App.User.UserTokenExpiresAt = DateTime.Now;
-                int res = await App.Database.SaveUserAsync(App.User);
+                int res = App.Database.SaveUser(App.User);
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     App.User = new User();
@@ -190,7 +190,7 @@ namespace TilesApp.Views
                     }
                     timer.Stop();
                     App.User.UserTokenExpiresAt = DateTime.Now;
-                    int res = await App.Database.SaveUserAsync(App.User);
+                    int res = App.Database.SaveUser(App.User);
                     Device.BeginInvokeOnMainThread(() =>
                     {
                                             App.User = new User();

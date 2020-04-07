@@ -30,7 +30,7 @@ namespace TilesApp.Views.Other_Functionalities
         }
         private async void ContinueClicked(object sender, EventArgs args)
         {
-            PHPApi.userAppsList = await App.Database.GetUserConfigFilesAsync(App.User.Id);
+            PHPApi.userAppsList = App.Database.GetUserConfigFiles(App.User.Id);
             Device.BeginInvokeOnMainThread(() =>
             {
                 Navigation.PopModalAsync(true);

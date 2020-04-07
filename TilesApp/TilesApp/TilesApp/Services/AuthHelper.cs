@@ -42,7 +42,7 @@ namespace TilesApp.Services
                         App.User.OBOToken = (string)oBOToken["access_token"];
                         App.User.OBOTokenExpiresAt = (DateTime)oBOToken["expires_at"];
                         App.User.LastLogIn = DateTime.Now;
-                        await App.Database.SaveUserAsync(App.User);
+                        App.Database.SaveUser(App.User);
                         return true;
                     }
                     else 

@@ -20,6 +20,7 @@ namespace TilesApp.Views
     public partial class Main : ContentPage
     {
         private bool rememberUser;
+
         public Main()
         {
             InitializeComponent();
@@ -61,8 +62,19 @@ namespace TilesApp.Views
                 {
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                        App.Database.DeleteAllConfigFilesAsync();
-                        App.Database.DeleteAllUserAppsAsync();
+                        if (App.FirstLaunch)
+                        {
+                            App.FirstLaunch = false;
+                            App.Database.DeleteAllUserApps();
+                            App.Database.DeleteAllConfigFiles();
+                            foreach (var configFile in PHPApi.dbConfigs)
+                            {
+                                int id = App.Database.SaveConfigFile(configFile);
+                                UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
+                                App.Database.SaveUserApp(userApp);
+                                PHPApi.userAppsList.Add(configFile);
+                            }
+                        }
                         App.ActiveSession = true;
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new AppPage());
@@ -86,14 +98,13 @@ namespace TilesApp.Views
         private async void GetLastUserFromDB() {
             // Get the last logeed in user
             //int x = await App.Database._database.Table<User>().CountAsync();
-            User tempUser = await App.Database.GetLastLoggedInUserAsync();
+            User tempUser = App.Database.GetLastLoggedInUser();
             if (tempUser != null) App.User = tempUser;
         }
 
         protected async override void OnAppearing()
         {
-            base.OnAppearing();
-            
+            base.OnAppearing();           
         }
         protected override void OnDisappearing()
         {
@@ -110,13 +121,16 @@ namespace TilesApp.Views
             // Check the RememberUser flag to decide wether to store their data or not
             if (rememberUser)
             {
-                Application.Current.Properties.Add("username", usernameEntry.Text);
-                Application.Current.Properties.Add("password", passwordEntry.Text);
+                if (Application.Current.Properties.ContainsKey("username")) Application.Current.Properties["username"] = usernameEntry.Text;
+                else Application.Current.Properties.Add("username", usernameEntry.Text);
+                if (Application.Current.Properties.ContainsKey("password")) Application.Current.Properties["password"] = passwordEntry.Text;
+                else Application.Current.Properties.Add("password", passwordEntry.Text);
+
                 await Application.Current.SavePropertiesAsync();
             }
             // Start log in process
             App.ActiveSession = await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
-            PHPApi.userAppsList = await App.Database.GetUserConfigFilesAsync(App.User.Id);
+            //PHPApi.userAppsList = App.Database.GetUserConfigFiles(App.User.Id);
             if (App.ActiveSession) {
 
                 // @CLARA => make your call to php api here
