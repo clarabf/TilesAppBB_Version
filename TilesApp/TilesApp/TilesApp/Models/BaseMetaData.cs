@@ -36,11 +36,11 @@ namespace TilesApp.Models
         [BsonIgnoreIfNull]
         public string AppType { get; set; }
         [BsonIgnoreIfNull]
-        public int? UserId
+        public string UserId
         { 
             get
             {
-                return PHPApi.userID;
+                return App.User.MSID;
             }
         }
         [BsonIgnoreIfNull]
@@ -48,7 +48,7 @@ namespace TilesApp.Models
         {
             get
             {
-                return PHPApi.userName;
+                return App.User.DisplayName;
             }
         }
         [BsonIgnoreIfNull]
