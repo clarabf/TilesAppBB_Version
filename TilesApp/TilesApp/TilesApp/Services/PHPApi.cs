@@ -14,13 +14,6 @@ namespace TilesApp.Services
 {
     public static class PHPApi
     {
-        //CONNECTION VARIABLES
-        public static string url = ConfigurationManager.AppSettings["SACODOO_URL"];
-        public static string db = ConfigurationManager.AppSettings["SACODOO_DB"];
-        public static string pass = ConfigurationManager.AppSettings["SACODOO_ADMIN_PASSWORD"];
-        public static string user = ConfigurationManager.AppSettings["SACODOO_ADMIN_USER"];
-        public static string sherpaFolder = ConfigurationManager.AppSettings["SHERPA_APPS_FOLDER"];
-
         //ODOO RETRIEVED VARIABLES
         public static int? adminID;
         public static Dictionary<string, object> users = new Dictionary<string, object> { };
@@ -50,9 +43,9 @@ namespace TilesApp.Services
             // Here we will download the config files from the web
             File.WriteAllText(Path.Combine(ApplicationDataPath, "App_QC_testQC.json"), JSONParser.QC_JSON());
             File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Link_testLink.json"), JSONParser.Link_JSON());
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Join_testJoin.json"), "Join");
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Reg_testReg.json"), "Reg");
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Review_testReview.json"), "Review");
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Join_testJoin.json"), JSONParser.Join_JSON());
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Reg_testReg.json"), JSONParser.Reg_JSON());
+            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Review_testReview.json"), JSONParser.Review_JSON());
 
             //File.Delete(Path.Combine(ApplicationDataPath, "test.json"));
             //File.Delete(Path.Combine(ApplicationDataPath, "App_QC_Test.json"));
@@ -143,33 +136,6 @@ namespace TilesApp.Services
             {
                 //Ask for file in DB. If conexion error, return stream from db
                 return appsConfigs[appName];
-
-                //Search file in DB
-
-                //if (!forceCacheUpdate & appsConfigs.ContainsKey(appName))
-                //{
-                //    return appsConfigs[appName];
-                //}
-                //else
-                //{
-                //    if (validAppsList.Count <= 10)
-                //    {
-                //        GetConfigFiles(validAppsList);
-                //    }
-                //    else
-                //    {
-                //        GetConfigFiles(new List<string> { appName });
-                //    }
-                //}
-                //if (appsConfigs.ContainsKey(appName))
-                //{
-                //    return appsConfigs[appName];
-                //}
-                //else
-                //{
-                //    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "App config file not found in Web. App doesn't seem to exist.");
-                //    return null;
-                //}
             }
             catch
             {
