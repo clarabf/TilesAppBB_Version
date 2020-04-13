@@ -134,14 +134,16 @@ namespace TilesApp.Views
             List<string> errorsList = MetaData.IsValid();
             if (errorsList.Count==0)
             {
-                if (CosmosDBManager.InsertOneObject(MetaData))
+                if (!App.IsConnected) MetaData.DoneOffline = true;
+                KeyValuePair<string, string> resultInsertion = CosmosDBManager.InsertOneObject(MetaData);
+                if (resultInsertion.Key == "Success")
                 {
                     string message = "";
                     foreach (Dictionary<string, object> item in MetaData.ScannerReads)
                     {
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
-                    await DisplayAlert(MetaData.ParentUUID + " was assembled successfully!", message.Substring(0, message.Length - 2), "OK");
+                    await DisplayAlert(MetaData.ParentUUID + " was assembled successfully! (" + resultInsertion.Value + ")", message.Substring(0, message.Length - 2), "OK");
                     btnSaveAndFinish.IsVisible = false;
                     lblEmptyView.IsVisible = true;
                     lblEmptyViewAnimation.IsVisible = true;
@@ -153,7 +155,7 @@ namespace TilesApp.Views
                     MetaData.ParentUUID = null;
                 }
                 else
-                    await DisplayAlert(MetaData.ParentUUID + " was NOT assembled successfully!", "We could not connect to the Database Server", "OK");
+                    await DisplayAlert(MetaData.ParentUUID + " was NOT assembled successfully!", "Something went wrong in the operation.", "OK");
             }
             else
             {

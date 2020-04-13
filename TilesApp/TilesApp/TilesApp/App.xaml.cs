@@ -16,6 +16,7 @@ using Xamarin.Essentials;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json;
 using TilesApp.Models.Skeletons;
+using Plugin.Toast;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -106,19 +107,25 @@ namespace TilesApp
             App.IsConnected = e.NetworkAccess == NetworkAccess.Internet;
             if (App.IsConnected)
             {
+                CrossToastPopUp.Current.ShowToastMessage("Internet connection established! Proceeding to update pending operations...");
                 int count = Database._database.Table<PendingOperation>().Count();
                 for (int i = 0; i < count; i++)
                 {
                     PendingOperation opt = Database.GetFirstOperationInQueue();
                     if (opt != null)
                     {
-                        bool isInserted = CosmosDBManager.InsertOneObject(JsonToOperation(opt));
-                        if (isInserted)
+                        KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonToOperation(opt));
+                        if (isInserted.Key == "Success")
                         {
                             Database.DeletePendingOperation(opt);
                         }
                     }
                 }
+                
+            }
+            else
+            {
+                CrossToastPopUp.Current.ShowToastMessage("Internet connection lost... Working offline mode from now on.");
             }
 
         }

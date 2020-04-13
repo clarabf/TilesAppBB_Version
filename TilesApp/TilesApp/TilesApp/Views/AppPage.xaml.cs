@@ -159,7 +159,6 @@ namespace TilesApp.Views
         {
             if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
             {
-
                 if (App.IsConnected)
                 {
                     CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 

@@ -134,6 +134,7 @@ namespace TilesApp.Views
             if (App.ActiveSession) {
 
                 // @CLARA => make your call to php api here
+                PHPApi.GetValidApps(App.User.OBOToken);
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);

@@ -192,15 +192,16 @@ namespace TilesApp.Views
                 setPhotosList();
                 if (photoList.Count > 0) urls = StreamToAzure.UpdateJPEGStreams(photoList, appName);
                 MetaData.Images = urls;
-                bool submitted = CosmosDBManager.InsertOneObject(MetaData);
-                if (submitted)
+                if (!App.IsConnected) MetaData.DoneOffline = true;
+                KeyValuePair<string, string> resultInsertion = CosmosDBManager.InsertOneObject(MetaData);
+                if (resultInsertion.Key == "Success")
                 {
                     string message = "";
                     foreach (Dictionary<string, object> item in MetaData.ScannerReads)
                     {
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
-                    await DisplayAlert("Report was delivered successfully!", message.Substring(0, message.Length - 2), "OK");
+                    await DisplayAlert("QC Report was delivered successfully! (" + resultInsertion.Value + ")", message.Substring(0, message.Length - 2), "OK");
                     btPass.IsVisible = false;
                     btFail.IsVisible = false;
                     btnSaveAndFinish.IsVisible = false;
@@ -214,7 +215,7 @@ namespace TilesApp.Views
                     MetaData.ScannerReads.Clear();
                 }
                 else
-                    await DisplayAlert("Report was NOT delivered successfully...", "We could not connect to the Database Server", "OK");
+                    await DisplayAlert("QC Report was NOT delivered successfully...", "Something went wrong in the operation.", "OK");
             }
             else
             {

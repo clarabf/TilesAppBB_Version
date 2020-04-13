@@ -33,6 +33,8 @@ namespace TilesApp.Models
 
         //Fields properties
         [BsonIgnoreIfNull]
+        public bool DoneOffline { get; set; } = false;
+        [BsonIgnoreIfNull]
         public string AppName { get; set; }
         [BsonIgnoreIfNull]
         public string AppType { get; set; }

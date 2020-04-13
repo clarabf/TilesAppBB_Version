@@ -119,14 +119,16 @@ namespace TilesApp.Views
             List<string> errorsList = MetaData.IsValid();
             if (errorsList.Count == 0)
             {
-                if (CosmosDBManager.InsertOneObject(MetaData))
+                if (!App.IsConnected) MetaData.DoneOffline = true;
+                KeyValuePair<string, string> resultInsertion = CosmosDBManager.InsertOneObject(MetaData);
+                if (resultInsertion.Key == "Success") 
                 {
                     string message = "";
                     foreach (Dictionary<string, object> item in MetaData.ScannerReads)
                     {
                         message += item[nameof(BaseMetaData.InputDataProps.Value)].ToString() + " - ";
                     }
-                    await DisplayAlert("Component/s were registered successfully!", message.Substring(0, message.Length - 2), "OK");
+                    await DisplayAlert("Component/s were registered successfully! (" + resultInsertion.Value + ")", message.Substring(0, message.Length - 2), "OK");
                     lblTitle.IsVisible = false;
                     lblTitleLine.IsVisible = false;
                     lblEmptyView.IsVisible = true;
@@ -136,7 +138,7 @@ namespace TilesApp.Views
                     MetaData.ScannerReads.Clear();
                 }
                 else
-                    await DisplayAlert("Component/s were NOT registered successfully!", "We could not connect to the Database Server", "OK");
+                    await DisplayAlert("Component/s were NOT registered successfully!", "Something went wrong in the operation.", "OK");
             }
             else if (MetaData.RegistryDetails == null)
             {

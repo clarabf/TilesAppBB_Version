@@ -25,35 +25,35 @@ namespace TilesApp.Services
         private static IMongoDatabase database = mongoClient.GetDatabase(ConfigurationManager.AppSettings["MONGODB_DB"]);
         private static IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(ConfigurationManager.AppSettings["MONGODB_COLLECTION"]);
 
-        public static bool InsertOneObject(object data)
+        public static KeyValuePair<string, string> InsertOneObject(object data)
         {
-            if (App.IsConnected)
+            try
             {
-                try
+                if (App.IsConnected)
                 {
                     BsonDocument doc = data.ToBsonDocument();
                     collection.InsertOneAsync(doc).Wait();
-                    return true;
+                    return new KeyValuePair<string, string>("Success", "Online");
                 }
-                catch (Exception e)
+                else
                 {
-                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
-                    return false;
+                    PendingOperation opt = new PendingOperation();
+                    opt.CreatedAt = DateTime.Now;
+                    JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
+                    {
+                        DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                    };
+                    opt.Data = JsonConvert.SerializeObject(data, microsoftDateFormatSettings);
+                    opt.UserId = App.User.MSID;
+                    opt.OperationType = data.GetType().Name;
+                    App.Database.SavePendingOperation(opt);
+                    return new KeyValuePair<string, string>("Success", "Offline");
                 }
             }
-            else
+            catch (Exception e)
             {
-                PendingOperation opt = new PendingOperation();
-                opt.CreatedAt = DateTime.Now;
-                JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
-                {
-                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                };
-                opt.Data = JsonConvert.SerializeObject(data, microsoftDateFormatSettings);
-                opt.UserId = App.User.MSID;
-                opt.OperationType = data.GetType().Name;
-                App.Database.SavePendingOperation(opt);
-                return false;
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
+                return new KeyValuePair<string, string>("Error", "1");
             }
         }
 

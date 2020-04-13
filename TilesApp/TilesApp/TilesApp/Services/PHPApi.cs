@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using TilesApp.Models.DataModels;
@@ -32,7 +33,6 @@ namespace TilesApp.Services
         {
             Download();
             GetUsers(forceCacheUpdate);
-            GetValidApps(forceCacheUpdate);
         }
         private static void Download()
         {
@@ -117,12 +117,23 @@ namespace TilesApp.Services
                 throw new Exception(e.ToString());
             }
         }
-        private static void GetValidApps(bool forceCacheUpdate = false)
+        public async static void GetValidApps(string token)
         {
             try
             {
                 validAppsList.Clear();
                 // List<string> validAppsList => name of the apps (jsons)
+                //get data from API
+                HttpClient client = new HttpClient();
+                HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "https://sherpanet.azurewebsites.net/api/getApps");
+                message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage response = await client.SendAsync(message);
+                string responseString = await response.Content.ReadAsStringAsync();
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    int i = 0;
+                }
+
             }
             catch (Exception e)
             {
