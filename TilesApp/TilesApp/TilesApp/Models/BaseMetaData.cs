@@ -29,6 +29,7 @@ namespace TilesApp.Models
         protected Dictionary<string, Dictionary<string, dynamic>> customData = new Dictionary<string, Dictionary<string, dynamic>> { };
         protected Dictionary<string, string> customDataIndex = new Dictionary<string, string> { };
         protected Dictionary<string, Dictionary<string, dynamic>> predefinedData = new Dictionary<string, Dictionary<string, dynamic>> { };
+        private Dictionary<string, object> _customFields = new Dictionary<string, object> { };
 
         //Fields properties
         [BsonIgnoreIfNull]
@@ -64,18 +65,30 @@ namespace TilesApp.Models
         {
             get
             {
-                if (appData[appDataIndex["Station"]]["FieldIsSaved"])
+                string tempStation = "";
+                try
                 {
-                    return appData[appDataIndex["Station"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["Station"]]["FieldIsSaved"])
+                    {
+                        tempStation = appData[appDataIndex["Station"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
+                catch
                 {
-                    return null;
+                    tempStation = App.Station!=null? App.Station: "";
                 }
+                return tempStation;
             }
             set
             {
-                appData[appDataIndex["Station"]]["DefaultValue(admin)"] = value;
+                try
+                {
+                    appData[appDataIndex["Station"]]["DefaultValue(admin)"] = value;
+                }
+                catch 
+                {
+                    App.Station = value;
+                }
             }
         }
         [BsonIgnoreIfNull]
@@ -100,14 +113,16 @@ namespace TilesApp.Models
         {
             get
             {
-                Dictionary<string, object> returnDictionary = new Dictionary<string, object> { };
-
-                foreach (Dictionary<string, dynamic> field in customData.Values)
+                try
                 {
-                    returnDictionary.Add(field["FieldName(admin)"], field["DefaultValue(admin)"]);
+                    foreach (Dictionary<string, dynamic> field in customData.Values)
+                    {
+                        _customFields.Add(field["FieldName(admin)"], field["DefaultValue(admin)"]);
+                    }
                 }
-                return returnDictionary;
-            }
+                catch { }
+                return _customFields;
+            }            
         }
 
         //Constructor from json stream
@@ -225,6 +240,8 @@ namespace TilesApp.Models
         //Add metadata from QR Json method
         public Dictionary<string, object> AddAddiontalMetaData(Dictionary<string, dynamic> data, string type)
         {
+            List<string> props = new List<string>();
+
             Dictionary<string, object> result = new Dictionary<string, object>();
             try
             {
@@ -240,37 +257,56 @@ namespace TilesApp.Models
                                 if (field.Value.GetType().ToString().ToLower().Contains(appData[field.Key]["Type"].ToLower()))
                                 {
                                     //Add a way to ask for confirmation when QR is going to overwrite one or several fields
-                                    appData[field.Key]["DefaultValue(admin)"] = field.Value;
+                                        appData[field.Key]["DefaultValue(admin)"] = field.Value;
                                 }
                                 else
-                                {                                    
-                                    result.Add( "Error", "One or several of the fields that you are trying to write have been determined as non fillable in the config file. Please review " + type + " and/or config file content");
+                                {
+                                    result.Add("Error", "One or several of the fields that you are trying to write have been determined as non fillable in the config file. Please review " + type + " and/or config file content");
                                     return result;
                                 }
-                            }
+                            }                            
                             else if (customData.ContainsKey(field.Key))
                             {
                                 //Add a way to ask for confirmation when QR is going to overwrite one or several fields
-                                customData[field.Key]["DefaultValue(admin)"] = field.Value;
+                                    customData[field.Key]["DefaultValue(admin)"] = field.Value;
                             }
                             else
-                            {
+                            {                                
                                 result.Add("Error", "One or several of the fields in the " + type + " do not exist on the config file. Please review " + type + " content.");
                                 return result;
                             }
                         }
                         catch (Exception e)
                         {
-                            result.Add("Error", e.Message);
-                            return result;
+
+                            foreach (var prop in typeof(BaseMetaData).GetProperties())
+                            {
+                                props.Add(prop.Name);
+                            }
+                            if (props.Contains(field.Key))
+                            {
+                                try
+                                {
+                                    typeof(BaseMetaData).GetProperty(field.Key).SetValue(this, field.Value);
+                                }
+                                catch (Exception e1)
+                                {
+                                    result.Add("Error", e1.Message);
+                                    return result;
+                                }
+                            }
+                            else
+                            {
+                                _customFields.Add(field.Key, field.Value);
+                            }
                         }
                     }
                 }
             }
             catch
-            {
-                result.Add("Error", type + " content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type.");
-                return result;
+            {                
+               result.Add("Error", type + " content is not valid. Maybe there are syntax issues or the content type of an AppData field does not match the required type.");
+            return result;
             }
             return result;
         }

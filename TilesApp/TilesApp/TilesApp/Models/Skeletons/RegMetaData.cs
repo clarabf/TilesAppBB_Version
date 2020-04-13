@@ -18,14 +18,15 @@ namespace TilesApp.Models.Skeletons
         {
             get
             {
-                if (appData[appDataIndex["Registry"]]["FieldIsSaved"])
+                try
                 {
-                    return appData[appDataIndex["Registry"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["Registry"]]["FieldIsSaved"])
+                    {
+                        return appData[appDataIndex["Registry"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                catch { }
+                return null;
             }
         }
         [BsonIgnoreIfNull]
@@ -33,14 +34,15 @@ namespace TilesApp.Models.Skeletons
         {
             get
             {
-                if (appData[appDataIndex["RegistryDetails"]]["FieldIsSaved"])
+                try
                 {
-                    return appData[appDataIndex["RegistryDetails"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["RegistryDetails"]]["FieldIsSaved"])
+                    {
+                        return appData[appDataIndex["RegistryDetails"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                catch { }
+                return null;                
             }
         }        
 

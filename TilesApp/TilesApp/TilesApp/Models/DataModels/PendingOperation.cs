@@ -11,8 +11,8 @@ namespace TilesApp.Models.DataModels
         public int Id { get; set; }
         [MaxLength(50)]
         public DateTime CreatedAt { get; set; }
-        public DateTime SavedAt { get; set; }
-        public int UserId { get; set; }
+        public string UserId { get; set; }
         public string Data { get; set; }
+        public string OperationType { get; set; }
     }
 }

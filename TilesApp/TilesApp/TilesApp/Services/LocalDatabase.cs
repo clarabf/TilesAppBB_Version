@@ -166,6 +166,10 @@ namespace TilesApp.Services
                             .Where(i => i.Id == id)
                             .FirstOrDefault();
         }
+        public PendingOperation GetFirstOperationInQueue()
+        {
+            return _database.Table<PendingOperation>().OrderBy(u => u.CreatedAt).FirstOrDefault();
+        }
 
         public int SavePendingOperation(PendingOperation PendingOperation)
         {

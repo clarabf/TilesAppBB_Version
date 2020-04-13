@@ -12,24 +12,36 @@ namespace TilesApp.Models.Skeletons
 {
     public class QCMetaData : BaseMetaData
     {
-        //Fields properties
-        [BsonIgnoreIfNull]
+        private bool _qcPass;
+        private Collection<string> _images = new Collection<string>();
+       //Fields properties
+       [BsonIgnoreIfNull]
         public bool QCPass
         {
             get
             {
-                if (appData[appDataIndex["QCPass"]]["FieldIsSaved"])
+                try
                 {
-                    return appData[appDataIndex["QCPass"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["QCPass"]]["FieldIsSaved"])
+                    {
+                        return appData[appDataIndex["QCPass"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
+                catch                
                 {
-                    return false;
                 }
+                return _qcPass;
             }
             set
             {
-                appData[appDataIndex["QCPass"]]["DefaultValue(admin)"] = value;
+                try
+                {
+                    appData[appDataIndex["QCPass"]]["DefaultValue(admin)"] = value;
+                }
+                catch
+                {
+                    _qcPass = value;
+                }
             }
         }
         [BsonIgnoreIfNull]
@@ -37,14 +49,15 @@ namespace TilesApp.Models.Skeletons
         {
             get
             {
-                if (appData[appDataIndex["QCProcedureDetails"]]["FieldIsSaved"])
+                try
                 {
-                    return appData[appDataIndex["QCProcedureDetails"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["QCProcedureDetails"]]["FieldIsSaved"])
+                    {
+                        return appData[appDataIndex["QCProcedureDetails"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                catch { }
+                return null;
             }
         }
         [BsonIgnoreIfNull]
@@ -52,14 +65,15 @@ namespace TilesApp.Models.Skeletons
         {
             get
             {
-                if (appData[appDataIndex["QCResultDetails"]]["FieldIsSaved"])
+                try
                 {
-                    return appData[appDataIndex["QCResultDetails"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["QCResultDetails"]]["FieldIsSaved"])
+                    {
+                        return appData[appDataIndex["QCResultDetails"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                catch{}
+                return null;
             }
         }
         [BsonIgnoreIfNull]
@@ -67,18 +81,28 @@ namespace TilesApp.Models.Skeletons
         {
             get
             {
-                if (appData[appDataIndex["Images"]]["FieldIsSaved"])
+                try
                 {
-                    return appData[appDataIndex["Images"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["Images"]]["FieldIsSaved"])
+                    {
+                        return appData[appDataIndex["Images"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
+                catch 
                 {
-                    return new Collection<string>();
                 }
+                return _images;
             }
             set
             {
-                appData[appDataIndex["Images"]]["DefaultValue(admin)"] = value;
+                try
+                {
+                    appData[appDataIndex["Images"]]["DefaultValue(admin)"] = value;
+                }
+                catch
+                {
+                    if(value !=null)_images = value;
+                }
             }
         }
 

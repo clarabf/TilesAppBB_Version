@@ -13,24 +13,36 @@ namespace TilesApp.Models.Skeletons
 {
     public class ReviewMetaData : BaseMetaData
     {
+        private Collection<string> _apps = new Collection<string>();
         [BsonIgnoreIfNull]
         public Collection<string> Apps
         {
             get
             {
-                if (appData[appDataIndex["Apps"]]["FieldIsSaved"])
+                try
                 {
-                    JArray result = (JArray)appData[appDataIndex["Apps"]]["DefaultValue(admin)"];
-                    return result.ToObject<Collection<string>>();
+                    if (appData[appDataIndex["Apps"]]["FieldIsSaved"])
+                    {
+                        JArray result = (JArray)appData[appDataIndex["Apps"]]["DefaultValue(admin)"];
+                        return result.ToObject<Collection<string>>();
+                    }
                 }
-                else
-                {
-                    return new Collection<string>();
-                }
+                catch { }
+                return _apps;
             }
             set
             {
-                appData[appDataIndex["Apps"]]["DefaultValue(admin)"] = value;
+                try
+                {
+                    appData[appDataIndex["Apps"]]["DefaultValue(admin)"] = value;
+                }
+                catch
+                {
+                    if (value !=null)
+                    {
+                        _apps = value;
+                    }
+                }
             }
         }
 

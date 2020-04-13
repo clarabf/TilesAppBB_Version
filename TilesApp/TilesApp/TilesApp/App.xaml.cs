@@ -13,6 +13,9 @@ using System.Collections.Generic;
 using System.IO;
 using TilesApp.Models.DataModels;
 using Xamarin.Essentials;
+using Newtonsoft.Json.Bson;
+using Newtonsoft.Json;
+using TilesApp.Models.Skeletons;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
@@ -82,6 +85,7 @@ namespace TilesApp
 
         protected async override void OnStart()
         {
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             if (App.IsConnected)
             {
                 CosmosDBManager.Init();               
@@ -97,6 +101,54 @@ namespace TilesApp
             // Handle when your app resumes
         }
 
+        void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            App.IsConnected = e.NetworkAccess == NetworkAccess.Internet;
+            if (App.IsConnected)
+            {
+                int count = Database._database.Table<PendingOperation>().Count();
+                for (int i = 0; i < count; i++)
+                {
+                    PendingOperation opt = Database.GetFirstOperationInQueue();
+                    if (opt != null)
+                    {
+                        bool isInserted = CosmosDBManager.InsertOneObject(JsonToOperation(opt));
+                        if (isInserted)
+                        {
+                            Database.DeletePendingOperation(opt);
+                        }
+                    }
+                }
+            }
 
+        }
+        private static object JsonToOperation(PendingOperation opt) {
+            object obj = new object();
+            switch (opt.OperationType)
+            {
+                case "JoinMetaData":
+                    obj = JsonConvert.DeserializeObject<JoinMetaData>(opt.Data);
+                    break;
+                case "LinkMetaData":
+                    obj = JsonConvert.DeserializeObject<LinkMetaData>(opt.Data);
+                    break;
+                case "QCMetaData":
+                    obj = JsonConvert.DeserializeObject<QCMetaData>(opt.Data);
+                    break;
+                case "RegMetaData":
+                    obj = JsonConvert.DeserializeObject<RegMetaData>(opt.Data);
+                    break;
+                case "ReviewMetaData":
+                    obj = JsonConvert.DeserializeObject<ReviewMetaData>(opt.Data);
+                    break;
+                case "AppBasicOperation":
+                    obj = JsonConvert.DeserializeObject<AppBasicOperation>(opt.Data);
+                    break;
+                default:
+                    obj = opt.Data;
+                    break;
+            }            
+            return obj;
+        }
     }
 }

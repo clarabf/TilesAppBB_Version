@@ -9,7 +9,9 @@ using Microsoft.WindowsAzure.Storage.Blob;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using PCLAppConfig;
+using TilesApp.Models.DataModels;
 using Xamarin.Forms;
 
 namespace TilesApp.Services
@@ -23,26 +25,45 @@ namespace TilesApp.Services
         private static IMongoDatabase database = mongoClient.GetDatabase(ConfigurationManager.AppSettings["MONGODB_DB"]);
         private static IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(ConfigurationManager.AppSettings["MONGODB_COLLECTION"]);
 
-        public static bool InsertOneObject(object metaData)
-        {            
-            try
+        public static bool InsertOneObject(object data)
+        {
+            if (App.IsConnected)
             {
-                BsonDocument doc = metaData.ToBsonDocument();
-                collection.InsertOneAsync(doc).Wait();
-                return true;
+                try
+                {
+                    BsonDocument doc = data.ToBsonDocument();
+                    collection.InsertOneAsync(doc).Wait();
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
+                    return false;
+                }
             }
-            catch(Exception e)
+            else
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
+                PendingOperation opt = new PendingOperation();
+                opt.CreatedAt = DateTime.Now;
+                JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
+                {
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                };
+                opt.Data = JsonConvert.SerializeObject(data, microsoftDateFormatSettings);
+                opt.UserId = App.User.MSID;
+                opt.OperationType = data.GetType().Name;
+                App.Database.SavePendingOperation(opt);
                 return false;
             }
         }
 
-        public static void Init() {
+        public static void Init()
+        {
             collection.CountDocumentsAsync(new BsonDocument());
         }
 
-        public async static Task<List<Dictionary<string, object>>> FetchData(string barcode, Collection<string> Apps) {
+        public async static Task<List<Dictionary<string, object>>> FetchData(string barcode, Collection<string> Apps)
+        {
             List<Dictionary<string, object>> result = new List<Dictionary<string, object>>();
             Dictionary<string, object> dict = new Dictionary<string, object>();
             try
@@ -52,11 +73,11 @@ namespace TilesApp.Services
                 await collection.Find(filter).ForEachAsync(document => {
                     dict = BsonSerializer.Deserialize<Dictionary<string, object>>(document);
                     result.Add(dict);
-                });              
+                });
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);                
+                Console.WriteLine(e.Message);
             }
 
             return result;

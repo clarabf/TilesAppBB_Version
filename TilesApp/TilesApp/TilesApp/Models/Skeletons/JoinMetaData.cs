@@ -12,25 +12,33 @@ using Xamarin.Forms;
 namespace TilesApp.Models.Skeletons
 {
     public class JoinMetaData : BaseMetaData
-    {        
+    {
+        private string _parentUUID;
         //Fields properties
         [BsonIgnoreIfNull]
         public string ParentUUID
         {
             get
             {
-                if(appData[appDataIndex["ParentUUID"]]["FieldIsSaved"])
+                try
                 {
-                    return appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["ParentUUID"]]["FieldIsSaved"])
+                    {
+                        return appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                catch { }
+                return _parentUUID;
             }
             set
             {
-                appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] = value;
+                try
+                {
+                    appData[appDataIndex["ParentUUID"]]["DefaultValue(admin)"] = value;
+                }
+                catch {
+                    _parentUUID = value;
+                }
             }
         }        
         [BsonIgnoreIfNull]
@@ -38,14 +46,15 @@ namespace TilesApp.Models.Skeletons
         {
             get
             {
-                if(appData[appDataIndex["ParentCodeFormat"]]["FieldIsSaved"])
+                try
                 {
-                    return appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"];
+                    if (appData[appDataIndex["ParentCodeFormat"]]["FieldIsSaved"])
+                    {
+                        return appData[appDataIndex["ParentCodeFormat"]]["DefaultValue(admin)"];
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+                catch { }
+                return null;
             }
         }   
 
