@@ -33,8 +33,6 @@ namespace TilesApp.Views
                 AsyncContext.Run(() => GetLastUserFromDB()); 
             }
 
-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
-            
             // Check if the user has a valid token
             NavigationPage.SetHasNavigationBar(this, false);
 
@@ -68,7 +66,7 @@ namespace TilesApp.Views
                         int id = App.Database.SaveConfigFile(configFile);
                         UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
                         App.Database.SaveUserApp(userApp);
-                        PHPApi.userAppsList.Add(configFile);
+                        //PHPApi.userAppsList.Add(configFile);
                     }
                 }
                 if (AuthHelper.CheckIfTokenIsValid())
@@ -81,15 +79,15 @@ namespace TilesApp.Views
                     });
                 }
             }
-            else
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    App.ActiveSession = true;
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new NoInternetPage());
-                });
-            }
+            //else
+            //{
+            //    Device.BeginInvokeOnMainThread(() =>
+            //    {
+            //        App.ActiveSession = true;
+            //        Navigation.PopModalAsync(true);
+            //        Navigation.PushModalAsync(new NoInternetPage());
+            //    });
+            //}
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("Error", errorMessage, "Ok");
             });
@@ -109,7 +107,6 @@ namespace TilesApp.Views
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-            Connectivity.ConnectivityChanged -= Connectivity_ConnectivityChanged;
         }
         private async void GoToScan(object sender, EventArgs args)
         {
@@ -129,12 +126,25 @@ namespace TilesApp.Views
                 await Application.Current.SavePropertiesAsync();
             }
             // Start log in process
-            App.ActiveSession = await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
-            //PHPApi.userAppsList = App.Database.GetUserConfigFiles(App.User.Id);
-            if (App.ActiveSession) {
 
-                // @CLARA => make your call to php api here
+            bool success = false;
+            //ONLINE
+            if (App.IsConnected)
+            {
+                App.ActiveSession = await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
+                if (App.ActiveSession) success = true;
+
+            }
+            //OFFLINE
+            else
+            {
+                App.User = App.Database.GetUser(usernameEntry.Text, SHAEncription.GenerateSHA256String(passwordEntry.Text));
+                if (App.User != null) success = true;
+            }
+            if (success)
+            {
                 PHPApi.GetValidApps(App.User.OBOToken);
+                PHPApi.userAppsList = App.Database.GetUserConfigFiles(App.User.Id);
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);
@@ -178,21 +188,6 @@ namespace TilesApp.Views
         {
             if (usernameEntry.Text != "" && passwordEntry.Text != "") LoginBtn.IsEnabled = true;
             else LoginBtn.IsEnabled = false;
-        }
-
-        void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
-        {
-            App.IsConnected = e.NetworkAccess == NetworkAccess.Internet;
-            if (!App.IsConnected)
-            {
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    App.ActiveSession = true;
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new NoInternetPage());
-                });
-            }
-
         }
 
     }

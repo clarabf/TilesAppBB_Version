@@ -125,9 +125,8 @@ namespace TilesApp.Services
                 // List<string> validAppsList => name of the apps (jsons)
                 //get data from API
                 HttpClient client = new HttpClient();
-                HttpRequestMessage message = new HttpRequestMessage(HttpMethod.Get, "https://sherpanet.azurewebsites.net/api/getApps");
-                message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                HttpResponseMessage response = await client.SendAsync(message);
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage response = await client.GetAsync("https://sherpanet.azurewebsites.net/api/getApps");
                 string responseString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -137,7 +136,7 @@ namespace TilesApp.Services
             }
             catch (Exception e)
             {
-                throw new Exception(e.ToString());
+                //throw new Exception(e.ToString());
             }
         }
         //Get app config Step 4

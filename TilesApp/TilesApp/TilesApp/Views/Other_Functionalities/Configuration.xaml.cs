@@ -20,7 +20,7 @@ namespace TilesApp.Views
         {
             InitializeComponent();
             BindingContext = appPage;
-            GetDeviceLocation();
+            if (App.IsConnected) GetDeviceLocation();
             App.Inventory.Clear();
 
             lblName.Text = App.User.DisplayName;
@@ -42,10 +42,10 @@ namespace TilesApp.Views
 
         private async void GetDeviceLocation()
         {
-            Xamarin.Essentials.Location rowGeoLocation = new Xamarin.Essentials.Location();
-            Models.Location location = new Models.Location();
             try
             {
+                Xamarin.Essentials.Location rowGeoLocation = new Xamarin.Essentials.Location();
+                Models.Location location = new Models.Location();
                 var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
                 if (status != PermissionStatus.Granted)
                 {
@@ -68,30 +68,26 @@ namespace TilesApp.Views
                     await DisplayAlert("Location Denied", "Can not continue, try again.", "OK");
                 }
 
-            }
-            catch (PermissionException)
-            {
-                // Handle permission exception
-            }
-            catch
-            {
-                return;
-            }
-            if (rowGeoLocation != null)
-            {
-                if (App.GeoLocation != null)
+                if (rowGeoLocation != null)
                 {
-                    if (!App.GeoLocation.lat.Equals(rowGeoLocation.Latitude.ToString()) || !App.GeoLocation.lon.Equals(rowGeoLocation.Longitude.ToString()))
+                    if (App.GeoLocation != null)
+                    {
+                        if (!App.GeoLocation.lat.Equals(rowGeoLocation.Latitude.ToString()) || !App.GeoLocation.lon.Equals(rowGeoLocation.Longitude.ToString()))
+                        {
+                            location = App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
+                            lblLocation.Text = location.address["city"] + ", " + location.address["state"] + ", " + location.address["country"];
+                        }
+                    }
+                    else
                     {
                         location = App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
                         lblLocation.Text = location.address["city"] + ", " + location.address["state"] + ", " + location.address["country"];
                     }
                 }
-                else {
-                    location = App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
-                    lblLocation.Text = location.address["city"] + ", " + location.address["state"] + ", " + location.address["country"];
-                }
-
+            }
+            catch 
+            {
+                return;
             }
         }
 

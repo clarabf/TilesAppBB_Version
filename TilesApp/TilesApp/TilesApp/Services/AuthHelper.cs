@@ -12,7 +12,13 @@ namespace TilesApp.Services
         #region CONFIGURATIONS
         private static string ClientID = "ec28d429-40c4-4ebc-8f8f-db9236df8830";
         private static string ClientSecret = "hfLdb5T_Chw]-yzjPLBd@9Fb3l7yaAA9";
-        //private static string TenantID = "970111b7-dfe6-4e9e-ab32-e335c6a60e65";
+        private static string TenantID = "970111b7-dfe6-4e9e-ab32-e335c6a60e65";
+
+        // SACO
+        //private static string ClientID = "109011d8-b3d4-46bb-98f8-5d017451a77f";
+        //private static string ClientSecret = "CXKM7oyr[.uObJ1kRFTsMLEFQ-Ca.s40";
+        //private static string TenantID = "a15915b3-ca25-4112-9ba7-0e850870a16b";
+
         public static string UserScope = "User.Read";
         public static string OBOScope = "api://7ee33ce2-39d6-446e-8522-846e5d39dd20/AccessApi";
         #endregion
@@ -30,6 +36,7 @@ namespace TilesApp.Services
                 JObject user = JObject.Parse(content);
                 try
                 {
+                    App.User.Email = username;
                     App.User.DisplayName = user["displayName"].ToString();
                     App.User.GivenName = user["givenName"].ToString();
                     App.User.MSID = user["id"].ToString();
@@ -37,8 +44,9 @@ namespace TilesApp.Services
                     App.User.UserPrincipalName = user["userPrincipalName"].ToString();
                     // GET ON BEHALF OF USER ACCESS TOKEN
                     Dictionary<string, object> oBOToken = await GetOBOToken(username, password);
-                    if (userToken.ContainsKey("access_token"))
+                    if (oBOToken.ContainsKey("access_token"))
                     {
+                        App.User.Password = SHAEncription.GenerateSHA256String(password);
                         App.User.OBOToken = (string)oBOToken["access_token"];
                         App.User.OBOTokenExpiresAt = (DateTime)oBOToken["expires_at"];
                         App.User.LastLogIn = DateTime.Now;
@@ -98,15 +106,16 @@ namespace TilesApp.Services
         private static async Task<Dictionary<string, object>> LoginWithUsernameAndPassword(string username, string password)
         {
             JObject content = await RequestToken(username, password, UserScope);
-            var token = content.ToObject<Dictionary<string, object>>();
             try
             {
+                var token = content.ToObject<Dictionary<string, object>>();
                 token.Add("expires_at", DateTime.Now.AddSeconds(Convert.ToInt32(token["expires_in"])));
+                return token;
             }
             catch
             {
+                return new Dictionary<string, object>();
             }
-            return token;
         }
         private static async Task<Dictionary<string,object>> GetOBOToken(string username, string password)
         {
@@ -125,23 +134,30 @@ namespace TilesApp.Services
         {
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("https://login.microsoftonline.com");
-                var content = new FormUrlEncodedContent(new[]
+                try
                 {
-                new KeyValuePair<string, string>("grant_type", "password"),
-                new KeyValuePair<string, string>("client_id", ClientID),
-                new KeyValuePair<string, string>("client_secret", ClientSecret),
-                new KeyValuePair<string, string>("scope", scope),
-                new KeyValuePair<string, string>("username", username),
-                new KeyValuePair<string, string>("password", password)
-            });
-                var result = await client.PostAsync("/organizations/oauth2/v2.0/token", content);
-                var response = await result.Content.ReadAsStringAsync();
-                if (!string.IsNullOrEmpty(response))
-                {
-                    return JObject.Parse(response);
+                    client.BaseAddress = new Uri("https://login.microsoftonline.com");
+                    var content = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("grant_type", "password"),
+                        new KeyValuePair<string, string>("client_id", ClientID),
+                        new KeyValuePair<string, string>("client_secret", ClientSecret),
+                        new KeyValuePair<string, string>("scope", scope),
+                        new KeyValuePair<string, string>("username", username),
+                        new KeyValuePair<string, string>("password", password)
+                    });
+                    var result = await client.PostAsync("/organizations/oauth2/v2.0/token", content);
+                    var response = await result.Content.ReadAsStringAsync();
+                    if (!string.IsNullOrEmpty(response))
+                    {
+                        return JObject.Parse(response);
+                    }
+                    return null;
                 }
-                return null;
+                catch
+                {
+                    return null;
+                }
             }
         }
         private static async Task<string> GetHttpContentWithTokenAsync(string token)

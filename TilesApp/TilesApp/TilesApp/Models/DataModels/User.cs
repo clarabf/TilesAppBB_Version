@@ -22,6 +22,7 @@ namespace TilesApp.Models.DataModels
         public string Email { get; set; }
         [MaxLength(30)]
         public string MSID { get; set; }
+        public string Password { get; set; }
         public string UserToken { get; set; }
         public DateTime UserTokenExpiresAt { get; set; }
         public string OBOToken { get; set; }

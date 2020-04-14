@@ -40,6 +40,12 @@ namespace TilesApp.Services
                             .Where(i => i.Id == id)
                             .FirstOrDefault();
         }
+        public User GetUser(string email, string password)
+        {
+            return _database.Table<User>()
+                            .Where(i => i.Email == email && i.Password == password)
+                            .FirstOrDefault();
+        }
         public User GetLastLoggedInUser()
         {
             return _database.Table<User>().OrderByDescending(u => u.LastLogIn).FirstOrDefault();

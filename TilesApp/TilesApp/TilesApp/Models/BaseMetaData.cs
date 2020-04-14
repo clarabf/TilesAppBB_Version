@@ -130,7 +130,7 @@ namespace TilesApp.Models
         //Constructor from json stream
         public BaseMetaData(Stream streamConfig)
         {
-            GetDeviceLocation();
+            if (App.IsConnected) GetDeviceLocation();
             try
             {
                 if (streamConfig != null)
@@ -344,9 +344,9 @@ namespace TilesApp.Models
         // Refresh Geographical location of the App
         private async void GetDeviceLocation()
         {
-            Xamarin.Essentials.Location rowGeoLocation = new Xamarin.Essentials.Location();
             try
             {
+                Xamarin.Essentials.Location rowGeoLocation = new Xamarin.Essentials.Location();
                 var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
                 if (status != PermissionStatus.Granted)
                 {
@@ -363,29 +363,25 @@ namespace TilesApp.Models
                     Console.WriteLine("Location Denied", "Can not continue, try again.", "OK");
                 }
 
-            }
-            catch (PermissionException)
-            {
-                // Handle permission exception
-            }
-            catch
-            {
-                return;
-            }
-            if (rowGeoLocation != null)
-            {
-                if (App.GeoLocation != null)
+                if (rowGeoLocation != null)
                 {
-                    if (!App.GeoLocation.lat.Equals(rowGeoLocation.Latitude.ToString()) || !App.GeoLocation.lon.Equals(rowGeoLocation.Longitude.ToString()))
+                    if (App.GeoLocation != null)
+                    {
+                        if (!App.GeoLocation.lat.Equals(rowGeoLocation.Latitude.ToString()) || !App.GeoLocation.lon.Equals(rowGeoLocation.Longitude.ToString()))
+                        {
+                            App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
+                        }
+                    }
+                    else
                     {
                         App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
                     }
-                }
-                else
-                {
-                    App.GeoLocation = await HttpClientManager.ReverseGeoCodeAsync(rowGeoLocation.Latitude.ToString(), rowGeoLocation.Longitude.ToString());
-                }
 
+                }
+            }
+            catch 
+            {
+                return;
             }
         }
     }
