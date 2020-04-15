@@ -66,7 +66,6 @@ namespace TilesApp.Views
                         int id = App.Database.SaveConfigFile(configFile);
                         UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
                         App.Database.SaveUserApp(userApp);
-                        //PHPApi.userAppsList.Add(configFile);
                     }
                 }
                 if (AuthHelper.CheckIfTokenIsValid())
@@ -150,8 +149,7 @@ namespace TilesApp.Views
             }
             if (success)
             {
-                PHPApi.GetValidApps(App.User.OBOToken);
-                PHPApi.userAppsList = App.Database.GetUserConfigFiles(App.User.Id);
+                success = await PHPApi.GetConfigFiles(App.User.MSID, App.User.OBOToken);
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     Navigation.PopModalAsync(true);

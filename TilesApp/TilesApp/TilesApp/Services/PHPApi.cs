@@ -31,85 +31,23 @@ namespace TilesApp.Services
         //On start Step 1
         public static void Start(bool forceCacheUpdate = false)
         {
-            Download();
-            GetUsers(forceCacheUpdate);
+            //Download();
         }
-        private static void Download()
-        {
-
-            var JSONParser = new JSONParser();
-            var ApplicationDataPath = GetFolderPath(SpecialFolder.LocalApplicationData);
-
-            // Here we will download the config files from the web
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_QC_testQC.json"), JSONParser.QC_JSON());
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Link_testLink.json"), JSONParser.Link_JSON());
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Join_testJoin.json"), JSONParser.Join_JSON());
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Reg_testReg.json"), JSONParser.Reg_JSON());
-            File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Review_testReview.json"), JSONParser.Review_JSON());
-
-            //File.Delete(Path.Combine(ApplicationDataPath, "test.json"));
-            //File.Delete(Path.Combine(ApplicationDataPath, "App_QC_Test.json"));
-            //File.Delete(Path.Combine(ApplicationDataPath, "App_Link_Test.json"));
-            //File.Delete(Path.Combine(ApplicationDataPath, "App_Join_Test.json"));
-            //File.Delete(Path.Combine(ApplicationDataPath, "App_Reg_Test.json"));
-            //File.Delete(Path.Combine(ApplicationDataPath, "App_Review_Test.json"));
-
-            string[] filesNames = Directory.GetFiles(ApplicationDataPath);
-            appsConfigs.Clear();
-
-            for (int i = 0; i < filesNames.Length; i++)
-            {
-
-                string[] appNameArr = filesNames[i].Split('/');
-
-                string fileName = appNameArr[appNameArr.Length - 1];
-                string filePath = filesNames[i];
-
-                if (fileName.Contains(".json"))
-                {
-                    fileName = fileName.Substring(0, fileName.Length - 5);
-                    string[] typeAndName = fileName.Split('_');
-
-                    if (typeAndName.Length == 3)
-                    {
-                        FileStream fs = File.OpenRead(filesNames[i]);
-                        MemoryStream stream = new MemoryStream();
-                        fs.CopyTo(stream);
-
-                        appsConfigs.Add(fileName, stream);
-
-                        ConfigFile cf = new ConfigFile()
-                        {
-                            FileName = typeAndName[2],
-                            FilePath = filePath,
-                            AppType = typeAndName[1],
-                        };
-
-                        dbConfigs.Add(cf);
-                    }
-                }
-            }
-        }
-        public static void GetUsers(bool forceCacheUpdate = false)
+        public async static void GetUsers(string token)
         {
             try
             {
                 // CHECK IF ALREADY CACHED
-                if (users == null || !forceCacheUpdate)
+                if (users == null)
                 {
-                    // OTHERWISE DO
-                    List<string> names = new List<string>();
-
-                    List<string> tags = new List<string>();
-                    Dictionary<string, object> userInfo;
-                  
-                    users.Clear();
-                    // Dictionary<string, object> users => key: barcode - value: userInfo
-                    // Dictionary<string, object> userInfo; 
-                    // - id (int)
-                    // - name (string)
-                    // - tags (List<string>)
-
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                    HttpResponseMessage response = await client.GetAsync("https://sherpanet.azurewebsites.net/api/getUsers");
+                    string responseString = await response.Content.ReadAsStringAsync();
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        int i = 0;
+                    }
                 }
             }
             catch (Exception e)
@@ -139,7 +77,7 @@ namespace TilesApp.Services
                 //throw new Exception(e.ToString());
             }
         }
-        //Get app config Step 4
+        
         public static Stream GetAppConfig(string appName, bool forceCacheUpdate = false)
         {
             try
@@ -153,7 +91,7 @@ namespace TilesApp.Services
                 return null;
             }
         }
-        //Once user scans barcode Step 2
+        
         public static void SetCurrentUser(string barcode)
         {
             userAppsList.Clear();
@@ -173,24 +111,123 @@ namespace TilesApp.Services
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when setting current user.");
             }
         }
-        private static void GetConfigFiles(List<String> appsList, bool forceCacheUpdate = false)
+        public async static Task<bool> GetConfigFiles(string user_id, string token)
         {
             try
             {
-                List<object> requestList = new List<object> { };
+                var ApplicationDataPath = GetFolderPath(SpecialFolder.LocalApplicationData);
 
-                foreach (var requestApp in appsList)
+                if (App.IsConnected)
                 {
-                    requestList.Add(requestApp + ".json");
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                    var content = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("user_id",user_id)
+                    });
+                    HttpResponseMessage response = await client.PostAsync("https://sherpanet.azurewebsites.net/api/getUserApps", content);
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        string responseString = await response.Content.ReadAsStringAsync();
+                        Dictionary<string, object> responseDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseString);
+
+                        if (responseDict.ContainsKey("content"))
+                        {
+                            appsConfigs.Clear();
+                            userAppsList.Clear();
+                            var lala = responseDict["content"];
+                            Dictionary<string, string> userAppsDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(lala.ToString());
+
+                            // We check the user apps => Key: App_name - Value: App_content (json)
+                            foreach (KeyValuePair<string, string> kvp in userAppsDict)
+                            {
+                                string fileName = kvp.Key;
+
+                                if (fileName.Contains(".json"))
+                                {
+                                    fileName = fileName.Substring(0, fileName.Length - 5);
+                                    string[] typeAndName = fileName.Split('_');
+
+                                    if (typeAndName.Length == 3)
+                                    {
+                                        string filePath = Path.Combine(ApplicationDataPath, kvp.Key);
+                                        File.WriteAllText(filePath, kvp.Value);
+                                        FileStream fs = File.OpenRead(filePath);
+                                        MemoryStream stream = new MemoryStream();
+                                        fs.CopyTo(stream);
+
+                                        appsConfigs.Add(fileName, stream);
+
+                                        ConfigFile cf = new ConfigFile()
+                                        {
+                                            FileName = typeAndName[2],
+                                            FilePath = filePath,
+                                            AppType = typeAndName[1],
+                                        };
+
+                                        int id = App.Database.SaveConfigFile(cf);
+                                        UserApp userApp = new UserApp() { UserId = App.User.Id, ConfigFileId = id };
+                                        App.Database.SaveUserApp(userApp);
+                                        userAppsList.Add(cf);
+                                    } // correct format
+                                } // file is a json
+                            } // key-value pairs
+                        } // response has returned success
+                    } // response okay
                 }
-
-                //appsConfigs.Clear();
-                //Dictionary<string, Stream> appsConfigs => key: nameOfApp - value: stream
-
+                //Get from DB
+                else
+                {
+                    userAppsList.Clear();
+                    appsConfigs.Clear();
+                    
+                    userAppsList = App.Database.GetUserConfigFiles(App.User.Id);
+                    foreach (ConfigFile cf in userAppsList)
+                    {
+                        FileStream fs = File.OpenRead(cf.FilePath);
+                        MemoryStream stream = new MemoryStream();
+                        fs.CopyTo(stream);
+                        appsConfigs.Add(cf.FileName, stream);
+                    }
+                }
+                return true;
             }
-            catch
+            catch (Exception e)
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting app(s) config file(s) from Odoo.");
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.ToString());
+                return false;
+            }
+        }
+
+        private static void RecoverFiles()
+        {
+            var ApplicationDataPath = GetFolderPath(SpecialFolder.LocalApplicationData);
+
+            //var JSONParser = new JSONParser();
+            //File.WriteAllText(Path.Combine(ApplicationDataPath, "App_QC_testQC.json"), JSONParser.QC_JSON());
+            //File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Link_testLink.json"), JSONParser.Link_JSON());
+            //File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Join_testJoin.json"), JSONParser.Join_JSON());
+            //File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Reg_testReg.json"), JSONParser.Reg_JSON());
+            //File.WriteAllText(Path.Combine(ApplicationDataPath, "App_Review_testReview.json"), JSONParser.Review_JSON());
+
+            //File.Delete(Path.Combine(ApplicationDataPath, "test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_QC_Test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_Link_Test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_Join_Test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_Reg_Test.json"));
+            //File.Delete(Path.Combine(ApplicationDataPath, "App_Review_Test.json"));
+
+            string[] filesNames = Directory.GetFiles(ApplicationDataPath);
+            
+            appsConfigs.Clear();
+
+            foreach (ConfigFile cf in userAppsList)
+            {
+
+                FileStream fs = File.OpenRead(cf.FilePath);
+                MemoryStream stream = new MemoryStream();
+                fs.CopyTo(stream);
+                appsConfigs.Add(cf.FileName, stream);
             }
         }
 
