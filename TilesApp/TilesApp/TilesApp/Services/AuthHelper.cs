@@ -10,17 +10,10 @@ namespace TilesApp.Services
     public static class AuthHelper
     {
         #region CONFIGURATIONS
-        private static string ClientID = "ec28d429-40c4-4ebc-8f8f-db9236df8830";
-        private static string ClientSecret = "hfLdb5T_Chw]-yzjPLBd@9Fb3l7yaAA9";
-        private static string TenantID = "970111b7-dfe6-4e9e-ab32-e335c6a60e65";
-
-        // SACO
-        //private static string ClientID = "109011d8-b3d4-46bb-98f8-5d017451a77f";
-        //private static string ClientSecret = "CXKM7oyr[.uObJ1kRFTsMLEFQ-Ca.s40";
-        //private static string TenantID = "a15915b3-ca25-4112-9ba7-0e850870a16b";
-
+        private static string ClientID = "917dadf4-4730-484e-8eef-d9116514cc40";
+        private static string ClientSecret = "z3j10g3HBS@vKMBONBBSF:LxVXvsF==L";
         public static string UserScope = "User.Read";
-        public static string OBOScope = "api://7ee33ce2-39d6-446e-8522-846e5d39dd20/AccessApi";
+        public static string OBOScope = "api://109011d8-b3d4-46bb-98f8-5d017451a77f/PHPAPIAccess";
         #endregion
 
         #region PUBLIC METHODS
