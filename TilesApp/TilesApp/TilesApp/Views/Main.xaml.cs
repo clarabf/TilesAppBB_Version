@@ -91,6 +91,13 @@ namespace TilesApp.Views
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("Error", errorMessage, "Ok");
             });
+            if (!App.IsConnected) DisplayAlert("WARNING: You are offline.", "The performed operations will be stored, and will be uploaded when internet is connected.", "Ok");
+            else
+            {
+                int count = App.Database._database.Table<PendingOperation>().Count();
+                if (count > 0) DisplayAlert("WARNING: There are operations pending to store!", "They will be send when the application goes background.", "Ok");
+            }
+            
         }
 
         private void GetLastUserFromDB() {

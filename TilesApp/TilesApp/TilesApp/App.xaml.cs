@@ -51,7 +51,6 @@ namespace TilesApp
             InitializeComponent();
             
             MainPage = new NavigationPage(new Main());
-
             NavigationPage.SetHasNavigationBar(this, false);
 
         }
@@ -95,6 +94,20 @@ namespace TilesApp
 
         protected override void OnSleep()
         {
+            base.OnSleep();
+            int count = Database._database.Table<PendingOperation>().Count();
+            for (int i = 0; i < count; i++)
+            {
+                PendingOperation opt = Database.GetFirstOperationInQueue();
+                if (opt != null)
+                {
+                    KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonToOperation(opt));
+                    if (isInserted.Key == "Success")
+                    {
+                        Database.DeletePendingOperation(opt);
+                    }
+                }
+            }
         }
 
         protected override void OnResume()
@@ -105,29 +118,8 @@ namespace TilesApp
         void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             App.IsConnected = e.NetworkAccess == NetworkAccess.Internet;
-            if (App.IsConnected)
-            {
-                CrossToastPopUp.Current.ShowToastMessage("Internet connection established! Proceeding to update pending operations...");
-                int count = Database._database.Table<PendingOperation>().Count();
-                for (int i = 0; i < count; i++)
-                {
-                    PendingOperation opt = Database.GetFirstOperationInQueue();
-                    if (opt != null)
-                    {
-                        KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonToOperation(opt));
-                        if (isInserted.Key == "Success")
-                        {
-                            Database.DeletePendingOperation(opt);
-                        }
-                    }
-                }
-                
-            }
-            else
-            {
-                CrossToastPopUp.Current.ShowToastMessage("Internet connection lost... Working offline mode from now on.");
-            }
-
+            if (App.IsConnected) CrossToastPopUp.Current.ShowToastMessage("Internet connection established!...Pending operations will be uploaded when app goes background.");
+            else CrossToastPopUp.Current.ShowToastMessage("Internet connection lost... Working offline mode from now on.");
         }
         private static object JsonToOperation(PendingOperation opt) {
             object obj = new object();
