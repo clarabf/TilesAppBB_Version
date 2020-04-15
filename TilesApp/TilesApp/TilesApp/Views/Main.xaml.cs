@@ -61,12 +61,6 @@ namespace TilesApp.Views
                     App.FirstLaunch = false;
                     App.Database.DeleteAllUserApps();
                     App.Database.DeleteAllConfigFiles();
-                    foreach (var configFile in PHPApi.dbConfigs)
-                    {
-                        int id = App.Database.SaveConfigFile(configFile);
-                        UserApp userApp = new UserApp() { UserId = 1, ConfigFileId = id };
-                        App.Database.SaveUserApp(userApp);
-                    }
                 }
                 if (AuthHelper.CheckIfTokenIsValid())
                 {
@@ -78,15 +72,6 @@ namespace TilesApp.Views
                     });
                 }
             }
-            //else
-            //{
-            //    Device.BeginInvokeOnMainThread(() =>
-            //    {
-            //        App.ActiveSession = true;
-            //        Navigation.PopModalAsync(true);
-            //        Navigation.PushModalAsync(new NoInternetPage());
-            //    });
-            //}
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("Error", errorMessage, "Ok");
             });

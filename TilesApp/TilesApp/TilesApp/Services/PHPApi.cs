@@ -20,7 +20,6 @@ namespace TilesApp.Services
         public static Dictionary<string, object> users = new Dictionary<string, object> { };
         public static List<string> validAppsList = new List<string> { };
         public static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
-        public static List<ConfigFile> dbConfigs = new List<ConfigFile>();
 
         //CURRENT USER DATA
         public static int? userID;
