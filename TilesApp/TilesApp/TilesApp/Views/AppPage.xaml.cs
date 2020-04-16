@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using TilesApp.Models;
 using TilesApp.Models.DataModels;
 using System.Collections.Generic;
+using TilesApp.Views.Other_Functionalities;
 
 namespace TilesApp.Views
 {
@@ -150,6 +151,10 @@ namespace TilesApp.Views
             await Navigation.PushModalAsync(new Configuration(this));
         }
 
+        private async void Pending_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new PendingOperations());
+        }
         private async void Reader_Command(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new Rfid.Views.MainPage());

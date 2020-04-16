@@ -29,6 +29,7 @@
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
+                            <RowDefinition Height="30" />
 
                         </Grid.RowDefinitions>
                         <Grid x:Name="buttonsGrid" 
@@ -69,7 +70,42 @@
                                 HorizontalOptions="CenterAndExpand"
                             />
                         </Grid>
-                        <Grid Grid.Row="3">
+                        <Grid Grid.Row="3"   VerticalOptions="End">
+                            <Button
+                                x:Name="PendingOpts"
+                                Text="PENDING OPERATIONS &#xe036;"
+                                BackgroundColor="Transparent"
+                                FontFamily="{StaticResource CustomFont}"
+                                FontSize="15"
+                                Padding="0"
+                                VerticalOptions="End"
+                                HorizontalOptions="CenterAndExpand"
+                                Clicked="Pending_Command">
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#ffffff" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed">
+                                            <VisualState.Setters>
+                                                <Setter Property="TextColor" Value="#bc0000" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                            </Button>
+                            <BoxView
+                                HeightRequest="1.5" 
+                                WidthRequest="140"
+                                BackgroundColor="#bc0000"                                 
+                                Margin="0,0,0,5"
+                                VerticalOptions="EndAndExpand"
+                                HorizontalOptions="CenterAndExpand"
+                            />
+                        </Grid>
+                        <Grid Grid.Row="4">
                             <Button
                                 x:Name="READER"
                                 Text="READERS &#xe801;"                                
@@ -105,7 +141,7 @@
                                 HorizontalOptions="CenterAndExpand"
                             />
                         </Grid>
-                        <Grid Grid.Row="4" >
+                        <Grid Grid.Row="5" >
                             <Button
                                 x:Name="LOGOUT"
                                 Text="LOG OUT &#xe802;"                                

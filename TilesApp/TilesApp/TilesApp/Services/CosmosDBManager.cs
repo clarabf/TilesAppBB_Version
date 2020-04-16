@@ -46,6 +46,8 @@ namespace TilesApp.Services
                     opt.Data = JsonConvert.SerializeObject(data, microsoftDateFormatSettings);
                     opt.UserId = App.User.MSID;
                     opt.OperationType = data.GetType().Name;
+                    opt.Station = App.Station;
+                    opt.UserName = App.User.DisplayName;
                     App.Database.SavePendingOperation(opt);
                     return new KeyValuePair<string, string>("Success", "Offline");
                 }

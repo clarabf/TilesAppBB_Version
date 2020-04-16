@@ -12,7 +12,9 @@ namespace TilesApp.Models.DataModels
         [MaxLength(50)]
         public DateTime CreatedAt { get; set; }
         public string UserId { get; set; }
+        public string UserName { get; set; }
         public string Data { get; set; }
         public string OperationType { get; set; }
+        public string Station { get; set; }
     }
 }

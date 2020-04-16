@@ -41,7 +41,7 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                    HttpResponseMessage response = await client.GetAsync("https://sherpanet.azurewebsites.net/api/getUsers");
+                    HttpResponseMessage response = await client.GetAsync("https://sherpa.saco.tech/api/getUsers");
                     string responseString = await response.Content.ReadAsStringAsync();
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
@@ -63,7 +63,7 @@ namespace TilesApp.Services
                 //get data from API
                 HttpClient client = new HttpClient();
                 client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                HttpResponseMessage response = await client.GetAsync("https://sherpanet.azurewebsites.net/api/getApps");
+                HttpResponseMessage response = await client.GetAsync("https://sherpa.saco.tech/api/getApps");
                 string responseString = await response.Content.ReadAsStringAsync();
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
@@ -124,7 +124,7 @@ namespace TilesApp.Services
                     {
                         new KeyValuePair<string, string>("user_id",user_id)
                     });
-                    HttpResponseMessage response = await client.PostAsync("https://sherpanet.azurewebsites.net/api/getUserApps", content);
+                    HttpResponseMessage response = await client.PostAsync("https://sherpa.saco.tech/api/getUserApps", content);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         string responseString = await response.Content.ReadAsStringAsync();

@@ -95,19 +95,31 @@ namespace TilesApp
         protected override void OnSleep()
         {
             base.OnSleep();
-            int count = Database._database.Table<PendingOperation>().Count();
-            for (int i = 0; i < count; i++)
+            if (IsConnected)
             {
-                PendingOperation opt = Database.GetFirstOperationInQueue();
-                if (opt != null)
+                try
                 {
-                    KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonToOperation(opt));
-                    if (isInserted.Key == "Success")
+                    int count = Database._database.Table<PendingOperation>().Count();
+                    for (int i = 0; i < count; i++)
                     {
-                        Database.DeletePendingOperation(opt);
+                        PendingOperation opt = Database.GetFirstOperationInQueue();
+                        if (opt != null)
+                        {
+                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonToOperation(opt));
+                            if (isInserted.Key == "Success")
+                            {
+                                Database.DeletePendingOperation(opt);
+                            }
+                        }
                     }
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
+            
+        
         }
 
         protected override void OnResume()

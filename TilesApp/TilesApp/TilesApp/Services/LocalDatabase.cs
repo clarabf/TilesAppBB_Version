@@ -127,11 +127,16 @@ namespace TilesApp.Services
                             .Where(i => i.UserId == userId).
                             ToList();
         }
-        public UserApp GetUserAppsByConfigFileIdAndUserId(int ConfigFileId,int UserId)
+        public UserApp GetUserAppByConfigFileIdAndUserId(int ConfigFileId,int UserId)
         {
             return _database.Table<UserApp>()
                             .Where(i => i.ConfigFileId == ConfigFileId && i.UserId == UserId).
                             FirstOrDefault();
+        }
+        public List<UserApp> GetUserAppsByUserId(int UserId)
+        {
+            return _database.Table<UserApp>()
+                            .Where(i => i.UserId == UserId).ToList();
         }
 
         public int SaveUserApp(UserApp UserApp)
@@ -152,12 +157,13 @@ namespace TilesApp.Services
         }
         public int DeleteUserAppsByConfigFileIdAndUserId(int ConfigFileId, int UserId)
         {
-            return _database.Delete(GetUserAppsByConfigFileIdAndUserId(ConfigFileId,UserId));
+            return _database.Delete(GetUserAppByConfigFileIdAndUserId(ConfigFileId,UserId));
         }
-        public int DeleteAllUserApps()
+        public int DeleteAllUserApps(int userId = -1)
         {
-            return _database.DeleteAll<UserApp>();
-        }
+            if (userId == -1) return _database.DeleteAll<UserApp>();
+            else return _database.Delete(GetUserAppsByUserId(userId));
+       }
         #endregion
 
         #region PENDING OPERATIONS METHODS
