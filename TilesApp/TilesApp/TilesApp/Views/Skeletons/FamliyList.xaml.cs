@@ -20,12 +20,14 @@ namespace TilesApp.Views
                 this._items = value;             
             }           
         }
+        public string ConfigFileName;
         public string RootPageBarcode { get; set; }
-        public FamilyList(ObservableCollection<Dictionary<string, object>> items, Dictionary<string,object> parentPageIsRoot)
+        public FamilyList(ObservableCollection<Dictionary<string, object>> items, Dictionary<string,object> parentPageIsRoot,string configFileName)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             Items = items;
+            ConfigFileName = configFileName;
             try
             {
                 RootPageBarcode = (string)parentPageIsRoot["Value"];
@@ -56,7 +58,7 @@ namespace TilesApp.Views
                         Navigation.PopModalAsync(true);
                     }
                     Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new Review("App_Review_Initial Tests", (string)selectedItem["Value"]));
+                    Navigation.PushModalAsync(new Review(ConfigFileName, (string)selectedItem["Value"]));
                 });
             }
             catch (Exception e)
