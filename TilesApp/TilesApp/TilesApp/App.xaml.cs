@@ -95,7 +95,7 @@ namespace TilesApp
         protected override void OnSleep()
         {
             base.OnSleep();
-            if (IsConnected)
+            if (App.IsConnected)
             {
                 try
                 {
@@ -113,13 +113,11 @@ namespace TilesApp
                         }
                     }
                 }
-                catch (Exception e)
+                catch (Exception e) 
                 {
-                    Console.WriteLine(e.Message);
+                    CrossToastPopUp.Current.ShowToastMessage("There was an error uploading operations. Please, restart de app.");
                 }
             }
-            
-        
         }
 
         protected override void OnResume()

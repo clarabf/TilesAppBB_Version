@@ -19,16 +19,18 @@ namespace TilesApp.Services
         #region PUBLIC METHODS
         public static async Task<bool> Login(string username, string password) {
             // GET USER ACCESS TOKEN
-            Dictionary<string, object> userToken = await LoginWithUsernameAndPassword(username, password);
-            if (userToken.ContainsKey("access_token"))
+            try
             {
-                App.User.UserToken = (string)userToken["access_token"];
-                App.User.UserTokenExpiresAt = (DateTime)userToken["expires_at"];
-                // GET USER INFO
-                string content = await GetHttpContentWithTokenAsync((string)userToken["access_token"]);
-                JObject user = JObject.Parse(content);
-                try
+                Dictionary<string, object> userToken = await LoginWithUsernameAndPassword(username, password);
+                if (userToken.ContainsKey("access_token"))
                 {
+                    App.User.UserToken = (string)userToken["access_token"];
+                    App.User.UserTokenExpiresAt = (DateTime)userToken["expires_at"];
+                    
+                    // GET USER INFO
+                    string content = await GetHttpContentWithTokenAsync((string)userToken["access_token"]);
+                    JObject user = JObject.Parse(content);
+                   
                     App.User.Email = username;
                     App.User.DisplayName = user["displayName"].ToString();
                     App.User.GivenName = user["givenName"].ToString();
@@ -46,24 +48,23 @@ namespace TilesApp.Services
                         App.Database.SaveUser(App.User);
                         return true;
                     }
-                    else 
+                    else  
                     {
                         // there was an error
                         return false;
                     }
-                   
                 }
-                catch (Exception)
+                else
                 {
                     // there was an error
                     return false;
                 }
             }
-            else {
+            catch (Exception e)
+            {
                 // there was an error
                 return false;
             }
-
         }
 
         public static bool CheckIfTokenIsValid(){

@@ -64,11 +64,19 @@ namespace TilesApp.Views
                 }
                 if (AuthHelper.CheckIfTokenIsValid())
                 {
-                    Device.BeginInvokeOnMainThread(() =>
-                    {                        
-                        App.ActiveSession = true;
-                        Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new AppPage());
+                    App.ActiveSession = true;
+                    Device.BeginInvokeOnMainThread( async () =>
+                    {
+                        bool success = await PHPApi.GetConfigFiles(App.User.MSID, App.User.OBOToken);
+                        if (success)
+                        {
+                            Navigation.PopModalAsync(true);
+                            Navigation.PushModalAsync(new AppPage());
+                        }
+                        else
+                        {
+                            await DisplayAlert("Error", "Failed to recover the user apps. Please, try again.", "Ok");
+                        }
                     });
                 }
             }
@@ -129,17 +137,28 @@ namespace TilesApp.Views
             //OFFLINE
             else
             {
-                App.User = App.Database.GetUser(usernameEntry.Text, SHAEncription.GenerateSHA256String(passwordEntry.Text));
-                if (App.User != null) success = true;
+                User tempUser = App.Database.GetUser(usernameEntry.Text, SHAEncription.GenerateSHA256String(passwordEntry.Text));
+                if (tempUser != null)
+                {
+                    App.User = tempUser;
+                    success = true;
+                }
             }
             if (success)
             {
                 success = await PHPApi.GetConfigFiles(App.User.MSID, App.User.OBOToken);
-                Device.BeginInvokeOnMainThread(() =>
+                if (success)
                 {
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new AppPage());
-                });
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new AppPage());
+                    });
+                }
+                else
+                {
+                    await DisplayAlert("Error", "Failed to recover the user apps. Please, try again.", "Ok");
+                }
             }
             else
             {

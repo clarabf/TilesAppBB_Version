@@ -197,8 +197,8 @@ namespace TilesApp.Views
                     int res = App.Database.SaveUser(App.User);
                     Device.BeginInvokeOnMainThread(() =>
                     {
-                                            App.User = new User();
-                    App.ActiveSession = false;
+                        App.User = new User();
+                        App.ActiveSession = false;
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new Main());
                     });

@@ -115,6 +115,7 @@ namespace TilesApp.Services
             try
             {
                 var ApplicationDataPath = GetFolderPath(SpecialFolder.LocalApplicationData);
+                string[] filesNames = Directory.GetFiles(ApplicationDataPath);
 
                 if (App.IsConnected)
                 {
@@ -134,6 +135,7 @@ namespace TilesApp.Services
                         {
                             appsConfigs.Clear();
                             userAppsList.Clear();
+                            App.Database.DeleteAllUserApps();
                             var lala = responseDict["content"];
                             Dictionary<string, string> userAppsDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(lala.ToString());
 
@@ -150,6 +152,7 @@ namespace TilesApp.Services
                                     if (typeAndName.Length == 3)
                                     {
                                         string filePath = Path.Combine(ApplicationDataPath, kvp.Key);
+                                        File.Delete(filePath);
                                         File.WriteAllText(filePath, kvp.Value);
                                         FileStream fs = File.OpenRead(filePath);
                                         MemoryStream stream = new MemoryStream();
@@ -186,7 +189,7 @@ namespace TilesApp.Services
                         FileStream fs = File.OpenRead(cf.FilePath);
                         MemoryStream stream = new MemoryStream();
                         fs.CopyTo(stream);
-                        appsConfigs.Add(cf.FileName, stream);
+                        appsConfigs.Add("App_" + cf.AppType + "_" + cf.FileName, stream);
                     }
                 }
                 return true;
