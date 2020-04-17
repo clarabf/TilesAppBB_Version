@@ -37,7 +37,6 @@ namespace TilesApp.Droid
         {
             var task = Task.Run(() => {
                 ConfigurationManager.Initialise(PCLAppConfig.FileSystemStream.PortableStream.Current);
-                PHPApi.Start();
             });
             try
             {

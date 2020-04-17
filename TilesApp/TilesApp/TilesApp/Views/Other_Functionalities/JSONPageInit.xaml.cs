@@ -17,7 +17,7 @@ namespace TilesApp.Views
 
         private async void ShowScanning(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new Scan("SCAN YOUR QR WITH JSON", 2, null));
+            await Navigation.PushModalAsync(new Scan("SCAN YOUR QR WITH JSON", 2));
         }
 
 

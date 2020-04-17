@@ -14,12 +14,10 @@ namespace TilesApp.Views
     {
 
         int scanType;
-        Dictionary<string, object> users;
 
-        public Scan(string Content, int type, Dictionary<string, object> usersList)
+        public Scan(string Content, int type)
         {
             scanType = type;
-            users = usersList;
 
             var options = new ZXing.Mobile.MobileBarcodeScanningOptions();
             options.TryInverted = true;
@@ -53,36 +51,17 @@ namespace TilesApp.Views
             switch (scanType)
             {
                 case 1:
-                    if (PHPApi.users.ContainsKey(qrScanned))
+                    Device.BeginInvokeOnMainThread(() =>
                     {
-                        PHPApi.SetCurrentUser(qrScanned);
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            Navigation.PopModalAsync(true);
-                            Navigation.PushModalAsync(new AppPage());
-                        });
-                    }
-                    else
-                    {
-                        Device.BeginInvokeOnMainThread(() =>
-                        {
-                            Navigation.PopModalAsync(true);
-                            DisplayAlert("Error scanning badge", "User not found in DB...", "Ok");
-                        });
-                    }
+                        MessagingCenter.Send(this, "SetStation", qrScanned);
+                        Navigation.PopModalAsync(true);
+                    });
                     break;
                 case 2:
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
                         Navigation.PushModalAsync(new JSONPage(qrScanned));
-                    });
-                    break;
-                case 3:
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        MessagingCenter.Send(this, "SetStation", qrScanned);
-                        Navigation.PopModalAsync(true);
                     });
                     break;
             }

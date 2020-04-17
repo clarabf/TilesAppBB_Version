@@ -162,7 +162,17 @@ namespace TilesApp.Services
         public int DeleteAllUserApps(int userId = -1)
         {
             if (userId == -1) return _database.DeleteAll<UserApp>();
-            else return _database.Delete(GetUserAppsByUserId(userId));
+            else
+            {
+                try
+                {
+                    return _database.Delete(GetUserAppsByUserId(userId));
+                }
+                catch
+                {
+                    return -1;
+                }
+            }
        }
         #endregion
 

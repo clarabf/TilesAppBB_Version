@@ -93,7 +93,7 @@ namespace TilesApp.Views
 
         private async void GoToScan(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new Scan("SCAN YOUR STATION", 3, null));
+            await Navigation.PushModalAsync(new Scan("SCAN YOUR STATION", 1));
         }
 
         private async void Home(object sender, EventArgs args)

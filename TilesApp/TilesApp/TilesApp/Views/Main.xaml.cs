@@ -24,7 +24,6 @@ namespace TilesApp.Views
         public Main()
         {
             InitializeComponent();
-            //OdooXMLRPC.Start();
             Setup();
             
             // Get last user from data base
@@ -106,10 +105,6 @@ namespace TilesApp.Views
         protected override void OnDisappearing()
         {
             base.OnDisappearing();
-        }
-        private async void GoToScan(object sender, EventArgs args)
-        {
-            await Navigation.PushModalAsync(new Scan("SCAN YOUR EMPLOYEE CARD", 1, PHPApi.users));
         }
 
         private async void LoginClicked(object sender, EventArgs args)
