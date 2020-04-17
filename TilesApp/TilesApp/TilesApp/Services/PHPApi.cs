@@ -41,7 +41,7 @@ namespace TilesApp.Services
                         {
                             appsConfigs.Clear();
                             userAppsList.Clear();
-                            App.Database.DeleteAllUserApps();
+                            App.Database.DeleteAllUserApps(App.User.Id);
                             var lala = responseDict["content"];
                             Dictionary<string, string> userAppsDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(lala.ToString());
 

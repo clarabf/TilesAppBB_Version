@@ -31,7 +31,6 @@ namespace TilesApp
         public static User User { get; set; } = new User();
         public static bool ActiveSession { get; set; } = false;
         public static bool IsConnected { get; set; } = false;
-        public static bool FirstLaunch { get; set; } = true;
         public static ObservableCollection<Dictionary<string, object>> Inventory { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         private static LocalDatabase database;
         public static LocalDatabase Database

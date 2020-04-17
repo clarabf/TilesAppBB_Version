@@ -166,9 +166,14 @@ namespace TilesApp.Services
             {
                 try
                 {
-                    return _database.Delete(GetUserAppsByUserId(userId));
+                    var tempList = GetUserAppsByUserId(userId);
+                    foreach (UserApp ua in tempList)
+                    {
+                        DeleteUserApp(ua);
+                    }
+                    return 1;
                 }
-                catch
+                catch (Exception e)
                 {
                     return -1;
                 }

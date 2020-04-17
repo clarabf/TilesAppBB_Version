@@ -53,32 +53,6 @@ namespace TilesApp.Views
                 passwordEntry.Placeholder = "password";
             }
 
-            if (App.IsConnected)
-            {
-                if (App.FirstLaunch)
-                {
-                    App.FirstLaunch = false;
-                    App.Database.DeleteAllUserApps();
-                    App.Database.DeleteAllConfigFiles();
-                }
-                if (AuthHelper.CheckIfTokenIsValid())
-                {
-                    App.ActiveSession = true;
-                    Device.BeginInvokeOnMainThread( async () =>
-                    {
-                        bool success = await PHPApi.GetConfigFiles(App.User.MSID, App.User.OBOToken);
-                        if (success)
-                        {
-                            Navigation.PopModalAsync(true);
-                            Navigation.PushModalAsync(new AppPage());
-                        }
-                        else
-                        {
-                            await DisplayAlert("Error", "Failed to recover the user apps. Please, try again.", "Ok");
-                        }
-                    });
-                }
-            }
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("Error", errorMessage, "Ok");
             });
@@ -93,7 +67,6 @@ namespace TilesApp.Views
 
         private void GetLastUserFromDB() {
             // Get the last logeed in user
-            //int x = await App.Database._database.Table<User>().CountAsync();
             User tempUser = App.Database.GetLastLoggedInUser();
             if (tempUser != null) App.User = tempUser;
         }
@@ -119,8 +92,7 @@ namespace TilesApp.Views
 
                 await Application.Current.SavePropertiesAsync();
             }
-            // Start log in process
-
+    
             bool success = false;
             //ONLINE
             if (App.IsConnected)
