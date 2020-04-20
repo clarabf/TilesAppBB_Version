@@ -13,7 +13,6 @@ namespace TilesApp.Views
 {
     public partial class Review : BasePage
     {
-
         public ReviewMetaData MetaData { get; set; }
         public ObservableCollection<Dictionary<string, object>> Elements { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         public string Barcode { get; set; }
