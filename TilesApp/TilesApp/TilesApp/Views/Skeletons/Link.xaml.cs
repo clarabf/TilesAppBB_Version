@@ -118,7 +118,8 @@ namespace TilesApp.Views
             List<string> errorsList = MetaData.IsValid();
             if (errorsList.Count==0)
             {
-                if (!App.IsConnected) MetaData.DoneOffline = true;
+                if (App.IsConnected) MetaData.DoneOffline = false;
+                else MetaData.DoneOffline = true;
                 KeyValuePair<string, string> resultInsertion = CosmosDBManager.InsertOneObject(MetaData);
                 if (resultInsertion.Key == "Success") 
                 { 

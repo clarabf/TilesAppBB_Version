@@ -44,6 +44,8 @@ namespace TilesApp.Views
             tapGestureRecognizer.Tapped += Show_Images;
             hyper.GestureRecognizers.Add(tapGestureRecognizer);
 
+            if (!App.IsConnected) DisplayAlert("You are offline!", "The pictures you take won't be uploaded.", "OK");
+
             MessagingCenter.Subscribe<PhotoDetail, ObservableCollection<PhotoData>>(this, "SendPhotos", (s, a) =>
             {
                 TakenPhotos = a;
@@ -190,9 +192,13 @@ namespace TilesApp.Views
             {
                 Collection<string> urls = new Collection<string>();
                 setPhotosList();
-                if (photoList.Count > 0) urls = StreamToAzure.UpdateJPEGStreams(photoList, appName);
+                if (App.IsConnected)
+                {
+                    MetaData.DoneOffline = false;
+                    if (photoList.Count > 0) urls = StreamToAzure.UpdateJPEGStreams(photoList, appName);
+                }
+                else MetaData.DoneOffline = true;
                 MetaData.Images = urls;
-                if (!App.IsConnected) MetaData.DoneOffline = true;
                 KeyValuePair<string, string> resultInsertion = CosmosDBManager.InsertOneObject(MetaData);
                 if (resultInsertion.Key == "Success")
                 {
