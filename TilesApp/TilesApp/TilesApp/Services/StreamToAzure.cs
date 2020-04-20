@@ -135,7 +135,7 @@ namespace TilesApp.Services
             try
             {
                 // Create container if not exits
-                container = client.GetContainerReference(appName.ToLower());
+                container = client.GetContainerReference(appName.ToLower().Replace(" ", ""));
                 container.CreateIfNotExistsAsync().Wait();
                 BlobContainerPermissions permissions = container.GetPermissionsAsync().Result;
                 permissions.PublicAccess = BlobContainerPublicAccessType.Blob;

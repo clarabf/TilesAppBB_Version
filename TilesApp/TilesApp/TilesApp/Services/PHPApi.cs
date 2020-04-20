@@ -102,7 +102,7 @@ namespace TilesApp.Services
             }
             catch (Exception e)
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.ToString());
+                //MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.ToString());
                 return false;
             }
         }
