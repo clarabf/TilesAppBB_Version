@@ -35,7 +35,7 @@ namespace TilesApp.Services
             try
             {
                 // Create container if not exits
-                container = client.GetContainerReference(appName.ToLower().Replace(" ", ""));
+                container = client.GetContainerReference("qcimgs");
                 container.CreateIfNotExistsAsync().Wait();
                 BlobContainerPermissions permissions = container.GetPermissionsAsync().Result;
                 permissions.PublicAccess = BlobContainerPublicAccessType.Blob;
@@ -50,11 +50,11 @@ namespace TilesApp.Services
             {
                 foreach (Stream str in fileStreams)
                 {
-                    string fileName = Guid.NewGuid().ToString() + ".jpeg";
+                    string fileName = appName.ToLower().Replace(" ", "") + "/" + Guid.NewGuid().ToString() + ".jpeg";
                     outputBlob = container.GetBlockBlobReference(fileName);
                     outputBlob.Properties.ContentType = "image/jpeg";
                     outputBlob.UploadFromStreamAsync(str).Wait();
-                    returnList.Add(ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "/" + appName.ToLower() + "/" + fileName);
+                    returnList.Add(ConfigurationManager.AppSettings["AZURE_STORAGE_URL"] + "qcimgs/" + fileName);
                 }
             }
             catch
