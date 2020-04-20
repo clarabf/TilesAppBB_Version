@@ -71,7 +71,7 @@ namespace TilesApp.Views
             if (tempUser != null) App.User = tempUser;
         }
 
-        protected async override void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();           
         }
@@ -115,7 +115,7 @@ namespace TilesApp.Views
             {
                 success = await PHPApi.GetConfigFiles(App.User.MSID, App.User.OBOToken);
                 if (success)
-                {
+                {                    
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);

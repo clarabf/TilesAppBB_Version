@@ -106,7 +106,23 @@ namespace TilesApp.Services
                 return false;
             }
         }
-        public static Stream GetAppConfig(string appName)
+
+        public async static Task<string> GetAppVersion(string token)
+        {
+            string result = "";
+            if (App.IsConnected)
+            {
+                HttpClient client = new HttpClient();
+                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                HttpResponseMessage response = await client.GetAsync("https://sherpa.saco.tech/api/getLatestVersion");
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    result = await response.Content.ReadAsStringAsync();
+                }
+            }
+            return result;
+        }
+            public static Stream GetAppConfig(string appName)
         {
             try
             {

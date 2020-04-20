@@ -9,6 +9,7 @@ using TilesApp.Models;
 using TilesApp.Models.DataModels;
 using System.Collections.Generic;
 using TilesApp.Views.Other_Functionalities;
+using Xamarin.Essentials;
 
 namespace TilesApp.Views
 {
@@ -104,6 +105,35 @@ namespace TilesApp.Views
             }
         }
 
+        protected async override void OnAppearing()
+        {
+            base.OnAppearing();
+            try
+            {
+                Version latestVersion = new Version(await PHPApi.GetAppVersion(App.User.OBOToken));
+                Version currentVersion = new Version(VersionTracking.CurrentVersion);
+                var result = latestVersion.CompareTo(currentVersion);
+                if (result > 0)
+                {
+                    if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is out, would you like to Download it?", "Download", "Later"))
+                    {
+                        string latestApkPath = await StreamToAzure.GetLastestAPKAsync();
+                        if (Application.Current.Properties.ContainsKey("latestApkPath")) Application.Current.Properties["latestApkPath"] = latestApkPath;
+                        else Application.Current.Properties.Add("latestApkPath", latestApkPath);
+                        await Application.Current.SavePropertiesAsync();
+                        if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is Downloaded, would you like to run the update?", "Update now", "Later"))
+                        {
+                            // @TODO: launch the apk
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+        }
         private void OnTimerEvent(object sender, ElapsedEventArgs e)
         {
             seconds++;

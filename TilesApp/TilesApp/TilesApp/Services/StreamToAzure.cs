@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using PCLAppConfig;
@@ -63,5 +64,55 @@ namespace TilesApp.Services
             }
             return returnList;
         }
+
+        public static async Task<string> GetLastestAPKAsync()
+        {
+            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
+            string filePath = "";
+            try
+            {
+                client = storageAccount.CreateCloudBlobClient();
+                container = client.GetContainerReference("containertest");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return filePath;
+            }
+            string apkName = "Sherpa.apk";
+            var blob = container.GetBlockBlobReference("apk/latest/"+ apkName);
+            if (await blob.ExistsAsync())
+            {
+                string completeName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName);
+
+                using (var fileStream = File.OpenWrite(completeName))
+                {
+                    Console.WriteLine("Test");
+                    try
+                    {
+                        await blob.DownloadToStreamAsync(fileStream);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Exception: {ex.ToString()}");
+                        return filePath;
+                    }
+                }
+
+                if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName)) == true)
+                {
+                    Console.WriteLine("You got it!");
+                    filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName);
+                    return filePath;
+                }
+                else
+                {
+                    Console.WriteLine("No File!!!");
+                    return filePath;
+                }
+            }
+            return filePath;
+        }
+
     }
 }
