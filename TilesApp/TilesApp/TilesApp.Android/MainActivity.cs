@@ -15,7 +15,9 @@ namespace TilesApp.Droid
     using Android.Bluetooth;
     using Android.Content;
     using Android.Hardware.Usb;
+    using Android.Support.V4.Content;
     using Android.Views.InputMethods;
+    using Java.IO;
     using Java.Lang.Reflect;
     using PCLAppConfig;
     using System.Linq;
@@ -51,8 +53,12 @@ namespace TilesApp.Droid
             LoadApplication(new App());
             monitor = new DeviceMonitor();
             ScanBluetoothDevices();
-            ScanSerialDevices();            
+            ScanSerialDevices();
             App.DeviceSerialNumber = Android.OS.Build.Serial;
+
+            MessagingCenter.Subscribe<Xamarin.Forms.Application, string>(Xamarin.Forms.Application.Current, "InstallApk", (s, latestApkPath) => {
+                OpenApk(latestApkPath);
+            });
         }
         private IAndroidLifecycle TslLifecycle
         {
@@ -126,7 +132,7 @@ namespace TilesApp.Droid
                 }
                 else
                 if (i >= 1 && keyCodes[i - 1] == "ShiftLeft")
-                {                            
+                {
                     switch (keyCodes[i])
                     {
                         case "Apostrophe":
@@ -179,19 +185,19 @@ namespace TilesApp.Droid
                             break;
                         case "ShiftLeft":
                         case "Back":
-                        case "MediaEject":                        
+                        case "MediaEject":
                             break;
                         default:
                             result += keyCodes[i].ToLower();
                             break;
-                    }                    
+                    }
                 }
             }
             return result;
         }
-        private void ScanBluetoothDevices(){
+        private void ScanBluetoothDevices() {
             BluetoothAdapter adapter = BluetoothAdapter.DefaultAdapter;
-            List<string>  ouiVendorIds = new List<string>(ConfigurationManager.AppSettings["OUI_VENDOR_IDS"].Split(new char[] { ';' }));
+            List<string> ouiVendorIds = new List<string>(ConfigurationManager.AppSettings["OUI_VENDOR_IDS"].Split(new char[] { ';' }));
             List<string> ouiTransportIds = new List<string>(ConfigurationManager.AppSettings["OUI_TRANSPORTS_IDS"].Split(new char[] { ';' }));
             List<BluetoothDevice> btDevices = adapter.BondedDevices.ToList();
             for (int i = 0; i < btDevices.Count; i++)
@@ -243,6 +249,22 @@ namespace TilesApp.Droid
                 //MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
             }
         }
-
+        private void OpenApk(string apkPath){
+            File file = new File(apkPath);
+            var apkIntent = new Intent(Intent.ActionView);
+            apkIntent.SetDataAndType(FileProvider.GetUriForFile(Android.App.Application.Context, "com.saco.Sherpa.fileprovider", file), "application/vnd.android.package-archive");
+            apkIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
+            apkIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
+            apkIntent.SetFlags(ActivityFlags.NewTask);
+            apkIntent.SetFlags(ActivityFlags.ClearWhenTaskReset);
+            try
+            {
+                StartActivity(apkIntent);
+            }
+            catch (Exception e)
+            {
+                var x = e.Message;
+            }
+        }
     }
 }

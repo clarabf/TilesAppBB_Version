@@ -83,6 +83,7 @@ namespace TilesApp.Services
             var blob = container.GetBlockBlobReference("apk/latest/"+ apkName);
             if (await blob.ExistsAsync())
             {
+                //var downloadsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads);
                 string completeName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName);
 
                 using (var fileStream = File.OpenWrite(completeName))

@@ -10,6 +10,7 @@ using TilesApp.Models.DataModels;
 using System.Collections.Generic;
 using TilesApp.Views.Other_Functionalities;
 using Xamarin.Essentials;
+using Android.Content;
 
 namespace TilesApp.Views
 {
@@ -124,6 +125,7 @@ namespace TilesApp.Views
                         if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is Downloaded, would you like to run the update?", "Update now", "Later"))
                         {
                             // @TODO: launch the apk
+                            MessagingCenter.Send(Xamarin.Forms.Application.Current, "InstallApk", latestApkPath);
                         }
                     }
                 }
