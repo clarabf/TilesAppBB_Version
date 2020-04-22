@@ -85,7 +85,7 @@ namespace TilesApp.Views
                         button.Clicked += QC_Command;
                         break;
                     case "Review":
-                        icon = "\uf1da";
+                        icon = "\ue804";
                         button.Clicked += Review_Command;
                         break;
                     default:

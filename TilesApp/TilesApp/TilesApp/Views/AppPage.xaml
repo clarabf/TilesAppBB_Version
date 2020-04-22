@@ -98,9 +98,9 @@
                             </Button>
                             <BoxView
                                 HeightRequest="1.5" 
-                                WidthRequest="140"
+                                WidthRequest="160"
                                 BackgroundColor="#bc0000"                                 
-                                Margin="0,0,0,5"
+                                Margin="0,0,15,5"
                                 VerticalOptions="EndAndExpand"
                                 HorizontalOptions="CenterAndExpand"
                             />

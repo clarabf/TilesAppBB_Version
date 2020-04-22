@@ -109,10 +109,10 @@
     <AndroidAsset Include="Assets\FontAwesome5Brands.otf" />
     <AndroidAsset Include="Assets\FontAwesome5Regular.otf" />
     <AndroidAsset Include="Assets\FontAwesome5Solid.otf" />
-    <AndroidAsset Include="Assets\fontello.ttf" />
     <AndroidAsset Include="Assets\qr-scan.json" />
     <AndroidAsset Include="Assets\splash-screen.json" />
     <AndroidAsset Include="Assets\splash-error.json" />
+    <AndroidAsset Include="Assets\fontello.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />

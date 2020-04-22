@@ -63,7 +63,7 @@
                     />
                     <StackLayout Grid.Row="4" Orientation="Horizontal">
                         <CheckBox Color="Red" CheckedChanged="OnCheckBoxCheckedChanged"/>
-                        <Label Text="Remember me"/>
+                        <Label Text="Remember me" VerticalOptions="Center"/>
                     </StackLayout>
                     <Button StyleClass="primaryButton"
                         IsEnabled="False"
