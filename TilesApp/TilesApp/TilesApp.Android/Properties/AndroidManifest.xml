@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.00" package="com.saco.Sherpa" android:installLocation="preferExternal" android:launchMode="singleInstance">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="1" android:versionName="1.00" package="com.test.Sherpa" android:installLocation="preferExternal" android:launchMode="singleInstance">
 	<uses-sdk android:minSdkVersion="23" android:targetSdkVersion="27" />
 	<application android:label="Sherpa">
 		<provider android:name="android.support.v4.content.FileProvider" android:authorities="com.saco.Sherpa.fileprovider" android:exported="false" android:grantUriPermissions="true">

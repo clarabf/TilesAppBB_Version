@@ -55,7 +55,6 @@ namespace TilesApp.Droid
             ScanBluetoothDevices();
             ScanSerialDevices();
             App.DeviceSerialNumber = Android.OS.Build.Serial;
-
             MessagingCenter.Subscribe<Xamarin.Forms.Application, string>(Xamarin.Forms.Application.Current, "InstallApk", (s, latestApkPath) => {
                 OpenApk(latestApkPath);
             });
@@ -250,15 +249,16 @@ namespace TilesApp.Droid
             }
         }
         private void OpenApk(string apkPath){
-            File file = new File(apkPath);
-            var apkIntent = new Intent(Intent.ActionView);
-            apkIntent.SetDataAndType(FileProvider.GetUriForFile(Android.App.Application.Context, "com.saco.Sherpa.fileprovider", file), "application/vnd.android.package-archive");
-            apkIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
-            apkIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
-            apkIntent.SetFlags(ActivityFlags.NewTask);
-            apkIntent.SetFlags(ActivityFlags.ClearWhenTaskReset);
             try
             {
+                File file = new File(apkPath);
+                var apkIntent = new Intent(Intent.ActionView);
+                file.SetReadable(true);
+                apkIntent.SetDataAndType(FileProvider.GetUriForFile(Android.App.Application.Context, "com.saco.Sherpa.fileprovider", file), "application/vnd.android.package-archive");
+                apkIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
+                apkIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
+                apkIntent.SetFlags(ActivityFlags.NewTask);
+                apkIntent.SetFlags(ActivityFlags.ClearWhenTaskReset);
                 StartActivity(apkIntent);
             }
             catch (Exception e)

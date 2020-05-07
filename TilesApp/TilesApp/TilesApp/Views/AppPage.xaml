@@ -21,7 +21,6 @@
                     CharacterSpacing="1.15"
                     FontSize="26"/>
                 <ScrollView Grid.Row="1">
-
                     <Grid IsClippedToBounds="True" Margin="0,0,0,0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -30,11 +29,10 @@
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
-
                         </Grid.RowDefinitions>
                         <Grid x:Name="buttonsGrid" 
-                        VerticalOptions="FillAndExpand" 
-                        HorizontalOptions="FillAndExpand" Grid.Row="0"/>
+                            VerticalOptions="FillAndExpand" 
+                            HorizontalOptions="FillAndExpand" Grid.Row="0"/>
                         <Grid Grid.Row="2"   VerticalOptions="End">
                             <Button
                                 x:Name="CONF"
@@ -179,7 +177,26 @@
 
                 </ScrollView>
             </Grid>
-
+            <Frame x:Name="LoadingPopUp" 
+                IsVisible="false"
+                AbsoluteLayout.LayoutBounds="0, 0, 1, 1" 
+                AbsoluteLayout.LayoutFlags="All"
+                IsClippedToBounds="True"
+                Padding="0">
+                <StackLayout>
+                    <ActivityIndicator 
+                        x:Name="loading" 
+                        VerticalOptions="EndAndExpand" 
+                        HorizontalOptions="CenterAndExpand"
+                        Color="Red"
+                        IsRunning="True"/>
+                    <Label 
+                        XAlign="Center"
+                        Text="Downloading latest APK.&#x0a;Please, wait until returning to My Apps page..."
+                        VerticalOptions="StartAndExpand" 
+                        HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+            </Frame>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

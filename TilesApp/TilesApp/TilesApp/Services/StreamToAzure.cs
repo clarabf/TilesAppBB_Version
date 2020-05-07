@@ -67,8 +67,8 @@ namespace TilesApp.Services
 
         public static async Task<string> GetLastestAPKAsync()
         {
-            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
             string filePath = "";
+            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
             try
             {
                 client = storageAccount.CreateCloudBlobClient();
@@ -80,7 +80,7 @@ namespace TilesApp.Services
                 return filePath;
             }
             string apkName = "Sherpa.apk";
-            var blob = container.GetBlockBlobReference("apk/latest/"+ apkName);
+            var blob = container.GetBlockBlobReference("apk/latest/" + apkName);
             if (await blob.ExistsAsync())
             {
                 //var downloadsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads);
@@ -111,6 +111,14 @@ namespace TilesApp.Services
                     Console.WriteLine("No File!!!");
                     return filePath;
                 }
+            }
+            var apkPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Sherpa.apk");
+            //var apkPath = Path.Combine("/storage/emulated/0/Download/com.test.Sherpa.apk");
+            //var downloadsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads);
+            if (File.Exists(apkPath) == true)
+            {
+                Console.WriteLine("You got it!");
+                filePath = apkPath;
             }
             return filePath;
         }

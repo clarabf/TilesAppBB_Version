@@ -116,12 +116,14 @@ namespace TilesApp.Views
                 var result = latestVersion.CompareTo(currentVersion);
                 if (result > 0)
                 {
-                    if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is out, would you like to Download it?", "Download", "Later"))
+                    if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is out, would you like to Download it? It could take a while.", "Download", "Later"))
                     {
+                        LoadingPopUp.IsVisible = true;
                         string latestApkPath = await StreamToAzure.GetLastestAPKAsync();
                         if (Application.Current.Properties.ContainsKey("latestApkPath")) Application.Current.Properties["latestApkPath"] = latestApkPath;
                         else Application.Current.Properties.Add("latestApkPath", latestApkPath);
                         await Application.Current.SavePropertiesAsync();
+                        LoadingPopUp.IsVisible = false;
                         if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is Downloaded, would you like to run the update?", "Update now", "Later"))
                         {
                             // @TODO: launch the apk
