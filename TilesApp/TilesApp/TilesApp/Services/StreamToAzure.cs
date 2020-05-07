@@ -83,27 +83,27 @@ namespace TilesApp.Services
             var blob = container.GetBlockBlobReference("apk/latest/" + apkName);
             if (await blob.ExistsAsync())
             {
-                //var downloadsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads);
-                string completeName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName);
+                var completeName = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath, apkName);
+                //string completeName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName);
 
-                using (var fileStream = File.OpenWrite(completeName))
-                {
-                    Console.WriteLine("Test");
-                    try
-                    {
-                        await blob.DownloadToStreamAsync(fileStream);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine($"Exception: {ex.ToString()}");
-                        return filePath;
-                    }
-                }
+                //using (var fileStream = File.OpenWrite(completeName))
+                //{
+                //    Console.WriteLine("Test");
+                //    try
+                //    {
+                //        await blob.DownloadToStreamAsync(fileStream);
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        Console.WriteLine($"Exception: {ex.ToString()}");
+                //        return filePath;
+                //    }
+                //}
 
-                if (File.Exists(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName)) == true)
+                if (File.Exists(completeName))
                 {
                     Console.WriteLine("You got it!");
-                    filePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName);
+                    filePath = completeName;
                     return filePath;
                 }
                 else

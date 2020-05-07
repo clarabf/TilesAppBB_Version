@@ -12,14 +12,18 @@ using Lottie.Forms.Droid;
 
 namespace TilesApp.Droid
 {
+    using Android;
     using Android.Bluetooth;
     using Android.Content;
     using Android.Hardware.Usb;
+    using Android.Support.V4.App;
     using Android.Support.V4.Content;
     using Android.Views.InputMethods;
     using Java.IO;
     using Java.Lang.Reflect;
     using PCLAppConfig;
+    using Plugin.Permissions;
+    using Plugin.Permissions.Abstractions;
     using System.Linq;
     using System.Threading;
     using TechnologySolutions.Rfid.AsciiProtocol.Extensions;
@@ -56,7 +60,7 @@ namespace TilesApp.Droid
             ScanSerialDevices();
             App.DeviceSerialNumber = Android.OS.Build.Serial;
             MessagingCenter.Subscribe<Xamarin.Forms.Application, string>(Xamarin.Forms.Application.Current, "InstallApk", (s, latestApkPath) => {
-                OpenApk(latestApkPath);
+                OpenApkAsync(latestApkPath);
             });
         }
         private IAndroidLifecycle TslLifecycle
@@ -248,7 +252,7 @@ namespace TilesApp.Droid
                 //MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
             }
         }
-        private void OpenApk(string apkPath){
+        private void OpenApkAsync(string apkPath){
             try
             {
                 File file = new File(apkPath);
@@ -258,8 +262,21 @@ namespace TilesApp.Droid
                 apkIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
                 apkIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
                 apkIntent.SetFlags(ActivityFlags.NewTask);
-                apkIntent.SetFlags(ActivityFlags.ClearWhenTaskReset);
-                StartActivity(apkIntent);
+                apkIntent.PutExtra(Intent.ExtraReturnResult, true);
+                //apkIntent.SetFlags(ActivityFlags.ClearWhenTaskReset);
+
+                var perm1 = ContextCompat.CheckSelfPermission(this, Manifest.Permission.RequestInstallPackages);
+                var perm2 = ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage);
+                var perm3 = ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage);
+
+                if (perm1 == Android.Content.PM.Permission.Denied)
+                {
+                    StartActivity(new Intent(DownloadManager.ActionViewDownloads));
+                }
+                else
+                {
+                    StartActivity(apkIntent);
+                }
             }
             catch (Exception e)
             {
