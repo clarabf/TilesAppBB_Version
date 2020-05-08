@@ -52,6 +52,7 @@ namespace TilesApp.Views
             {
                 passwordEntry.Placeholder = "password";
             }
+            lblVersion.Text = VersionTracking.CurrentVersion.ToString();
 
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("Error", errorMessage, "Ok");

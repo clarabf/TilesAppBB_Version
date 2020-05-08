@@ -19,6 +19,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="2*" />
+                        <RowDefinition Height="0.5*" />
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="1*" />
                         <RowDefinition Height="0.5*" />
@@ -39,9 +40,19 @@
                         HorizontalOptions="CenterAndExpand"
                         VerticalOptions="Start"
                         />
-
-                    <Entry x:Name="usernameEntry"
+                    
+                    <Label 
+                        x:Name="lblVersion"
+                        XAlign="Center"
                         Grid.Row="2"
+                        Text="Version 1.0"
+                        TextColor="White"
+                        VerticalOptions="CenterAndExpand" 
+                        HorizontalOptions="CenterAndExpand" 
+                        />
+                    
+                    <Entry x:Name="usernameEntry"
+                        Grid.Row="3"
                         Placeholder="username" 
                         PlaceholderColor="#A9A9A9"
                         TextColor="#ffffff"
@@ -51,7 +62,7 @@
                         VerticalOptions="EndAndExpand"
                     />
                     <Entry x:Name="passwordEntry"
-                        Grid.Row="3"
+                        Grid.Row="4"
                         IsPassword="true" 
                         Placeholder="password" 
                         PlaceholderColor="#A9A9A9"
@@ -61,7 +72,7 @@
                         HorizontalOptions="FillAndExpand"
                         VerticalOptions="CenterAndExpand"
                     />
-                    <StackLayout Grid.Row="4" Orientation="Horizontal">
+                    <StackLayout Grid.Row="5" Orientation="Horizontal">
                         <CheckBox Color="Red" CheckedChanged="OnCheckBoxCheckedChanged"/>
                         <Label Text="Remember me" VerticalOptions="Center"/>
                     </StackLayout>
@@ -71,7 +82,7 @@
                         WidthRequest="500"
                         Text="LOG IN"
                         Padding="0,15,0,15"
-                        Grid.Row="5"
+                        Grid.Row="6"
                         HorizontalOptions="CenterAndExpand" 
                         VerticalOptions="EndAndExpand"
                         Clicked="LoginClicked"                            

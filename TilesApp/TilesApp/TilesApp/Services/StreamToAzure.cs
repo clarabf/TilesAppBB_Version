@@ -68,57 +68,43 @@ namespace TilesApp.Services
         public static async Task<string> GetLastestAPKAsync()
         {
             string filePath = "";
-            storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
             try
             {
+                storageAccount = CloudStorageAccount.Parse(ConfigurationManager.AppSettings["AZURE_STORAGE_CONNECTION_STRING"]);
                 client = storageAccount.CreateCloudBlobClient();
                 container = client.GetContainerReference("containertest");
+                string apkName = "Sherpa.apk";
+                var blob = container.GetBlockBlobReference("apk/latest/" + apkName);
+                if (await blob.ExistsAsync())
+                {
+                    var completeName = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath, apkName);
+                    //string completeName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName);
+                    if (File.Exists(completeName))
+                    {
+                        Console.WriteLine("You got it!");
+                        File.SetAttributes(completeName, FileAttributes.Normal);
+                        File.Delete(completeName);
+                    }
+                    using (var fileStream = File.OpenWrite(completeName))
+                    {
+                        Console.WriteLine("Test");
+                        await blob.DownloadToStreamAsync(fileStream);
+                    }
+
+                    if (File.Exists(completeName))
+                    {
+                        Console.WriteLine("You got it!");
+                        filePath = completeName;
+                    }
+                    else
+                    {
+                        Console.WriteLine("No File!!!");
+                    }
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return filePath;
-            }
-            string apkName = "Sherpa.apk";
-            var blob = container.GetBlockBlobReference("apk/latest/" + apkName);
-            if (await blob.ExistsAsync())
-            {
-                var completeName = Path.Combine(Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads).AbsolutePath, apkName);
-                //string completeName = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), apkName);
-
-                //using (var fileStream = File.OpenWrite(completeName))
-                //{
-                //    Console.WriteLine("Test");
-                //    try
-                //    {
-                //        await blob.DownloadToStreamAsync(fileStream);
-                //    }
-                //    catch (Exception ex)
-                //    {
-                //        Console.WriteLine($"Exception: {ex.ToString()}");
-                //        return filePath;
-                //    }
-                //}
-
-                if (File.Exists(completeName))
-                {
-                    Console.WriteLine("You got it!");
-                    filePath = completeName;
-                    return filePath;
-                }
-                else
-                {
-                    Console.WriteLine("No File!!!");
-                    return filePath;
-                }
-            }
-            var apkPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Sherpa.apk");
-            //var apkPath = Path.Combine("/storage/emulated/0/Download/com.test.Sherpa.apk");
-            //var downloadsPath = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDownloads);
-            if (File.Exists(apkPath) == true)
-            {
-                Console.WriteLine("You got it!");
-                filePath = apkPath;
             }
             return filePath;
         }

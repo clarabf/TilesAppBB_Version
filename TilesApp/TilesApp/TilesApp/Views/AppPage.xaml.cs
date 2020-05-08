@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using TilesApp.Views.Other_Functionalities;
 using Xamarin.Essentials;
 using Android.Content;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 
 namespace TilesApp.Views
 {
@@ -111,26 +113,47 @@ namespace TilesApp.Views
             base.OnAppearing();
             try
             {
-                Version latestVersion = new Version(await PHPApi.GetAppVersion(App.User.OBOToken));
-                Version currentVersion = new Version(VersionTracking.CurrentVersion);
-                var result = latestVersion.CompareTo(currentVersion);
-                if (result > 0)
+                if (App.IsConnected)
                 {
-                    if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is out, would you like to Download it? It could take a while.", "Download", "Later"))
+                    Version latestVersion = new Version(await PHPApi.GetAppVersion(App.User.OBOToken));
+                    Version currentVersion = new Version(VersionTracking.CurrentVersion);
+                    var result = latestVersion.CompareTo(currentVersion);
+                    if (result > 0)
                     {
-                        LoadingPopUp.IsVisible = true;
-                        string latestApkPath = await StreamToAzure.GetLastestAPKAsync();
-                        if (Application.Current.Properties.ContainsKey("latestApkPath")) Application.Current.Properties["latestApkPath"] = latestApkPath;
-                        else Application.Current.Properties.Add("latestApkPath", latestApkPath);
-                        await Application.Current.SavePropertiesAsync();
-                        LoadingPopUp.IsVisible = false;
-                        if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is Downloaded, would you like to run the update?", "Update now", "Later"))
+                        if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is out, would you like to Download it? It could take a while.", "Download", "Later"))
                         {
-                            // @TODO: launch the apk
-                            MessagingCenter.Send(Xamarin.Forms.Application.Current, "InstallApk", latestApkPath);
-                        }
-                    }
-                }
+                            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+                            if (status != PermissionStatus.Granted)
+                            {
+                                var results = await CrossPermissions.Current.RequestPermissionsAsync(Permission.Storage);
+                                status = results[Permission.Storage];
+                            }
+                            if (status == PermissionStatus.Granted)
+                            {
+                                LoadingPopUp.IsVisible = true;
+                                string latestApkPath = await StreamToAzure.GetLastestAPKAsync();
+                                if (latestApkPath != "")
+                                {
+                                    LoadingPopUp.IsVisible = false;
+                                    if (Application.Current.Properties.ContainsKey("latestApkPath")) Application.Current.Properties["latestApkPath"] = latestApkPath;
+                                    else Application.Current.Properties.Add("latestApkPath", latestApkPath);
+                                    await Application.Current.SavePropertiesAsync();
+
+                                    if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is in Download folder. Would you like to open the folder to run the update?", "Update now", "Later"))
+                                    {
+                                        // @TODO: launch the apk
+                                        MessagingCenter.Send(Xamarin.Forms.Application.Current, "InstallApk", latestApkPath);
+                                    }
+                                }
+                                else
+                                {
+                                    LoadingPopUp.IsVisible = false;
+                                    await DisplayAlert("Error downloading the APK...", "Please, contact with administrator.", "Ok");
+                                }
+                            } // Permission granted
+                        } // New update display
+                    } // Different versions
+                } // App connected
             }
             catch (Exception e)
             {

@@ -255,28 +255,19 @@ namespace TilesApp.Droid
         private void OpenApkAsync(string apkPath){
             try
             {
-                File file = new File(apkPath);
-                var apkIntent = new Intent(Intent.ActionView);
-                file.SetReadable(true);
-                apkIntent.SetDataAndType(FileProvider.GetUriForFile(Android.App.Application.Context, "com.saco.Sherpa.fileprovider", file), "application/vnd.android.package-archive");
-                apkIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
-                apkIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
-                apkIntent.SetFlags(ActivityFlags.NewTask);
-                apkIntent.PutExtra(Intent.ExtraReturnResult, true);
+                //Istalling directly APK doesn't work
+                
+                //File file = new File(apkPath);
+                //var apkIntent = new Intent(Intent.ActionView);
+                //file.SetReadable(true);
+                //apkIntent.SetDataAndType(FileProvider.GetUriForFile(Android.App.Application.Context, "com.saco.Sherpa.fileprovider", file), "application/vnd.android.package-archive");
+                //apkIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
+                //apkIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
+                //apkIntent.SetFlags(ActivityFlags.NewTask);
                 //apkIntent.SetFlags(ActivityFlags.ClearWhenTaskReset);
 
-                var perm1 = ContextCompat.CheckSelfPermission(this, Manifest.Permission.RequestInstallPackages);
-                var perm2 = ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage);
-                var perm3 = ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage);
-
-                if (perm1 == Android.Content.PM.Permission.Denied)
-                {
-                    StartActivity(new Intent(DownloadManager.ActionViewDownloads));
-                }
-                else
-                {
-                    StartActivity(apkIntent);
-                }
+                // Opening Download folder to update
+                StartActivity(new Intent(DownloadManager.ActionViewDownloads));
             }
             catch (Exception e)
             {
