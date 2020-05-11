@@ -268,6 +268,7 @@ namespace TilesApp.Droid
 
                 // Opening Download folder to update
                 StartActivity(new Intent(DownloadManager.ActionViewDownloads));
+                Process.KillProcess(Process.MyPid());
             }
             catch (Exception e)
             {

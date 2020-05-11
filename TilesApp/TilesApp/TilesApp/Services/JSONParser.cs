@@ -2,6 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using TilesApp.Models;
+using TilesApp.Models.DataModels;
+using TilesApp.Models.Skeletons;
 
 namespace TilesApp
 {
@@ -256,6 +259,36 @@ namespace TilesApp
                 {"7", "http:\\www.google.es"},
                 {"8", "http:\\www.google.es"}
             };
+        }
+
+        public static object JsonToOperation(PendingOperation opt)
+        {
+            object obj = new object();
+            switch (opt.OperationType)
+            {
+                case "JoinMetaData":
+                    obj = JsonConvert.DeserializeObject<JoinMetaData>(opt.Data);
+                    break;
+                case "LinkMetaData":
+                    obj = JsonConvert.DeserializeObject<LinkMetaData>(opt.Data);
+                    break;
+                case "QCMetaData":
+                    obj = JsonConvert.DeserializeObject<QCMetaData>(opt.Data);
+                    break;
+                case "RegMetaData":
+                    obj = JsonConvert.DeserializeObject<RegMetaData>(opt.Data);
+                    break;
+                case "ReviewMetaData":
+                    obj = JsonConvert.DeserializeObject<ReviewMetaData>(opt.Data);
+                    break;
+                case "AppBasicOperation":
+                    obj = JsonConvert.DeserializeObject<AppBasicOperation>(opt.Data);
+                    break;
+                default:
+                    obj = opt.Data;
+                    break;
+            }
+            return obj;
         }
     }
 }

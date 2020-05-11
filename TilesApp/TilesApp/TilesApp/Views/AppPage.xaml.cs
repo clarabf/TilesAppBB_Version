@@ -13,6 +13,7 @@ using Xamarin.Essentials;
 using Android.Content;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
+using Plugin.Toast;
 
 namespace TilesApp.Views
 {
@@ -142,6 +143,27 @@ namespace TilesApp.Views
                                     if (await DisplayAlert("Sherpa Update", $"The version {latestVersion} is in Download folder. Would you like to open the folder to run the update?", "Update now", "Later"))
                                     {
                                         // @TODO: launch the apk
+                                        // Before updating, we upload Pending operations
+                                        try
+                                        {
+                                            int count = App.Database._database.Table<PendingOperation>().Count();
+                                            for (int i = 0; i < count; i++)
+                                            {
+                                                PendingOperation opt = App.Database.GetFirstOperationInQueue();
+                                                if (opt != null)
+                                                {
+                                                    KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JSONParser.JsonToOperation(opt));
+                                                    if (isInserted.Key == "Success")
+                                                    {
+                                                        App.Database.DeletePendingOperation(opt);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        catch (Exception e)
+                                        {
+                                            CrossToastPopUp.Current.ShowToastMessage("There was an error uploading operations. Please, restart de app.");
+                                        }
                                         MessagingCenter.Send(Xamarin.Forms.Application.Current, "InstallApk", latestApkPath);
                                     }
                                 }
@@ -226,7 +248,6 @@ namespace TilesApp.Views
                     CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
                 }
                 timer.Stop();
-                //MessagingCenter.Send(this, "OdooConnection");
                 App.User.UserTokenExpiresAt = DateTime.Now;
                 int res = App.Database.SaveUser(App.User);
                 Device.BeginInvokeOnMainThread(() =>

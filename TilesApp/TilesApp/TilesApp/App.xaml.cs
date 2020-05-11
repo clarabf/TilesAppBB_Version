@@ -104,7 +104,7 @@ namespace TilesApp
                         PendingOperation opt = Database.GetFirstOperationInQueue();
                         if (opt != null)
                         {
-                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonToOperation(opt));
+                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JSONParser.JsonToOperation(opt));
                             if (isInserted.Key == "Success")
                             {
                                 Database.DeletePendingOperation(opt);
@@ -130,33 +130,6 @@ namespace TilesApp
             if (App.IsConnected) CrossToastPopUp.Current.ShowToastMessage("Internet connection established!...Pending operations will be uploaded when app goes background.");
             else CrossToastPopUp.Current.ShowToastMessage("Internet connection lost... Working offline mode from now on.");
         }
-        private static object JsonToOperation(PendingOperation opt) {
-            object obj = new object();
-            switch (opt.OperationType)
-            {
-                case "JoinMetaData":
-                    obj = JsonConvert.DeserializeObject<JoinMetaData>(opt.Data);
-                    break;
-                case "LinkMetaData":
-                    obj = JsonConvert.DeserializeObject<LinkMetaData>(opt.Data);
-                    break;
-                case "QCMetaData":
-                    obj = JsonConvert.DeserializeObject<QCMetaData>(opt.Data);
-                    break;
-                case "RegMetaData":
-                    obj = JsonConvert.DeserializeObject<RegMetaData>(opt.Data);
-                    break;
-                case "ReviewMetaData":
-                    obj = JsonConvert.DeserializeObject<ReviewMetaData>(opt.Data);
-                    break;
-                case "AppBasicOperation":
-                    obj = JsonConvert.DeserializeObject<AppBasicOperation>(opt.Data);
-                    break;
-                default:
-                    obj = opt.Data;
-                    break;
-            }            
-            return obj;
-        }
+
     }
 }
