@@ -53,7 +53,7 @@
                     
                     <Entry x:Name="usernameEntry"
                         Grid.Row="3"
-                        Placeholder="username" 
+                        Placeholder="username bb android" 
                         PlaceholderColor="#A9A9A9"
                         TextColor="#ffffff"
                         BackgroundColor="#460404"
@@ -64,7 +64,7 @@
                     <Entry x:Name="passwordEntry"
                         Grid.Row="4"
                         IsPassword="true" 
-                        Placeholder="password" 
+                        Placeholder="password bb android" 
                         PlaceholderColor="#A9A9A9"
                         TextColor="#ffffff"
                         BackgroundColor="#460404"

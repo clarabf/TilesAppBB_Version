@@ -41,7 +41,7 @@ namespace TilesApp.Views
             }
             else
             {
-                usernameEntry.Placeholder = "username";
+                usernameEntry.Placeholder = "username bb android";
             }
             if (App.Current.Properties.ContainsKey("password"))
             {
@@ -50,7 +50,7 @@ namespace TilesApp.Views
             }
             else
             {
-                passwordEntry.Placeholder = "password";
+                passwordEntry.Placeholder = "password bb android";
             }
             lblVersion.Text = VersionTracking.CurrentVersion.ToString();
 
