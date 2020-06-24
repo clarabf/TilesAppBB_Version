@@ -51,6 +51,9 @@
     <Compile Update="Views\AppPage.xaml.cs">
       <DependentUpon>AppPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\BBFunctionalities\FamilyAndGroups.xaml.cs">
+      <DependentUpon>FamilyAndGroups.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\Skeletons\QC.xaml.cs">
       <DependentUpon>QC.xaml</DependentUpon>
     </Compile>

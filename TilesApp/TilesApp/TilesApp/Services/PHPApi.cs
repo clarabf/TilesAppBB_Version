@@ -122,7 +122,7 @@ namespace TilesApp.Services
             }
             return result;
         }
-            public static Stream GetAppConfig(string appName)
+        public static Stream GetAppConfig(string appName)
         {
             try
             {

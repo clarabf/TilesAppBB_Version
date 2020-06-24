@@ -120,7 +120,8 @@ namespace TilesApp.Views
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new AppPage());
+                        //Navigation.PushModalAsync(new AppPage());
+                        Navigation.PushModalAsync(new FamilyAndGroups());
                     });
                 }
                 else
