@@ -20,7 +20,8 @@
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="Start"
                 />
-            <local:NoUnderlineSearchBar 
+            <local:NoUnderlineSearchBar
+                x:Name="searchBar"
                 Grid.Row="1"
                 Placeholder="Search items..."
                 BackgroundColor="White"

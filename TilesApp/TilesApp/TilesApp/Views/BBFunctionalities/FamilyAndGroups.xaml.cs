@@ -24,6 +24,7 @@ namespace TilesApp.Views
         {
             InitializeComponent();
             BindingContext = this;
+            App.Inventory.Clear();
             //FamGroupData.Add("Family 1");
             //FamGroupData.Add("Family 2");
             //FamGroupData.Add("Family 3");
@@ -37,7 +38,7 @@ namespace TilesApp.Views
         private async void Config_Command(object sender, EventArgs args)
         {
             //await Navigation.PushModalAsync(new Configuration(this));
-            await DisplayAlert("Waring", "Page still in progres...", "Ok");
+            await DisplayAlert("Warning", "Page still in progres...", "Ok");
         }
 
         private async void Pending_Command(object sender, EventArgs args)
@@ -77,13 +78,40 @@ namespace TilesApp.Views
             {
                 Name = searchBar.Text
             };
-            FamGroupList.Add(fgE);
+            FamGroupList.Add(fgE); 
         }
 
         void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string current = (e.CurrentSelection.FirstOrDefault() as FamGroupElement)?.Name;
             DisplayAlert("Hello!", "You've selected <" + current + ">!", "Ok");
+        }
+
+        // OVERRIDES
+        protected override void OnAppearing()
+        {
+            App.Inventory.CollectionChanged += Inventory_CollectionChanged;
+            base.OnAppearing();
+        }
+        protected override void OnDisappearing()
+        {
+            App.Inventory.CollectionChanged -= Inventory_CollectionChanged;
+            base.OnDisappearing();
+        }
+        private void Inventory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems != null)
+            {
+                foreach (var InputWithDevice in args.NewItems.Cast<Dictionary<string, object>>())
+                {
+                    searchBar.Text = (string)InputWithDevice["Value"];
+                    FamGroupElement fgE = new FamGroupElement()
+                    {
+                        Name = searchBar.Text
+                    };
+                    FamGroupList.Add(fgE);
+                }
+            }
         }
 
     }
