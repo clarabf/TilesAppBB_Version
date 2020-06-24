@@ -18,20 +18,20 @@ namespace TilesApp.Views
     public partial class FamilyAndGroups : ContentPage
     {
 
-        public ObservableCollection<string> FamGroupData { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<FamGroupElement> FamGroupList { get; set; } = new ObservableCollection<FamGroupElement>();
 
         public FamilyAndGroups()
         {
             InitializeComponent();
             BindingContext = this;
-            FamGroupData.Add("Family 1");
-            FamGroupData.Add("Family 2");
-            FamGroupData.Add("Family 3");
-            FamGroupData.Add("Family 4");
-            FamGroupData.Add("Family 5");
-            FamGroupData.Add("Family 6");
-            FamGroupData.Add("Family 7");
-            FamGroupData.Add("Family 8");
+            //FamGroupData.Add("Family 1");
+            //FamGroupData.Add("Family 2");
+            //FamGroupData.Add("Family 3");
+            //FamGroupData.Add("Family 4");
+            //FamGroupData.Add("Family 5");
+            //FamGroupData.Add("Family 6");
+            //FamGroupData.Add("Family 7");
+            //FamGroupData.Add("Family 8");
         }
 
         private async void Config_Command(object sender, EventArgs args)
@@ -70,17 +70,20 @@ namespace TilesApp.Views
             }
         }
 
-        private async void Cancel(object sender, EventArgs args)
+        void OnSearchPressed(object sender, EventArgs e)
         {
-            await DisplayAlert("Edition complete", "No changes have been made.", "Ok");
-            await Navigation.PopModalAsync(true);
+            SearchBar searchBar = (SearchBar)sender;
+            FamGroupElement fgE = new FamGroupElement()
+            {
+                Name = searchBar.Text
+            };
+            FamGroupList.Add(fgE);
         }
 
-        private async void SaveAndFinish(object sender, EventArgs args)
+        void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //MessagingCenter.Send(this, "SendPhotos", TakenPhotos);
-            await DisplayAlert("Edition complete", "Photos have been successfully deleted!", "Ok");
-            await Navigation.PopModalAsync(true);
+            string current = (e.CurrentSelection.FirstOrDefault() as FamGroupElement)?.Name;
+            DisplayAlert("Hello!", "You've selected <" + current + ">!", "Ok");
         }
 
     }

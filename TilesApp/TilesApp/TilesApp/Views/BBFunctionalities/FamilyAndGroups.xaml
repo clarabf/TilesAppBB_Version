@@ -4,10 +4,12 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
+             xmlns:local="clr-namespace:TilesApp"
              x:Class="TilesApp.Views.FamilyAndGroups">
     <ContentPage.Content>
         <Grid Padding="40, 30, 40, 15" BackgroundColor="#F0F0F0" x:Name="innerGrid">
             <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="10*" />
@@ -18,25 +20,37 @@
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="Start"
                 />
+            <local:NoUnderlineSearchBar 
+                Grid.Row="1"
+                Placeholder="Search items..."
+                BackgroundColor="White"
+                CancelButtonColor="Gray"
+                PlaceholderColor="Gray"
+                TextColor="Black"
+                FontSize="Medium"
+                FontAttributes="Italic"
+                SearchButtonPressed="OnSearchPressed"
+                />
             <Label
                 TextColor="Black"
                 FontAttributes="Bold"                        
                 Text="FAMILIES &amp; GROUPS"
-                HorizontalOptions="Center"
-                Grid.Row="1"
-                Margin="0, 0, 0, 25"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand"
+                Grid.Row="2"
+                Margin="0, 0, 0, 0"
                 CharacterSpacing="1.15"
-                FontSize="20"/>
+                FontSize="16"/>
             <BoxView 
                 HeightRequest="1.5" 
                 WidthRequest="300"
-                Grid.Row="1"
+                Grid.Row="2"
                 BackgroundColor="Gray" 
-                Margin="0,0,0,10"
+                Margin="0,0,0,5"
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="CenterAndExpand"
                 />
-            <Grid Grid.Row="2" IsClippedToBounds="True" Margin="0,0,0,0">
+            <Grid Grid.Row="3" IsClippedToBounds="True" Margin="0,0,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
@@ -45,7 +59,40 @@
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                 </Grid.RowDefinitions>
-                <ListView ItemsSource="{Binding FamGroupData}" Grid.Row="0"/>
+                <CollectionView Grid.Row="0" 
+                        ItemsSource="{Binding FamGroupList}"
+                        SelectionMode="Single"
+                        SelectionChanged="OnCollectionViewSelectionChanged">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup Name="CommonStates">
+                                        <VisualState Name="Normal" />
+                                        <VisualState Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="LightGray" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Label
+                                    x:Name="FGName"
+                                    FontAttributes="Bold"
+                                    Text="{Binding Name}"
+                                    Grid.Column="0"
+                                    Padding="10,20"
+                                    TextColor="Black"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center"
+                                    FontSize="14"
+                                    LineBreakMode="TailTruncation"/>
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <!--<ListView ItemsSource="{Binding FamGroupList}" Grid.Row="0"/>-->
                 <Grid Grid.Row="2" VerticalOptions="End">
                     <Button
                         x:Name="CONF"

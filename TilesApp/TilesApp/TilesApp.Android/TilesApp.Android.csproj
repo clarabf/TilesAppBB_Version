@@ -94,11 +94,12 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomRenderers\NoUnderlineSearchBarRenderer.cs" />
     <Compile Include="DeviceMonitor.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExtendedButtonRenderer.cs" />
-    <Compile Include="FontAwesomeIconRenderer.cs" />
+    <Compile Include="CustomRenderers\ExtendedButtonRenderer.cs" />
+    <Compile Include="CustomRenderers\FontAwesomeIconRenderer.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
