@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -119,6 +121,40 @@ namespace TilesApp.Services
                 {
                     result = await response.Content.ReadAsStringAsync();
                 }
+            }
+            return result;
+        }
+
+        public async static Task<string> GetProductTypesList()
+        {
+            string result = "";
+            try
+            {
+                if (App.IsConnected)
+                {
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
+                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/oboria_five/_second-phase/_fields/__index");
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                        Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(result);
+
+                        //protofamilies
+                        JArray protofamilies = (JArray)content["protofamilies"];
+                        List<Dictionary<string, object>> protoFamiliesList = protofamilies.ToObject<List<Dictionary<string, object>>>();
+
+                        JArray familyFields = (JArray)content["family_fields"];
+                        List<Dictionary<string, object>> familyFieldsList = familyFields.ToObject<List<Dictionary<string, object>>>();
+
+                        JArray fields = (JArray)content["fields"];
+                        List<Dictionary<string, object>> fieldsList = fields.ToObject<List<Dictionary<string, object>>>();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
             return result;
         }
