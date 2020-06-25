@@ -13,7 +13,7 @@ namespace TilesApp.Services
         private static string ClientID = "917dadf4-4730-484e-8eef-d9116514cc40";
         private static string ClientSecret = "z3j10g3HBS@vKMBONBBSF:LxVXvsF==L";
         public static string UserScope = "User.Read";
-        public static string OBOScope = "api://109011d8-b3d4-46bb-98f8-5d017451a77f/PHPAPIAccess";
+        public static string OBOScope = "api://34f86a7a-fa1c-43d4-a97b-fe8dca310eef/test";
         #endregion
 
         #region PUBLIC METHODS
