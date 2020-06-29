@@ -138,17 +138,6 @@ namespace TilesApp.Services
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
-                        Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(result);
-
-                        //protofamilies
-                        JArray protofamilies = (JArray)content["protofamilies"];
-                        List<Dictionary<string, object>> protoFamiliesList = protofamilies.ToObject<List<Dictionary<string, object>>>();
-
-                        JArray familyFields = (JArray)content["family_fields"];
-                        List<Dictionary<string, object>> familyFieldsList = familyFields.ToObject<List<Dictionary<string, object>>>();
-
-                        JArray fields = (JArray)content["fields"];
-                        List<Dictionary<string, object>> fieldsList = fields.ToObject<List<Dictionary<string, object>>>();
                     }
                 }
             }

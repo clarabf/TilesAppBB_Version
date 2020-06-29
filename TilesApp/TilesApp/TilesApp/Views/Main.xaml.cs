@@ -115,9 +115,6 @@ namespace TilesApp.Views
             if (success)
             {
                 //success = await PHPApi.GetConfigFiles(App.User.MSID, App.User.OBOToken);
-                success = false;
-                string result = await PHPApi.GetProductTypesList();
-                if (result != "") success = true;
                 if (success)
                 {                    
                     Device.BeginInvokeOnMainThread(() =>
