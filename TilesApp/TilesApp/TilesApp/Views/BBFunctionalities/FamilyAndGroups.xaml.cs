@@ -23,6 +23,7 @@ namespace TilesApp.Views
         private List<Dictionary<string, object>> protoFamiliesList;
         private List<Dictionary<string, object>> familyFieldsList;
         private List<Dictionary<string, object>> fieldsList;
+        private List<Web_Field> formFieldsList = new List<Web_Field>();
         public ObservableCollection<Web_ProtoFamily> FamGroupList { get; set; } = new ObservableCollection<Web_ProtoFamily>();
 
         public FamilyAndGroups()
@@ -80,8 +81,9 @@ namespace TilesApp.Views
             string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
             string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
             //DisplayAlert("Hello!", "You've selected <" + currentName + "." + currentId + ">!", "Ok");
+            setFormFields(currentId);
             Navigation.PopModalAsync(true);
-            Navigation.PushModalAsync(new FormPage(currentName));
+            Navigation.PushModalAsync(new FormPage(currentName, formFieldsList));
         }
 
         protected override void OnAppearing()
@@ -173,6 +175,51 @@ namespace TilesApp.Views
                 }
             }
             return success;
+        }
+        private void setFormFields(string fam_id)
+        {
+            formFieldsList.Clear();
+
+            List<string> fields = new List<string>();
+            foreach (Dictionary<string, object> dictFF in familyFieldsList)
+            {
+                if (dictFF["protofamily_id"].ToString()==fam_id)
+                {
+                    fields.Add(dictFF["field_id"].ToString());
+                }
+            }
+
+            foreach (string fi_id in fields)
+            {
+                Dictionary<string, object> fieldData = fieldsList.Find(delegate (Dictionary<string, object> dict) { return dict["id"].ToString() == fi_id; });
+                //Ignore internal data
+                if (Convert.ToInt32(fieldData["field_category"]) != 0)
+                {
+                    Web_Field field = new Web_Field()
+                    {
+                        CosmoId = fieldData["id"].ToString(),
+                        Name = fieldData["name"].ToString(),
+                        LongName = fieldData["long_name"].ToString(),
+                        Description = fieldData["description"].ToString(),
+                        MongoSlug = fieldData["mongoslug"].ToString(),
+                        Slug = fieldData["slug"].ToString(),
+                        ValueIsUnique = (bool)fieldData["value_is_unique"],
+                        ValueIsRequired = (bool)fieldData["value_is_required"],
+                        ValueIsForeignKey = (bool)fieldData["value_is_foreign_key"],
+                    };
+                    if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
+                    if (fieldData["field_category"] != null) field.FieldCategory = Convert.ToInt32(fieldData["field_category"]);
+                    if (fieldData["variant"] != null) field.Variant = Convert.ToInt32(fieldData["variant"]);
+                    if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                    if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                    if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
+                    if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
+                    if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
+                    if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
+                    if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
+                    formFieldsList.Add(field);
+                }
+            }
         }
     }
 }

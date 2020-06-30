@@ -19,14 +19,14 @@ namespace TilesApp.Views
 {
     public partial class FormPage : ContentPage
     {
-        public FormPage(string title)
+        public FormPage(string title, List<Web_Field> formFields)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
 
             int row = 0;
             lblTitle.Text = title.ToUpper();
-            for (int i = 0; i<3; i++)
+            foreach (Web_Field field in formFields)
             {
                 elementsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 ExtendedButton button = new ExtendedButton
@@ -42,17 +42,13 @@ namespace TilesApp.Views
                     BorderColor = Color.FromHex("#796f6f"),
                     BorderWidth = 3,
                     HorizontalTextAlignment = TextAlignment.Start,
-                    ClassId = "App_" + i,
+                    ClassId = field.Name,
                     Margin = new Thickness(0, 0, 0, 20)
                 };
-                button.Text = "test_" + i;
+                button.Text = field.LongName;
                 button.Padding = new Thickness(10, 15, 0, 0);
                 elementsGrid.Children.Add(button, 0, row);
                 row++;
-            }
-            if (App.IsConnected)
-            {
-                CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login)); // Register the login! 
             }
         }
 
