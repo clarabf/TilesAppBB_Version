@@ -30,22 +30,14 @@ namespace TilesApp.Views
             InitializeComponent();
             BindingContext = this;
             App.Inventory.Clear();
-            //FamGroupData.Add("Family 1");
-            //FamGroupData.Add("Family 2");
-            //FamGroupData.Add("Family 3");
-            //FamGroupData.Add("Family 4");
-            //FamGroupData.Add("Family 5");
-            //FamGroupData.Add("Family 6");
-            //FamGroupData.Add("Family 7");
-            //FamGroupData.Add("Family 8");
         }
 
+        #region lower menu commands
         private async void Config_Command(object sender, EventArgs args)
         {
             //await Navigation.PushModalAsync(new Configuration(this));
             await DisplayAlert("Warning", "Page still in progres...", "Ok");
         }
-
         private async void Pending_Command(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new PendingOperations());
@@ -54,7 +46,6 @@ namespace TilesApp.Views
         {
             await Navigation.PushModalAsync(new Rfid.Views.MainPage());
         }
-
         private async void Logout_Command(object sender, EventArgs args)
         {
             if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
@@ -75,21 +66,77 @@ namespace TilesApp.Views
                 });
             }
         }
-
+        #endregion
+        
         async void OnSearchPressed(object sender, EventArgs e)
         {
+            bool success = await setProtofamiliesList();
+            if (!success) await DisplayAlert("Warning", "No matches found...", "Ok");
 
-            SearchBar searchBar = (SearchBar)sender;
+        }
 
+        void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
+            string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
+            //DisplayAlert("Hello!", "You've selected <" + currentName + "." + currentId + ">!", "Ok");
+            Navigation.PopModalAsync(true);
+            Navigation.PushModalAsync(new FormPage(currentName));
+        }
+
+        protected override void OnAppearing()
+        {
+            App.Inventory.CollectionChanged += Inventory_CollectionChanged;
+            base.OnAppearing();
+        }
+        protected override void OnDisappearing()
+        {
+            App.Inventory.CollectionChanged -= Inventory_CollectionChanged;
+            base.OnDisappearing();
+        }
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
+                {
+                    if (App.IsConnected)
+                    {
+                        CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
+                    }
+                    App.User.UserTokenExpiresAt = DateTime.Now;
+                    int res = App.Database.SaveUser(App.User);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        App.User = new User();
+                        App.ActiveSession = false;
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new Main());
+                    });
+                }
+            });
+            return true;
+        }
+        private async void Inventory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
+        {
+            if (args.NewItems != null)
+            {
+                foreach (var InputWithDevice in args.NewItems.Cast<Dictionary<string, object>>())
+                {
+                    searchBar.Text = (string)InputWithDevice["Value"];
+                }
+            }
+            bool success = await setProtofamiliesList();
+            if (!success) await DisplayAlert("Warning", "No matches found...", "Ok");
+        }
+        private async Task<bool> setProtofamiliesList()
+        {
             bool success = false;
             string result = await PHPApi.GetProductTypesList();
-            if (result != "") success = true;
-
-            if (success)
-            {
+            if (result != "")
+            { 
                 FamGroupList.Clear();
-                success = false;
-                
+
                 Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(result);
 
                 JArray protofamilies = (JArray)content["protofamilies"];
@@ -124,47 +171,8 @@ namespace TilesApp.Views
                         success = true;
                     }
                 }
-                if (!success) await DisplayAlert("Warning", "No matches found...", "Ok");
             }
-            else
-            {
-                await DisplayAlert("Warning", "No matches found...", "Ok");
-            }
+            return success;
         }
-
-        void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
-            string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
-            DisplayAlert("Hello!", "You've selected <" + currentName + "." + currentId + ">!", "Ok");
-        }
-
-        // OVERRIDES
-        protected override void OnAppearing()
-        {
-            App.Inventory.CollectionChanged += Inventory_CollectionChanged;
-            base.OnAppearing();
-        }
-        protected override void OnDisappearing()
-        {
-            App.Inventory.CollectionChanged -= Inventory_CollectionChanged;
-            base.OnDisappearing();
-        }
-        private void Inventory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
-        {
-            if (args.NewItems != null)
-            {
-                foreach (var InputWithDevice in args.NewItems.Cast<Dictionary<string, object>>())
-                {
-                    searchBar.Text = (string)InputWithDevice["Value"];
-                    Web_ProtoFamily pf = new Web_ProtoFamily()
-                    {
-                        Name = searchBar.Text
-                    };
-                    FamGroupList.Add(pf);
-                }
-            }
-        }
-
     }
 }
