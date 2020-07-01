@@ -1,19 +1,8 @@
 ﻿using System;
-using TilesApp.Services;
-using TilesApp.Rfid;
 using Xamarin.Forms;
-using System.Timers;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using TilesApp.Models;
 using TilesApp.Models.DataModels;
 using System.Collections.Generic;
-using TilesApp.Views.Other_Functionalities;
-using Xamarin.Essentials;
-using Android.Content;
-using Plugin.Permissions;
-using Plugin.Permissions.Abstractions;
-using Plugin.Toast;
+using System.Linq;
 
 namespace TilesApp.Views
 {
@@ -62,14 +51,54 @@ namespace TilesApp.Views
                         break;
                     //string
                     case 2:
-                        Entry entry = new Entry {
-                            ClassId = field.CosmoId,
-                            BackgroundColor = Color.White,
-                            Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")", 
-                            VerticalOptions = LayoutOptions.StartAndExpand
-                        };
-                        elementsGrid.Children.Add(entry, 0, row);
-                        row++;
+                        if (field.ValueRegEx != null)
+                        {
+                            Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
+                            if ((bool)result["multi"])
+                            {
+                                List<string> items = (List<string>)result["options"];
+                                //SfComboBox multiComboBox = new SfComboBox
+                                //{
+                                //    ClassId = field.CosmoId,
+                                //    BackgroundColor = Color.White,
+                                //    HeightRequest = 40,
+                                //    MultiSelectMode = MultiSelectMode.Delimiter,
+                                //    Delimiter = ",",
+                                //    DataSource = items
+                                //};
+                                //elementsGrid.Children.Add(multiComboBox, 0, row);
+                                //row++;
+                            }
+                            else
+                            {
+                                Picker picker = new Picker
+                                {
+                                    ClassId = field.CosmoId,
+                                    BackgroundColor = Color.White,
+                                    Title = field.LongName,
+                                    VerticalOptions = LayoutOptions.StartAndExpand,
+                                };
+                                List<string> items = (List<string>)result["options"];
+                                foreach (string it in items)
+                                {
+                                    picker.Items.Add(it);
+                                }
+                                elementsGrid.Children.Add(picker, 0, row);
+                                row++;
+                            }
+                        }
+                        else
+                        {
+                            Entry entry = new Entry
+                            {
+                                ClassId = field.CosmoId,
+                                BackgroundColor = Color.White,
+                                Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
+                                VerticalOptions = LayoutOptions.StartAndExpand
+                            };
+                            elementsGrid.Children.Add(entry, 0, row);
+                            row++;
+                        }
                         break;
                 }
             }
@@ -85,6 +114,29 @@ namespace TilesApp.Views
             Navigation.PushModalAsync(new FamilyAndGroups());
             return true;
         }
-    }
 
+        private Dictionary<string, object> FormatRegex(string regEx)
+        {
+            Dictionary<string, object> result = new Dictionary<string, object>();
+            string filteredRefEx = "";
+
+            //Single selection or multi selection
+            if (regEx.Contains("*\\]$"))
+            {
+                filteredRefEx = regEx.Replace(",?)*\\]$", "");
+                result.Add("multi", true);
+            }
+            else
+            {
+                filteredRefEx = regEx.Replace(",?)\\]$", "");
+                result.Add("multi", false);
+            }
+
+            filteredRefEx = filteredRefEx.Substring(4).Replace(",?", "").Replace("\"", "");
+            string[] options = filteredRefEx.Split('|');
+            result.Add("options", options.ToList());
+
+            return result;
+        }
+    }
 }

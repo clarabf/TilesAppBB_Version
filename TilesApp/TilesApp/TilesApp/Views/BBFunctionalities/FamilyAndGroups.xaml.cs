@@ -84,7 +84,7 @@ namespace TilesApp.Views
             string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
             setFormFields(currentId);
             //FOR TESTS
-            //fillTestFields();
+            fillTestFields();
             Navigation.PopModalAsync(true);
             Navigation.PushModalAsync(new FormPage(currentName, formFieldsList));
         }
@@ -229,8 +229,8 @@ namespace TilesApp.Views
             Web_Field field = new Web_Field()
             {
                 CosmoId = "12345",
-                Name = "testString",
-                LongName = "Test String",
+                Name = "regS",
+                LongName = "RegEx Sing",
                 Description = "miau miau miau",
                 MongoSlug = "ts",
                 Slug = "test-string",
@@ -242,7 +242,7 @@ namespace TilesApp.Views
                 Variant = 2,
                 PrimitiveType = 2,
                 PrimitiveQuantity = 20,
-                ValueRegEx = null,
+                ValueRegEx = "^\\[(\"Option A\",?|\"Option B\",?)\\]$",
                 Default = null,
                 Created_at = "2020-07-01 12:07:20",
                 Updated_at = null,
@@ -252,8 +252,8 @@ namespace TilesApp.Views
             field = new Web_Field()
             {
                 CosmoId = "67891",
-                Name = "testString2",
-                LongName = "Test String2",
+                Name = "regM",
+                LongName = "RegEx Multi",
                 Description = "miau miau miau",
                 MongoSlug = "ts",
                 Slug = "test-string",
@@ -265,7 +265,7 @@ namespace TilesApp.Views
                 Variant = 2,
                 PrimitiveType = 2,
                 PrimitiveQuantity = 40,
-                ValueRegEx = null,
+                ValueRegEx = "^\\[(\"Dante\",?|\"Vergil\",?|\"Nero\",?|\"V\",?)\\]$",
                 Default = null,
                 Created_at = "2020-07-01 12:07:20",
                 Updated_at = null,

@@ -5,7 +5,6 @@ using System.Text;
 
 namespace TilesApp.Models.DataModels
 {
-
     public class Web_ProtoFamily
     {
         public int Id { get; set; }
