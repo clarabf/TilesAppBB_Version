@@ -71,7 +71,9 @@ namespace TilesApp.Views
         
         async void OnSearchPressed(object sender, EventArgs e)
         {
+            LoadingPopUp.IsVisible = true;
             bool success = await setProtofamiliesList();
+            LoadingPopUp.IsVisible = false;
             if (!success) await DisplayAlert("Warning", "No matches found...", "Ok");
 
         }
@@ -80,8 +82,9 @@ namespace TilesApp.Views
         {
             string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
             string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
-            //DisplayAlert("Hello!", "You've selected <" + currentName + "." + currentId + ">!", "Ok");
             setFormFields(currentId);
+            //FOR TESTS
+            //fillTestFields();
             Navigation.PopModalAsync(true);
             Navigation.PushModalAsync(new FormPage(currentName, formFieldsList));
         }
@@ -220,6 +223,101 @@ namespace TilesApp.Views
                     formFieldsList.Add(field);
                 }
             }
+        }
+        private void fillTestFields()
+        {
+            Web_Field field = new Web_Field()
+            {
+                CosmoId = "12345",
+                Name = "testString",
+                LongName = "Test String",
+                Description = "miau miau miau",
+                MongoSlug = "ts",
+                Slug = "test-string",
+                ValueIsUnique = true,
+                ValueIsRequired = true,
+                ValueIsForeignKey = false,
+                ProjectId = "testProject",
+                FieldCategory = 1,
+                Variant = 2,
+                PrimitiveType = 2,
+                PrimitiveQuantity = 20,
+                ValueRegEx = null,
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
+            field = new Web_Field()
+            {
+                CosmoId = "67891",
+                Name = "testString2",
+                LongName = "Test String2",
+                Description = "miau miau miau",
+                MongoSlug = "ts",
+                Slug = "test-string",
+                ValueIsUnique = true,
+                ValueIsRequired = true,
+                ValueIsForeignKey = false,
+                ProjectId = "testProject",
+                FieldCategory = 1,
+                Variant = 2,
+                PrimitiveType = 2,
+                PrimitiveQuantity = 40,
+                ValueRegEx = null,
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
+            field = new Web_Field()
+            {
+                CosmoId = "78910",
+                Name = "testString3",
+                LongName = "Test String3",
+                Description = "miau miau miau",
+                MongoSlug = "ts",
+                Slug = "test-string",
+                ValueIsUnique = true,
+                ValueIsRequired = true,
+                ValueIsForeignKey = false,
+                ProjectId = "testProject",
+                FieldCategory = 1,
+                Variant = 2,
+                PrimitiveType = 2,
+                PrimitiveQuantity = 40,
+                ValueRegEx = null,
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
+            field = new Web_Field()
+            {
+                CosmoId = "89101",
+                Name = "testString4",
+                LongName = "Test String4",
+                Description = "miau miau miau",
+                MongoSlug = "ts",
+                Slug = "test-string",
+                ValueIsUnique = true,
+                ValueIsRequired = true,
+                ValueIsForeignKey = false,
+                ProjectId = "testProject",
+                FieldCategory = 1,
+                Variant = 2,
+                PrimitiveType = 2,
+                PrimitiveQuantity = 50,
+                ValueRegEx = null,
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
         }
     }
 }

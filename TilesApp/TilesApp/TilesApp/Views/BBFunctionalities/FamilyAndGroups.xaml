@@ -92,8 +92,6 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
-                <!--<ListView ItemsSource="{Binding FamGroupList}" Grid.Row="0"/>-->
                 <Grid Grid.Row="2" VerticalOptions="End">
                     <Button
                         x:Name="CONF"
@@ -235,6 +233,26 @@
                         />
                 </Grid>
             </Grid>
+            <Frame x:Name="LoadingPopUp"
+                BackgroundColor="Transparent"
+                IsVisible="False"
+                Grid.RowSpan="5"
+                IsClippedToBounds="True"
+                Padding="0">
+                <StackLayout>
+                    <ActivityIndicator 
+                        x:Name="loading" 
+                        VerticalOptions="EndAndExpand" 
+                        HorizontalOptions="CenterAndExpand"
+                        Color="Red"
+                        IsRunning="True"/>
+                    <Label 
+                        XAlign="Center"
+                        Text="Recovering elements.&#x0a;Please, wait..."
+                        VerticalOptions="StartAndExpand" 
+                        HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+            </Frame>
         </Grid>
     </ContentPage.Content>
 </ContentPage>
