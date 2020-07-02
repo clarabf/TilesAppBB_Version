@@ -24,6 +24,7 @@
     <PackageReference Include="PCLAppConfig" Version="1.0.1" />
     <PackageReference Include="Plugin.Toast" Version="2.1.2" />
     <PackageReference Include="sqlite-net-pcl" Version="1.6.292" />
+    <PackageReference Include="Syncfusion.Xamarin.SfComboBox" Version="18.1.0.59" />
     <PackageReference Include="Tsl.AsciiProtocol.Std" Version="1.4.0" />
     <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
     <PackageReference Include="Xam.Plugin.Media" Version="4.0.1.5" />

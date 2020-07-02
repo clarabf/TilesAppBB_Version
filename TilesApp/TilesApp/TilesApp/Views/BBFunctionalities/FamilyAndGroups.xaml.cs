@@ -229,8 +229,8 @@ namespace TilesApp.Views
             Web_Field field = new Web_Field()
             {
                 CosmoId = "12345",
-                Name = "regS",
-                LongName = "RegEx Sing",
+                Name = "regM",
+                LongName = "RegEx Multi",
                 Description = "miau miau miau",
                 MongoSlug = "ts",
                 Slug = "test-string",
@@ -242,7 +242,7 @@ namespace TilesApp.Views
                 Variant = 2,
                 PrimitiveType = 2,
                 PrimitiveQuantity = 20,
-                ValueRegEx = "^\\[(\"Option A\",?|\"Option B\",?)\\]$",
+                ValueRegEx = "^\\[(\"Option A\",?|\"Option B\",?|\"Option C\",?)*\\]$",
                 Default = null,
                 Created_at = "2020-07-01 12:07:20",
                 Updated_at = null,
@@ -252,8 +252,8 @@ namespace TilesApp.Views
             field = new Web_Field()
             {
                 CosmoId = "67891",
-                Name = "regM",
-                LongName = "RegEx Multi",
+                Name = "regS",
+                LongName = "RegEx Single",
                 Description = "miau miau miau",
                 MongoSlug = "ts",
                 Slug = "test-string",

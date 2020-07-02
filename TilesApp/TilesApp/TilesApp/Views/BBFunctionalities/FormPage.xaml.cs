@@ -3,19 +3,26 @@ using Xamarin.Forms;
 using TilesApp.Models.DataModels;
 using System.Collections.Generic;
 using System.Linq;
+using Syncfusion.XForms.ComboBox;
+using System.Diagnostics;
 
 namespace TilesApp.Views
 {
     public partial class FormPage : ContentPage
     {
+
+        List<Web_Field> _formFields;
+
         public FormPage(string title, List<Web_Field> formFields)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-
-            int row = 0;
+            
+            _formFields = formFields;
             lblTitle.Text = title.ToUpper();
-            foreach (Web_Field field in formFields)
+            int row = 0;
+
+            foreach (Web_Field field in _formFields)
             {
                 elementsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                 Label lblElement = new Label
@@ -57,17 +64,20 @@ namespace TilesApp.Views
                             if ((bool)result["multi"])
                             {
                                 List<string> items = (List<string>)result["options"];
-                                //SfComboBox multiComboBox = new SfComboBox
-                                //{
-                                //    ClassId = field.CosmoId,
-                                //    BackgroundColor = Color.White,
-                                //    HeightRequest = 40,
-                                //    MultiSelectMode = MultiSelectMode.Delimiter,
-                                //    Delimiter = ",",
-                                //    DataSource = items
-                                //};
-                                //elementsGrid.Children.Add(multiComboBox, 0, row);
-                                //row++;
+                                SfComboBox multiComboBox = new SfComboBox
+                                {
+                                    ClassId = field.CosmoId,
+                                    BackgroundColor = Color.White,
+                                    HeightRequest = 40,
+                                    MaximumDropDownHeight = 200,
+                                    IsEditableMode = false,
+                                    EnableSelectionIndicator = true,
+                                    MultiSelectMode = MultiSelectMode.Token,
+                                    IsSelectedItemsVisibleInDropDown = false,
+                                    ComboBoxSource = items
+                                };
+                                elementsGrid.Children.Add(multiComboBox, 0, row);
+                                row++;
                             }
                             else
                             {
@@ -113,6 +123,44 @@ namespace TilesApp.Views
             Navigation.PopModalAsync(true);
             Navigation.PushModalAsync(new FamilyAndGroups());
             return true;
+        }
+
+        private async void Send_Command(object sender, EventArgs args)
+        {
+            //Xamarin.Forms.Picker/Xamarin.Forms.Entry/Syncfusion.XForms.ComboBox.SfComboBox/
+            for (int i=0; i< _formFields.Count*2; i++)
+            {
+                string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
+                switch (elementType)
+                {
+                    case "Xamarin.Forms.Entry":
+                        Entry entry = (Entry)elementsGrid.Children.ElementAt(i);
+                        Debug.WriteLine(entry.Placeholder + "..." + entry.Text);
+                        break;
+                    case "Xamarin.Forms.Picker":
+                        Picker picker = (Picker)elementsGrid.Children.ElementAt(i);
+                        Debug.WriteLine(picker.Title + "..." + picker.SelectedItem);
+                        break;
+                    case "Syncfusion.XForms.ComboBox.SfComboBox":
+                        SfComboBox multiComboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
+                        List<int> indexList = (List<int>)multiComboBox.SelectedIndices;
+                        
+                        Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == multiComboBox.ClassId; });
+                        Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
+                        List<string> items = (List<string>)result["options"];
+
+                        string options = "";
+
+                        foreach (int ix in indexList)
+                        {
+                            options += items[ix] + ", ";
+                        }
+                        
+                        Debug.WriteLine(options);
+                        break;
+                }
+            }
+            await DisplayAlert("Warning", "Actions still in progres...", "Ok");
         }
 
         private Dictionary<string, object> FormatRegex(string regEx)
