@@ -106,6 +106,7 @@ namespace TilesApp.Views
                                 Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
                                 VerticalOptions = LayoutOptions.StartAndExpand
                             };
+                            entry.Completed += entryCompleted_command;
                             elementsGrid.Children.Add(entry, 0, row);
                             row++;
                         }
@@ -118,6 +119,19 @@ namespace TilesApp.Views
             }
         }
 
+        private async void entryCompleted_command(object sender, EventArgs e)
+        {
+            Entry entry = (Entry)sender;
+            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == entry.ClassId; });
+            if (entry.Text.Length > field.PrimitiveQuantity) 
+            {
+                await DisplayAlert("Warning", 
+                    "Element <" + field.Name + "> exceeds in " + (entry.Text.Length - field.PrimitiveQuantity) + " characters (max. " + field.PrimitiveQuantity + ")",
+                    "Ok");
+                entry.Text = null;
+            }
+        }
+
         protected override bool OnBackButtonPressed()
         {
             Navigation.PopModalAsync(true);
@@ -127,40 +141,77 @@ namespace TilesApp.Views
 
         private async void Send_Command(object sender, EventArgs args)
         {
-            //Xamarin.Forms.Picker/Xamarin.Forms.Entry/Syncfusion.XForms.ComboBox.SfComboBox/
-            for (int i=0; i< _formFields.Count*2; i++)
+            try
             {
-                string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
-                switch (elementType)
+                List<string> errors = new List<string>();
+                string current_label = "";
+                for (int i = 0; i < _formFields.Count * 2; i++)
                 {
-                    case "Xamarin.Forms.Entry":
-                        Entry entry = (Entry)elementsGrid.Children.ElementAt(i);
-                        Debug.WriteLine(entry.Placeholder + "..." + entry.Text);
-                        break;
-                    case "Xamarin.Forms.Picker":
-                        Picker picker = (Picker)elementsGrid.Children.ElementAt(i);
-                        Debug.WriteLine(picker.Title + "..." + picker.SelectedItem);
-                        break;
-                    case "Syncfusion.XForms.ComboBox.SfComboBox":
-                        SfComboBox multiComboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
-                        List<int> indexList = (List<int>)multiComboBox.SelectedIndices;
-                        
-                        Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == multiComboBox.ClassId; });
-                        Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
-                        List<string> items = (List<string>)result["options"];
+                    string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
+                    switch (elementType)
+                    {
+                        case "Xamarin.Forms.Label":
+                            Label label = (Label)elementsGrid.Children.ElementAt(i);
+                            current_label = label.Text;
+                            break;
+                        case "Xamarin.Forms.Entry":
+                            Entry entry = (Entry)elementsGrid.Children.ElementAt(i);
+                            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == entry.ClassId; });
 
-                        string options = "";
+                            Debug.WriteLine(entry.Placeholder + "..." + entry.Text);
+                            if (field.ValueIsRequired && (entry.Text == null || entry.Text == "")) errors.Add("<" + current_label + "> cannot be empty.");
+                            break;
+                        case "Xamarin.Forms.Picker":
+                            Picker picker = (Picker)elementsGrid.Children.ElementAt(i);
+                            field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == picker.ClassId; });
+                            
+                            Debug.WriteLine(picker.Title + "..." + picker.SelectedItem);
+                            if (field.ValueIsRequired && picker.SelectedItem == null) errors.Add("<" + current_label + "> cannot be empty.");
+                            break;
+                        case "Syncfusion.XForms.ComboBox.SfComboBox":
+                            SfComboBox multiComboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
+                            field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == multiComboBox.ClassId; });
 
-                        foreach (int ix in indexList)
-                        {
-                            options += items[ix] + ", ";
-                        }
-                        
-                        Debug.WriteLine(options);
-                        break;
+                            List<int> indexList = (List<int>)multiComboBox.SelectedIndices;
+                            if (field.ValueIsRequired && indexList == null)
+                            {
+                                errors.Add("<" + current_label + "> cannot be empty.");
+                            }
+                            else
+                            {
+                                if (indexList.Count > 0)
+                                {
+                                    Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
+                                    List<string> items = (List<string>)result["options"];
+
+                                    string options = "";
+
+                                    foreach (int ix in indexList)
+                                    {
+                                        options += items[ix] + ", ";
+                                    }
+                                    Debug.WriteLine(options);
+                                }
+                                else errors.Add("<" + current_label + "> cannot be empty.");
+                            }
+                            break;
+                    }
+                }
+                string message = "";
+                if (errors.Count > 0)
+                {
+                    foreach (string eMessage in errors) message += eMessage + "\n";
+                    await DisplayAlert("Some fields missing...", message, "Ok");
+                }
+                else
+                {
+                    await DisplayAlert("SENDING FORM", "'Send form' action still in progres...", "Ok");
                 }
             }
-            await DisplayAlert("Warning", "Actions still in progres...", "Ok");
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
         }
 
         private Dictionary<string, object> FormatRegex(string regEx)
