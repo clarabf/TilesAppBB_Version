@@ -16,10 +16,9 @@ namespace TilesApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class Configuration : ContentPage
     {
-        public Configuration(AppPage appPage)
+        public Configuration()
         {
             InitializeComponent();
-            BindingContext = appPage;
             if (App.IsConnected) GetDeviceLocation();
             App.Inventory.Clear();
 
@@ -33,11 +32,11 @@ namespace TilesApp.Views
             {
                 lblStation.Text = "You haven't assigned a station. Please scan one:";
             }
-            MessagingCenter.Subscribe<Scan, string>(this, "SetStation", (s, qrContent) => {
-                lblStation.Text = "Station: " + qrContent + "\nYou can change it by scanning again:";
-                btAdd.Text = "CHANGE \uf0ec";
-                App.Station = qrContent;
-            });
+            //MessagingCenter.Subscribe<Scan, string>(this, "SetStation", (s, qrContent) => {
+            //    lblStation.Text = "Station: " + qrContent + "\nYou can change it by scanning again:";
+            //    btAdd.Text = "CHANGE \uf0ec";
+            //    App.Station = qrContent;
+            //});
         }
 
         private async void GetDeviceLocation()
@@ -93,7 +92,7 @@ namespace TilesApp.Views
 
         private async void GoToScan(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new Scan("SCAN YOUR STATION", 1));
+            //await Navigation.PushModalAsync(new Scan("SCAN YOUR STATION", 1));
         }
 
         private async void Home(object sender, EventArgs args)

@@ -15,7 +15,6 @@ using TilesApp.Models.DataModels;
 using Xamarin.Essentials;
 using Newtonsoft.Json.Bson;
 using Newtonsoft.Json;
-using TilesApp.Models.Skeletons;
 using Plugin.Toast;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -24,7 +23,6 @@ namespace TilesApp
 {
     public partial class App : Application
     {
-        public JSONParser jsParser = new JSONParser();
         public static string DeviceSerialNumber { get; set; }
         public static Models.Location GeoLocation { get; set; }
         public static string Station { get; set; }

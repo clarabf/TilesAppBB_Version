@@ -49,41 +49,14 @@
     <Compile Update="Libraries\Rfid\Views\ReadersMainTabbedPage.xaml.cs">
       <DependentUpon>ReadersMainTabbedPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\AppPage.xaml.cs">
-      <DependentUpon>AppPage.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\BBFunctionalities\FormPage.xaml.cs">
       <DependentUpon>FormPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\BBFunctionalities\FamilyAndGroups.xaml.cs">
       <DependentUpon>FamilyAndGroups.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Skeletons\QC.xaml.cs">
-      <DependentUpon>QC.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Skeletons\FamliyList.xaml.cs">
-      <DependentUpon>FamliyList.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Skeletons\ReviewDetailed.xaml.cs">
-      <DependentUpon>ReviewDetailed.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Skeletons\Review.xaml.cs">
-      <DependentUpon>Review.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Skeletons\Reg.xaml.cs">
-      <DependentUpon>Reg.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Skeletons\Link.xaml.cs">
-      <DependentUpon>Link.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Skeletons\Join.xaml.cs">
-      <DependentUpon>Join.xaml</DependentUpon>
-    </Compile>
     <Compile Update="Views\Main.xaml.cs">
       <DependentUpon>Main.xaml</DependentUpon>
-    </Compile>
-    <Compile Update="Views\Other_Functionalities\Scan.xaml.cs">
-      <DependentUpon>Scan.xaml</DependentUpon>
     </Compile>
     <Compile Update="StepProgressBarControl.xaml.cs">
       <DependentUpon>StepProgressBarControl.xaml</DependentUpon>
@@ -98,12 +71,6 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\Other_Functionalities\PendingOperations.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\Other_Functionalities\Scan.xaml">
-      <Generator>MSBuild:Compile</Generator>
-    </EmbeddedResource>
-    <EmbeddedResource Update="Views\AppPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="StepProgressBarControl.xaml">

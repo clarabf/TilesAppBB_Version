@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,51 +34,27 @@ namespace TilesApp.Views
             App.Inventory.Clear();
         }
 
-        #region lower menu commands
-        private async void Config_Command(object sender, EventArgs args)
-        {
-            //await Navigation.PushModalAsync(new Configuration(this));
-            await DisplayAlert("Warning", "Page still in progres...", "Ok");
-        }
-        private async void Pending_Command(object sender, EventArgs args)
-        {
-            await Navigation.PushModalAsync(new PendingOperations());
-        }
-        private async void Reader_Command(object sender, EventArgs args)
-        {
-            await Navigation.PushModalAsync(new Rfid.Views.MainPage());
-        }
-        private async void Logout_Command(object sender, EventArgs args)
-        {
-            if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
-            {
-                if (App.IsConnected)
-                {
-                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
-                }
-                //timer.Stop();
-                App.User.UserTokenExpiresAt = DateTime.Now;
-                int res = App.Database.SaveUser(App.User);
-                Device.BeginInvokeOnMainThread(() =>
-                {
-                    App.User = new User();
-                    App.ActiveSession = false;
-                    Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new Main());
-                });
-            }
-        }
-        #endregion
-        
         async void OnSearchPressed(object sender, EventArgs e)
         {
             LoadingPopUp.IsVisible = true;
             bool success = await setProtofamiliesList();
             LoadingPopUp.IsVisible = false;
-            if (!success) await DisplayAlert("Warning", "No matches found...", "Ok");
+            if (!success)
+            {
+                await DisplayAlert("Warning", "No matches found...\nCreating fake object for tests.", "Ok");
+                Web_ProtoFamily pf = new Web_ProtoFamily()
+                {
+                    CosmoId = "123",
+                    ProjectId = "1234",
+                    CategoryId = "bla",
+                    Name = "Fake-object",
+                    Description = "Fake object for tests",
+                    Slug = "fake_object",
+                };
+                FamGroupList.Add(pf);
+            }
 
         }
-
         void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
@@ -87,40 +64,6 @@ namespace TilesApp.Views
             fillTestFields();
             Navigation.PopModalAsync(true);
             Navigation.PushModalAsync(new FormPage(currentName, formFieldsList));
-        }
-
-        protected override void OnAppearing()
-        {
-            App.Inventory.CollectionChanged += Inventory_CollectionChanged;
-            base.OnAppearing();
-        }
-        protected override void OnDisappearing()
-        {
-            App.Inventory.CollectionChanged -= Inventory_CollectionChanged;
-            base.OnDisappearing();
-        }
-        protected override bool OnBackButtonPressed()
-        {
-            Device.BeginInvokeOnMainThread(async () =>
-            {
-                if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
-                {
-                    if (App.IsConnected)
-                    {
-                        CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
-                    }
-                    App.User.UserTokenExpiresAt = DateTime.Now;
-                    int res = App.Database.SaveUser(App.User);
-                    Device.BeginInvokeOnMainThread(() =>
-                    {
-                        App.User = new User();
-                        App.ActiveSession = false;
-                        Navigation.PopModalAsync(true);
-                        Navigation.PushModalAsync(new Main());
-                    });
-                }
-            });
-            return true;
         }
         private async void Inventory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
         {
@@ -181,47 +124,54 @@ namespace TilesApp.Views
         }
         private void setFormFields(string fam_id)
         {
-            formFieldsList.Clear();
-
-            List<string> fields = new List<string>();
-            foreach (Dictionary<string, object> dictFF in familyFieldsList)
+            try
             {
-                if (dictFF["protofamily_id"].ToString()==fam_id)
+                formFieldsList.Clear();
+
+                List<string> fields = new List<string>();
+                foreach (Dictionary<string, object> dictFF in familyFieldsList)
                 {
-                    fields.Add(dictFF["field_id"].ToString());
+                    if (dictFF["protofamily_id"].ToString() == fam_id)
+                    {
+                        fields.Add(dictFF["field_id"].ToString());
+                    }
+                }
+
+                foreach (string fi_id in fields)
+                {
+                    Dictionary<string, object> fieldData = fieldsList.Find(delegate (Dictionary<string, object> dict) { return dict["id"].ToString() == fi_id; });
+                    //Ignore internal data
+                    if (Convert.ToInt32(fieldData["field_category"]) != 0)
+                    {
+                        Web_Field field = new Web_Field()
+                        {
+                            CosmoId = fieldData["id"].ToString(),
+                            Name = fieldData["name"].ToString(),
+                            LongName = fieldData["long_name"].ToString(),
+                            Description = fieldData["description"].ToString(),
+                            MongoSlug = fieldData["mongoslug"].ToString(),
+                            Slug = fieldData["slug"].ToString(),
+                            ValueIsUnique = (bool)fieldData["value_is_unique"],
+                            ValueIsRequired = (bool)fieldData["value_is_required"],
+                            ValueIsForeignKey = (bool)fieldData["value_is_foreign_key"],
+                        };
+                        if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
+                        if (fieldData["field_category"] != null) field.FieldCategory = Convert.ToInt32(fieldData["field_category"]);
+                        if (fieldData["variant"] != null) field.Variant = Convert.ToInt32(fieldData["variant"]);
+                        if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                        if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                        if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
+                        if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
+                        if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
+                        if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
+                        if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
+                        formFieldsList.Add(field);
+                    }
                 }
             }
-
-            foreach (string fi_id in fields)
+            catch (Exception ex)
             {
-                Dictionary<string, object> fieldData = fieldsList.Find(delegate (Dictionary<string, object> dict) { return dict["id"].ToString() == fi_id; });
-                //Ignore internal data
-                if (Convert.ToInt32(fieldData["field_category"]) != 0)
-                {
-                    Web_Field field = new Web_Field()
-                    {
-                        CosmoId = fieldData["id"].ToString(),
-                        Name = fieldData["name"].ToString(),
-                        LongName = fieldData["long_name"].ToString(),
-                        Description = fieldData["description"].ToString(),
-                        MongoSlug = fieldData["mongoslug"].ToString(),
-                        Slug = fieldData["slug"].ToString(),
-                        ValueIsUnique = (bool)fieldData["value_is_unique"],
-                        ValueIsRequired = (bool)fieldData["value_is_required"],
-                        ValueIsForeignKey = (bool)fieldData["value_is_foreign_key"],
-                    };
-                    if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
-                    if (fieldData["field_category"] != null) field.FieldCategory = Convert.ToInt32(fieldData["field_category"]);
-                    if (fieldData["variant"] != null) field.Variant = Convert.ToInt32(fieldData["variant"]);
-                    if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
-                    if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
-                    if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
-                    if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
-                    if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
-                    if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
-                    if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
-                    formFieldsList.Add(field);
-                }
+                Debug.WriteLine(ex.Message);
             }
         }
         private void fillTestFields()
@@ -319,5 +269,77 @@ namespace TilesApp.Views
             };
             formFieldsList.Add(field);
         }
+        
+        #region lower menu commands
+        private async void Config_Command(object sender, EventArgs args)
+        {
+            //await Navigation.PushModalAsync(new Configuration(this));
+            await DisplayAlert("Warning", "Page still in progres...", "Ok");
+        }
+        private async void Pending_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new PendingOperations());
+        }
+        private async void Reader_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new Rfid.Views.MainPage());
+        }
+        private async void Logout_Command(object sender, EventArgs args)
+        {
+            if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
+            {
+                if (App.IsConnected)
+                {
+                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
+                }
+                //timer.Stop();
+                App.User.UserTokenExpiresAt = DateTime.Now;
+                int res = App.Database.SaveUser(App.User);
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    App.User = new User();
+                    App.ActiveSession = false;
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new Main());
+                });
+            }
+        }
+        #endregion
+
+        #region overrides
+        protected override void OnAppearing()
+        {
+            App.Inventory.CollectionChanged += Inventory_CollectionChanged;
+            base.OnAppearing();
+        }
+        protected override void OnDisappearing()
+        {
+            App.Inventory.CollectionChanged -= Inventory_CollectionChanged;
+            base.OnDisappearing();
+        }
+        protected override bool OnBackButtonPressed()
+        {
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                if (await DisplayAlert("You are abandoning this page", "Are you sure you want to logout?", "OK", "Cancel"))
+                {
+                    if (App.IsConnected)
+                    {
+                        CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
+                    }
+                    App.User.UserTokenExpiresAt = DateTime.Now;
+                    int res = App.Database.SaveUser(App.User);
+                    Device.BeginInvokeOnMainThread(() =>
+                    {
+                        App.User = new User();
+                        App.ActiveSession = false;
+                        Navigation.PopModalAsync(true);
+                        Navigation.PushModalAsync(new Main());
+                    });
+                }
+            });
+            return true;
+        }
+        #endregion
     }
 }
