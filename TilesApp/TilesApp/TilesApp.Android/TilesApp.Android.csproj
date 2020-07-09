@@ -78,7 +78,7 @@
       <Version>1.68.1.1</Version>
     </PackageReference>
     <PackageReference Include="Syncfusion.Xamarin.SfComboBox">
-      <Version>18.1.0.59</Version>
+      <Version>18.2.0.44</Version>
     </PackageReference>
     <PackageReference Include="Tsl.AsciiProtocol.Std">
       <Version>1.4.0</Version>

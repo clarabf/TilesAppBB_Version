@@ -44,7 +44,9 @@ namespace TilesApp
         }
         public App()
         {
-            
+
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjgzMzY2QDMxMzgyZTMyMmUzMEloRWJsZkxVaDlvVE1QbXk4MDVKWXlUcEh6Z3FQeUJBbDRkUURncFNrQTQ9");
+
             InitializeComponent();
             
             MainPage = new NavigationPage(new Main());

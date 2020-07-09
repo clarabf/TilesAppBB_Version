@@ -12,7 +12,7 @@ using static System.Environment;
 
 namespace TilesApp.Services
 {
-    public static class PHPApi
+    public static class Api
     {
 
         private static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
@@ -125,6 +125,18 @@ namespace TilesApp.Services
             return result;
         }
 
+        public static Stream GetAppConfig(string appName)
+        {
+            try
+            {
+                return appsConfigs[appName];
+            }
+            catch
+            {
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting app config file from Web.");
+                return null;
+            }
+        }
         public async static Task<string> GetProductTypesList()
         {
             string result = "";
@@ -147,18 +159,28 @@ namespace TilesApp.Services
             }
             return result;
         }
-        public static Stream GetAppConfig(string appName)
+
+        public async static Task<string> GetProjectsList()
         {
+            string result = "";
             try
             {
-                return appsConfigs[appName];
+                if (App.IsConnected)
+                {
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
+                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/test_project_2020/y/_families/__index");
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
             }
-            catch
+            catch (Exception e)
             {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting app config file from Web.");
-                return null;
+                Debug.WriteLine(e.Message);
             }
+            return result;
         }
-
     }
 }

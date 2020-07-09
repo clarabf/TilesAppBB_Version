@@ -36,8 +36,9 @@ namespace TilesApp.Views
 
         async void OnSearchPressed(object sender, EventArgs e)
         {
+            FamGroupList.Clear();
             LoadingPopUp.IsVisible = true;
-            bool success = await setProtofamiliesList();
+            bool success = await setProjectsList();
             LoadingPopUp.IsVisible = false;
             if (!success)
             {
@@ -80,7 +81,7 @@ namespace TilesApp.Views
         private async Task<bool> setProtofamiliesList()
         {
             bool success = false;
-            string result = await PHPApi.GetProductTypesList();
+            string result = await Api.GetProductTypesList();
             if (result != "")
             { 
                 FamGroupList.Clear();
@@ -115,6 +116,32 @@ namespace TilesApp.Views
                         if (dictPF["created_at"] != null) pf.Created_at = dictPF["created_at"].ToString();
                         if (dictPF["updated_at"] != null) pf.Updated_at = dictPF["updated_at"].ToString();
                         if (dictPF["deleted_at"] != null) pf.Deleted_at = dictPF["deleted_at"].ToString();
+                        FamGroupList.Add(pf);
+                        success = true;
+                    }
+                }
+            }
+            return success;
+        }
+
+        private async Task<bool> setProjectsList()
+        {
+            bool success = false;
+            string result = await Api.GetProjectsList();
+            if (result != "")
+            {
+                List<Dictionary<string, object>> projectsList = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(result);
+
+                foreach (Dictionary<string, object> dictP in projectsList)
+                {
+                    if (dictP["name"].ToString().ToLower().Replace(" ", "").Contains(searchBar.Text.ToLower().Replace(" ", "")))
+                    {
+                        Web_ProtoFamily pf = new Web_ProtoFamily()
+                        {
+                            CosmoId = dictP["id"].ToString(),
+                            Name = dictP["name"].ToString(),
+                            Slug = dictP["slug"].ToString(),
+                        };
                         FamGroupList.Add(pf);
                         success = true;
                     }

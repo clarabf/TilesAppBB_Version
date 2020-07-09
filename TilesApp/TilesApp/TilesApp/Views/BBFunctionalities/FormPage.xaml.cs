@@ -44,7 +44,7 @@ namespace TilesApp.Views
                             Picker picker = new Picker
                             {
                                 ClassId = field.CosmoId,
-                                BackgroundColor = Color.White,
+                                BackgroundColor = Color.Transparent,
                                 Title = field.LongName,
                                 VerticalOptions = LayoutOptions.StartAndExpand
                             };
@@ -67,8 +67,11 @@ namespace TilesApp.Views
                                 SfComboBox multiComboBox = new SfComboBox
                                 {
                                     ClassId = field.CosmoId,
-                                    BackgroundColor = Color.White,
+                                    Text = "Select one...",
+                                    TextColor = Color.Gray,
+                                    BackgroundColor = Color.Transparent,
                                     HeightRequest = 40,
+                                    ShowClearButton = false,
                                     MaximumDropDownHeight = 200,
                                     IsEditableMode = false,
                                     EnableSelectionIndicator = true,
@@ -76,6 +79,11 @@ namespace TilesApp.Views
                                     IsSelectedItemsVisibleInDropDown = false,
                                     ComboBoxSource = items
                                 };
+                                TokenSettings token = new TokenSettings();
+                                token.BackgroundColor = Color.Black;
+                                token.TextColor = Color.White;
+                                token.IsCloseButtonVisible = true;
+                                multiComboBox.TokenSettings = token;
                                 elementsGrid.Children.Add(multiComboBox, 0, row);
                                 row++;
                             }
@@ -84,7 +92,7 @@ namespace TilesApp.Views
                                 Picker picker = new Picker
                                 {
                                     ClassId = field.CosmoId,
-                                    BackgroundColor = Color.White,
+                                    BackgroundColor = Color.Transparent,
                                     Title = field.LongName,
                                     VerticalOptions = LayoutOptions.StartAndExpand,
                                 };
@@ -102,7 +110,7 @@ namespace TilesApp.Views
                             Entry entry = new Entry
                             {
                                 ClassId = field.CosmoId,
-                                BackgroundColor = Color.White,
+                                BackgroundColor = Color.Transparent,
                                 Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
                                 VerticalOptions = LayoutOptions.StartAndExpand
                             };
@@ -116,6 +124,16 @@ namespace TilesApp.Views
             for (int i = row; i < 12; i++)
             {
                 elementsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            }
+        }
+
+        private void command_removing(object sender, ElementEventArgs e)
+        {
+            SfComboBox comboBox = (SfComboBox)sender;
+            if (comboBox.ComboBoxSource.Count == 0)
+            {
+                comboBox.Text = "Select one...";
+                comboBox.TextColor = Color.Gray;
             }
         }
 
