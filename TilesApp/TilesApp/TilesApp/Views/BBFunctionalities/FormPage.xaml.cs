@@ -61,49 +61,44 @@ namespace TilesApp.Views
                         if (field.ValueRegEx != null)
                         {
                             Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
+                            
+                            List<string> items = (List<string>)result["options"];
+
+                            TokenSettings tokenSettings = new TokenSettings
+                            {
+                                BackgroundColor = Color.Black,
+                                TextColor = Color.White,
+                                IsCloseButtonVisible = true,
+                            };
+
+                            SfComboBox comboBox = new SfComboBox
+                            {
+                                ClassId = field.CosmoId,
+                                TextColor = Color.Gray,
+                                BackgroundColor = Color.Transparent,
+                                ShowClearButton = false,
+                                IsEditableMode = false,
+                                EnableSelectionIndicator = true,
+                                EnableAutoSize = true,
+                                IsSelectedItemsVisibleInDropDown = false,
+                                ComboBoxSource = items,
+                                TokenSettings = tokenSettings
+                            };
+
                             if ((bool)result["multi"])
                             {
-                                List<string> items = (List<string>)result["options"];
-                                SfComboBox multiComboBox = new SfComboBox
-                                {
-                                    ClassId = field.CosmoId,
-                                    Text = "Select one...",
-                                    TextColor = Color.Gray,
-                                    BackgroundColor = Color.Transparent,
-                                    HeightRequest = 40,
-                                    ShowClearButton = false,
-                                    MaximumDropDownHeight = 200,
-                                    IsEditableMode = false,
-                                    EnableSelectionIndicator = true,
-                                    MultiSelectMode = MultiSelectMode.Token,
-                                    IsSelectedItemsVisibleInDropDown = false,
-                                    ComboBoxSource = items
-                                };
-                                TokenSettings token = new TokenSettings();
-                                token.BackgroundColor = Color.Black;
-                                token.TextColor = Color.White;
-                                token.IsCloseButtonVisible = true;
-                                multiComboBox.TokenSettings = token;
-                                elementsGrid.Children.Add(multiComboBox, 0, row);
-                                row++;
+                                comboBox.Watermark = "Select one at least...";
+                                comboBox.MultiSelectMode = MultiSelectMode.Token;
                             }
                             else
                             {
-                                Picker picker = new Picker
-                                {
-                                    ClassId = field.CosmoId,
-                                    BackgroundColor = Color.Transparent,
-                                    Title = field.LongName,
-                                    VerticalOptions = LayoutOptions.StartAndExpand,
-                                };
-                                List<string> items = (List<string>)result["options"];
-                                foreach (string it in items)
-                                {
-                                    picker.Items.Add(it);
-                                }
-                                elementsGrid.Children.Add(picker, 0, row);
-                                row++;
+                                comboBox.Watermark = "Select one...";
+                                comboBox.MultiSelectMode = MultiSelectMode.None;
                             }
+
+                            comboBox.SelectionChanged += selectionChanged_command;
+                            elementsGrid.Children.Add(comboBox, 0, row);
+                            row++;
                         }
                         else
                         {
@@ -127,13 +122,18 @@ namespace TilesApp.Views
             }
         }
 
-        private void command_removing(object sender, ElementEventArgs e)
+        private void selectionChanged_command(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
         {
             SfComboBox comboBox = (SfComboBox)sender;
-            if (comboBox.ComboBoxSource.Count == 0)
+            List<int> indexList = (List<int>)comboBox.SelectedIndices;
+            if (indexList.Count == 0)
             {
-                comboBox.Text = "Select one...";
-                comboBox.TextColor = Color.Gray;
+                comboBox.Text = null;
+                //comboBox.ComboBoxSource.Clear();
+                //Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == comboBox.ClassId; });
+                //Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
+                //List<string> items = (List<string>)result["options"];
+                //comboBox.DataSource = items;
             }
         }
 
@@ -187,30 +187,38 @@ namespace TilesApp.Views
                             if (field.ValueIsRequired && picker.SelectedItem == null) errors.Add("<" + current_label + "> cannot be empty.");
                             break;
                         case "Syncfusion.XForms.ComboBox.SfComboBox":
-                            SfComboBox multiComboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
-                            field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == multiComboBox.ClassId; });
+                            SfComboBox comboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
+                            field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == comboBox.ClassId; });
+                            Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
 
-                            List<int> indexList = (List<int>)multiComboBox.SelectedIndices;
-                            if (field.ValueIsRequired && indexList == null)
+                            if ((bool)result["multi"])
                             {
-                                errors.Add("<" + current_label + "> cannot be empty.");
+                                List<int> indexList = (List<int>)comboBox.SelectedIndices;
+                                if (field.ValueIsRequired && indexList == null)
+                                {
+                                    errors.Add("<" + current_label + "> cannot be empty.");
+                                }
+                                else
+                                {
+                                    if (indexList.Count > 0)
+                                    {
+                                        List<string> items = (List<string>)result["options"];
+
+                                        string options = "";
+
+                                        foreach (int ix in indexList)
+                                        {
+                                            options += items[ix] + ", ";
+                                        }
+                                        Debug.WriteLine(options);
+                                    }
+                                    else errors.Add("<" + current_label + "> cannot be empty.");
+                                }
                             }
                             else
                             {
-                                if (indexList.Count > 0)
-                                {
-                                    Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
-                                    List<string> items = (List<string>)result["options"];
-
-                                    string options = "";
-
-                                    foreach (int ix in indexList)
-                                    {
-                                        options += items[ix] + ", ";
-                                    }
-                                    Debug.WriteLine(options);
-                                }
-                                else errors.Add("<" + current_label + "> cannot be empty.");
+                                Debug.WriteLine(comboBox.Watermark + "..." + comboBox.SelectedItem);
+                                if (field.ValueIsRequired && comboBox.SelectedItem == null) errors.Add("<" + current_label + "> cannot be empty.");
                             }
                             break;
                     }
