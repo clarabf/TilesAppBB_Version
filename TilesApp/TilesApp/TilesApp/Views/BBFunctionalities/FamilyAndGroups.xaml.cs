@@ -56,11 +56,13 @@ namespace TilesApp.Views
             }
 
         }
-        void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
             string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
-            setFormFields(currentId);
+            string currentSlug = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Slug;
+            string result =  await Api.GetFieldsList(currentSlug);
+            setFormFields(result);
             //FOR TESTS
             fillTestFields();
             Navigation.PopModalAsync(true);
@@ -149,49 +151,49 @@ namespace TilesApp.Views
             }
             return success;
         }
-        private void setFormFields(string fam_id)
+        private void setFormFields(string jsonFields)
         {
             try
             {
                 formFieldsList.Clear();
 
-                List<string> fields = new List<string>();
-                foreach (Dictionary<string, object> dictFF in familyFieldsList)
+                Dictionary<string, Dictionary<string,object>> keyField = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(jsonFields);
+                foreach (KeyValuePair<string, Dictionary<string, object>> kv in keyField)
                 {
-                    if (dictFF["protofamily_id"].ToString() == fam_id)
-                    {
-                        fields.Add(dictFF["field_id"].ToString());
-                    }
-                }
-
-                foreach (string fi_id in fields)
-                {
-                    Dictionary<string, object> fieldData = fieldsList.Find(delegate (Dictionary<string, object> dict) { return dict["id"].ToString() == fi_id; });
-                    //Ignore internal data
+                    Dictionary<string, object> fieldData = kv.Value;
                     if (Convert.ToInt32(fieldData["field_category"]) != 0)
                     {
                         Web_Field field = new Web_Field()
                         {
-                            CosmoId = fieldData["id"].ToString(),
+                            Id = fieldData["id"].ToString(),
                             Name = fieldData["name"].ToString(),
                             LongName = fieldData["long_name"].ToString(),
                             Description = fieldData["description"].ToString(),
-                            MongoSlug = fieldData["mongoslug"].ToString(),
                             Slug = fieldData["slug"].ToString(),
                             ValueIsUnique = (bool)fieldData["value_is_unique"],
                             ValueIsRequired = (bool)fieldData["value_is_required"],
-                            ValueIsForeignKey = (bool)fieldData["value_is_foreign_key"],
+                            Index = (bool)fieldData["index"],
+                            Show = (bool)fieldData["show"],
+                            Edit = (bool)fieldData["edit"],
+                            Delete = (bool)fieldData["delete"],
                         };
+                        //string
                         if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
-                        if (fieldData["field_category"] != null) field.FieldCategory = Convert.ToInt32(fieldData["field_category"]);
-                        if (fieldData["variant"] != null) field.Variant = Convert.ToInt32(fieldData["variant"]);
-                        if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
-                        if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                        if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
+                        if (fieldData["protofamily_id"] != null) field.ProtoFamilyId = fieldData["protofamily_id"].ToString();
+                        if (fieldData["field_id"] != null) field.FieldId = fieldData["field_id"].ToString();
+                        if (fieldData["phase"] != null) field.Phase = fieldData["phase"].ToString();
                         if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
-                        if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
                         if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
                         if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
                         if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
+                        //int
+                        if (fieldData["field_category"] != null) field.FieldCategory = Convert.ToInt32(fieldData["field_category"]);
+                        if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                        if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                        if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
+                        if (fieldData["entity_type"] != null) field.EntityType = Convert.ToInt32(fieldData["entity_type"]);
+                        if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
                         formFieldsList.Add(field);
                     }
                 }
@@ -205,19 +207,16 @@ namespace TilesApp.Views
         {
             Web_Field field = new Web_Field()
             {
-                CosmoId = "12345",
+                Id = "12345",
                 Name = "regM",
                 LongName = "RegEx Multi",
                 Description = "miau miau miau",
-                MongoSlug = "ts",
                 Slug = "test-string",
                 ValueIsUnique = true,
                 ValueIsRequired = true,
-                ValueIsForeignKey = false,
                 ProjectId = "testProject",
                 FieldCategory = 1,
-                Variant = 2,
-                PrimitiveType = 2,
+                PrimitiveType = 7,
                 PrimitiveQuantity = 20,
                 ValueRegEx = "^\\[(\"Option A\",?|\"Option B\",?|\"Option C\",?)*\\]$",
                 Default = null,
@@ -228,19 +227,16 @@ namespace TilesApp.Views
             formFieldsList.Add(field);
             field = new Web_Field()
             {
-                CosmoId = "67891",
+                Id = "67891",
                 Name = "regS",
                 LongName = "RegEx Single",
                 Description = "miau miau miau",
-                MongoSlug = "ts",
                 Slug = "test-string",
                 ValueIsUnique = true,
                 ValueIsRequired = true,
-                ValueIsForeignKey = false,
                 ProjectId = "testProject",
                 FieldCategory = 1,
-                Variant = 2,
-                PrimitiveType = 2,
+                PrimitiveType = 7,
                 PrimitiveQuantity = 40,
                 ValueRegEx = "^\\[(\"Dante\",?|\"Vergil\",?|\"Nero\",?|\"V\",?)\\]$",
                 Default = null,
@@ -251,19 +247,16 @@ namespace TilesApp.Views
             formFieldsList.Add(field);
             field = new Web_Field()
             {
-                CosmoId = "78910",
+                Id = "78910",
                 Name = "testString3",
                 LongName = "Test String3",
                 Description = "miau miau miau",
-                MongoSlug = "ts",
                 Slug = "test-string",
                 ValueIsUnique = true,
                 ValueIsRequired = false,
-                ValueIsForeignKey = false,
                 ProjectId = "testProject",
                 FieldCategory = 1,
-                Variant = 2,
-                PrimitiveType = 2,
+                PrimitiveType = 7,
                 PrimitiveQuantity = 5,
                 ValueRegEx = null,
                 Default = null,
@@ -274,19 +267,16 @@ namespace TilesApp.Views
             formFieldsList.Add(field);
             field = new Web_Field()
             {
-                CosmoId = "89101",
+                Id = "89101",
                 Name = "testString4",
                 LongName = "Test String4",
                 Description = "miau miau miau",
-                MongoSlug = "ts",
                 Slug = "test-string",
                 ValueIsUnique = true,
                 ValueIsRequired = true,
-                ValueIsForeignKey = false,
                 ProjectId = "testProject",
                 FieldCategory = 1,
-                Variant = 2,
-                PrimitiveType = 2,
+                PrimitiveType = 7,
                 PrimitiveQuantity = 3,
                 ValueRegEx = null,
                 Default = null,

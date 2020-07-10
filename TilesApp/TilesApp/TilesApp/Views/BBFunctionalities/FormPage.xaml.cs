@@ -38,12 +38,12 @@ namespace TilesApp.Views
                 switch (field.PrimitiveType)
                 {
                     //integer
-                    case 0:
+                    case 2:
                         if (field.PrimitiveQuantity == 1)
                         {
                             Picker picker = new Picker
                             {
-                                ClassId = field.CosmoId,
+                                ClassId = field.Id,
                                 BackgroundColor = Color.Transparent,
                                 Title = field.LongName,
                                 VerticalOptions = LayoutOptions.StartAndExpand
@@ -57,7 +57,7 @@ namespace TilesApp.Views
                     case 1:
                         break;
                     //string
-                    case 2:
+                    case 7:
                         if (field.ValueRegEx != null)
                         {
                             Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
@@ -73,7 +73,7 @@ namespace TilesApp.Views
 
                             SfComboBox comboBox = new SfComboBox
                             {
-                                ClassId = field.CosmoId,
+                                ClassId = field.Id,
                                 TextColor = Color.Gray,
                                 BackgroundColor = Color.Transparent,
                                 ShowClearButton = false,
@@ -104,7 +104,7 @@ namespace TilesApp.Views
                         {
                             Entry entry = new Entry
                             {
-                                ClassId = field.CosmoId,
+                                ClassId = field.Id,
                                 BackgroundColor = Color.Transparent,
                                 Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
                                 VerticalOptions = LayoutOptions.StartAndExpand
@@ -140,7 +140,7 @@ namespace TilesApp.Views
         private async void entryCompleted_command(object sender, EventArgs e)
         {
             Entry entry = (Entry)sender;
-            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == entry.ClassId; });
+            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == entry.ClassId; });
             if (entry.Text.Length > field.PrimitiveQuantity) 
             {
                 await DisplayAlert("Warning", 
@@ -174,21 +174,22 @@ namespace TilesApp.Views
                             break;
                         case "Xamarin.Forms.Entry":
                             Entry entry = (Entry)elementsGrid.Children.ElementAt(i);
-                            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == entry.ClassId; });
+                            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == entry.ClassId; });
 
                             Debug.WriteLine(entry.Placeholder + "..." + entry.Text);
                             if (field.ValueIsRequired && (entry.Text == null || entry.Text == "")) errors.Add("<" + current_label + "> cannot be empty.");
                             break;
                         case "Xamarin.Forms.Picker":
                             Picker picker = (Picker)elementsGrid.Children.ElementAt(i);
-                            field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == picker.ClassId; });
+                            field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == picker.ClassId; });
                             
                             Debug.WriteLine(picker.Title + "..." + picker.SelectedItem);
                             if (field.ValueIsRequired && picker.SelectedItem == null) errors.Add("<" + current_label + "> cannot be empty.");
                             break;
                         case "Syncfusion.XForms.ComboBox.SfComboBox":
                             SfComboBox comboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
-                            field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == comboBox.ClassId; });
+                            field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == comboBox.ClassId; });
+
                             Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
 
                             if ((bool)result["multi"])
