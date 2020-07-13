@@ -38,7 +38,7 @@ namespace TilesApp.Views
                 switch (field.PrimitiveType)
                 {
                     //integer
-                    case 2:
+                    case "Integer":
                         if (field.PrimitiveQuantity == 1)
                         {
                             Picker picker = new Picker
@@ -54,15 +54,20 @@ namespace TilesApp.Views
                             row++;
                         }
                         break;
-                    case 1:
-                        break;
                     //string
-                    case 7:
+                    case "Chars Array (Str)":
                         if (field.ValueRegEx != null)
                         {
                             Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
                             
                             List<string> items = (List<string>)result["options"];
+
+                            //StackLayout layout = new StackLayout()
+                            //{
+                            //    VerticalOptions = LayoutOptions.Start,
+                            //    HorizontalOptions = LayoutOptions.Start,
+                            //    Padding = new Thickness(10)
+                            //};
 
                             TokenSettings tokenSettings = new TokenSettings
                             {
@@ -74,13 +79,13 @@ namespace TilesApp.Views
                             SfComboBox comboBox = new SfComboBox
                             {
                                 ClassId = field.Id,
-                                TextColor = Color.Gray,
+                                TextColor = Color.Black,
                                 BackgroundColor = Color.Transparent,
                                 ShowClearButton = false,
                                 IsEditableMode = false,
-                                EnableSelectionIndicator = true,
                                 EnableAutoSize = true,
                                 IsSelectedItemsVisibleInDropDown = false,
+                                TokensWrapMode = TokensWrapMode.None,
                                 ComboBoxSource = items,
                                 TokenSettings = tokenSettings
                             };
@@ -97,6 +102,7 @@ namespace TilesApp.Views
                             }
 
                             comboBox.SelectionChanged += selectionChanged_command;
+                            //layout.Children.Add(comboBox);
                             elementsGrid.Children.Add(comboBox, 0, row);
                             row++;
                         }
@@ -128,12 +134,13 @@ namespace TilesApp.Views
             List<int> indexList = (List<int>)comboBox.SelectedIndices;
             if (indexList.Count == 0)
             {
-                comboBox.Text = null;
+                comboBox.Watermark = "Select one at least...";
                 //comboBox.ComboBoxSource.Clear();
-                //Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.CosmoId == comboBox.ClassId; });
+                //Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == comboBox.ClassId; });
                 //Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
                 //List<string> items = (List<string>)result["options"];
-                //comboBox.DataSource = items;
+                //items.Add("ahaaaaaaaaaaaaaaaaaaaaaaa");
+                //comboBox.ComboBoxSource = items;
             }
         }
 

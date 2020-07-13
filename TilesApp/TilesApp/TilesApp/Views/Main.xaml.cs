@@ -41,7 +41,7 @@ namespace TilesApp.Views
             }
             else
             {
-                usernameEntry.Placeholder = "username bb android";
+                usernameEntry.Placeholder = "username";
             }
             if (App.Current.Properties.ContainsKey("password"))
             {
@@ -50,7 +50,15 @@ namespace TilesApp.Views
             }
             else
             {
-                passwordEntry.Placeholder = "password bb android";
+                passwordEntry.Placeholder = "password";
+            }
+            if (App.Current.Properties.ContainsKey("current_project_name"))
+            {
+                App.CurrentProjectName = App.Current.Properties["current_project_name"] as string;
+            }
+            if (App.Current.Properties.ContainsKey("current_project_slug"))
+            {
+                App.CurrentProjectSlug = App.Current.Properties["current_project_slug"] as string;
             }
             lblVersion.Text = VersionTracking.CurrentVersion.ToString();
 

@@ -137,6 +137,8 @@ namespace TilesApp.Services
                 return null;
             }
         }
+        
+        //OLD
         public async static Task<string> GetProductTypesList()
         {
             string result = "";
@@ -169,7 +171,30 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/test_project_2020/y/_families/__index");
+                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/_projects/__index");
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            return result;
+        }
+        
+        public async static Task<string> GetFamiliesList()
+        {
+            string result = "";
+            try
+            {
+                if (App.IsConnected)
+                {
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
+                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/" + App.CurrentProjectSlug + "/y/_families/__index");
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -192,7 +217,7 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/test_project_2020/y/" + slug  + "/__edit");
+                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/" + App.CurrentProjectSlug + "/y/" + slug  + "/__edit");
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();

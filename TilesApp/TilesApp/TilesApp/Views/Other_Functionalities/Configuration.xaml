@@ -3,120 +3,53 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:combobox="clr-namespace:Syncfusion.XForms.ComboBox;assembly=Syncfusion.SfComboBox.XForms"
              mc:Ignorable="d"
              x:Class="TilesApp.Views.Configuration">
     <ContentPage.Content>
-        <AbsoluteLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-            <Image Source="newBackground.jpg" Aspect="Fill"/>
-            <Grid Padding="30, 0, 30, 15" StyleClass="gridConfig">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="1.5*" />
-                    <RowDefinition Height="1*" />
-                </Grid.RowDefinitions>
-
-                <Label 
-                    TextColor = "#ffffff"
-                    FontAttributes="Bold"
-                    Text="YOUR STATION"
-                    FontSize="20"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="EndAndExpand"
-                    CharacterSpacing="1.15"
-                    Grid.Row="0"
-                />
-                
-                <Label 
-                    x:Name="lblStation"
-                    Text="You haven't assigned a station. Please scan one:"
-                    TextColor = "#ffffff"
-                    FontSize="16"
-                    HorizontalOptions="StartAndExpand"
-                    VerticalOptions="CenterAndExpand"
-                    Grid.Row="1"
-                />
-                
-                <Button
-                    x:Name="btAdd"
-                    Text="ADD &#xe815;"
-                    FontFamily="{StaticResource CustomFont}"
-                    StyleClass="primaryButton"
-                    WidthRequest="150"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="CenterAndExpand"
-                    Clicked="GoToScan"
-                    Grid.Row="2"
-                />
-                
-                <Label 
-                    TextColor = "#ffffff"
-                    FontAttributes="Bold"                        
-                    Text="YOUR INFO"
-                    FontSize="20"
-                    HorizontalOptions="CenterAndExpand"
-                    VerticalOptions="EndAndExpand"
-                    CharacterSpacing="1.15"
-                    Margin="0, 0, 0, 15"
-                    Grid.Row="3"
-                />
-                <Grid Grid.Row="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width=".5*" />
-                        <ColumnDefinition Width="2*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                        <RowDefinition Height="1*" />
-                    </Grid.RowDefinitions>
-                    <Label
-                        TextColor = "#ffffff"
-                        FontSize="14"
-                        Text="Name "   
-                        Grid.Column="0"
-                        Grid.Row="0"
-                    />
-                    <Label x:Name="lblName"
-                        TextColor = "#ffffff"
-                        FontSize="14"
-                        Text="name"  
-                        Grid.Column="1"
-                        Grid.Row="0"
-                    />
-                    <Label
-                        TextColor = "#ffffff"
-                        FontSize="14"
-                        Text="Session "  
-                        Grid.Column="0"
-                        Grid.Row="1"
-                    />
-                    <Label x:Name="lblSession"
-                        TextColor = "#ffffff"
-                        FontSize="14"
-                        Text="{Binding SessionTime}"
-                        Grid.Column="1"
-                        Grid.Row="1"
-                    />
-                    <Label
-                        TextColor = "#ffffff"
-                        FontSize="14"
-                        Text="Location "   
-                        Grid.Column="0"
-                        Grid.Row="2"
-                    />
-                    <Label x:Name="lblLocation"
-                        TextColor = "#ffffff"
-                        FontSize="14"
-                        Grid.Column="1"
-                        Grid.Row="2"
-                    />
-                    
-                </Grid>
-
-                
-            </Grid>
-        </AbsoluteLayout>
+        <Grid Padding="40, 30, 40, 15" BackgroundColor="#F0F0F0" StyleClass="gridConfig">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.5*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="4*" />
+            </Grid.RowDefinitions>
+            <Label 
+                TextColor = "Black"
+                FontAttributes="Bold"
+                Text="YOUR PROJECT"
+                FontSize="20"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand"
+                CharacterSpacing="1.15"
+                Grid.Row="0"
+            />
+            <Label 
+                Grid.Row="1"
+                TextColor = "Black"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand">
+                <Label.FormattedText>
+                    <FormattedString>
+                        <Span Text="You are currently working on project: " FontSize="Medium"/>
+                        <Span Text="Test" FontAttributes="Bold" x:Name="lblProject" FontSize="Large"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            <combobox:SfComboBox
+                x:Name="projectDropdown"
+                Watermark="Change Project"
+                MultiSelectMode="None"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="StartAndExpand"
+                IsEditableMode="False"
+                Grid.Row="2"
+            />
+            <StackLayout Grid.Row="3" Orientation="Horizontal">
+                <CheckBox Color="Black" CheckedChanged="OnCheckBoxCheckedChanged"/>
+                <Label Text="Remember me" VerticalOptions="Center" TextColor="Black" FontSize="Small"/>
+            </StackLayout>
+        </Grid>
     </ContentPage.Content>
 </ContentPage>

@@ -38,7 +38,7 @@ namespace TilesApp.Views
         {
             FamGroupList.Clear();
             LoadingPopUp.IsVisible = true;
-            bool success = await setProjectsList();
+            bool success = await setFamiliesList();
             LoadingPopUp.IsVisible = false;
             if (!success)
             {
@@ -80,6 +80,8 @@ namespace TilesApp.Views
             bool success = await setProtofamiliesList();
             if (!success) await DisplayAlert("Warning", "No matches found...", "Ok");
         }
+        
+        //OLD
         private async Task<bool> setProtofamiliesList()
         {
             bool success = false;
@@ -126,10 +128,10 @@ namespace TilesApp.Views
             return success;
         }
 
-        private async Task<bool> setProjectsList()
+        private async Task<bool> setFamiliesList()
         {
             bool success = false;
-            string result = await Api.GetProjectsList();
+            string result = await Api.GetFamiliesList();
             if (result != "")
             {
                 List<Dictionary<string, object>> projectsList = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(result);
@@ -138,6 +140,7 @@ namespace TilesApp.Views
                 {
                     if (dictP["name"].ToString().ToLower().Replace(" ", "").Contains(searchBar.Text.ToLower().Replace(" ", "")))
                     {
+                        //Only store the data we need
                         Web_ProtoFamily pf = new Web_ProtoFamily()
                         {
                             CosmoId = dictP["id"].ToString(),
@@ -156,46 +159,44 @@ namespace TilesApp.Views
             try
             {
                 formFieldsList.Clear();
-
                 Dictionary<string, Dictionary<string,object>> keyField = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(jsonFields);
                 foreach (KeyValuePair<string, Dictionary<string, object>> kv in keyField)
                 {
                     Dictionary<string, object> fieldData = kv.Value;
-                    if (Convert.ToInt32(fieldData["field_category"]) != 0)
+                    
+                    Web_Field field = new Web_Field()
                     {
-                        Web_Field field = new Web_Field()
-                        {
-                            Id = fieldData["id"].ToString(),
-                            Name = fieldData["name"].ToString(),
-                            LongName = fieldData["long_name"].ToString(),
-                            Description = fieldData["description"].ToString(),
-                            Slug = fieldData["slug"].ToString(),
-                            ValueIsUnique = (bool)fieldData["value_is_unique"],
-                            ValueIsRequired = (bool)fieldData["value_is_required"],
-                            Index = (bool)fieldData["index"],
-                            Show = (bool)fieldData["show"],
-                            Edit = (bool)fieldData["edit"],
-                            Delete = (bool)fieldData["delete"],
-                        };
-                        //string
-                        if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
-                        if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
-                        if (fieldData["protofamily_id"] != null) field.ProtoFamilyId = fieldData["protofamily_id"].ToString();
-                        if (fieldData["field_id"] != null) field.FieldId = fieldData["field_id"].ToString();
-                        if (fieldData["phase"] != null) field.Phase = fieldData["phase"].ToString();
-                        if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
-                        if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
-                        if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
-                        if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
-                        //int
-                        if (fieldData["field_category"] != null) field.FieldCategory = Convert.ToInt32(fieldData["field_category"]);
-                        if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
-                        if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
-                        if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
-                        if (fieldData["entity_type"] != null) field.EntityType = Convert.ToInt32(fieldData["entity_type"]);
-                        if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
-                        formFieldsList.Add(field);
-                    }
+                        Id = fieldData["id"].ToString(),
+                        Name = fieldData["name"].ToString(),
+                        LongName = fieldData["long_name"].ToString(),
+                        Description = fieldData["description"].ToString(),
+                        Slug = fieldData["slug"].ToString(),
+                        ValueIsUnique = (bool)fieldData["value_is_unique"],
+                        ValueIsRequired = (bool)fieldData["value_is_required"],
+                        Index = (bool)fieldData["index"],
+                        Show = (bool)fieldData["show"],
+                        Edit = (bool)fieldData["edit"],
+                        Delete = (bool)fieldData["delete"],
+                    };
+                    //string
+                    if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
+                    if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
+                    if (fieldData["protofamily_id"] != null) field.ProtoFamilyId = fieldData["protofamily_id"].ToString();
+                    if (fieldData["field_id"] != null) field.FieldId = fieldData["field_id"].ToString();
+                    if (fieldData["field_category"] != null) field.FieldCategory = fieldData["field_category"].ToString();
+                    if (fieldData["primitive_type"] != null) field.PrimitiveType = fieldData["primitive_type"].ToString();
+                    if (fieldData["phase"] != null) field.Phase = fieldData["phase"].ToString();
+                    if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
+                    if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
+                    if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
+                    if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
+                    //int
+                    if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                    if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
+                    if (fieldData["entity_type"] != null) field.EntityType = Convert.ToInt32(fieldData["entity_type"]);
+                    if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
+                    formFieldsList.Add(field);
+                    
                 }
             }
             catch (Exception ex)
@@ -215,8 +216,8 @@ namespace TilesApp.Views
                 ValueIsUnique = true,
                 ValueIsRequired = true,
                 ProjectId = "testProject",
-                FieldCategory = 1,
-                PrimitiveType = 7,
+                FieldCategory = "1",
+                PrimitiveType = "Chars Array (Str)",
                 PrimitiveQuantity = 20,
                 ValueRegEx = "^\\[(\"Option A\",?|\"Option B\",?|\"Option C\",?)*\\]$",
                 Default = null,
@@ -235,8 +236,8 @@ namespace TilesApp.Views
                 ValueIsUnique = true,
                 ValueIsRequired = true,
                 ProjectId = "testProject",
-                FieldCategory = 1,
-                PrimitiveType = 7,
+                FieldCategory = "1",
+                PrimitiveType = "Chars Array (Str)",
                 PrimitiveQuantity = 40,
                 ValueRegEx = "^\\[(\"Dante\",?|\"Vergil\",?|\"Nero\",?|\"V\",?)\\]$",
                 Default = null,
@@ -255,8 +256,8 @@ namespace TilesApp.Views
                 ValueIsUnique = true,
                 ValueIsRequired = false,
                 ProjectId = "testProject",
-                FieldCategory = 1,
-                PrimitiveType = 7,
+                FieldCategory = "1",
+                PrimitiveType = "Chars Array (Str)",
                 PrimitiveQuantity = 5,
                 ValueRegEx = null,
                 Default = null,
@@ -275,8 +276,8 @@ namespace TilesApp.Views
                 ValueIsUnique = true,
                 ValueIsRequired = true,
                 ProjectId = "testProject",
-                FieldCategory = 1,
-                PrimitiveType = 7,
+                FieldCategory = "1",
+                PrimitiveType = "Chars Array (Str)",
                 PrimitiveQuantity = 3,
                 ValueRegEx = null,
                 Default = null,
@@ -290,8 +291,9 @@ namespace TilesApp.Views
         #region lower menu commands
         private async void Config_Command(object sender, EventArgs args)
         {
-            //await Navigation.PushModalAsync(new Configuration(this));
-            await DisplayAlert("Warning", "Page still in progres...", "Ok");
+            string result = await Api.GetProjectsList();
+            List<Web_Project> projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
+            await Navigation.PushModalAsync(new Configuration(projects));
         }
         private async void Pending_Command(object sender, EventArgs args)
         {

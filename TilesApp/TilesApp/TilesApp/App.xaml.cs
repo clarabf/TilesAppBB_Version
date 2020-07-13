@@ -26,6 +26,10 @@ namespace TilesApp
         public static string DeviceSerialNumber { get; set; }
         public static Models.Location GeoLocation { get; set; }
         public static string Station { get; set; }
+
+        public static string CurrentProjectName { get; set; }
+
+        public static string CurrentProjectSlug { get; set; }
         public static User User { get; set; } = new User();
         public static bool ActiveSession { get; set; } = false;
         public static bool IsConnected { get; set; } = false;

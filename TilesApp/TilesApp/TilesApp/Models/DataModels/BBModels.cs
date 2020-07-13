@@ -51,9 +51,9 @@ namespace TilesApp.Models.DataModels
         public string Created_at { get; set; }
         public string Updated_at { get; set; }
         public string Deleted_at { get; set; }
-        public int PrimitiveType { get; set; }
+        public string PrimitiveType { get; set; }
         public int PrimitiveQuantity { get; set; }
-        public int FieldCategory { get; set; }
+        public string FieldCategory { get; set; }
         public int EntityType { get; set; }
         public int UIindex { get; set; }
         public string ValueRegEx { get; set; }
