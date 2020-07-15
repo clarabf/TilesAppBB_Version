@@ -14,6 +14,7 @@ using Nito.AsyncEx;
 using TilesApp.Models.DataModels;
 using TilesApp.Views.Other_Functionalities;
 using Xamarin.Essentials;
+using Newtonsoft.Json;
 
 namespace TilesApp.Views
 {
@@ -124,7 +125,15 @@ namespace TilesApp.Views
             {
                 //success = await PHPApi.GetConfigFiles(App.User.MSID, App.User.OBOToken);
                 if (success)
-                {                    
+                {
+                    try
+                    {
+                        string result = await Api.GetProjectsList();
+                        App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
+                    }
+                    catch {
+                        App.Projects = new List<Web_Project>();
+                    }
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         Navigation.PopModalAsync(true);

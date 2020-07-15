@@ -172,9 +172,10 @@ namespace TilesApp.Services
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
                     HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/_projects/__index");
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    if (response.IsSuccessStatusCode)
                     {
                         result = await response.Content.ReadAsStringAsync();
+
                     }
                 }
             }

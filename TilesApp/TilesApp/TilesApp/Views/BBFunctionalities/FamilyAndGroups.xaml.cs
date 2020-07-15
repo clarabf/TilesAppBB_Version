@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Syncfusion.XForms.ComboBox;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,12 +27,55 @@ namespace TilesApp.Views
         private List<Dictionary<string, object>> fieldsList;
         private List<Web_Field> formFieldsList = new List<Web_Field>();
         public ObservableCollection<Web_ProtoFamily> FamGroupList { get; set; } = new ObservableCollection<Web_ProtoFamily>();
+        
+        List<Web_Project> projectsList = new List<Web_Project>();
+        List<string> projectNames = new List<string>();
+        private bool rememberProject;
 
         public FamilyAndGroups()
         {
             InitializeComponent();
+            
+            foreach (Web_Project p in App.Projects) projectNames.Add(p.Name);
+            projectDropdown.DataSource = projectNames;
+            projectDropdown.SelectionChanged += projectChosen_CommandAsync;
+
+            if (App.CurrentProjectName == null)
+            {
+                SelectProjectFrame.IsVisible = true;
+            }
+
             BindingContext = this;
             App.Inventory.Clear();
+        }
+
+        private async void projectChosen_CommandAsync(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
+        {
+            SfComboBox comboBox = (SfComboBox)sender;
+            Web_Project projectSelected = App.Projects.Find(delegate (Web_Project p) { return p.Name == comboBox.SelectedItem.ToString(); });
+            App.CurrentProjectName = projectSelected.Name;
+            App.CurrentProjectSlug = projectSelected.Slug;
+            btContinue.IsVisible = true;
+            btLine.IsVisible = true;
+            await DisplayAlert("Current project selected!", "You have selected the project <" + App.CurrentProjectName + "> to work on", "Ok");
+        }
+
+        async void OnCheckBoxCheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            rememberProject = e.Value;
+        }
+
+        private async void Continue_Command(object sender, EventArgs args)
+        {
+            if (rememberProject)
+            {
+                if (Application.Current.Properties.ContainsKey("current_project_name")) Application.Current.Properties["current_project_name"] = App.CurrentProjectName;
+                else Application.Current.Properties.Add("current_project_name", App.CurrentProjectName);
+                if (Application.Current.Properties.ContainsKey("current_project_slug")) Application.Current.Properties["current_project_slug"] = App.CurrentProjectSlug;
+                else Application.Current.Properties.Add("current_project_slug", App.CurrentProjectSlug);
+                await Application.Current.SavePropertiesAsync();
+            }
+            SelectProjectFrame.IsVisible = false;
         }
 
         async void OnSearchPressed(object sender, EventArgs e)
@@ -56,7 +100,7 @@ namespace TilesApp.Views
             }
 
         }
-        async void OnCollectionViewSelectionChanged(object sender, SelectionChangedEventArgs e)
+        async void OnCollectionViewSelectionChanged(object sender, Xamarin.Forms.SelectionChangedEventArgs e)
         {
             string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
             string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
@@ -291,9 +335,7 @@ namespace TilesApp.Views
         #region lower menu commands
         private async void Config_Command(object sender, EventArgs args)
         {
-            string result = await Api.GetProjectsList();
-            List<Web_Project> projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
-            await Navigation.PushModalAsync(new Configuration(projects));
+            await Navigation.PushModalAsync(new Configuration());
         }
         private async void Pending_Command(object sender, EventArgs args)
         {

@@ -33,7 +33,7 @@
                 <Label.FormattedText>
                     <FormattedString>
                         <Span Text="You are currently working on project: " FontSize="Medium"/>
-                        <Span Text="Test" FontAttributes="Bold" x:Name="lblProject" FontSize="Large"/>
+                        <Span Text="Test" FontAttributes="Bold" x:Name="lblProject" FontSize="Medium"/>
                     </FormattedString>
                 </Label.FormattedText>
             </Label>
@@ -48,7 +48,7 @@
             />
             <StackLayout Grid.Row="3" Orientation="Horizontal">
                 <CheckBox Color="Black" CheckedChanged="OnCheckBoxCheckedChanged"/>
-                <Label Text="Remember me" VerticalOptions="Center" TextColor="Black" FontSize="Small"/>
+                <Label Text="Remember project" VerticalOptions="Center" TextColor="Black" FontSize="Small"/>
             </StackLayout>
         </Grid>
     </ContentPage.Content>

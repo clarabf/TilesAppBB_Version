@@ -13,12 +13,10 @@ namespace TilesApp.Views
     public partial class Configuration : ContentPage
     {
         List<string> projectNames = new List<string>();
-        List<Web_Project> projectsList = new List<Web_Project>();
-        public Configuration(List<Web_Project> projects)
+        public Configuration()
         {
             InitializeComponent();
-            projectsList = projects;
-            foreach (Web_Project p in projects) projectNames.Add(p.Name);
+            foreach (Web_Project p in App.Projects) projectNames.Add(p.Name);
 
             projectDropdown.DataSource = projectNames;
             projectDropdown.SelectionChanged += projectChosen_CommandAsync;
@@ -33,7 +31,7 @@ namespace TilesApp.Views
         {
             SfComboBox comboBox = (SfComboBox)sender;
             lblProject.Text = comboBox.SelectedItem.ToString();
-            Web_Project projectSelected = projectsList.Find(delegate (Web_Project p) { return p.Name == lblProject.Text; });
+            Web_Project projectSelected = App.Projects.Find(delegate (Web_Project p) { return p.Name == lblProject.Text; });
             App.CurrentProjectName = projectSelected.Name;
             App.CurrentProjectSlug = projectSelected.Slug;
             await DisplayAlert("Current project changed!", "You have selected the project <" + App.CurrentProjectName + "> to work on", "Ok");
