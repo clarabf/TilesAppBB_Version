@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -65,5 +66,34 @@ namespace TilesApp.Models.DataModels
         public bool Delete { get; set; }
         public object Default { get; set; }
 
+    }
+
+    public class Form_Info
+    {
+        [BsonIgnoreIfNull]
+        public object pha
+        {
+            get
+            {
+                return 0;
+            }
+        }
+
+        [BsonIgnoreIfNull]
+        public Dictionary<string,object> FieldsData { get; set; }
+
+        [BsonIgnoreIfNull]
+        public string UserName
+        {
+            get
+            {
+                return App.User.DisplayName;
+            }
+        }
+
+        public Form_Info(Dictionary<string, object> listFields)
+        {
+            FieldsData = listFields;
+        }
     }
 }

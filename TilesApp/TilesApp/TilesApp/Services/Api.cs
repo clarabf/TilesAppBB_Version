@@ -17,7 +17,9 @@ namespace TilesApp.Services
 
         private static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
         public static List<ConfigFile> userAppsList = new List<ConfigFile> { };
-     
+        private static string BlackBoxesUri = "https://blackboxestest.azurewebsites.net/";
+
+
         public async static Task<bool> GetConfigFiles(string user_id, string token)
         {
             try
@@ -148,7 +150,7 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/oboria_five/_second-phase/_fields/__index");
+                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + "oboria_five/_second-phase/_fields/__index");
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -171,7 +173,7 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/_projects/__index");
+                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + "_projects/__index");
                     if (response.IsSuccessStatusCode)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -195,7 +197,7 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/" + App.CurrentProjectSlug + "/y/_families/__index");
+                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + App.CurrentProjectSlug + "/y/_families/__index");
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -218,7 +220,7 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync("https://blackboxes.azurewebsites.net/" + App.CurrentProjectSlug + "/y/" + slug  + "/__edit");
+                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + App.CurrentProjectSlug + "/y/" + slug  + "/__edit");
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();

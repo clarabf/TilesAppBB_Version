@@ -46,6 +46,14 @@ namespace TilesApp.Models
                 return App.DeviceSerialNumber != null ? App.DeviceSerialNumber : null;
             }
         }
+        [BsonIgnoreIfNull]
+        public object pha
+        {
+            get
+            {
+                return 0;
+            }
+        }
 
         public AppBasicOperation(OperationType op) {
             _operation = op;

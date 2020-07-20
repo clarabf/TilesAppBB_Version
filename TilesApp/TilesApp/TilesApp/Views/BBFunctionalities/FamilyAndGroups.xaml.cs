@@ -351,7 +351,7 @@ namespace TilesApp.Views
             {
                 if (App.IsConnected)
                 {
-                    CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
+                    //CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
                 }
                 //timer.Stop();
                 App.User.UserTokenExpiresAt = DateTime.Now;
@@ -386,7 +386,7 @@ namespace TilesApp.Views
                 {
                     if (App.IsConnected)
                     {
-                        CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
+                        //CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
                     }
                     App.User.UserTokenExpiresAt = DateTime.Now;
                     int res = App.Database.SaveUser(App.User);

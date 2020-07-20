@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Syncfusion.XForms.ComboBox;
 using System.Diagnostics;
+using TilesApp.Services;
+using System.Collections.ObjectModel;
 
 namespace TilesApp.Views
 {
@@ -62,18 +64,11 @@ namespace TilesApp.Views
                             
                             List<string> items = (List<string>)result["options"];
 
-                            //StackLayout layout = new StackLayout()
-                            //{
-                            //    VerticalOptions = LayoutOptions.Start,
-                            //    HorizontalOptions = LayoutOptions.Start,
-                            //    Padding = new Thickness(10)
-                            //};
-
                             TokenSettings tokenSettings = new TokenSettings
                             {
                                 BackgroundColor = Color.Black,
                                 TextColor = Color.White,
-                                IsCloseButtonVisible = true,
+                                IsCloseButtonVisible = false,
                             };
 
                             SfComboBox comboBox = new SfComboBox
@@ -81,13 +76,13 @@ namespace TilesApp.Views
                                 ClassId = field.Id,
                                 TextColor = Color.Black,
                                 BackgroundColor = Color.Transparent,
-                                ShowClearButton = false,
+                                ShowClearButton = true,
                                 IsEditableMode = false,
                                 EnableAutoSize = true,
                                 IsSelectedItemsVisibleInDropDown = false,
                                 TokensWrapMode = TokensWrapMode.None,
                                 ComboBoxSource = items,
-                                TokenSettings = tokenSettings
+                                TokenSettings = tokenSettings,
                             };
 
                             if ((bool)result["multi"])
@@ -102,7 +97,7 @@ namespace TilesApp.Views
                             }
 
                             comboBox.SelectionChanged += selectionChanged_command;
-                            //layout.Children.Add(comboBox);
+                            var i = comboBox.Text;
                             elementsGrid.Children.Add(comboBox, 0, row);
                             row++;
                         }
@@ -134,8 +129,7 @@ namespace TilesApp.Views
             List<int> indexList = (List<int>)comboBox.SelectedIndices;
             if (indexList.Count == 0)
             {
-                comboBox.Watermark = "Select one at least...";
-                //comboBox.ComboBoxSource.Clear();
+                //comboBox.Clear();
                 //Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == comboBox.ClassId; });
                 //Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
                 //List<string> items = (List<string>)result["options"];
@@ -170,6 +164,8 @@ namespace TilesApp.Views
             {
                 List<string> errors = new List<string>();
                 string current_label = "";
+                Dictionary<string, object> formInfo = new Dictionary<string, object>();
+                formInfo.Add("element",lblTitle.Text);
                 for (int i = 0; i < _formFields.Count * 2; i++)
                 {
                     string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
@@ -185,6 +181,7 @@ namespace TilesApp.Views
 
                             Debug.WriteLine(entry.Placeholder + "..." + entry.Text);
                             if (field.ValueIsRequired && (entry.Text == null || entry.Text == "")) errors.Add("<" + current_label + "> cannot be empty.");
+                            else formInfo.Add(field.Name, entry.Text);
                             break;
                         case "Xamarin.Forms.Picker":
                             Picker picker = (Picker)elementsGrid.Children.ElementAt(i);
@@ -192,6 +189,7 @@ namespace TilesApp.Views
                             
                             Debug.WriteLine(picker.Title + "..." + picker.SelectedItem);
                             if (field.ValueIsRequired && picker.SelectedItem == null) errors.Add("<" + current_label + "> cannot be empty.");
+                            else formInfo.Add(field.Name, picker.SelectedItem);
                             break;
                         case "Syncfusion.XForms.ComboBox.SfComboBox":
                             SfComboBox comboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
@@ -211,14 +209,17 @@ namespace TilesApp.Views
                                     if (indexList.Count > 0)
                                     {
                                         List<string> items = (List<string>)result["options"];
+                                        Collection<string> selectedItems = new Collection<string>();
 
                                         string options = "";
 
                                         foreach (int ix in indexList)
                                         {
                                             options += items[ix] + ", ";
+                                            selectedItems.Add(items[ix]);
                                         }
                                         Debug.WriteLine(options);
+                                        formInfo.Add(field.Name, selectedItems);
                                     }
                                     else errors.Add("<" + current_label + "> cannot be empty.");
                                 }
@@ -227,6 +228,7 @@ namespace TilesApp.Views
                             {
                                 Debug.WriteLine(comboBox.Watermark + "..." + comboBox.SelectedItem);
                                 if (field.ValueIsRequired && comboBox.SelectedItem == null) errors.Add("<" + current_label + "> cannot be empty.");
+                                else formInfo.Add(field.Name, comboBox.SelectedItem);
                             }
                             break;
                     }
@@ -239,7 +241,14 @@ namespace TilesApp.Views
                 }
                 else
                 {
-                    await DisplayAlert("SENDING FORM", "'Send form' action still in progres...", "Ok");
+                    KeyValuePair<string, string> result = CosmosDBManager.InsertOneObject(new Form_Info(formInfo));
+                    string mess  = "";
+                    if (result.Key == "Success")
+                    {
+                        if (result.Value == "Online") mess = "Your form has been correctly sent!";
+                        else mess = "You are offline. The form has been stored and will be sent when you are connected.";
+                    }
+                    await DisplayAlert("SENDING FORM", mess, "Ok");
                 }
             }
             catch (Exception e)

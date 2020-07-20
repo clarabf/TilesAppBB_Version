@@ -108,8 +108,11 @@ namespace TilesApp.Views
             if (App.IsConnected)
             {
                 App.ActiveSession = await AuthHelper.Login(usernameEntry.Text, passwordEntry.Text);
-                if (App.ActiveSession) success = true;
-
+                if (App.ActiveSession)
+                {
+                    //CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Login));
+                    success = true;
+                }
             }
             //OFFLINE
             else

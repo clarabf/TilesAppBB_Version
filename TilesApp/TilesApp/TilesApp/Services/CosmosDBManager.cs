@@ -48,6 +48,7 @@ namespace TilesApp.Services
                     opt.OperationType = data.GetType().Name;
                     opt.Station = App.Station;
                     opt.UserName = App.User.DisplayName;
+                    opt.pha = 0;
                     App.Database.SavePendingOperation(opt);
                     return new KeyValuePair<string, string>("Success", "Offline");
                 }

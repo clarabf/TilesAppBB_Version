@@ -48,16 +48,148 @@ namespace TilesApp
                 return database;
             }
         }
+
+        private List<Web_Field> formFieldsList = new List<Web_Field>();
         public App()
         {
 
             Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MjgzMzY2QDMxMzgyZTMyMmUzMEloRWJsZkxVaDlvVE1QbXk4MDVKWXlUcEh6Z3FQeUJBbDRkUURncFNrQTQ9");
 
             InitializeComponent();
-            
+
             MainPage = new NavigationPage(new Main());
+            
+            ////Visualization tests
+            //fillTestFields();
+            //MainPage = new NavigationPage(new FormPage("Visual Test", formFieldsList));
+            
             NavigationPage.SetHasNavigationBar(this, false);
 
+        }
+
+        private void fillTestFields()
+        {
+            //App.IsConnected = true;
+            Web_Field field = new Web_Field()
+            {
+                Id = "1",
+                Name = "regM",
+                LongName = "RegEx Multi",
+                Description = "miau miau miau",
+                Slug = "test-string",
+                ValueIsUnique = true,
+                ValueIsRequired = true,
+                ProjectId = "testProject",
+                FieldCategory = "1",
+                PrimitiveType = "Chars Array (Str)",
+                PrimitiveQuantity = 20,
+                ValueRegEx = "^\\[(\"Option A\",?|\"Option B\",?|\"Option C\",?)*\\]$",
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            }; 
+            formFieldsList.Add(field);
+            field = new Web_Field()
+            {
+                Id = "2",
+                Name = "eid",
+                LongName = "Element Unique ID",
+                Description = "miau miau miau",
+                Slug = "eid",
+                ValueIsUnique = true,
+                ValueIsRequired = true,
+                ProjectId = "testProject",
+                FieldCategory = "20",
+                PrimitiveType = "Chars Array (Str)",
+                PrimitiveQuantity = 20,
+                ValueRegEx = null,
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
+            field = new Web_Field()
+            {
+                Id = "3",
+                Name = "loc",
+                LongName = "Completition",
+                Description = "miau miau miau",
+                Slug = "loc",
+                ValueIsUnique = false,
+                ValueIsRequired = true,
+                ProjectId = "testProject",
+                FieldCategory = "1",
+                PrimitiveType = "Integer",
+                PrimitiveQuantity = 1,
+                ValueRegEx = "^([1-9]?\\\\d|100)$",
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
+            field = new Web_Field()
+            {
+                Id = "4",
+                Name = "regS",
+                LongName = "RegEx Single",
+                Description = "miau miau miau",
+                Slug = "test-string",
+                ValueIsUnique = true,
+                ValueIsRequired = true,
+                ProjectId = "testProject",
+                FieldCategory = "1",
+                PrimitiveType = "Chars Array (Str)",
+                PrimitiveQuantity = 40,
+                ValueRegEx = "^\\[(\"Dante\",?|\"Vergil\",?|\"Nero\",?|\"V\",?)\\]$",
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
+            field = new Web_Field()
+            {
+                Id = "5",
+                Name = "testString3",
+                LongName = "Test String3",
+                Description = "miau miau miau",
+                Slug = "test-string",
+                ValueIsUnique = true,
+                ValueIsRequired = false,
+                ProjectId = "testProject",
+                FieldCategory = "1",
+                PrimitiveType = "Chars Array (Str)",
+                PrimitiveQuantity = 5,
+                ValueRegEx = null,
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
+            field = new Web_Field()
+            {
+                Id = "6",
+                Name = "testString4",
+                LongName = "Test String4",
+                Description = "miau miau miau",
+                Slug = "test-string",
+                ValueIsUnique = true,
+                ValueIsRequired = true,
+                ProjectId = "testProject",
+                FieldCategory = "1",
+                PrimitiveType = "Chars Array (Str)",
+                PrimitiveQuantity = 3,
+                ValueRegEx = null,
+                Default = null,
+                Created_at = "2020-07-01 12:07:20",
+                Updated_at = null,
+                Deleted_at = null,
+            };
+            formFieldsList.Add(field);
         }
 
         /// <summary>
@@ -110,7 +242,8 @@ namespace TilesApp
                         PendingOperation opt = Database.GetFirstOperationInQueue();
                         if (opt != null)
                         {
-                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JSONParser.JsonToOperation(opt));
+                            //KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JSONParser.JsonToOperation(opt));
+                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonConvert.DeserializeObject<Form_Info>(opt.Data));
                             if (isInserted.Key == "Success")
                             {
                                 Database.DeletePendingOperation(opt);
