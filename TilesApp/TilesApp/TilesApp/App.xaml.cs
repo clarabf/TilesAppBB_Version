@@ -59,7 +59,7 @@ namespace TilesApp
 
             MainPage = new NavigationPage(new Main());
             
-            ////Visualization tests
+            ////TESTS (Careful with this test! App.IsConnect is "false" even if internet because no normal login)
             //fillTestFields();
             //MainPage = new NavigationPage(new FormPage("Visual Test", formFieldsList));
             
@@ -69,7 +69,6 @@ namespace TilesApp
 
         private void fillTestFields()
         {
-            //App.IsConnected = true;
             Web_Field field = new Web_Field()
             {
                 Id = "1",
@@ -118,7 +117,7 @@ namespace TilesApp
                 Description = "miau miau miau",
                 Slug = "loc",
                 ValueIsUnique = false,
-                ValueIsRequired = true,
+                ValueIsRequired = false,
                 ProjectId = "testProject",
                 FieldCategory = "1",
                 PrimitiveType = "Integer",

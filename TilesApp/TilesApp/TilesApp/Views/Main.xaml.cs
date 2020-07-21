@@ -132,7 +132,8 @@ namespace TilesApp.Views
                     try
                     {
                         string result = await Api.GetProjectsList();
-                        App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
+                        if (result != "") App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
+                        else App.Projects = new List<Web_Project>();
                     }
                     catch {
                         App.Projects = new List<Web_Project>();

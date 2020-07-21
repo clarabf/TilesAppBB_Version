@@ -22,13 +22,9 @@ namespace TilesApp.Views
     public partial class FamilyAndGroups : ContentPage
     {
 
-        private List<Dictionary<string, object>> protoFamiliesList;
-        private List<Dictionary<string, object>> familyFieldsList;
-        private List<Dictionary<string, object>> fieldsList;
         private List<Web_Field> formFieldsList = new List<Web_Field>();
         public ObservableCollection<Web_ProtoFamily> FamGroupList { get; set; } = new ObservableCollection<Web_ProtoFamily>();
         
-        List<Web_Project> projectsList = new List<Web_Project>();
         List<string> projectNames = new List<string>();
         private bool rememberProject;
 
@@ -49,54 +45,26 @@ namespace TilesApp.Views
             App.Inventory.Clear();
         }
 
-        private async void projectChosen_CommandAsync(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
-        {
-            SfComboBox comboBox = (SfComboBox)sender;
-            Web_Project projectSelected = App.Projects.Find(delegate (Web_Project p) { return p.Name == comboBox.SelectedItem.ToString(); });
-            App.CurrentProjectName = projectSelected.Name;
-            App.CurrentProjectSlug = projectSelected.Slug;
-            btContinue.IsVisible = true;
-            btLine.IsVisible = true;
-            await DisplayAlert("Current project selected!", "You have selected the project <" + App.CurrentProjectName + "> to work on", "Ok");
-        }
-
-        async void OnCheckBoxCheckedChanged(object sender, CheckedChangedEventArgs e)
-        {
-            rememberProject = e.Value;
-        }
-
-        private async void Continue_Command(object sender, EventArgs args)
-        {
-            if (rememberProject)
-            {
-                if (Application.Current.Properties.ContainsKey("current_project_name")) Application.Current.Properties["current_project_name"] = App.CurrentProjectName;
-                else Application.Current.Properties.Add("current_project_name", App.CurrentProjectName);
-                if (Application.Current.Properties.ContainsKey("current_project_slug")) Application.Current.Properties["current_project_slug"] = App.CurrentProjectSlug;
-                else Application.Current.Properties.Add("current_project_slug", App.CurrentProjectSlug);
-                await Application.Current.SavePropertiesAsync();
-            }
-            SelectProjectFrame.IsVisible = false;
-        }
-
+        
         async void OnSearchPressed(object sender, EventArgs e)
         {
             FamGroupList.Clear();
             LoadingPopUp.IsVisible = true;
             bool success = await setFamiliesList();
             LoadingPopUp.IsVisible = false;
-            if (!success)
+            if (!success) 
             {
-                await DisplayAlert("Warning", "No matches found...\nCreating fake object for tests.", "Ok");
-                Web_ProtoFamily pf = new Web_ProtoFamily()
-                {
-                    CosmoId = "123",
-                    ProjectId = "1234",
-                    CategoryId = "bla",
-                    Name = "Fake-object",
-                    Description = "Fake object for tests",
-                    Slug = "fake_object",
-                };
-                FamGroupList.Add(pf);
+                await DisplayAlert("Warning", "No matches found...\n", "Ok");
+                //Web_ProtoFamily pf = new Web_ProtoFamily()
+                //{
+                //    CosmoId = "123",
+                //    ProjectId = "1234",
+                //    CategoryId = "bla",
+                //    Name = "Fake-object",
+                //    Description = "Fake object for tests",
+                //    Slug = "fake_object",
+                //};
+                //FamGroupList.Add(pf);
             }
 
         }
@@ -121,57 +89,12 @@ namespace TilesApp.Views
                     searchBar.Text = (string)InputWithDevice["Value"];
                 }
             }
-            bool success = await setProtofamiliesList();
+            FamGroupList.Clear();
+            LoadingPopUp.IsVisible = true;
+            bool success = await setFamiliesList();
+            LoadingPopUp.IsVisible = false;
             if (!success) await DisplayAlert("Warning", "No matches found...", "Ok");
         }
-        
-        //OLD
-        private async Task<bool> setProtofamiliesList()
-        {
-            bool success = false;
-            string result = await Api.GetProductTypesList();
-            if (result != "")
-            { 
-                FamGroupList.Clear();
-
-                Dictionary<string, object> content = JsonConvert.DeserializeObject<Dictionary<string, object>>(result);
-
-                JArray protofamilies = (JArray)content["protofamilies"];
-                protoFamiliesList = protofamilies.ToObject<List<Dictionary<string, object>>>();
-
-                JArray familyFields = (JArray)content["family_fields"];
-                familyFieldsList = familyFields.ToObject<List<Dictionary<string, object>>>();
-
-                JArray fields = (JArray)content["fields"];
-                fieldsList = fields.ToObject<List<Dictionary<string, object>>>();
-
-                foreach (Dictionary<string, object> dictPF in protoFamiliesList)
-                {
-                    if (dictPF["name"].ToString().ToLower().Replace(" ", "").Contains(searchBar.Text.ToLower().Replace(" ", "")))
-                    {
-                        Web_ProtoFamily pf = new Web_ProtoFamily()
-                        {
-                            CosmoId = dictPF["id"].ToString(),
-                            ProjectId = dictPF["project_id"].ToString(),
-                            CategoryId = dictPF["category_id"].ToString(),
-                            Name = dictPF["name"].ToString(),
-                            Description = dictPF["description"].ToString(),
-                            Slug = dictPF["slug"].ToString(),
-                        };
-                        if (dictPF["type"] != null) pf.Type = int.Parse(dictPF["type"].ToString());
-                        if (dictPF["version_id"] != null) pf.VersionId = int.Parse(dictPF["version_id"].ToString());
-                        if (dictPF["version_name"] != null) pf.VersionName = dictPF["version_name"].ToString();
-                        if (dictPF["created_at"] != null) pf.Created_at = dictPF["created_at"].ToString();
-                        if (dictPF["updated_at"] != null) pf.Updated_at = dictPF["updated_at"].ToString();
-                        if (dictPF["deleted_at"] != null) pf.Deleted_at = dictPF["deleted_at"].ToString();
-                        FamGroupList.Add(pf);
-                        success = true;
-                    }
-                }
-            }
-            return success;
-        }
-
         private async Task<bool> setFamiliesList()
         {
             bool success = false;
@@ -331,7 +254,38 @@ namespace TilesApp.Views
             };
             formFieldsList.Add(field);
         }
-        
+
+        #region choose project frame
+        private async void projectChosen_CommandAsync(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
+        {
+            SfComboBox comboBox = (SfComboBox)sender;
+            Web_Project projectSelected = App.Projects.Find(delegate (Web_Project p) { return p.Name == comboBox.SelectedItem.ToString(); });
+            App.CurrentProjectName = projectSelected.Name;
+            App.CurrentProjectSlug = projectSelected.Slug;
+            btContinue.IsVisible = true;
+            btLine.IsVisible = true;
+            await DisplayAlert("Current project selected!", "You have selected the project <" + App.CurrentProjectName + "> to work on", "Ok");
+        }
+
+        async void OnCheckBoxCheckedChanged(object sender, CheckedChangedEventArgs e)
+        {
+            rememberProject = e.Value;
+        }
+
+        private async void Continue_Command(object sender, EventArgs args)
+        {
+            if (rememberProject)
+            {
+                if (Application.Current.Properties.ContainsKey("current_project_name")) Application.Current.Properties["current_project_name"] = App.CurrentProjectName;
+                else Application.Current.Properties.Add("current_project_name", App.CurrentProjectName);
+                if (Application.Current.Properties.ContainsKey("current_project_slug")) Application.Current.Properties["current_project_slug"] = App.CurrentProjectSlug;
+                else Application.Current.Properties.Add("current_project_slug", App.CurrentProjectSlug);
+                await Application.Current.SavePropertiesAsync();
+            }
+            SelectProjectFrame.IsVisible = false;
+        }
+        #endregion
+
         #region lower menu commands
         private async void Config_Command(object sender, EventArgs args)
         {
@@ -353,7 +307,6 @@ namespace TilesApp.Views
                 {
                     //CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
                 }
-                //timer.Stop();
                 App.User.UserTokenExpiresAt = DateTime.Now;
                 int res = App.Database.SaveUser(App.User);
                 Device.BeginInvokeOnMainThread(() =>
