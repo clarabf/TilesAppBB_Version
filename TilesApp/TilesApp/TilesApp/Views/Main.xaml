@@ -45,7 +45,7 @@
                         x:Name="lblVersion"
                         XAlign="Center"
                         Grid.Row="2"
-                        Text="Version 1.0"
+                        Text=""
                         TextColor="White"
                         VerticalOptions="CenterAndExpand" 
                         HorizontalOptions="CenterAndExpand" 
@@ -89,6 +89,32 @@
                     />
                 </Grid>
             </StackLayout>
+            <Frame x:Name="LoadingPopUp"
+                BackgroundColor="White"
+                Opacity="0.5"
+                IsVisible="False"
+                Grid.RowSpan="7"
+                IsClippedToBounds="True"
+                Padding="0"
+                AbsoluteLayout.LayoutBounds="0,0,1,1" 
+                AbsoluteLayout.LayoutFlags="All"
+                VerticalOptions="Fill" 
+                HorizontalOptions="FillAndExpand">
+                <StackLayout>
+                    <ActivityIndicator 
+                        x:Name="loading" 
+                        VerticalOptions="EndAndExpand" 
+                        HorizontalOptions="CenterAndExpand"
+                        Color="Red"
+                        IsRunning="False"/>
+                    <Label 
+                        XAlign="Center"
+                        TextColor="Black"
+                        Text="Recovering elements.&#x0a;Please, wait..."
+                        VerticalOptions="StartAndExpand" 
+                        HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+            </Frame>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

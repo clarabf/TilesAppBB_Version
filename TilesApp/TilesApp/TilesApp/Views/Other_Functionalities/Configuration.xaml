@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              x:Class="TilesApp.Views.Configuration">
     <ContentPage.Content>
-        <Grid Padding="40, 30, 40, 15" BackgroundColor="#F0F0F0" StyleClass="gridConfig">
+        <Grid BackgroundColor="#F0F0F0" StyleClass="gridConfig">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
@@ -23,12 +23,14 @@
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="StartAndExpand"
                 CharacterSpacing="1.15"
+                Margin="0, 20, 0, 0"
                 Grid.Row="0"
             />
             <Label 
                 Grid.Row="1"
                 TextColor = "Black"
                 HorizontalOptions="CenterAndExpand"
+                Margin="30, 0, 30, 0"
                 VerticalOptions="StartAndExpand">
                 <Label.FormattedText>
                     <FormattedString>
@@ -45,12 +47,36 @@
                 VerticalOptions="StartAndExpand"
                 IsEditableMode="False"
                 DataSource="{Binding projectNames}"
+                Margin="30, 5, 30, 0"
                 Grid.Row="2"
             />
-            <StackLayout Grid.Row="3" Orientation="Horizontal">
+            <StackLayout Grid.Row="3" Orientation="Horizontal" Margin="30, 0, 30, 0">
                 <CheckBox Color="Black" CheckedChanged="OnCheckBoxCheckedChanged"/>
                 <Label Text="Remember project" VerticalOptions="Center" TextColor="Black" FontSize="Small"/>
             </StackLayout>
+            <Frame x:Name="LoadingPopUp"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="White"
+                Opacity="0.5"
+                IsVisible="False"
+                Grid.RowSpan="5"
+                IsClippedToBounds="True"
+                Padding="0">
+                <StackLayout>
+                    <ActivityIndicator 
+                        x:Name="loading" 
+                        VerticalOptions="EndAndExpand" 
+                        HorizontalOptions="CenterAndExpand"
+                        Color="Red"
+                        IsRunning="False"/>
+                    <Label 
+                        XAlign="Center"
+                        TextColor="Black"
+                        Text="Recovering projects.&#x0a;Please, wait..."
+                        VerticalOptions="StartAndExpand" 
+                        HorizontalOptions="CenterAndExpand" />
+                </StackLayout>
+            </Frame>
         </Grid>
     </ContentPage.Content>
 </ContentPage>

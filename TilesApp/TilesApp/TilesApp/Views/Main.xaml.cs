@@ -61,7 +61,7 @@ namespace TilesApp.Views
             {
                 App.CurrentProjectSlug = App.Current.Properties["current_project_slug"] as string;
             }
-            lblVersion.Text = VersionTracking.CurrentVersion.ToString();
+            //lblVersion.Text = VersionTracking.CurrentVersion.ToString();
 
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("Error", errorMessage, "Ok");
@@ -93,6 +93,8 @@ namespace TilesApp.Views
         private async void LoginClicked(object sender, EventArgs args)
         {
             // Check the RememberUser flag to decide wether to store their data or not
+            LoadingPopUp.IsVisible = true;
+            loading.IsRunning = true;
             if (rememberUser)
             {
                 if (Application.Current.Properties.ContainsKey("username")) Application.Current.Properties["username"] = usernameEntry.Text;
@@ -140,19 +142,24 @@ namespace TilesApp.Views
                     }
                     Device.BeginInvokeOnMainThread(() =>
                     {
+                        LoadingPopUp.IsVisible = false;
+                        loading.IsRunning = false;
                         Navigation.PopModalAsync(true);
-                        //Navigation.PushModalAsync(new AppPage());
                         Navigation.PushModalAsync(new FamilyAndGroups());
                     });
                 }
                 else
                 {
                     await DisplayAlert("Error", "Failed to recover the user apps. Please, try again.", "Ok");
+                    LoadingPopUp.IsVisible = false;
+                    loading.IsRunning = false;
                 }
             }
             else
             {
                 await DisplayAlert("Login Error", "User name and/or password may be incorrect.", "Ok");
+                LoadingPopUp.IsVisible = false;
+                loading.IsRunning = false;
             }
         }
 

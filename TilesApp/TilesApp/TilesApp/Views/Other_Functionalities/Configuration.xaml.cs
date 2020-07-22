@@ -37,6 +37,8 @@ namespace TilesApp.Views
             //Case you started the App offline and projets were not recovered in main page.
             if (App.IsConnected && App.Projects.Count == 0)
             {
+                LoadingPopUp.IsVisible = true;
+                loading.IsRunning = true;
                 string result = await Api.GetProjectsList();
                 if (result != "")
                 {
@@ -44,6 +46,8 @@ namespace TilesApp.Views
                     projectNames.Clear();
                     foreach (Web_Project p in App.Projects) projectNames.Add(p.Name);
                 }
+                LoadingPopUp.IsVisible = false;
+                loading.IsRunning = false;
             }
         }
 

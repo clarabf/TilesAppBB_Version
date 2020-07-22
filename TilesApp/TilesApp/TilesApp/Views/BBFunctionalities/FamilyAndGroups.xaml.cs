@@ -50,8 +50,10 @@ namespace TilesApp.Views
         {
             FamGroupList.Clear();
             LoadingPopUp.IsVisible = true;
+            loading.IsRunning = true;
             bool success = await setFamiliesList();
             LoadingPopUp.IsVisible = false;
+            loading.IsRunning = false;
             if (!success) 
             {
                 await DisplayAlert("Warning", "No matches found...\n", "Ok");
@@ -70,6 +72,8 @@ namespace TilesApp.Views
         }
         async void OnCollectionViewSelectionChanged(object sender, Xamarin.Forms.SelectionChangedEventArgs e)
         {
+            LoadingPopUp.IsVisible = true;
+            loading.IsRunning = true;
             string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
             string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
             string currentSlug = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Slug;
@@ -77,6 +81,8 @@ namespace TilesApp.Views
             setFormFields(result);
             //FOR TESTS
             fillTestFields();
+            LoadingPopUp.IsVisible = false;
+            loading.IsRunning = false;
             Navigation.PopModalAsync(true);
             Navigation.PushModalAsync(new FormPage(currentName, formFieldsList));
         }
@@ -264,7 +270,7 @@ namespace TilesApp.Views
             App.CurrentProjectSlug = projectSelected.Slug;
             btContinue.IsVisible = true;
             btLine.IsVisible = true;
-            await DisplayAlert("Current project selected!", "You have selected the project <" + App.CurrentProjectName + "> to work on", "Ok");
+            await DisplayAlert("Current project selected!", "You have selected the project <" + App.CurrentProjectName + "> to work on.", "Ok");
         }
 
         async void OnCheckBoxCheckedChanged(object sender, CheckedChangedEventArgs e)

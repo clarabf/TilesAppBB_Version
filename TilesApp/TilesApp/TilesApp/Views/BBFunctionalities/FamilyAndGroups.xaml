@@ -237,7 +237,8 @@
             </Grid>
             <Frame x:Name="LoadingPopUp"
                 HorizontalOptions="FillAndExpand"
-                BackgroundColor="Transparent"
+                BackgroundColor="White"
+                Opacity="0.5"
                 IsVisible="False"
                 Grid.RowSpan="5"
                 IsClippedToBounds="True"
@@ -248,9 +249,10 @@
                         VerticalOptions="EndAndExpand" 
                         HorizontalOptions="CenterAndExpand"
                         Color="Red"
-                        IsRunning="True"/>
+                        IsRunning="False"/>
                     <Label 
                         XAlign="Center"
+                        TextColor="Black"
                         Text="Recovering elements.&#x0a;Please, wait..."
                         VerticalOptions="StartAndExpand" 
                         HorizontalOptions="CenterAndExpand" />
