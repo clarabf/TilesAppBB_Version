@@ -25,7 +25,7 @@ namespace TilesApp.Services
         private static IMongoDatabase database = mongoClient.GetDatabase(ConfigurationManager.AppSettings["MONGODB_DB"]);
         private static IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(ConfigurationManager.AppSettings["MONGODB_COLLECTION"]);
 
-        public static KeyValuePair<string, string> InsertOneObject(object data)
+        public static KeyValuePair<string, string> InsertOneObject(Dictionary<string, object> data)
         {
             try
             {

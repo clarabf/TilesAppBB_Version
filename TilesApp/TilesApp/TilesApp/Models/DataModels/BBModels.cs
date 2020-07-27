@@ -80,7 +80,7 @@ namespace TilesApp.Models.DataModels
         }
 
         [BsonIgnoreIfNull]
-        public Dictionary<string, List<object>> FieldsData { get; set; }
+        public Dictionary<string, object> FieldsData { get; set; }
 
         [BsonIgnoreIfNull]
         public string UserName
@@ -91,7 +91,7 @@ namespace TilesApp.Models.DataModels
             }
         }
 
-        public Form_Info(Dictionary<string, List<object>> listFields)
+        public Form_Info(Dictionary<string, object> listFields)
         {
             FieldsData = listFields;
         }

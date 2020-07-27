@@ -57,16 +57,16 @@ namespace TilesApp.Views
             if (!success) 
             {
                 await DisplayAlert("Warning", "No matches found...\n", "Ok");
-                //Web_ProtoFamily pf = new Web_ProtoFamily()
-                //{
-                //    CosmoId = "123",
-                //    ProjectId = "1234",
-                //    CategoryId = "bla",
-                //    Name = "Fake-object",
-                //    Description = "Fake object for tests",
-                //    Slug = "fake_object",
-                //};
-                //FamGroupList.Add(pf);
+                Web_ProtoFamily pf = new Web_ProtoFamily()
+                {
+                    CosmoId = "123",
+                    ProjectId = "1234",
+                    CategoryId = "bla",
+                    Name = "Fake-object",
+                    Description = "Fake object for tests",
+                    Slug = "fake_object",
+                };
+                FamGroupList.Add(pf);
             }
 
         }
@@ -182,7 +182,7 @@ namespace TilesApp.Views
             Web_Field field = new Web_Field()
             {
                 Id = "12345",
-                Name = "regM",
+                Name = "rgm",
                 LongName = "RegEx Multi",
                 Description = "miau miau miau",
                 Slug = "test-string",
@@ -202,7 +202,7 @@ namespace TilesApp.Views
             field = new Web_Field()
             {
                 Id = "67891",
-                Name = "regS",
+                Name = "rgs",
                 LongName = "RegEx Single",
                 Description = "miau miau miau",
                 Slug = "test-string",
@@ -222,7 +222,7 @@ namespace TilesApp.Views
             field = new Web_Field()
             {
                 Id = "78910",
-                Name = "testString3",
+                Name = "st5",
                 LongName = "Test String3",
                 Description = "miau miau miau",
                 Slug = "test-string",
@@ -242,7 +242,7 @@ namespace TilesApp.Views
             field = new Web_Field()
             {
                 Id = "89101",
-                Name = "testString4",
+                Name = "st3",
                 LongName = "Test String4",
                 Description = "miau miau miau",
                 Slug = "test-string",

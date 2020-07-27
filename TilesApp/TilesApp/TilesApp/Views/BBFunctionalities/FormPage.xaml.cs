@@ -173,8 +173,10 @@ namespace TilesApp.Views
             try
             {
                 List<string> errors = new List<string>();
-                Dictionary<string, List<object>> formInfo = new Dictionary<string, List<object>>();
-                formInfo.Add("element", new List<object> { lblTitle.Text });
+                Dictionary<string, object> formInfo = new Dictionary<string, object>();
+                formInfo.Add("elm", lblTitle.Text);
+                formInfo.Add("pha", 0);
+                formInfo.Add("nam", App.User.DisplayName);
                 for (int i = 0; i < _formFields.Count * 2; i++)
                 {
                     string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
@@ -202,7 +204,7 @@ namespace TilesApp.Views
                                     errors.Add("<" + field.LongName + "> exceeds in " + (entry.Text.Length - field.PrimitiveQuantity) + " characters (max. " + field.PrimitiveQuantity + ")");
                                     entry.Text = null;
                                 }
-                                else formInfo.Add(field.Name, new List<object> { entry.Text });
+                                else formInfo.Add(field.Name, entry.Text);
                             }
                             break;
                         case "Syncfusion.XForms.ComboBox.SfComboBox":
@@ -237,7 +239,7 @@ namespace TilesApp.Views
                                             selectedItems.Add(items[ix]);
                                         }
                                         Debug.WriteLine(options);
-                                        formInfo.Add(field.Name, selectedItems);
+                                        formInfo.Add(field.Name, string.Join(",", selectedItems.ToArray()));
                                     }
                                     else
                                     {
@@ -258,7 +260,7 @@ namespace TilesApp.Views
                                         errors.Add("<" + field.LongName + "> cannot be empty.");
                                     }
                                 }
-                                else formInfo.Add(field.Name, new List<object> { comboBox.SelectedItem });
+                                else formInfo.Add(field.Name, comboBox.SelectedItem);
                             }
                             break;
                     }
@@ -271,7 +273,7 @@ namespace TilesApp.Views
                 }
                 else
                 {
-                    KeyValuePair<string, string> result = CosmosDBManager.InsertOneObject(new Form_Info(formInfo));
+                    KeyValuePair<string, string> result = CosmosDBManager.InsertOneObject(formInfo);
                     string mess  = "";
                     if (result.Key == "Success")
                     {

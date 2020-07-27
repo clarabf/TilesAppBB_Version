@@ -72,7 +72,7 @@ namespace TilesApp
             Web_Field field = new Web_Field()
             {
                 Id = "1",
-                Name = "regM",
+                Name = "rgm",
                 LongName = "RegEx Multi",
                 Description = "miau miau miau",
                 Slug = "test-string",
@@ -132,7 +132,7 @@ namespace TilesApp
             field = new Web_Field()
             {
                 Id = "4",
-                Name = "regS",
+                Name = "rgs",
                 LongName = "RegEx Single",
                 Description = "miau miau miau",
                 Slug = "test-string",
@@ -152,7 +152,7 @@ namespace TilesApp
             field = new Web_Field()
             {
                 Id = "5",
-                Name = "testString3",
+                Name = "st5",
                 LongName = "Test String3",
                 Description = "miau miau miau",
                 Slug = "test-string",
@@ -172,7 +172,7 @@ namespace TilesApp
             field = new Web_Field()
             {
                 Id = "6",
-                Name = "testString4",
+                Name = "st3",
                 LongName = "Test String4",
                 Description = "miau miau miau",
                 Slug = "test-string",
@@ -241,8 +241,7 @@ namespace TilesApp
                         PendingOperation opt = Database.GetFirstOperationInQueue();
                         if (opt != null)
                         {
-                            //KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JSONParser.JsonToOperation(opt));
-                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonConvert.DeserializeObject<Form_Info>(opt.Data));
+                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonConvert.DeserializeObject<Dictionary<string,object>>(opt.Data));
                             if (isInserted.Key == "Success")
                             {
                                 Database.DeletePendingOperation(opt);
