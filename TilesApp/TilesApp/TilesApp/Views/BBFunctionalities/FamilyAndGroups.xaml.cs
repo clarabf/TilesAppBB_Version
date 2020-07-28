@@ -40,6 +40,13 @@ namespace TilesApp.Views
                 SelectProjectFrame.IsVisible = true;
             }
 
+            MessagingCenter.Subscribe<Application>(Application.Current, "PendingUpdated", (s) =>
+            {
+                btBadge.BadgeText = "0";
+                bdSettings.TextColor = Color.Transparent;
+                bdSettings.BackgroundColor = Color.Transparent;
+            });
+
             BindingContext = this;
             App.Inventory.Clear();
         }
@@ -343,6 +350,7 @@ namespace TilesApp.Views
         protected override void OnDisappearing()
         {
             App.Inventory.CollectionChanged -= Inventory_CollectionChanged;
+            MessagingCenter.Unsubscribe<Application>(this, "PendingUpdated");
             base.OnDisappearing();
         }
         protected override bool OnBackButtonPressed()

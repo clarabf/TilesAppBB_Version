@@ -33,7 +33,24 @@ namespace TilesApp.Views
 
             //Button badge
             int opt = App.Database.GetPendingOperations().Count;
-            if (opt != 0) btBadge.BadgeText = opt.ToString();
+            btBadge.BadgeText = opt.ToString();
+            if (opt != 0)
+            {
+                bdSettings.TextColor = Color.White;
+                bdSettings.BackgroundColor = Color.Black;
+            }
+            else
+            {
+                bdSettings.TextColor = Color.Transparent;
+                bdSettings.BackgroundColor = Color.Transparent;
+            }
+
+            MessagingCenter.Subscribe<Application>(Application.Current, "PendingUpdated", (s) =>
+            {
+                btBadge.BadgeText = "0";
+                bdSettings.TextColor = Color.Transparent;
+                bdSettings.BackgroundColor = Color.Transparent;
+            });
 
             BindingContext = this;
         }
@@ -85,6 +102,12 @@ namespace TilesApp.Views
         private async void Pending_Command(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new PendingOperations());
+        }
+
+        protected override void OnDisappearing()
+        {
+            MessagingCenter.Unsubscribe<Application>(this, "PendingUpdated");
+            base.OnDisappearing();
         }
     }
 }

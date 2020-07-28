@@ -248,6 +248,7 @@ namespace TilesApp
                             }
                         }
                     }
+                    if (count != 0) MessagingCenter.Send(Current, "PendingUpdated");
                 }
                 catch (Exception e) 
                 {
