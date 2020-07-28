@@ -12,7 +12,6 @@ using System.Linq;
 using TilesApp.Rfid.ViewModels;
 using Nito.AsyncEx;
 using TilesApp.Models.DataModels;
-using TilesApp.Views.Other_Functionalities;
 using Xamarin.Essentials;
 using Newtonsoft.Json;
 

@@ -12,7 +12,6 @@ using System.Threading.Tasks;
 using TilesApp.Models;
 using TilesApp.Models.DataModels;
 using TilesApp.Services;
-using TilesApp.Views.Other_Functionalities;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -24,7 +23,7 @@ namespace TilesApp.Views
 
         private List<Web_Field> formFieldsList = new List<Web_Field>();
         public ObservableCollection<Web_ProtoFamily> FamGroupList { get; set; } = new ObservableCollection<Web_ProtoFamily>();
-        
+
         List<string> projectNames = new List<string>();
         private bool rememberProject;
 
@@ -297,10 +296,6 @@ namespace TilesApp.Views
         {
             await Navigation.PushModalAsync(new Configuration());
         }
-        private async void Pending_Command(object sender, EventArgs args)
-        {
-            await Navigation.PushModalAsync(new PendingOperations());
-        }
         private async void Reader_Command(object sender, EventArgs args)
         {
             await Navigation.PushModalAsync(new Rfid.Views.MainPage());
@@ -330,6 +325,19 @@ namespace TilesApp.Views
         protected override void OnAppearing()
         {
             App.Inventory.CollectionChanged += Inventory_CollectionChanged;
+            //Button badge
+            int opt = App.Database.GetPendingOperations().Count;
+            btBadge.BadgeText = opt.ToString();
+            if (opt != 0)
+            {
+                bdSettings.TextColor = Color.White;
+                bdSettings.BackgroundColor = Color.Black;
+            }
+            else
+            {
+                bdSettings.TextColor = Color.Transparent;
+                bdSettings.BackgroundColor = Color.Transparent;
+            }
             base.OnAppearing();
         }
         protected override void OnDisappearing()

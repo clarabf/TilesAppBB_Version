@@ -45,8 +45,8 @@ namespace TilesApp.Services
                     };
                     opt.Data = JsonConvert.SerializeObject(data, microsoftDateFormatSettings);
                     opt.UserId = App.User.MSID;
-                    opt.OperationType = data.GetType().Name;
-                    opt.Station = App.Station;
+                    opt.OperationType = "Form";
+                    opt.Station = "Zaragoza HQ";
                     opt.UserName = App.User.DisplayName;
                     opt.pha = 0;
                     App.Database.SavePendingOperation(opt);

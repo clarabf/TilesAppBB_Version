@@ -7,6 +7,7 @@ using TilesApp.Models.DataModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.ObjectModel;
+using Syncfusion.XForms.BadgeView;
 
 namespace TilesApp.Views
 {
@@ -14,6 +15,7 @@ namespace TilesApp.Views
     public partial class Configuration : ContentPage
     {
         public ObservableCollection<string> projectNames { get; set; } = new ObservableCollection<string>();
+
         public Configuration()
         {
             InitializeComponent();
@@ -28,7 +30,11 @@ namespace TilesApp.Views
             {
                 lblProject.Text = App.CurrentProjectName;
             }
-            
+
+            //Button badge
+            int opt = App.Database.GetPendingOperations().Count;
+            if (opt != 0) btBadge.BadgeText = opt.ToString();
+
             BindingContext = this;
         }
 
@@ -64,7 +70,7 @@ namespace TilesApp.Views
             }
         }
 
-        async void OnCheckBoxCheckedChanged(object sender, CheckedChangedEventArgs e)
+        private async void OnCheckBoxCheckedChanged(object sender, CheckedChangedEventArgs e)
         {
             if (e.Value)
             {
@@ -74,6 +80,11 @@ namespace TilesApp.Views
                 else Application.Current.Properties.Add("current_project_slug", App.CurrentProjectSlug);
                 await Application.Current.SavePropertiesAsync();
             }
+        }
+
+        private async void Pending_Command(object sender, EventArgs args)
+        {
+            await Navigation.PushModalAsync(new PendingOperations());
         }
     }
 }

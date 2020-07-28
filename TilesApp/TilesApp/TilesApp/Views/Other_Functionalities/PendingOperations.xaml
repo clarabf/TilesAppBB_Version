@@ -4,7 +4,7 @@
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             x:Class="TilesApp.Views.Other_Functionalities.PendingOperations">
+             x:Class="TilesApp.Views.PendingOperations">
     <ContentPage.Content>
         <Grid BackgroundColor="#000000" StyleClass="gridApps">
             <Grid.RowDefinitions>

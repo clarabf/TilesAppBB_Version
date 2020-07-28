@@ -8,7 +8,7 @@ using TilesApp.Models.DataModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-namespace TilesApp.Views.Other_Functionalities
+namespace TilesApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class PendingOperations : ContentPage
