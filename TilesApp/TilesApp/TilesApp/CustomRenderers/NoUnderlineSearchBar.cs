@@ -2,7 +2,7 @@
 
 namespace TilesApp
 {
-   public class NoUnderlineSearchBar: SearchBar
-   {
+   public class NoUnderlineSearchBar : SearchBar
+    {
    }
 }

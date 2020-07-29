@@ -57,6 +57,8 @@ namespace TilesApp.Views
                             {
                                 ClassId = field.Id,
                                 TextColor = Color.Black,
+                                TextSize = 14,
+                                VerticalOptions = LayoutOptions.StartAndExpand,
                                 BackgroundColor = Color.Transparent,
                                 ShowClearButton = true,
                                 IsEditableMode = false,
@@ -92,6 +94,8 @@ namespace TilesApp.Views
                             {
                                 ClassId = field.Id,
                                 TextColor = Color.Black,
+                                TextSize = 14,
+                                VerticalOptions = LayoutOptions.StartAndExpand,
                                 BackgroundColor = Color.Transparent,
                                 ShowClearButton = true,
                                 IsEditableMode = false,
@@ -120,9 +124,10 @@ namespace TilesApp.Views
                         }
                         else
                         {
-                            Entry entry = new Entry
+                            CustomEntry entry = new CustomEntry
                             {
                                 ClassId = field.Id,
+                                FontSize = 14,
                                 BackgroundColor = Color.Transparent,
                                 PlaceholderColor = Color.Gray,
                                 Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
@@ -180,10 +185,11 @@ namespace TilesApp.Views
                 for (int i = 0; i < _formFields.Count * 2; i++)
                 {
                     string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
+                    int l = 0;
                     switch (elementType)
                     {
-                        case "Xamarin.Forms.Entry":
-                            Entry entry = (Entry)elementsGrid.Children.ElementAt(i);
+                        case "TilesApp.CustomEntry":
+                            CustomEntry entry = (CustomEntry)elementsGrid.Children.ElementAt(i);
                             Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == entry.ClassId; });
 
                             Debug.WriteLine(entry.Placeholder + "..." + entry.Text);

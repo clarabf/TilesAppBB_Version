@@ -100,6 +100,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomRenderers\CustomEntryRenderer.cs" />
     <Compile Include="CustomRenderers\NoUnderlineSearchBarRenderer.cs" />
     <Compile Include="DeviceMonitor.cs">
       <SubType>Code</SubType>
