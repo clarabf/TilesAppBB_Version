@@ -14,7 +14,10 @@
                 <RowDefinition Height="2*" />
                 <RowDefinition Height="1*" />
                 <RowDefinition Height="1*" />
-                <RowDefinition Height="10*" />
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <Image Source="BlackLogo72.png"
                 Margin="70, 10, 70, 10"
@@ -54,185 +57,177 @@
                 VerticalOptions="EndAndExpand"
                 HorizontalOptions="CenterAndExpand"
                 />
-            <Grid Grid.Row="3" IsClippedToBounds="True" Padding="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="2*"/>
-                    <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
-                </Grid.RowDefinitions>
-                <CollectionView Grid.Row="0" 
-                        ItemsSource="{Binding FamGroupList}"
-                        SelectionMode="Single"
-                        SelectionChanged="OnCollectionViewSelectionChanged">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid>
-                                <VisualStateManager.VisualStateGroups>
-                                    <VisualStateGroup Name="CommonStates">
-                                        <VisualState Name="Normal" />
-                                        <VisualState Name="Selected">
-                                            <VisualState.Setters>
-                                                <Setter Property="BackgroundColor" Value="LightGray" />
-                                            </VisualState.Setters>
-                                        </VisualState>
-                                    </VisualStateGroup>
-                                </VisualStateManager.VisualStateGroups>
-                                <Label
-                                    x:Name="FGName"
-                                    FontAttributes="Bold"
-                                    Text="{Binding Name}"
-                                    Grid.Column="0"
-                                    Padding="10,20"
-                                    TextColor="Black"
-                                    VerticalTextAlignment="Center"
-                                    HorizontalTextAlignment="Center"
-                                    FontSize="14"
-                                    LineBreakMode="TailTruncation"/>
-                            </Grid>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-                <BoxView 
-                    HeightRequest="1.5" 
-                    WidthRequest="300"
-                    Grid.Row="0"
-                    BackgroundColor="Gray" 
-                    Margin="0,0,0,-30"
-                    VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
-                    />
-                <badge:SfBadgeView 
-                    x:Name="btBadge"
-                    Grid.Row="2" 
-                    BadgeText=""
-                    BackgroundColor="Transparent"
-                    HorizontalOptions="CenterAndExpand" 
-                    VerticalOptions="EndAndExpand">
-                    <badge:SfBadgeView.Content>
-                        <Button
-	                        x:Name="CONF"
-                            Text="CONFIGURATION"
-                            TextColor="Black"
-                            BackgroundColor="Transparent"
-                            BorderColor="Black"
-                            Padding="15"
-                            FontSize="15"
-                            VerticalOptions="EndAndExpand"
-                            HorizontalOptions="CenterAndExpand"
-                            Clicked="Config_Command">
+            <CollectionView Grid.Row="3" 
+                BackgroundColor="Transparent"
+                ItemsSource="{Binding FamGroupList}"
+                SelectionMode="Single"
+                SelectionChanged="OnCollectionViewSelectionChanged">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
                             <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal">
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal" />
+                                    <VisualState Name="Selected">
                                         <VisualState.Setters>
-                                            <Setter Property="TextColor" Value="Black" />
-                                        </VisualState.Setters>
-                                    </VisualState>
-                                    <VisualState x:Name="Pressed">
-                                        <VisualState.Setters>
-                                            <Setter Property="TextColor" Value="Gray" />
+                                            <Setter Property="BackgroundColor" Value="LightGray" />
                                         </VisualState.Setters>
                                     </VisualState>
                                 </VisualStateGroup>
                             </VisualStateManager.VisualStateGroups>
-                        </Button>
-                    </badge:SfBadgeView.Content>
-                    <badge:SfBadgeView.BadgeSettings>
-                        <badge:BadgeSetting 
-                            x:Name="bdSettings"
-                            BadgeType="None" 
-                            BadgePosition="TopRight"
-                            BackgroundColor="Black"
-                            Offset="-5,15"/>
-                    </badge:SfBadgeView.BadgeSettings>
-                </badge:SfBadgeView>
-                <BoxView
-                    HeightRequest="1.5" 
-                    WidthRequest="130"
-                    Grid.Row="2"
-                    BackgroundColor="Black"                                 
-                    Margin="0,0,10,5"
+                            <Label
+                                x:Name="FGName"
+                                FontAttributes="Bold"
+                                Text="{Binding Name}"
+                                Grid.Column="0"
+                                Padding="10,20"
+                                TextColor="Black"
+                                VerticalTextAlignment="Center"
+                                HorizontalTextAlignment="Center"
+                                FontSize="14"
+                                LineBreakMode="TailTruncation"/>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+            <BoxView 
+                HeightRequest="1.5" 
+                WidthRequest="300"
+                Grid.Row="3"
+                BackgroundColor="Gray" 
+                Margin="0,0,0,0"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="CenterAndExpand"
+             />
+            <badge:SfBadgeView 
+                    x:Name="btBadge"
+                    Grid.Row="4" 
+                    BadgeText="1"
+                    BackgroundColor="Transparent"
                     VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
-                />
-                <Button
-                    x:Name="READER"
-                    Grid.Row="3"
-                    Text="READERS"                                
-                    TextColor="#ffffff"
-                    FontFamily="{StaticResource CustomFont}"
-                    BackgroundColor="Transparent"                                
-                    FontSize="15"
-                    Padding="0"
-                    VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
-                    Clicked="Reader_Command">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="TextColor" Value="Black" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Pressed">
-                                <VisualState.Setters>
-                                    <Setter Property="TextColor" Value="Gray" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
-                </Button>
-                <BoxView 
-                    HeightRequest="1.5" 
-                    WidthRequest="86"
-                    Grid.Row="3"
-                    BackgroundColor="Black" 
-                    Margin="0,0,0,5"
-                    VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
-                />
-                <Button
-                    x:Name="LOGOUT"
-                    Grid.Row="4"
-                    Text="LOG OUT"                                
-                    FontFamily="{StaticResource CustomFont}"
-                    Padding="0"
-                    BackgroundColor="Transparent"                                
-                    VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
-                    Clicked="Logout_Command">
-                    <VisualStateManager.VisualStateGroups>
-                        <VisualStateGroup x:Name="CommonStates">
-                            <VisualState x:Name="Normal">
-                                <VisualState.Setters>
-                                    <Setter Property="TextColor" Value="Black" />
-                                </VisualState.Setters>
-                            </VisualState>
-                            <VisualState x:Name="Pressed">
-                                <VisualState.Setters>
-                                    <Setter Property="TextColor" Value="Gray" />
-                                </VisualState.Setters>
-                            </VisualState>
-                        </VisualStateGroup>
-                    </VisualStateManager.VisualStateGroups>
-                </Button>
-                <BoxView 
-                    HeightRequest="1.5" 
-                    WidthRequest="78"
-                    Grid.Row="4"
-                    BackgroundColor="Black" 
-                    Margin="0,0,0,5"
-                    VerticalOptions="EndAndExpand"
-                    HorizontalOptions="CenterAndExpand"
-                />
-            </Grid>
+                    HorizontalOptions="FillAndExpand">
+                <badge:SfBadgeView.Content>
+                    <Button
+	                    x:Name="CONF"
+                        Grid.Row="4"
+                        Text="CONFIGURATION"
+                        TextColor="Black"
+                        BackgroundColor="Transparent"
+                        FontSize="15"
+                        Padding="0"
+                        VerticalOptions="EndAndExpand"
+                        HorizontalOptions="CenterAndExpand"
+                        Clicked="Config_Command">   
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="TextColor" Value="Black" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Property="TextColor" Value="Gray" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Button>
+                </badge:SfBadgeView.Content>
+                <badge:SfBadgeView.BadgeSettings>
+                    <badge:BadgeSetting 
+                        x:Name="bdSettings"
+                        BadgeType="None" 
+                        BadgePosition="TopRight"
+                        BackgroundColor="Black"
+                        Offset="10,10"/>
+                </badge:SfBadgeView.BadgeSettings>
+            </badge:SfBadgeView>
+            <BoxView
+                HeightRequest="1.5" 
+                WidthRequest="130"
+                Grid.Row="4"
+                BackgroundColor="Black"                                 
+                Margin="0,0,0,5"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="CenterAndExpand"
+            />
+            <Button
+                x:Name="READER"
+                Grid.Row="5"
+                Text="READERS"                                
+                TextColor="#ffffff"
+                FontFamily="{StaticResource CustomFont}"
+                BackgroundColor="Transparent"                                
+                FontSize="15"
+                Padding="0"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                Clicked="Reader_Command">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="Black" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="Gray" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Button>
+            <BoxView 
+                HeightRequest="1.5" 
+                WidthRequest="86"
+                Grid.Row="5"
+                BackgroundColor="Black" 
+                Margin="0,0,0,5"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="CenterAndExpand"
+            />
+            <Button
+                x:Name="LOGOUT"
+                Grid.Row="6"
+                Text="LOG OUT"                                
+                FontFamily="{StaticResource CustomFont}"
+                Padding="0"
+                BackgroundColor="Transparent"                                
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                Clicked="Logout_Command">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="Black" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Pressed">
+                            <VisualState.Setters>
+                                <Setter Property="TextColor" Value="Gray" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateManager.VisualStateGroups>
+            </Button>
+            <BoxView 
+                HeightRequest="1.5" 
+                WidthRequest="78"
+                Grid.Row="6"
+                BackgroundColor="Black" 
+                Margin="0,0,0,5"
+                VerticalOptions="EndAndExpand"
+                HorizontalOptions="CenterAndExpand"
+            />
             <Frame x:Name="LoadingPopUp"
                 HorizontalOptions="FillAndExpand"
                 BackgroundColor="White"
                 Opacity="0.5"
                 IsVisible="False"
-                Grid.RowSpan="5"
+                Grid.RowSpan="7"
                 IsClippedToBounds="True"
                 Padding="0">
                 <StackLayout>
@@ -253,7 +248,7 @@
             <Frame x:Name="SelectProjectFrame"
                 BackgroundColor="#F0F0F0"
                 IsVisible="False"
-                Grid.RowSpan="5"
+                Grid.RowSpan="7"
                 IsClippedToBounds="True"
                 Padding="0">
                 <Grid>
