@@ -7,6 +7,7 @@ using Syncfusion.XForms.ComboBox;
 using System.Diagnostics;
 using TilesApp.Services;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace TilesApp.Views
 {
@@ -175,10 +176,22 @@ namespace TilesApp.Views
 
         private async void Send_Command(object sender, EventArgs args)
         {
+
+            LoadingPopUp.IsVisible = true;
+            loading.IsRunning = true;
+            bool success = await CheckFields();
+            LoadingPopUp.IsVisible = false;
+            loading.IsRunning = false;
+        }
+
+        private async Task<bool> CheckFields() 
+        {
             try
             {
                 List<string> errors = new List<string>();
                 Dictionary<string, object> formInfo = new Dictionary<string, object>();
+                LoadingPopUp.IsVisible = true;
+                loading.IsRunning = true;
                 formInfo.Add("elm", lblTitle.Text);
                 formInfo.Add("pha", 0);
                 formInfo.Add("nam", App.User.DisplayName);
@@ -258,7 +271,7 @@ namespace TilesApp.Views
                             else
                             {
                                 Debug.WriteLine(comboBox.Watermark + "..." + comboBox.SelectedItem);
-                                if (comboBox.SelectedItem == null) 
+                                if (comboBox.SelectedItem == null)
                                 {
                                     if (field.ValueIsRequired)
                                     {
@@ -280,7 +293,7 @@ namespace TilesApp.Views
                 else
                 {
                     KeyValuePair<string, string> result = CosmosDBManager.InsertOneObject(formInfo);
-                    string mess  = "";
+                    string mess = "";
                     if (result.Key == "Success")
                     {
                         if (result.Value == "Online") mess = "Your form has been correctly sent!";
@@ -290,10 +303,12 @@ namespace TilesApp.Views
                     else mess = "There was an error sending the form. Please, contact with IT...";
                     await DisplayAlert("SENDING FORM", mess, "Ok");
                 }
+                return true;
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
+                return false;
             }
         }
 
@@ -304,8 +319,8 @@ namespace TilesApp.Views
                 string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
                 switch (elementType)
                 {
-                    case "Xamarin.Forms.Entry":
-                        Entry entry = (Entry)elementsGrid.Children.ElementAt(i);
+                    case "TilesApp.CustomEntry":
+                        CustomEntry entry = (CustomEntry)elementsGrid.Children.ElementAt(i);
                         entry.Text = null;
                         break;
                     case "Xamarin.Forms.Picker":

@@ -89,7 +89,7 @@
                     />
                 </Grid>
             </StackLayout>
-            <Frame x:Name="LoadingPopUp"
+            <StackLayout x:Name="LoadingPopUp"
                 BackgroundColor="White"
                 Opacity="0.5"
                 IsVisible="False"
@@ -100,21 +100,19 @@
                 AbsoluteLayout.LayoutFlags="All"
                 VerticalOptions="Fill" 
                 HorizontalOptions="FillAndExpand">
-                <StackLayout>
-                    <ActivityIndicator 
-                        x:Name="loading" 
-                        VerticalOptions="EndAndExpand" 
-                        HorizontalOptions="CenterAndExpand"
-                        Color="Red"
-                        IsRunning="False"/>
-                    <Label 
-                        XAlign="Center"
-                        TextColor="Black"
-                        Text="Recovering elements.&#x0a;Please, wait..."
-                        VerticalOptions="StartAndExpand" 
-                        HorizontalOptions="CenterAndExpand" />
-                </StackLayout>
-            </Frame>
+                <ActivityIndicator 
+                    x:Name="loading" 
+                    VerticalOptions="EndAndExpand" 
+                    HorizontalOptions="CenterAndExpand"
+                    Color="Red"
+                    IsRunning="False"/>
+                <Label 
+                    XAlign="Center"
+                    TextColor="Black"
+                    Text="Recovering elements.&#x0a;Please, wait..."
+                    VerticalOptions="StartAndExpand" 
+                    HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
