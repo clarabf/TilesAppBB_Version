@@ -164,7 +164,7 @@ namespace TilesApp.Views
 
         private async void Reader_Command(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new Rfid.Views.MainPage());
+            await Navigation.PushModalAsync(new Rfid.Views.ReadersMainTabbedPage());
         }
         void OnCheckBoxCheckedChanged(object sender, CheckedChangedEventArgs e)
         {

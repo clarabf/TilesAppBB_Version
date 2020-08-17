@@ -3,10 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:fontawesome="clr-namespace:FontAwesome"
              x:Class="TilesApp.Rfid.Views.TransportsPage"
-              Title="Transports" >
-    <!-- x:Name="TransportsPage" -->
+             Title="Transports">
+    
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add" Command="{Binding AddNewCommand}" >
+        <ToolbarItem Text="Add" Command="{Binding AddNewCommand}">
             <ToolbarItem.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="UWP" Value="add.png"/>
@@ -15,7 +15,7 @@
         </ToolbarItem>
     </ContentPage.ToolbarItems>
     <ContentPage.Content >
-        <StackLayout Spacing="0" Padding="0, 4" BackgroundColor="#000000">
+        <StackLayout Spacing="0" Padding="0, 4" BackgroundColor="#F0F0F0">
             <ListView x:Name="TransportsListView" 
                 ItemsSource="{Binding Transports}"
                 VerticalOptions="FillAndExpand"
@@ -24,15 +24,15 @@
                 IsPullToRefreshEnabled="true"
                 IsRefreshing="{Binding IsRefreshing}"
                 CachingStrategy="RecycleElement"
-                SeparatorColor="#979797"
+                SeparatorColor="#000000"
                 ItemSelected="OnItemSelected">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
-                            <StackLayout x:Name="TransportList" Spacing="0" Padding="12,24" HorizontalOptions="FillAndExpand" BackgroundColor="#151515">
+                            <StackLayout x:Name="TransportList" Spacing="0" Padding="12,24" HorizontalOptions="FillAndExpand" BackgroundColor="#F0F0F0">
                                 <StackLayout Orientation="Horizontal" VerticalOptions="Center" >
                                     <Label Text="{Binding DisplayName }" CharacterSpacing="1.05"
-                                           TextColor="#ffffff"
+                                           TextColor="#000000"
                                            LineBreakMode="NoWrap"
                                            FontSize="Medium" FontAttributes="Bold" />
                                     <Label Text="{Binding State }" CharacterSpacing="1"
@@ -60,7 +60,7 @@
                    FontSize="14"
                    HorizontalTextAlignment="Center"
                    Margin="12,10"
-                   TextColor="#ffffff"
+                   TextColor="Black"
                    HorizontalOptions="CenterAndExpand"
             />
 

@@ -196,7 +196,7 @@ namespace TilesApp
         /// </summary>
         public static void ShowFind()
         {
-            var main = App.Current.MainPage as Rfid.Views.MainPage;
+            var main = App.Current.MainPage as Rfid.Views.ReadersMainTabbedPage;
             var target = main.Children.Where(x => x.Title == "Find Tag").FirstOrDefault() as NavigationPage;
             main.CurrentPage = target;
             target.CurrentPage.Focus();
@@ -207,7 +207,7 @@ namespace TilesApp
         /// </summary>
         public static void ShowReadWrite()
         {
-           var main = App.Current.MainPage as Rfid.Views.MainPage;
+           var main = App.Current.MainPage as Rfid.Views.ReadersMainTabbedPage;
             var target = main.Children.Where(x => x.Title == "Read Write").FirstOrDefault() as NavigationPage;
             main.CurrentPage = target;
             target.CurrentPage.Focus();

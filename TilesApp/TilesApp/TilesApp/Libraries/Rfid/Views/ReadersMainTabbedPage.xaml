@@ -4,11 +4,16 @@
             xmlns:views="clr-namespace:TilesApp.Rfid.Views"
             xmlns:native_views ="clr-namespace:TilesApp"
             xmlns:saco_views ="clr-namespace:TilesApp.Views"
-            x:Class="TilesApp.Rfid.Views.MainPage"
+            x:Class="TilesApp.Rfid.Views.ReadersMainTabbedPage"
+            BarBackgroundColor="#F0F0F0"
+            SelectedTabColor="Black"
+            BarTextColor="Black"
             >
     <TabbedPage.Children>
 
-        <NavigationPage Title="Paired Devices">
+        <NavigationPage Title="Paired Devices"
+                        BarBackgroundColor="#F0F0F0"
+                        BarTextColor="Black">
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="tab_feed.png"/>
@@ -19,7 +24,9 @@
             </x:Arguments>
         </NavigationPage>
 
-        <NavigationPage Title="Readers">
+        <NavigationPage Title="Readers"
+                        BarBackgroundColor="#F0F0F0"
+                        BarTextColor="Black">
             <NavigationPage.Icon>
                 <OnPlatform x:TypeArguments="FileImageSource">
                     <On Platform="iOS" Value="tab_feed.png"/>

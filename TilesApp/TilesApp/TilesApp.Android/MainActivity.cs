@@ -59,9 +59,6 @@ namespace TilesApp.Droid
             ScanBluetoothDevices();
             ScanSerialDevices();
             App.DeviceSerialNumber = Android.OS.Build.Serial;
-            MessagingCenter.Subscribe<Xamarin.Forms.Application, string>(Xamarin.Forms.Application.Current, "InstallApk", (s, latestApkPath) => {
-                OpenApkAsync(latestApkPath);
-            });
         }
         private IAndroidLifecycle TslLifecycle
         {
@@ -250,29 +247,6 @@ namespace TilesApp.Droid
             }
             catch (Exception) {
                 //MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
-            }
-        }
-        private void OpenApkAsync(string apkPath){
-            try
-            {
-                //Istalling directly APK doesn't work
-                
-                //File file = new File(apkPath);
-                //var apkIntent = new Intent(Intent.ActionView);
-                //file.SetReadable(true);
-                //apkIntent.SetDataAndType(FileProvider.GetUriForFile(Android.App.Application.Context, "com.saco.Sherpa.fileprovider", file), "application/vnd.android.package-archive");
-                //apkIntent.SetFlags(ActivityFlags.GrantReadUriPermission);
-                //apkIntent.SetFlags(ActivityFlags.GrantWriteUriPermission);
-                //apkIntent.SetFlags(ActivityFlags.NewTask);
-                //apkIntent.SetFlags(ActivityFlags.ClearWhenTaskReset);
-
-                // Opening Download folder to update
-                StartActivity(new Intent(DownloadManager.ActionViewDownloads));
-                Process.KillProcess(Process.MyPid());
-            }
-            catch (Exception e)
-            {
-                var x = e.Message;
             }
         }
     }

@@ -6,12 +6,12 @@ using Xamarin.Forms.Xaml;
 namespace TilesApp.Rfid.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MainPage : TabbedPage
+    public partial class ReadersMainTabbedPage : TabbedPage
     {
         private string currentPage = "none";
         private NavigationPage lastPage = null;
 
-        public MainPage()
+        public ReadersMainTabbedPage()
         {
             InitializeComponent();
 

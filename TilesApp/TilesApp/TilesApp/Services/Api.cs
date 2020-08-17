@@ -17,7 +17,7 @@ namespace TilesApp.Services
 
         private static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
         public static List<ConfigFile> userAppsList = new List<ConfigFile> { };
-        private static string BlackBoxesUri = "https://blackboxestest.azurewebsites.net/";
+        private static string BlackBoxesUri = "https://blackboxes.azurewebsites.net/";
 
 
         public async static Task<bool> GetConfigFiles(string user_id, string token)

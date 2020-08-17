@@ -37,7 +37,7 @@ namespace TilesApp.Views
 
             if (App.CurrentProjectName == null)
             {
-                SelectProjectFrame.IsVisible = true;
+                //SelectProjectFrame.IsVisible = true;
             }
 
             MessagingCenter.Subscribe<Application>(Application.Current, "PendingUpdated", (s) =>
@@ -305,7 +305,7 @@ namespace TilesApp.Views
         }
         private async void Reader_Command(object sender, EventArgs args)
         {
-            await Navigation.PushModalAsync(new Rfid.Views.MainPage());
+            await Navigation.PushModalAsync(new Rfid.Views.ReadersMainTabbedPage());
         }
         private async void Logout_Command(object sender, EventArgs args)
         {
