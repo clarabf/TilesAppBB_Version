@@ -18,7 +18,7 @@ namespace TilesApp.Models.DataModels
         public string CosmoId { get; set; }
         public string ProjectId { get; set; }
         public string CategoryId { get; set; }
-        public int Type { get; set; }
+        public string Type { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Slug { get; set; }

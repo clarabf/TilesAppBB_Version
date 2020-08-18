@@ -62,13 +62,17 @@ namespace TilesApp.Views
             {
                 LoadingPopUp.IsVisible = true;
                 loading.IsRunning = true;
-                string result = await Api.GetProjectsList();
-                if (result != "")
+                try
                 {
-                    App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
-                    projectNames.Clear();
-                    foreach (Web_Project p in App.Projects) projectNames.Add(p.Name);
+                    string result = await Api.GetProjectsList();
+                    if (result != "")
+                    {
+                        App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
+                        projectNames.Clear();
+                        foreach (Web_Project p in App.Projects) projectNames.Add(p.Name);
+                    }
                 }
+                catch {}
                 LoadingPopUp.IsVisible = false;
                 loading.IsRunning = false;
             }

@@ -37,7 +37,7 @@ namespace TilesApp.Views
 
             if (App.CurrentProjectName == null)
             {
-                //SelectProjectFrame.IsVisible = true;
+                SelectProjectFrame.IsVisible = true;
             }
 
             MessagingCenter.Subscribe<Application>(Application.Current, "PendingUpdated", (s) =>
@@ -122,8 +122,9 @@ namespace TilesApp.Views
                         //Only store the data we need
                         Web_ProtoFamily pf = new Web_ProtoFamily()
                         {
-                            CosmoId = dictP["id"].ToString(),
+                            Type = dictP["type"].ToString(),
                             Name = dictP["name"].ToString(),
+                            Description = dictP["description"].ToString(),
                             Slug = dictP["slug"].ToString(),
                         };
                         FamGroupList.Add(pf);

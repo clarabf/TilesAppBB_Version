@@ -12,15 +12,15 @@
                     <RowDefinition Height="10*" />
                 </Grid.RowDefinitions>
                 <Label
-                        x:Name="lblTitle"
-                        TextColor="Black"
-                        FontAttributes="Bold"                        
-                        Text="FORMS"
-                        HorizontalOptions="Center"
-                        Grid.Row="0"
-                        Margin="0, 0, 0, 25"
-                        CharacterSpacing="1.15"
-                        FontSize="26"/>
+                    x:Name="lblTitle"
+                    TextColor="Black"
+                    FontAttributes="Bold"                        
+                    Text="FORMS"
+                    HorizontalOptions="Center"
+                    Grid.Row="0"
+                    Margin="0, 0, 0, 25"
+                    CharacterSpacing="1.15"
+                    FontSize="24"/>
                 <BoxView 
                     HeightRequest="1.5" 
                     WidthRequest="300"
@@ -46,7 +46,7 @@
                             HorizontalOptions="FillAndExpand"/>
                         <Grid Grid.Row="2" VerticalOptions="End">
                             <Button
-                                x:Name="CONF"
+                                x:Name="btnSend"
                                 Text="SEND FORM"
                                 BackgroundColor="Transparent"
                                 FontFamily="{StaticResource CustomFont}"

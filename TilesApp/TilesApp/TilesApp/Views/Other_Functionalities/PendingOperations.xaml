@@ -6,37 +6,42 @@
              mc:Ignorable="d"
              x:Class="TilesApp.Views.PendingOperations">
     <ContentPage.Content>
-        <Grid BackgroundColor="#000000" StyleClass="gridApps">
+        <Grid BackgroundColor="#F0F0F0"
+            RowSpacing="10"
+            Padding="30, 30, 30, 20">
             <Grid.RowDefinitions>
-                <RowDefinition Height="1.5*" />
-                <RowDefinition Height="1.5*" />
-                <RowDefinition Height="9*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="10*" />
             </Grid.RowDefinitions>
-
             <Label x:Name="lblApp" 
                 Text="PENDING OPERATIONS"
-                TextColor="#ffffff"
+                TextColor="#000000"
                 FontAttributes="Bold"
                 CharacterSpacing="1.15"
-                Padding="2"
-                FontSize="20"
-                VerticalOptions="End"
-                HorizontalOptions="Center"                        
+                FontSize="24"
+                HorizontalOptions="CenterAndExpand"
                 Grid.Row="0"
                 LineBreakMode="MiddleTruncation"
-                />
-            <BoxView  x:Name="lblTitleLine"
+            />
+            <BoxView 
+                x:Name="lblTitleLine"
                 HeightRequest="1.5"
-                WidthRequest="1500"
-                BackgroundColor="#bc0000"
-                VerticalOptions="End"
-                IsVisible="False"
-                Grid.Row="1"
-                HorizontalOptions="CenterAndExpand" />
-            <CollectionView x:Name="Cview" Margin="0, -6, 0, 0" ItemsSource="{Binding PendingOpts}" Grid.Row="2" SelectionMode="Single" ItemsLayout="VerticalList">
+                WidthRequest="500"
+                BackgroundColor="Gray"
+                Margin="0,0,0,10"
+                Grid.Row="0"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="EndAndExpand"
+            />
+            <CollectionView x:Name="Cview" 
+                ItemsSource="{Binding PendingOpts}" 
+                Grid.Row="1" 
+                VerticalOptions="StartAndExpand"
+                SelectionMode="Single" 
+                ItemsLayout="VerticalList">
                 <CollectionView.ItemTemplate >
                     <DataTemplate >
-                        <Grid BackgroundColor="#151515" >
+                        <Grid BackgroundColor="#F0F0F0" >
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*" />
                                 <ColumnDefinition Width="2*" />
@@ -48,7 +53,7 @@
 
                             <Label
                                 Text=""
-                                TextColor="#ffffff"
+                                TextColor="#000000"
                                 FontSize="16"
                                 CharacterSpacing="1.15"                                
                                 Grid.Row="0"
@@ -63,7 +68,6 @@
                                         </FormattedString.Spans>
                                     </FormattedString>
                                 </Label.FormattedText>
-
                             </Label>
                             <Label
                                 Text="{Binding CreatedAt}"                              
@@ -75,7 +79,6 @@
                                 VerticalOptions="EndAndExpand"
                                 LineBreakMode="TailTruncation"
                             />
-
                             <Label
                                 Text="{Binding Station}"
                                 FontSize="14"
@@ -86,7 +89,6 @@
                                 FontFamily="sans-serif-light"
                                 LineBreakMode="TailTruncation"
                             />
-
                             <Label
                                 Text="{Binding UserName}"
                                 FontSize="14"
@@ -98,8 +100,12 @@
                                 FontFamily="sans-serif-light"
                                 LineBreakMode="TailTruncation"
                             />
-
-                            <BoxView BackgroundColor="#e3e3e3" HeightRequest=".5" Grid.Row="2" Grid.ColumnSpan="2" VerticalOptions="End"/>
+                            <BoxView BackgroundColor="#000000" 
+                                HeightRequest=".5" 
+                                Grid.Row="2"
+                                Grid.ColumnSpan="2" 
+                                VerticalOptions="Center"
+                            />
                         </Grid>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
