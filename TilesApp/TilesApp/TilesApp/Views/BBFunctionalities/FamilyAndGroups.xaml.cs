@@ -140,43 +140,47 @@ namespace TilesApp.Views
             {
                 formFieldsList.Clear();
                 Dictionary<string, Dictionary<string,object>> keyField = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(jsonFields);
-                foreach (KeyValuePair<string, Dictionary<string, object>> kv in keyField)
+                Dictionary<string, object> groupedFields = keyField["grouped_protofamilyfields"];
+
+                foreach (KeyValuePair<string, object> kv in groupedFields)
                 {
-                    Dictionary<string, object> fieldData = kv.Value;
-                    
-                    Web_Field field = new Web_Field()
+                    JArray ja = (JArray)kv.Value;
+                    List<Dictionary<string, object>> fieldDataList = ja.ToObject<List<Dictionary<string, object>>>();
+
+                    foreach (Dictionary<string, object> fieldData in fieldDataList)
                     {
-                        Id = fieldData["id"].ToString(),
-                        Name = fieldData["name"].ToString(),
-                        LongName = fieldData["long_name"].ToString(),
-                        Description = fieldData["description"].ToString(),
-                        Slug = fieldData["slug"].ToString(),
-                        ValueIsUnique = (bool)fieldData["value_is_unique"],
-                        ValueIsRequired = (bool)fieldData["value_is_required"],
-                        Index = (bool)fieldData["index"],
-                        Show = (bool)fieldData["show"],
-                        Edit = (bool)fieldData["edit"],
-                        Delete = (bool)fieldData["delete"],
-                    };
-                    //string
-                    if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
-                    if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
-                    if (fieldData["protofamily_id"] != null) field.ProtoFamilyId = fieldData["protofamily_id"].ToString();
-                    if (fieldData["field_id"] != null) field.FieldId = fieldData["field_id"].ToString();
-                    if (fieldData["field_category"] != null) field.FieldCategory = fieldData["field_category"].ToString();
-                    if (fieldData["primitive_type"] != null) field.PrimitiveType = fieldData["primitive_type"].ToString();
-                    if (fieldData["phase"] != null) field.Phase = fieldData["phase"].ToString();
-                    if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
-                    if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
-                    if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
-                    if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
-                    //int
-                    if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
-                    if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
-                    if (fieldData["entity_type"] != null) field.EntityType = Convert.ToInt32(fieldData["entity_type"]);
-                    if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
-                    formFieldsList.Add(field);
-                    
+                        Web_Field field = new Web_Field() { Parent = kv.Key };
+                        if (fieldData["id"] != null) field.Id = fieldData["id"].ToString();
+                        if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
+                        if (fieldData["protofamily_id"] != null) field.ProtoFamilyId = fieldData["protofamily_id"].ToString();
+                        if (fieldData["field_id"] != null) field.FieldId = fieldData["field_id"].ToString();
+                        if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
+                        if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
+                        if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                        if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
+                        if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
+                        if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
+                        if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
+                        if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
+                        if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
+                        if (fieldData["route"] != null) field.Route = fieldData["route"].ToString();
+
+                        //Specific attributes
+                        JObject jo = (JObject)fieldData["field"];
+                        Dictionary<string, object> fieldExtraInfo = JObject.FromObject(jo).ToObject<Dictionary<string, object>>();
+
+                        if (fieldExtraInfo["category"] != null) field.Category = Convert.ToInt32(fieldExtraInfo["category"]);
+                        if (fieldExtraInfo["type"] != null) field.Type = Convert.ToInt32(fieldExtraInfo["type"]);
+                        if (fieldExtraInfo["name"] != null) field.Name = fieldExtraInfo["name"].ToString();
+                        if (fieldExtraInfo["long_name"] != null) field.LongName = fieldExtraInfo["long_name"].ToString();
+                        if (fieldExtraInfo["description"] != null) field.Description = fieldExtraInfo["description"].ToString();
+                        if (fieldExtraInfo["slug"] != null) field.Slug = fieldExtraInfo["slug"].ToString();
+                        if (fieldExtraInfo["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldExtraInfo["primitive_type"]);
+                        if (fieldExtraInfo["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldExtraInfo["value_is_unique"]) == 1 ? true : false;
+                        if (fieldExtraInfo["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldExtraInfo["value_is_required"]) == 1 ? true : false;
+
+                        formFieldsList.Add(field);
+                    }
                 }
             }
             catch (Exception ex)
@@ -196,8 +200,8 @@ namespace TilesApp.Views
                 ValueIsUnique = true,
                 ValueIsRequired = true,
                 ProjectId = "testProject",
-                FieldCategory = "1",
-                PrimitiveType = "Chars Array (Str)",
+                Category = 1,
+                PrimitiveType = 7,
                 PrimitiveQuantity = 20,
                 ValueRegEx = "^\\[(\"Option A\",?|\"Option B\",?|\"Option C\",?)*\\]$",
                 Default = null,
@@ -216,8 +220,8 @@ namespace TilesApp.Views
                 ValueIsUnique = true,
                 ValueIsRequired = true,
                 ProjectId = "testProject",
-                FieldCategory = "1",
-                PrimitiveType = "Chars Array (Str)",
+                Category = 1,
+                PrimitiveType = 7,
                 PrimitiveQuantity = 40,
                 ValueRegEx = "^\\[(\"Dante\",?|\"Vergil\",?|\"Nero\",?|\"V\",?)\\]$",
                 Default = null,
@@ -236,8 +240,8 @@ namespace TilesApp.Views
                 ValueIsUnique = true,
                 ValueIsRequired = false,
                 ProjectId = "testProject",
-                FieldCategory = "1",
-                PrimitiveType = "Chars Array (Str)",
+                Category = 1,
+                PrimitiveType = 7,
                 PrimitiveQuantity = 5,
                 ValueRegEx = null,
                 Default = null,
@@ -256,8 +260,8 @@ namespace TilesApp.Views
                 ValueIsUnique = true,
                 ValueIsRequired = true,
                 ProjectId = "testProject",
-                FieldCategory = "1",
-                PrimitiveType = "Chars Array (Str)",
+                Category = 1,
+                PrimitiveType = 7,
                 PrimitiveQuantity = 3,
                 ValueRegEx = null,
                 Default = null,

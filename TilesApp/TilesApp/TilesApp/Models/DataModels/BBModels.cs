@@ -39,33 +39,35 @@ namespace TilesApp.Models.DataModels
 
     public class Web_Field
     {
+        // General attributes
         public string Id { get; set; }
         public string ProjectId { get; set; }
         public string ProtoFamilyId { get; set; }
         public string FieldId { get; set; }
+        public string ValueRegEx { get; set; }
+        public object Default { get; set; }
+        public int PrimitiveQuantity { get; set; }
         public string EntityId { get; set; }
+        public string Phases { get; set; }
+        public int UIindex { get; set; }
+        public string Created_at { get; set; }
+        public string Updated_at { get; set; }
+        public string Deleted_at { get; set; }
+        public string Route { get; set; }
+
+        // Field specific attributes
+        public int Category { get; set; }
+        public int Type { get; set; }
         public string Name { get; set; }
         public string LongName { get; set; }
         public string Description { get; set; }
         public string Slug { get; set; }
-        public string Phase { get; set; }
-        public string Created_at { get; set; }
-        public string Updated_at { get; set; }
-        public string Deleted_at { get; set; }
-        public string PrimitiveType { get; set; }
-        public int PrimitiveQuantity { get; set; }
-        public string FieldCategory { get; set; }
-        public int EntityType { get; set; }
-        public int UIindex { get; set; }
-        public string ValueRegEx { get; set; }
+        public int PrimitiveType { get; set; }
         public bool ValueIsUnique { get; set; }
         public bool ValueIsRequired { get; set; }
-        public bool Index { get; set; }
-        public bool Show { get; set; }
-        public bool Edit { get; set; }
-        public bool Delete { get; set; }
-        public object Default { get; set; }
-
+        
+        //Extra attributes
+        public string Parent { get; set; }
     }
 
     public class Form_Info

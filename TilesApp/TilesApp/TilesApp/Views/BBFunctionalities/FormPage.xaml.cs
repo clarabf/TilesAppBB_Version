@@ -45,7 +45,7 @@ namespace TilesApp.Views
                 switch (field.PrimitiveType)
                 {
                     //integer
-                    case "Integer":
+                    case 1:
                         if (field.PrimitiveQuantity == 1)
                         {
                             TokenSettings tokenSettings = new TokenSettings
@@ -77,7 +77,7 @@ namespace TilesApp.Views
                         }
                         break;
                     //string
-                    case "Chars Array (Str)":
+                    case 7:
                         if (field.ValueRegEx != null)
                         {
                             Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
@@ -138,6 +138,20 @@ namespace TilesApp.Views
                             elementsGrid.Children.Add(entry, 0, row);
                             row++;
                         }
+                        break;
+                    default:
+                        CustomEntry defEntry = new CustomEntry
+                        {
+                            ClassId = field.Id,
+                            FontSize = 14,
+                            BackgroundColor = Color.Transparent,
+                            PlaceholderColor = Color.Gray,
+                            Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
+                            VerticalOptions = LayoutOptions.StartAndExpand
+                        };
+                        defEntry.Completed += entryCompleted_command;
+                        elementsGrid.Children.Add(defEntry, 0, row);
+                        row++;
                         break;
                 }
             }
