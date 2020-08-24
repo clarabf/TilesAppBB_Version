@@ -17,8 +17,9 @@ namespace TilesApp.Services
 
         private static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
         public static List<ConfigFile> userAppsList = new List<ConfigFile> { };
-        private static string BlackBoxesUri = "https://blackboxes.azurewebsites.net/";
 
+        //private static string BlackBoxesUri = "https://blackboxestest.azurewebsites.net/"; //TEST
+        private static string BlackBoxesUri = "https://blackboxes.azurewebsites.net/";
 
         public async static Task<bool> GetConfigFiles(string user_id, string token)
         {
@@ -220,7 +221,30 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + App.CurrentProjectSlug + "/y/" + slug  + "/__edit");
+                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + App.CurrentProjectSlug + "/y/" + slug  + "/__show");
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            return result;
+        }
+
+        public async static Task<string> GetPhases()
+        {
+            string result = "";
+            try
+            {
+                if (App.IsConnected)
+                {
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
+                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + "_api/__getPhases");
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();

@@ -78,19 +78,26 @@ namespace TilesApp.Views
         }
         async void OnCollectionViewSelectionChanged(object sender, Xamarin.Forms.SelectionChangedEventArgs e)
         {
-            LoadingPopUp.IsVisible = true;
-            loading.IsRunning = true;
-            string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
-            string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
-            string currentSlug = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Slug;
-            string result =  await Api.GetFieldsList(currentSlug);
-            setFormFields(result);
-            //FOR TESTS
-            fillTestFields();
-            LoadingPopUp.IsVisible = false;
-            loading.IsRunning = false;
-            Navigation.PopModalAsync(true);
-            Navigation.PushModalAsync(new FormPage(currentName, formFieldsList));
+            if (e.CurrentSelection.Count != 0)
+            {
+                LoadingPopUp.IsVisible = true;
+                loading.IsRunning = true;
+                string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
+                string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
+                string currentSlug = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Slug;
+                string result = await Api.GetFieldsList(currentSlug);
+                bool success = setFormFields(result);
+                LoadingPopUp.IsVisible = false;
+                loading.IsRunning = false;
+                cView.SelectedItem = null;
+                if (success || currentName == "Fake-object")
+                {
+                    if (currentName == "Fake-object") fillTestFields();
+                    Navigation.PopModalAsync(true);
+                    Navigation.PushModalAsync(new FormPage(currentName, formFieldsList));
+                }
+                else await DisplayAlert("Warning", "<" + currentName + "> has no fields...", "Ok");
+            }
         }
         private async void Inventory_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs args)
         {
@@ -111,6 +118,7 @@ namespace TilesApp.Views
         {
             bool success = false;
             string result = await Api.GetFamiliesList();
+            string result2 = await Api.GetPhases();
             if (result != "")
             {
                 List<Dictionary<string, object>> projectsList = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(result);
@@ -134,59 +142,44 @@ namespace TilesApp.Views
             }
             return success;
         }
-        private void setFormFields(string jsonFields)
+        private bool setFormFields(string jsonFields)
         {
+            bool result = true;
             try
             {
+
                 formFieldsList.Clear();
-                Dictionary<string, Dictionary<string,object>> keyField = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, object>>>(jsonFields);
-                Dictionary<string, object> groupedFields = keyField["grouped_protofamilyfields"];
+                Dictionary<string,object> keyField = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonFields);
 
-                foreach (KeyValuePair<string, object> kv in groupedFields)
+                JArray ja = (JArray)keyField["protofamilyfields"];
+                List<Dictionary<string, object>> fieldDataList = ja.ToObject<List<Dictionary<string, object>>>();
+
+                foreach (Dictionary<string, object> fieldData in fieldDataList)
                 {
-                    JArray ja = (JArray)kv.Value;
-                    List<Dictionary<string, object>> fieldDataList = ja.ToObject<List<Dictionary<string, object>>>();
-
-                    foreach (Dictionary<string, object> fieldData in fieldDataList)
-                    {
-                        Web_Field field = new Web_Field() { Parent = kv.Key };
-                        if (fieldData["id"] != null) field.Id = fieldData["id"].ToString();
-                        if (fieldData["project_id"] != null) field.ProjectId = fieldData["project_id"].ToString();
-                        if (fieldData["protofamily_id"] != null) field.ProtoFamilyId = fieldData["protofamily_id"].ToString();
-                        if (fieldData["field_id"] != null) field.FieldId = fieldData["field_id"].ToString();
-                        if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
-                        if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
-                        if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
-                        if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
-                        if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
-                        if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
-                        if (fieldData["created_at"] != null) field.Created_at = fieldData["created_at"].ToString();
-                        if (fieldData["updated_at"] != null) field.Updated_at = fieldData["updated_at"].ToString();
-                        if (fieldData["deleted_at"] != null) field.Deleted_at = fieldData["deleted_at"].ToString();
-                        if (fieldData["route"] != null) field.Route = fieldData["route"].ToString();
-
-                        //Specific attributes
-                        JObject jo = (JObject)fieldData["field"];
-                        Dictionary<string, object> fieldExtraInfo = JObject.FromObject(jo).ToObject<Dictionary<string, object>>();
-
-                        if (fieldExtraInfo["category"] != null) field.Category = Convert.ToInt32(fieldExtraInfo["category"]);
-                        if (fieldExtraInfo["type"] != null) field.Type = Convert.ToInt32(fieldExtraInfo["type"]);
-                        if (fieldExtraInfo["name"] != null) field.Name = fieldExtraInfo["name"].ToString();
-                        if (fieldExtraInfo["long_name"] != null) field.LongName = fieldExtraInfo["long_name"].ToString();
-                        if (fieldExtraInfo["description"] != null) field.Description = fieldExtraInfo["description"].ToString();
-                        if (fieldExtraInfo["slug"] != null) field.Slug = fieldExtraInfo["slug"].ToString();
-                        if (fieldExtraInfo["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldExtraInfo["primitive_type"]);
-                        if (fieldExtraInfo["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldExtraInfo["value_is_unique"]) == 1 ? true : false;
-                        if (fieldExtraInfo["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldExtraInfo["value_is_required"]) == 1 ? true : false;
-
-                        formFieldsList.Add(field);
-                    }
+                    Web_Field field = new Web_Field();
+                    if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
+                    if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
+                    if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                    if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
+                    if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
+                    if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
+                    if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
+                    if (fieldData["name"] != null) field.Name = fieldData["name"].ToString();
+                    if (fieldData["long_name"] != null) field.LongName = fieldData["long_name"].ToString();
+                    if (fieldData["description"] != null) field.Description = fieldData["description"].ToString();
+                    if (fieldData["slug"] != null) field.Slug = fieldData["slug"].ToString();
+                    if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                    if (fieldData["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldData["value_is_unique"]) == 1 ? true : false;
+                    if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
+                    formFieldsList.Add(field);
                 }
             }
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
+                result = false;
             }
+            return result;
         }
         private void fillTestFields()
         {

@@ -58,6 +58,7 @@
                     HorizontalOptions="CenterAndExpand"
                 />
                 <CollectionView Grid.Row="3" 
+                    x:Name="cView"
                     BackgroundColor="Transparent"
                     ItemsSource="{Binding FamGroupList}"
                     SelectionMode="Single"
@@ -67,25 +68,30 @@
                             <Grid>
                                 <VisualStateManager.VisualStateGroups>
                                     <VisualStateGroup Name="CommonStates">
-                                        <VisualState Name="Normal" />
-                                        <VisualState Name="Selected">
+                                        <VisualState Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="#F0F0F0" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <!--<VisualState Name="Selected">
                                             <VisualState.Setters>
                                                 <Setter Property="BackgroundColor" Value="LightGray" />
                                             </VisualState.Setters>
-                                        </VisualState>
+                                        </VisualState>-->
                                     </VisualStateGroup>
                                 </VisualStateManager.VisualStateGroups>
                                 <Label
-                                x:Name="FGName"
-                                FontAttributes="Bold"
-                                Text="{Binding Name}"
-                                Grid.Column="0"
-                                Padding="10,20"
-                                TextColor="Black"
-                                VerticalTextAlignment="Center"
-                                HorizontalTextAlignment="Center"
-                                FontSize="14"
-                                LineBreakMode="TailTruncation"/>
+                                    x:Name="FGName"
+                                    FontAttributes="Bold"
+                                    Text="{Binding Name}"
+                                    Grid.Column="0"
+                                    Padding="10,20"
+                                    TextColor="Black"
+                                    VerticalTextAlignment="Center"
+                                    HorizontalTextAlignment="Center"
+                                    FontSize="14"
+                                    LineBreakMode="TailTruncation"
+                                />
                             </Grid>
                         </DataTemplate>
                     </CollectionView.ItemTemplate>

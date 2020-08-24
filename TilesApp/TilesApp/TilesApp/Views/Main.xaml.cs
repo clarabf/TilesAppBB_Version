@@ -63,7 +63,7 @@ namespace TilesApp.Views
             //lblVersion.Text = VersionTracking.CurrentVersion.ToString();
 
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
-                await DisplayAlert("Error", errorMessage, "Ok");
+                await DisplayAlert("", errorMessage, "Ok");
             });
             if (!App.IsConnected) DisplayAlert("WARNING: You are offline.", "The performed operations will be stored, and will be uploaded when internet is connected.", "Ok");
             else

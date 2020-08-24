@@ -241,7 +241,9 @@ namespace TilesApp
                         PendingOperation opt = Database.GetFirstOperationInQueue();
                         if (opt != null)
                         {
-                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(JsonConvert.DeserializeObject<Dictionary<string,object>>(opt.Data));
+                            Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(opt.Data);
+                            dict.Add("_ph", dict["pha"]);
+                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(dict);
                             if (isInserted.Key == "Success")
                             {
                                 Database.DeletePendingOperation(opt);

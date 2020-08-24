@@ -48,7 +48,7 @@ namespace TilesApp.Services
                     opt.OperationType = "Form";
                     opt.Station = "Zaragoza HQ";
                     opt.UserName = App.User.DisplayName;
-                    opt.pha = 0;
+                    opt._ph = "1";
                     App.Database.SavePendingOperation(opt);
                     return new KeyValuePair<string, string>("Success", "Offline");
                 }

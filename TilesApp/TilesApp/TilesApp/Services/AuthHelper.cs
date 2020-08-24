@@ -13,7 +13,7 @@ namespace TilesApp.Services
         private static string ClientID = "ec28d429-40c4-4ebc-8f8f-db9236df8830";//"917dadf4-4730-484e-8eef-d9116514cc40";
         private static string ClientSecret = "hfLdb5T_Chw]-yzjPLBd@9Fb3l7yaAA9";//"z3j10g3HBS@vKMBONBBSF:LxVXvsF==L";
         public static string UserScope = "User.Read";
-        //public static string OBOScope = "api://34f86a7a-fa1c-43d4-a97b-fe8dca310eef/test";
+        //public static string OBOScope = "api://34f86a7a-fa1c-43d4-a97b-fe8dca310eef/test"; //TEST
         public static string OBOScope = "https://blackboxes.azurewebsites.net/user_impersonation";
         #endregion
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -21,6 +22,21 @@ namespace TilesApp.Views
             BindingContext = this;
             opts = App.Database.GetPendingOperations();
         }
+
+        async void OnCollectionViewSelectionChanged(object sender, Xamarin.Forms.SelectionChangedEventArgs e)
+        {
+            if (e.CurrentSelection.Count != 0)
+            {
+                string data = (e.CurrentSelection.FirstOrDefault() as PendingOperation)?.Data;
+                Dictionary<string, object> fields = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
+                string message = "";
+                foreach (KeyValuePair<string, object> kv in fields) message += kv.Key + ": " + kv.Value + "\n";
+                await DisplayAlert("Form selected", message, "Ok");
+                cView.SelectedItem = null;
+            }
+        }
+
+
         protected override void OnAppearing()
         {
             base.OnAppearing();

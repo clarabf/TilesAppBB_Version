@@ -16,6 +16,6 @@ namespace TilesApp.Models.DataModels
         public string Data { get; set; }
         public string OperationType { get; set; }
         public string Station { get; set; }
-        public int pha { get; set; }
+        public string _ph { get; set; }
     }
 }

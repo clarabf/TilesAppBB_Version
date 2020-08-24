@@ -33,11 +33,12 @@
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="EndAndExpand"
             />
-            <CollectionView x:Name="Cview" 
+            <CollectionView x:Name="cView" 
                 ItemsSource="{Binding PendingOpts}" 
                 Grid.Row="1" 
                 VerticalOptions="StartAndExpand"
-                SelectionMode="Single" 
+                SelectionMode="Single"
+                SelectionChanged="OnCollectionViewSelectionChanged"
                 ItemsLayout="VerticalList">
                 <CollectionView.ItemTemplate >
                     <DataTemplate >

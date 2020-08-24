@@ -56,7 +56,7 @@ namespace TilesApp.Views
                             };
                             SfComboBox comboBox = new SfComboBox
                             {
-                                ClassId = field.Id,
+                                ClassId = field.Slug,
                                 TextColor = Color.Black,
                                 TextSize = 14,
                                 VerticalOptions = LayoutOptions.StartAndExpand,
@@ -93,7 +93,7 @@ namespace TilesApp.Views
 
                             SfComboBox comboBox = new SfComboBox
                             {
-                                ClassId = field.Id,
+                                ClassId = field.Slug,
                                 TextColor = Color.Black,
                                 TextSize = 14,
                                 VerticalOptions = LayoutOptions.StartAndExpand,
@@ -127,7 +127,7 @@ namespace TilesApp.Views
                         {
                             CustomEntry entry = new CustomEntry
                             {
-                                ClassId = field.Id,
+                                ClassId = field.Slug,
                                 FontSize = 14,
                                 BackgroundColor = Color.Transparent,
                                 PlaceholderColor = Color.Gray,
@@ -142,7 +142,7 @@ namespace TilesApp.Views
                     default:
                         CustomEntry defEntry = new CustomEntry
                         {
-                            ClassId = field.Id,
+                            ClassId = field.Slug,
                             FontSize = 14,
                             BackgroundColor = Color.Transparent,
                             PlaceholderColor = Color.Gray,
@@ -171,7 +171,7 @@ namespace TilesApp.Views
         {
             Entry entry = (Entry)sender;
             entry.PlaceholderColor = Color.Gray;
-            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == entry.ClassId; });
+            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Slug == entry.ClassId; });
             if (entry.Text.Length > field.PrimitiveQuantity) 
             {
                 await DisplayAlert("Warning", 
@@ -207,7 +207,7 @@ namespace TilesApp.Views
                 LoadingPopUp.IsVisible = true;
                 loading.IsRunning = true;
                 formInfo.Add("elm", lblTitle.Text);
-                formInfo.Add("pha", 0);
+                formInfo.Add("_ph", 1);
                 formInfo.Add("nam", App.User.DisplayName);
                 for (int i = 0; i < _formFields.Count * 2; i++)
                 {
@@ -217,7 +217,7 @@ namespace TilesApp.Views
                     {
                         case "TilesApp.CustomEntry":
                             CustomEntry entry = (CustomEntry)elementsGrid.Children.ElementAt(i);
-                            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == entry.ClassId; });
+                            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Slug == entry.ClassId; });
 
                             Debug.WriteLine(entry.Placeholder + "..." + entry.Text);
                             // If entry remains null, we do not store the info.
@@ -242,7 +242,7 @@ namespace TilesApp.Views
                             break;
                         case "Syncfusion.XForms.ComboBox.SfComboBox":
                             SfComboBox comboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
-                            field = _formFields.Find(delegate (Web_Field wf) { return wf.Id == comboBox.ClassId; });
+                            field = _formFields.Find(delegate (Web_Field wf) { return wf.Slug == comboBox.ClassId; });
 
                             Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
 
