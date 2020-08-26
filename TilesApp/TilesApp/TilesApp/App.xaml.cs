@@ -35,6 +35,10 @@ namespace TilesApp
         public static bool IsConnected { get; set; } = false;
 
         public static List<Web_Project> Projects { get; set; }
+
+        public static Dictionary<string, Phase> Phases { get; set; }
+
+        public static Dictionary<string, PrimitiveType> PrimitiveTypes { get; set; }
         public static ObservableCollection<Dictionary<string, object>> Inventory { get; set; } = new ObservableCollection<Dictionary<string, object>>();
         private static LocalDatabase database;
         public static LocalDatabase Database
@@ -242,7 +246,7 @@ namespace TilesApp
                         if (opt != null)
                         {
                             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(opt.Data);
-                            dict.Add("_ph", dict["pha"]);
+                            if (!dict.ContainsKey("_ph")) dict.Add("_ph", 0);
                             KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(dict);
                             if (isInserted.Key == "Success")
                             {

@@ -257,5 +257,28 @@ namespace TilesApp.Services
             }
             return result;
         }
+
+        public async static Task<string> GetPrimitiveTypes()
+        {
+            string result = "";
+            try
+            {
+                if (App.IsConnected)
+                {
+                    HttpClient client = new HttpClient();
+                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
+                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + "_api/__getPrimitiveTypes");
+                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        result = await response.Content.ReadAsStringAsync();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            return result;
+        }
     }
 }

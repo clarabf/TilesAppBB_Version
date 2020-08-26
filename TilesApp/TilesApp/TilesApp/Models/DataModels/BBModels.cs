@@ -28,7 +28,6 @@ namespace TilesApp.Models.DataModels
         public string Updated_at { get; set; }
         public string Deleted_at { get; set; }
     }
-
     public class Web_FamilyFields
     {
         public string ProtoFamilyId { get; set; }
@@ -36,7 +35,6 @@ namespace TilesApp.Models.DataModels
         public string FieldId { get; set; }
         public int UIIndex { get; set; }
     }
-
     public class Web_Field
     {
         // General attributes
@@ -69,7 +67,19 @@ namespace TilesApp.Models.DataModels
         //Extra attributes
         public string Parent { get; set; }
     }
-
+    public class PrimitiveType
+    {
+        public string Name { get; set; }
+        public int Size { get; set; }
+        public string Csharp_name { get; set; }
+        public string Js_name { get; set; }
+        public bool Quantity_enabled { get; set; }
+    }
+    public class Phase
+    {
+        public string Name { get; set; }
+        public string Slug { get; set; }
+    }
     public class Form_Info
     {
         [BsonIgnoreIfNull]

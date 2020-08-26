@@ -110,15 +110,16 @@ namespace TilesApp.Views
             }
             FamGroupList.Clear();
             LoadingPopUp.IsVisible = true;
+            loading.IsRunning = true;
             bool success = await setFamiliesList();
             LoadingPopUp.IsVisible = false;
+            loading.IsRunning = false;
             if (!success) await DisplayAlert("Warning", "No matches found...", "Ok");
         }
         private async Task<bool> setFamiliesList()
         {
             bool success = false;
             string result = await Api.GetFamiliesList();
-            string result2 = await Api.GetPhases();
             if (result != "")
             {
                 List<Dictionary<string, object>> projectsList = JsonConvert.DeserializeObject<List<Dictionary<string, object>>>(result);

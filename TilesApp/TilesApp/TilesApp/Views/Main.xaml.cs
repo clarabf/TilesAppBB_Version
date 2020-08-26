@@ -136,9 +136,34 @@ namespace TilesApp.Views
                         if (result != "") App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
                         else App.Projects = new List<Web_Project>();
                     }
-                    catch {
+                    catch (Exception e)
+                    {
                         App.Projects = new List<Web_Project>();
                     }
+
+                    try
+                    {
+                        string result = await Api.GetPhases();
+                        if (result != "") App.Phases = JsonConvert.DeserializeObject<Dictionary<string, Phase>>(result);
+                        else App.Phases = new Dictionary<string, Phase>();
+                    }
+                    catch (Exception e)
+                    {
+                        App.Phases = new Dictionary<string, Phase>();
+                    }
+
+                    try
+                    {
+                        string result = await Api.GetPrimitiveTypes();
+                        if (result != "") App.PrimitiveTypes = JsonConvert.DeserializeObject<Dictionary<string, PrimitiveType>>(result);
+                        else App.PrimitiveTypes = new Dictionary<string, PrimitiveType>();
+                    }
+                    catch (Exception e)
+                    {
+                        App.PrimitiveTypes = new Dictionary<string, PrimitiveType>();
+                    }
+
+
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         LoadingPopUp.IsVisible = false;

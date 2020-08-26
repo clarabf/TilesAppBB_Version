@@ -207,7 +207,7 @@ namespace TilesApp.Views
                 LoadingPopUp.IsVisible = true;
                 loading.IsRunning = true;
                 formInfo.Add("elm", lblTitle.Text);
-                formInfo.Add("_ph", 1);
+                //formInfo.Add("_ph", 1);
                 formInfo.Add("nam", App.User.DisplayName);
                 for (int i = 0; i < _formFields.Count * 2; i++)
                 {
