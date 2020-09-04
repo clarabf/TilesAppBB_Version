@@ -17,5 +17,7 @@ namespace TilesApp.Models.DataModels
         public string OperationType { get; set; }
         public string Station { get; set; }
         public string _ph { get; set; }
+        public string OnOff { get; set; }
+        public string TestColor { get; set; }
     }
 }

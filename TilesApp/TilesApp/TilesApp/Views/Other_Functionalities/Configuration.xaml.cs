@@ -32,7 +32,7 @@ namespace TilesApp.Views
             }
 
             //Button badge
-            int opt = App.Database.GetPendingOperations().Count;
+            int opt = App.Database.GetOfflineOperationsCount();
             btBadge.BadgeText = opt.ToString();
             if (opt != 0)
             {

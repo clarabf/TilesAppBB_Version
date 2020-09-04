@@ -235,26 +235,32 @@ namespace TilesApp
         protected override void OnSleep()
         {
             base.OnSleep();
+            bool changes = false;
             if (App.IsConnected)
             {
                 try
                 {
-                    int count = Database._database.Table<PendingOperation>().Count();
+                    int count = Database.GetOfflineOperationsCount();
                     for (int i = 0; i < count; i++)
                     {
-                        PendingOperation opt = Database.GetFirstOperationInQueue();
-                        if (opt != null)
+                        PendingOperation opt = Database.GetFirstOfflineOperationInQueue();
+                        if (opt.OnOff == "Offline")
                         {
                             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(opt.Data);
                             if (!dict.ContainsKey("_ph")) dict.Add("_ph", 0);
-                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertOneObject(dict);
+                            
+                            //Offline opt updated in DB as Online
+                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertAndUpdateOneObject(dict);
+
+                            //Offline opt deleted from the BD
                             if (isInserted.Key == "Success")
                             {
                                 Database.DeletePendingOperation(opt);
+                                changes = true;
                             }
                         }
                     }
-                    if (count != 0) MessagingCenter.Send(Current, "PendingUpdated");
+                    if (changes) MessagingCenter.Send(Current, "PendingUpdated");
                 }
                 catch (Exception e) 
                 {

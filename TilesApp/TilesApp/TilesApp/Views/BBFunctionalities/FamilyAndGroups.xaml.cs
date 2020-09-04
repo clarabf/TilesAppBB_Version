@@ -332,7 +332,7 @@ namespace TilesApp.Views
         {
             App.Inventory.CollectionChanged += Inventory_CollectionChanged;
             //Button badge
-            int opt = App.Database.GetPendingOperations().Count;
+            int opt = App.Database.GetOfflineOperationsCount();
             btBadge.BadgeText = opt.ToString();
             if (opt != 0)
             {

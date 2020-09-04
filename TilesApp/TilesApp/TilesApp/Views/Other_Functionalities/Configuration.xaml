@@ -75,7 +75,7 @@
                     <badge:SfBadgeView.Content>
                         <Button
 	                        x:Name="PendingOpts"
-	                        Text="PENDING OPERATIONS"
+	                        Text="STORED OPERATIONS"
 	                        BackgroundColor="Transparent"
                             BorderColor="Transparent"
 	                        FontFamily="{StaticResource CustomFont}"

@@ -193,9 +193,15 @@ namespace TilesApp.Services
                             .Where(i => i.Id == id)
                             .FirstOrDefault();
         }
-        public PendingOperation GetFirstOperationInQueue()
+        
+        public PendingOperation GetFirstOfflineOperationInQueue()
         {
-            return _database.Table<PendingOperation>().OrderBy(u => u.CreatedAt).FirstOrDefault();
+            return _database.Table<PendingOperation>().Where(i => i.OnOff == "Offline").OrderBy(u => u.CreatedAt).FirstOrDefault();
+        }
+
+        public int GetOfflineOperationsCount()
+        {
+            return _database.Table<PendingOperation>().ToList().FindAll(delegate (PendingOperation po) { return po.OnOff == "Offline"; }).Count;
         }
 
         public int SavePendingOperation(PendingOperation PendingOperation)

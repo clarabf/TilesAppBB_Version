@@ -14,7 +14,7 @@
                 <RowDefinition Height="10*" />
             </Grid.RowDefinitions>
             <Label x:Name="lblApp" 
-                Text="PENDING OPERATIONS"
+                Text="STORED FORMS"
                 TextColor="#000000"
                 FontAttributes="Bold"
                 CharacterSpacing="1.15"
@@ -81,7 +81,8 @@
                                 LineBreakMode="TailTruncation"
                             />
                             <Label
-                                Text="{Binding Station}"
+                                Text="{Binding OnOff}"
+                                TextColor="{Binding TestColor}"
                                 FontSize="14"
                                 Grid.Row="1"
                                 Grid.Column="0"                              

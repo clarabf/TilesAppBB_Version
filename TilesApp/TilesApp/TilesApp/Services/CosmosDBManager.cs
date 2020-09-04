@@ -25,7 +25,7 @@ namespace TilesApp.Services
         private static IMongoDatabase database = mongoClient.GetDatabase(ConfigurationManager.AppSettings["MONGODB_DB"]);
         private static IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(ConfigurationManager.AppSettings["MONGODB_COLLECTION"]);
 
-        public static KeyValuePair<string, string> InsertOneObject(Dictionary<string, object> data)
+        public static KeyValuePair<string, string> InsertAndUpdateOneObject(Dictionary<string, object> data)
         {
             try
             {
@@ -33,25 +33,24 @@ namespace TilesApp.Services
                 {
                     BsonDocument doc = data.ToBsonDocument();
                     collection.InsertOneAsync(doc).Wait();
-                    return new KeyValuePair<string, string>("Success", "Online");
                 }
-                else
+
+                PendingOperation opt = new PendingOperation();
+                opt.CreatedAt = DateTime.Now;
+                JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
                 {
-                    PendingOperation opt = new PendingOperation();
-                    opt.CreatedAt = DateTime.Now;
-                    JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
-                    {
-                        DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                    };
-                    opt.Data = JsonConvert.SerializeObject(data, microsoftDateFormatSettings);
-                    opt.UserId = App.User.MSID;
-                    opt.OperationType = "Form";
-                    opt.Station = "Zaragoza HQ";
-                    opt.UserName = App.User.DisplayName;
-                    opt._ph = "1";
-                    App.Database.SavePendingOperation(opt);
-                    return new KeyValuePair<string, string>("Success", "Offline");
-                }
+                    DateFormatHandling = DateFormatHandling.IsoDateFormat,
+                };
+                opt.Data = JsonConvert.SerializeObject(data, microsoftDateFormatSettings);
+                opt.UserId = App.User.MSID;
+                opt.OperationType = "Form";
+                opt.OnOff = App.IsConnected ? "Online" : "Offline";
+                opt.TestColor = App.IsConnected ? "#009668" : "#FF9800";
+                opt.UserName = App.User.DisplayName;
+                opt._ph = "1";
+                App.Database.SavePendingOperation(opt);
+
+                return new KeyValuePair<string, string>("Success", opt.OnOff);
             }
             catch (Exception e)
             {

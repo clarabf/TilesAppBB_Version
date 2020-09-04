@@ -42,10 +42,12 @@ namespace TilesApp.Views
                 };
                 elementsGrid.Children.Add(lblElement, 0, row);
                 row++;
-                switch (field.PrimitiveType)
+                //CAREFUL: Error if the user connects offline...
+                PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
+                switch (p.Csharp_name)
                 {
                     //integer
-                    case 1:
+                    case "Boolean":
                         if (field.PrimitiveQuantity == 1)
                         {
                             TokenSettings tokenSettings = new TokenSettings
@@ -77,7 +79,7 @@ namespace TilesApp.Views
                         }
                         break;
                     //string
-                    case 7:
+                    case "String":
                         if (field.ValueRegEx != null)
                         {
                             Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
@@ -293,7 +295,10 @@ namespace TilesApp.Views
                                         errors.Add("<" + field.LongName + "> cannot be empty.");
                                     }
                                 }
-                                else formInfo.Add(field.Name, comboBox.SelectedItem);
+                                else
+                                {
+                                    if (comboBox.SelectedItem != "") formInfo.Add(field.Name, comboBox.SelectedItem);
+                                }
                             }
                             break;
                     }
@@ -306,7 +311,7 @@ namespace TilesApp.Views
                 }
                 else
                 {
-                    KeyValuePair<string, string> result = CosmosDBManager.InsertOneObject(formInfo);
+                    KeyValuePair<string, string> result = CosmosDBManager.InsertAndUpdateOneObject(formInfo);
                     string mess = "";
                     if (result.Key == "Success")
                     {
