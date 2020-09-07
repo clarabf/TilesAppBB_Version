@@ -15,119 +15,139 @@ namespace TilesApp.Views
     {
 
         List<Web_Field> _formFields;
+        Dictionary<string, object> formInfo = new Dictionary<string, object>();
+        string _tp;
 
-        public FormPage(string title, List<Web_Field> formFields)
+        public FormPage(string title, string familyType, List<Web_Field> formFields)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             
             _formFields = formFields;
+            _tp = familyType;
             lblTitle.Text = title.ToUpper();
             int row = 0;
             string asterix;
 
             foreach (Web_Field field in _formFields)
             {
-                asterix = "";
-                if (field.ValueIsRequired) asterix = " *";
-                
-                elementsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
-                Label lblElement = new Label
+                if (field.Category != 0)
                 {
-                    Text = field.LongName + asterix,
-                    TextColor = Color.Black,
-                    FontAttributes = FontAttributes.Bold,
-                    VerticalOptions = LayoutOptions.CenterAndExpand,
-                    FontSize = 18,
-                };
-                elementsGrid.Children.Add(lblElement, 0, row);
-                row++;
-                //CAREFUL: Error if the user connects offline...
-                PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
-                switch (p.Csharp_name)
-                {
-                    //integer
-                    case "Boolean":
-                        if (field.PrimitiveQuantity == 1)
-                        {
-                            TokenSettings tokenSettings = new TokenSettings
-                            {
-                                BackgroundColor = Color.Black,
-                                TextColor = Color.White,
-                                IsCloseButtonVisible = false,
-                            };
-                            SfComboBox comboBox = new SfComboBox
-                            {
-                                ClassId = field.Slug,
-                                TextColor = Color.Black,
-                                TextSize = 14,
-                                VerticalOptions = LayoutOptions.StartAndExpand,
-                                BackgroundColor = Color.Transparent,
-                                ShowClearButton = true,
-                                IsEditableMode = false,
-                                EnableAutoSize = true,
-                                IsSelectedItemsVisibleInDropDown = false,
-                                TokensWrapMode = TokensWrapMode.None,
-                                TokenSettings = tokenSettings,
-                                Watermark = "Select one...",
-                                MultiSelectMode = MultiSelectMode.None
-                            };
-                            comboBox.ComboBoxSource = new List<string>(){"true", "false"};
-                            comboBox.SelectionChanged += selectionChanged_command;
-                            elementsGrid.Children.Add(comboBox, 0, row);
-                            row++;
-                        }
-                        break;
-                    //string
-                    case "String":
-                        if (field.ValueRegEx != null)
-                        {
-                            Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
-                            
-                            List<string> items = (List<string>)result["options"];
+                    asterix = "";
+                    if (field.ValueIsRequired) asterix = " *";
 
-                            TokenSettings tokenSettings = new TokenSettings
+                    elementsGrid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                    Label lblElement = new Label
+                    {
+                        Text = field.LongName + asterix,
+                        TextColor = Color.Black,
+                        FontAttributes = FontAttributes.Bold,
+                        VerticalOptions = LayoutOptions.CenterAndExpand,
+                        FontSize = 18,
+                    };
+                    elementsGrid.Children.Add(lblElement, 0, row);
+                    row++;
+                    //CAREFUL: Error if the user connects offline...
+                    PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
+                    switch (p.Csharp_name)
+                    {
+                        //integer
+                        case "Boolean":
+                            if (field.PrimitiveQuantity == 1)
                             {
-                                BackgroundColor = Color.Black,
-                                TextColor = Color.White,
-                                IsCloseButtonVisible = false,
-                            };
+                                TokenSettings tokenSettings = new TokenSettings
+                                {
+                                    BackgroundColor = Color.Black,
+                                    TextColor = Color.White,
+                                    IsCloseButtonVisible = false,
+                                };
+                                SfComboBox comboBox = new SfComboBox
+                                {
+                                    ClassId = field.Slug,
+                                    TextColor = Color.Black,
+                                    TextSize = 14,
+                                    VerticalOptions = LayoutOptions.StartAndExpand,
+                                    BackgroundColor = Color.Transparent,
+                                    ShowClearButton = true,
+                                    IsEditableMode = false,
+                                    EnableAutoSize = true,
+                                    IsSelectedItemsVisibleInDropDown = false,
+                                    TokensWrapMode = TokensWrapMode.None,
+                                    TokenSettings = tokenSettings,
+                                    Watermark = "Select one...",
+                                    MultiSelectMode = MultiSelectMode.None
+                                };
+                                comboBox.ComboBoxSource = new List<string>() { "true", "false" };
+                                comboBox.SelectionChanged += selectionChanged_command;
+                                elementsGrid.Children.Add(comboBox, 0, row);
+                                row++;
+                            }
+                            break;
+                        //string
+                        case "String":
+                            if (field.ValueRegEx != null)
+                            {
+                                Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
 
-                            SfComboBox comboBox = new SfComboBox
-                            {
-                                ClassId = field.Slug,
-                                TextColor = Color.Black,
-                                TextSize = 14,
-                                VerticalOptions = LayoutOptions.StartAndExpand,
-                                BackgroundColor = Color.Transparent,
-                                ShowClearButton = true,
-                                IsEditableMode = false,
-                                EnableAutoSize = true,
-                                IsSelectedItemsVisibleInDropDown = false,
-                                TokensWrapMode = TokensWrapMode.None,
-                                ComboBoxSource = items,
-                                TokenSettings = tokenSettings,
-                            };
+                                List<string> items = (List<string>)result["options"];
 
-                            if ((bool)result["multi"])
-                            {
-                                comboBox.Watermark = "Select one at least...";
-                                comboBox.MultiSelectMode = MultiSelectMode.Token;
+                                TokenSettings tokenSettings = new TokenSettings
+                                {
+                                    BackgroundColor = Color.Black,
+                                    TextColor = Color.White,
+                                    IsCloseButtonVisible = false,
+                                };
+
+                                SfComboBox comboBox = new SfComboBox
+                                {
+                                    ClassId = field.Slug,
+                                    TextColor = Color.Black,
+                                    TextSize = 14,
+                                    VerticalOptions = LayoutOptions.StartAndExpand,
+                                    BackgroundColor = Color.Transparent,
+                                    ShowClearButton = true,
+                                    IsEditableMode = false,
+                                    EnableAutoSize = true,
+                                    IsSelectedItemsVisibleInDropDown = false,
+                                    TokensWrapMode = TokensWrapMode.None,
+                                    ComboBoxSource = items,
+                                    TokenSettings = tokenSettings,
+                                };
+
+                                if ((bool)result["multi"])
+                                {
+                                    comboBox.Watermark = "Select one at least...";
+                                    comboBox.MultiSelectMode = MultiSelectMode.Token;
+                                }
+                                else
+                                {
+                                    comboBox.Watermark = "Select one...";
+                                    comboBox.MultiSelectMode = MultiSelectMode.None;
+                                }
+
+                                comboBox.SelectionChanged += selectionChanged_command;
+                                var i = comboBox.Text;
+                                elementsGrid.Children.Add(comboBox, 0, row);
+                                row++;
                             }
                             else
                             {
-                                comboBox.Watermark = "Select one...";
-                                comboBox.MultiSelectMode = MultiSelectMode.None;
+                                CustomEntry entry = new CustomEntry
+                                {
+                                    ClassId = field.Slug,
+                                    FontSize = 14,
+                                    BackgroundColor = Color.Transparent,
+                                    PlaceholderColor = Color.Gray,
+                                    Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
+                                    VerticalOptions = LayoutOptions.StartAndExpand
+                                };
+                                entry.Completed += entryCompleted_command;
+                                elementsGrid.Children.Add(entry, 0, row);
+                                row++;
                             }
-
-                            comboBox.SelectionChanged += selectionChanged_command;
-                            var i = comboBox.Text;
-                            elementsGrid.Children.Add(comboBox, 0, row);
-                            row++;
-                        }
-                        else
-                        {
-                            CustomEntry entry = new CustomEntry
+                            break;
+                        default:
+                            CustomEntry defEntry = new CustomEntry
                             {
                                 ClassId = field.Slug,
                                 FontSize = 14,
@@ -136,26 +156,12 @@ namespace TilesApp.Views
                                 Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
                                 VerticalOptions = LayoutOptions.StartAndExpand
                             };
-                            entry.Completed += entryCompleted_command;
-                            elementsGrid.Children.Add(entry, 0, row);
+                            defEntry.Completed += entryCompleted_command;
+                            elementsGrid.Children.Add(defEntry, 0, row);
                             row++;
-                        }
-                        break;
-                    default:
-                        CustomEntry defEntry = new CustomEntry
-                        {
-                            ClassId = field.Slug,
-                            FontSize = 14,
-                            BackgroundColor = Color.Transparent,
-                            PlaceholderColor = Color.Gray,
-                            Placeholder = field.LongName + " (max. " + field.PrimitiveQuantity + ")",
-                            VerticalOptions = LayoutOptions.StartAndExpand
-                        };
-                        defEntry.Completed += entryCompleted_command;
-                        elementsGrid.Children.Add(defEntry, 0, row);
-                        row++;
-                        break;
-                }
+                            break;
+                    }
+                } 
             }
             for (int i = row; i < 9; i++)
             {
@@ -205,12 +211,9 @@ namespace TilesApp.Views
             try
             {
                 List<string> errors = new List<string>();
-                Dictionary<string, object> formInfo = new Dictionary<string, object>();
+                formInfo.Clear();
                 LoadingPopUp.IsVisible = true;
                 loading.IsRunning = true;
-                formInfo.Add("elm", lblTitle.Text);
-                //formInfo.Add("_ph", 1);
-                formInfo.Add("nam", App.User.DisplayName);
                 for (int i = 0; i < _formFields.Count * 2; i++)
                 {
                     string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
@@ -311,6 +314,7 @@ namespace TilesApp.Views
                 }
                 else
                 {
+                    AddPrivateFields();
                     KeyValuePair<string, string> result = CosmosDBManager.InsertAndUpdateOneObject(formInfo);
                     string mess = "";
                     if (result.Key == "Success")
@@ -329,6 +333,15 @@ namespace TilesApp.Views
                 Debug.WriteLine(e.Message);
                 return false;
             }
+        }
+
+        private void AddPrivateFields()
+        {
+            formInfo.Add(Keys.User, App.User.MSID);
+            formInfo.Add(Keys.Type, _tp);
+            formInfo.Add(Keys.Version, (long)1);
+            formInfo.Add(Keys.Phase, (long)1);
+            formInfo.Add(Keys.FormName, lblTitle.Text);
         }
 
         private void CleanForm()

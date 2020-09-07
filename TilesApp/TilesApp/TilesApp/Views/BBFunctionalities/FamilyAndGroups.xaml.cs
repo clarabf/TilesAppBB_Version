@@ -65,9 +65,8 @@ namespace TilesApp.Views
                 await DisplayAlert("Warning", "No matches found...\n", "Ok");
                 Web_ProtoFamily pf = new Web_ProtoFamily()
                 {
-                    CosmoId = "123",
-                    ProjectId = "1234",
-                    CategoryId = "bla",
+                    Id = "123",
+                    Type = "family",
                     Name = "Fake-object",
                     Description = "Fake object for tests",
                     Slug = "fake_object",
@@ -83,7 +82,7 @@ namespace TilesApp.Views
                 LoadingPopUp.IsVisible = true;
                 loading.IsRunning = true;
                 string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
-                string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.CosmoId;
+                string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Id;
                 string currentSlug = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Slug;
                 string result = await Api.GetFieldsList(currentSlug);
                 bool success = setFormFields(result);
@@ -94,7 +93,7 @@ namespace TilesApp.Views
                 {
                     if (currentName == "Fake-object") fillTestFields();
                     Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new FormPage(currentName, formFieldsList));
+                    Navigation.PushModalAsync(new FormPage(currentName, currentId, formFieldsList));
                 }
                 else await DisplayAlert("Warning", "<" + currentName + "> has no fields...", "Ok");
             }
@@ -131,6 +130,7 @@ namespace TilesApp.Views
                         //Only store the data we need
                         Web_ProtoFamily pf = new Web_ProtoFamily()
                         {
+                            Id = dictP["id"].ToString(),
                             Type = dictP["type"].ToString(),
                             Name = dictP["name"].ToString(),
                             Description = dictP["description"].ToString(),
@@ -148,7 +148,6 @@ namespace TilesApp.Views
             bool result = true;
             try
             {
-
                 formFieldsList.Clear();
                 Dictionary<string,object> keyField = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonFields);
 
@@ -158,21 +157,26 @@ namespace TilesApp.Views
                 foreach (Dictionary<string, object> fieldData in fieldDataList)
                 {
                     Web_Field field = new Web_Field();
-                    if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
-                    if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
-                    if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
-                    if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
-                    if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
-                    if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
                     if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
-                    if (fieldData["name"] != null) field.Name = fieldData["name"].ToString();
-                    if (fieldData["long_name"] != null) field.LongName = fieldData["long_name"].ToString();
-                    if (fieldData["description"] != null) field.Description = fieldData["description"].ToString();
-                    if (fieldData["slug"] != null) field.Slug = fieldData["slug"].ToString();
-                    if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
-                    if (fieldData["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldData["value_is_unique"]) == 1 ? true : false;
-                    if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
-                    formFieldsList.Add(field);
+                    // Just storing the fields to be filled by the user
+                    if (field.Category != 0)
+                    {
+                        if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
+                        if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
+                        if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                        if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
+                        if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
+                        if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
+                        if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
+                        if (fieldData["name"] != null) field.Name = fieldData["name"].ToString();
+                        if (fieldData["long_name"] != null) field.LongName = fieldData["long_name"].ToString();
+                        if (fieldData["description"] != null) field.Description = fieldData["description"].ToString();
+                        if (fieldData["slug"] != null) field.Slug = fieldData["slug"].ToString();
+                        if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                        if (fieldData["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldData["value_is_unique"]) == 1 ? true : false;
+                        if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
+                        formFieldsList.Add(field);
+                    }
                 }
             }
             catch (Exception ex)

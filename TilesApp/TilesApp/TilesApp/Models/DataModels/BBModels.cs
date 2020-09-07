@@ -14,19 +14,11 @@ namespace TilesApp.Models.DataModels
     }
     public class Web_ProtoFamily
     {
-        public int Id { get; set; }
-        public string CosmoId { get; set; }
-        public string ProjectId { get; set; }
-        public string CategoryId { get; set; }
+        public string Id { get; set; }
         public string Type { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Slug { get; set; }
-        public int VersionId { get; set; }
-        public string VersionName { get; set; }
-        public string Created_at { get; set; }
-        public string Updated_at { get; set; }
-        public string Deleted_at { get; set; }
     }
     public class Web_FamilyFields
     {
@@ -79,6 +71,19 @@ namespace TilesApp.Models.DataModels
     {
         public string Name { get; set; }
         public string Slug { get; set; }
+    }
+    public class Keys
+    {
+        public const string Phase = "_ph";
+        public const string Type = "_tp";
+        public const string User = "_us";
+        public const string Version = "_vr";
+        public const string FormName = "_fn";
+
+        public static bool ValidKey(string k)
+        {
+            return (k != Phase && k != Type && k != User && k != Version && k != FormName);
+        }
     }
     public class Form_Info
     {

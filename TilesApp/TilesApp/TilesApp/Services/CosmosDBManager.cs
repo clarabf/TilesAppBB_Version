@@ -47,7 +47,6 @@ namespace TilesApp.Services
                 opt.OnOff = App.IsConnected ? "Online" : "Offline";
                 opt.TestColor = App.IsConnected ? "#009668" : "#FF9800";
                 opt.UserName = App.User.DisplayName;
-                opt._ph = "1";
                 App.Database.SavePendingOperation(opt);
 
                 return new KeyValuePair<string, string>("Success", opt.OnOff);

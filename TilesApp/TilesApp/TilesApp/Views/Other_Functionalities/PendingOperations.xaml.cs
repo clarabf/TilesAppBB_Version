@@ -30,12 +30,14 @@ namespace TilesApp.Views
                 string data = (e.CurrentSelection.FirstOrDefault() as PendingOperation)?.Data;
                 Dictionary<string, object> fields = JsonConvert.DeserializeObject<Dictionary<string, object>>(data);
                 string message = "";
-                foreach (KeyValuePair<string, object> kv in fields) message += kv.Key + ": " + kv.Value + "\n";
+                foreach (KeyValuePair<string, object> kv in fields)
+                {
+                    if (Keys.ValidKey(kv.Key)) message += kv.Key + ": " + kv.Value + "\n";
+                }
                 await DisplayAlert("Form selected", message, "Ok");
                 cView.SelectedItem = null;
             }
         }
-
 
         protected override void OnAppearing()
         {
