@@ -15,17 +15,28 @@ namespace TilesApp.Views
     {
 
         List<Web_Field> _formFields;
+        Dictionary<string, object> _oldFormInfo = new Dictionary<string, object>();
         Dictionary<string, object> formInfo = new Dictionary<string, object>();
+        string __fn;
         string _tp;
+        string __fs;
+        PendingOperation _pendingOperation;
 
-        public FormPage(string title, string familyType, List<Web_Field> formFields)
+        public FormPage(string familyName, string familyType, string familySlug, 
+            List<Web_Field> formFields, 
+            Dictionary<string,object> oldFormInfo,
+            PendingOperation pendingOperation)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
             
             _formFields = formFields;
+            _oldFormInfo = oldFormInfo;
             _tp = familyType;
-            lblTitle.Text = title.ToUpper();
+            __fn = familyName;
+            __fs = familySlug;
+            _pendingOperation = pendingOperation;
+            lblTitle.Text = familyName.ToUpper();
             int row = 0;
             string asterix;
 
@@ -79,6 +90,10 @@ namespace TilesApp.Views
                                 };
                                 comboBox.ComboBoxSource = new List<string>() { "true", "false" };
                                 comboBox.SelectionChanged += selectionChanged_command;
+
+                                // Fill the field if we have a previous value
+                                if (_oldFormInfo.ContainsKey(field.Slug)) comboBox.SelectedItem = _oldFormInfo[field.Slug];
+
                                 elementsGrid.Children.Add(comboBox, 0, row);
                                 row++;
                             }
@@ -127,6 +142,10 @@ namespace TilesApp.Views
 
                                 comboBox.SelectionChanged += selectionChanged_command;
                                 var i = comboBox.Text;
+
+                                // Fill the field if we have a previous value
+                                if (_oldFormInfo.ContainsKey(field.Slug)) comboBox.SelectedItem = _oldFormInfo[field.Slug];
+
                                 elementsGrid.Children.Add(comboBox, 0, row);
                                 row++;
                             }
@@ -142,6 +161,10 @@ namespace TilesApp.Views
                                     VerticalOptions = LayoutOptions.StartAndExpand
                                 };
                                 entry.Completed += entryCompleted_command;
+
+                                // Fill the field if we have a previous value
+                                if (_oldFormInfo.ContainsKey(field.Slug)) entry.Text = _oldFormInfo[field.Slug].ToString();
+
                                 elementsGrid.Children.Add(entry, 0, row);
                                 row++;
                             }
@@ -157,6 +180,10 @@ namespace TilesApp.Views
                                 VerticalOptions = LayoutOptions.StartAndExpand
                             };
                             defEntry.Completed += entryCompleted_command;
+
+                            // Fill the field if we have a previous value
+                            if (_oldFormInfo.ContainsKey(field.Slug)) defEntry.Text = _oldFormInfo[field.Slug].ToString();
+
                             elementsGrid.Children.Add(defEntry, 0, row);
                             row++;
                             break;
@@ -217,7 +244,6 @@ namespace TilesApp.Views
                 for (int i = 0; i < _formFields.Count * 2; i++)
                 {
                     string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
-                    int l = 0;
                     switch (elementType)
                     {
                         case "TilesApp.CustomEntry":
@@ -322,6 +348,7 @@ namespace TilesApp.Views
                         if (result.Value == "Online") mess = "Your form has been correctly sent!";
                         else mess = "You are offline. The form has been stored and will be sent when you are connected.";
                         CleanForm();
+                        if (_pendingOperation != null) App.Database.DeletePendingOperation(_pendingOperation);
                     }
                     else mess = "There was an error sending the form. Please, contact with IT...";
                     await DisplayAlert("SENDING FORM", mess, "Ok");
@@ -339,9 +366,11 @@ namespace TilesApp.Views
         {
             formInfo.Add(Keys.User, App.User.MSID);
             formInfo.Add(Keys.Type, _tp);
-            formInfo.Add(Keys.Version, (long)1);
             formInfo.Add(Keys.Phase, (long)1);
-            formInfo.Add(Keys.FormName, lblTitle.Text);
+            formInfo.Add(Keys.FormName, __fn);
+            formInfo.Add(Keys.FormSlug, __fs);
+            if (_oldFormInfo.Count == 0) formInfo.Add(Keys.Version, (long)1);
+            else formInfo.Add(Keys.Version, (long)int.Parse(_oldFormInfo[Keys.Version].ToString())+1);
         }
 
         private void CleanForm()
@@ -366,6 +395,7 @@ namespace TilesApp.Views
                         break;
                 }
             }
+            _oldFormInfo.Clear();
         }
 
         private Dictionary<string, object> FormatRegex(string regEx)

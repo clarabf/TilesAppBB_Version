@@ -84,16 +84,19 @@ namespace TilesApp.Views
                 string currentName = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Name;
                 string currentId = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Id;
                 string currentSlug = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Slug;
-                string result = await Api.GetFieldsList(currentSlug);
-                bool success = setFormFields(result);
+
+                formFieldsList.Clear();
+                List<Web_Field> allFields = await Api.GetFieldsList(currentSlug);
+                formFieldsList = allFields.FindAll(delegate (Web_Field wf) { return wf.Category != 0; });
+
                 LoadingPopUp.IsVisible = false;
                 loading.IsRunning = false;
                 cView.SelectedItem = null;
-                if (success || currentName == "Fake-object")
+                if (formFieldsList.Count > 0 || currentName == "Fake-object")
                 {
                     if (currentName == "Fake-object") fillTestFields();
                     Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new FormPage(currentName, currentId, formFieldsList));
+                    Navigation.PushModalAsync(new FormPage(currentName, currentId, currentSlug, formFieldsList, new Dictionary<string, object>(), null));
                 }
                 else await DisplayAlert("Warning", "<" + currentName + "> has no fields...", "Ok");
             }
@@ -142,49 +145,6 @@ namespace TilesApp.Views
                 }
             }
             return success;
-        }
-        private bool setFormFields(string jsonFields)
-        {
-            bool result = true;
-            try
-            {
-                formFieldsList.Clear();
-                Dictionary<string,object> keyField = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonFields);
-
-                JArray ja = (JArray)keyField["protofamilyfields"];
-                List<Dictionary<string, object>> fieldDataList = ja.ToObject<List<Dictionary<string, object>>>();
-
-                foreach (Dictionary<string, object> fieldData in fieldDataList)
-                {
-                    Web_Field field = new Web_Field();
-                    if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
-                    // Just storing the fields to be filled by the user
-                    if (field.Category != 0)
-                    {
-                        if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
-                        if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
-                        if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
-                        if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
-                        if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
-                        if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
-                        if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
-                        if (fieldData["name"] != null) field.Name = fieldData["name"].ToString();
-                        if (fieldData["long_name"] != null) field.LongName = fieldData["long_name"].ToString();
-                        if (fieldData["description"] != null) field.Description = fieldData["description"].ToString();
-                        if (fieldData["slug"] != null) field.Slug = fieldData["slug"].ToString();
-                        if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
-                        if (fieldData["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldData["value_is_unique"]) == 1 ? true : false;
-                        if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
-                        formFieldsList.Add(field);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-                result = false;
-            }
-            return result;
         }
         private void fillTestFields()
         {

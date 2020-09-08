@@ -15,155 +15,8 @@ namespace TilesApp.Services
     public static class Api
     {
 
-        private static Dictionary<string, Stream> appsConfigs = new Dictionary<string, Stream> { };
-        public static List<ConfigFile> userAppsList = new List<ConfigFile> { };
-
         //private static string BlackBoxesUri = "https://blackboxestest.azurewebsites.net/"; //TEST
         private static string BlackBoxesUri = "https://blackboxes.azurewebsites.net/";
-
-        public async static Task<bool> GetConfigFiles(string user_id, string token)
-        {
-            try
-            {
-                var ApplicationDataPath = GetFolderPath(SpecialFolder.LocalApplicationData);
-                string[] filesNames = Directory.GetFiles(ApplicationDataPath);
-
-                if (App.IsConnected)
-                {
-                    HttpClient client = new HttpClient();
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                    var content = new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string, string>("user_id",user_id)
-                    });
-                    HttpResponseMessage response = await client.PostAsync("https://sherpa.saco.tech/api/getUserApps", content);
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        string responseString = await response.Content.ReadAsStringAsync();
-                        Dictionary<string, object> responseDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(responseString);
-
-                        if (responseDict.ContainsKey("content"))
-                        {
-                            appsConfigs.Clear();
-                            userAppsList.Clear();
-                            App.Database.DeleteAllUserApps(App.User.Id);
-                            var lala = responseDict["content"];
-                            Dictionary<string, string> userAppsDict = JsonConvert.DeserializeObject<Dictionary<string, string>>(lala.ToString());
-
-                            // We check the user apps => Key: App_name - Value: App_content (json)
-                            foreach (KeyValuePair<string, string> kvp in userAppsDict)
-                            {
-                                string fileName = kvp.Key;
-
-                                if (fileName.Contains(".json"))
-                                {
-                                    fileName = fileName.Substring(0, fileName.Length - 5);
-                                    string[] typeAndName = fileName.Split('_');
-
-                                    if (typeAndName.Length == 3)
-                                    {
-                                        string filePath = Path.Combine(ApplicationDataPath, kvp.Key);
-                                        File.Delete(filePath);
-                                        File.WriteAllText(filePath, kvp.Value);
-                                        FileStream fs = File.OpenRead(filePath);
-                                        MemoryStream stream = new MemoryStream();
-                                        fs.CopyTo(stream);
-
-                                        appsConfigs.Add(fileName, stream);
-
-                                        ConfigFile cf = new ConfigFile()
-                                        {
-                                            FileName = typeAndName[2],
-                                            FilePath = filePath,
-                                            AppType = typeAndName[1],
-                                        };
-
-                                        int id = App.Database.SaveConfigFile(cf);
-                                        UserApp userApp = new UserApp() { UserId = App.User.Id, ConfigFileId = id };
-                                        App.Database.SaveUserApp(userApp);
-                                        userAppsList.Add(cf);
-                                    } // correct format
-                                } // file is a json
-                            } // key-value pairs
-                        } // response has returned success
-                    } // response okay
-                }
-                //Get from DB
-                else
-                {
-                    userAppsList.Clear();
-                    appsConfigs.Clear();
-                    
-                    userAppsList = App.Database.GetUserConfigFiles(App.User.Id);
-                    foreach (ConfigFile cf in userAppsList)
-                    {
-                        FileStream fs = File.OpenRead(cf.FilePath);
-                        MemoryStream stream = new MemoryStream();
-                        fs.CopyTo(stream);
-                        appsConfigs.Add("App_" + cf.AppType + "_" + cf.FileName, stream);
-                    }
-                }
-                return true;
-            }
-            catch (Exception e)
-            {
-                //MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.ToString());
-                return false;
-            }
-        }
-
-        public async static Task<string> GetAppVersion(string token)
-        {
-            string result = "";
-            if (App.IsConnected)
-            {
-                HttpClient client = new HttpClient();
-                client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                HttpResponseMessage response = await client.GetAsync("https://sherpa.saco.tech/api/getLatestVersion");
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                {
-                    result = await response.Content.ReadAsStringAsync();
-                }
-            }
-            return result;
-        }
-
-        public static Stream GetAppConfig(string appName)
-        {
-            try
-            {
-                return appsConfigs[appName];
-            }
-            catch
-            {
-                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", "Something went wrong when getting app config file from Web.");
-                return null;
-            }
-        }
-        
-        //OLD
-        public async static Task<string> GetProductTypesList()
-        {
-            string result = "";
-            try
-            {
-                if (App.IsConnected)
-                {
-                    HttpClient client = new HttpClient();
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + "oboria_five/_second-phase/_fields/__index");
-                    if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        result = await response.Content.ReadAsStringAsync();
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-            }
-            return result;
-        }
 
         public async static Task<string> GetProjectsList()
         {
@@ -212,9 +65,10 @@ namespace TilesApp.Services
             return result;
         }
 
-        public async static Task<string> GetFieldsList(string slug)
+        public async static Task<List<Web_Field>> GetFieldsList(string slug)
         {
             string result = "";
+            List<Web_Field> fieldList = new List<Web_Field>();
             try
             {
                 if (App.IsConnected)
@@ -225,14 +79,39 @@ namespace TilesApp.Services
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
+                        Dictionary<string, object> keyField = JsonConvert.DeserializeObject<Dictionary<string, object>>(result);
+
+                        JArray ja = (JArray)keyField["protofamilyfields"];
+                        List<Dictionary<string, object>> fieldDataList = ja.ToObject<List<Dictionary<string, object>>>();
+
+                        foreach (Dictionary<string, object> fieldData in fieldDataList)
+                        {
+                            Web_Field field = new Web_Field();
+                            if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
+                            if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
+                            if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
+                            if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                            if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
+                            if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
+                            if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
+                            if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
+                            if (fieldData["name"] != null) field.Name = fieldData["name"].ToString();
+                            if (fieldData["long_name"] != null) field.LongName = fieldData["long_name"].ToString();
+                            if (fieldData["description"] != null) field.Description = fieldData["description"].ToString();
+                            if (fieldData["slug"] != null) field.Slug = fieldData["slug"].ToString();
+                            if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                            if (fieldData["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldData["value_is_unique"]) == 1 ? true : false;
+                            if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
+                            fieldList.Add(field);
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
             }
-            return result;
+            return fieldList;
         }
 
         public async static Task<string> GetPhases()

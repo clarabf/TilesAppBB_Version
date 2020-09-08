@@ -278,7 +278,7 @@ namespace TilesApp.Models
                                 return result;
                             }
                         }
-                        catch (Exception e)
+                        catch 
                         {
 
                             foreach (var prop in typeof(BaseMetaData).GetProperties())

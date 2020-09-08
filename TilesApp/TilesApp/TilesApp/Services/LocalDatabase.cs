@@ -173,7 +173,7 @@ namespace TilesApp.Services
                     }
                     return 1;
                 }
-                catch (Exception e)
+                catch 
                 {
                     return -1;
                 }

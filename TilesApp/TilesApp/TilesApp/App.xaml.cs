@@ -262,7 +262,7 @@ namespace TilesApp
                     }
                     if (changes) MessagingCenter.Send(Current, "PendingUpdated");
                 }
-                catch (Exception e) 
+                catch 
                 {
                     CrossToastPopUp.Current.ShowToastMessage("There was an error uploading operations. Please, restart de app.");
                 }

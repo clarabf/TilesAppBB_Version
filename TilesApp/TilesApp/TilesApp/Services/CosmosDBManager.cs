@@ -29,12 +29,6 @@ namespace TilesApp.Services
         {
             try
             {
-                if (App.IsConnected)
-                {
-                    BsonDocument doc = data.ToBsonDocument();
-                    collection.InsertOneAsync(doc).Wait();
-                }
-
                 PendingOperation opt = new PendingOperation();
                 opt.CreatedAt = DateTime.Now;
                 JsonSerializerSettings microsoftDateFormatSettings = new JsonSerializerSettings
@@ -49,6 +43,14 @@ namespace TilesApp.Services
                 opt.UserName = App.User.DisplayName;
                 App.Database.SavePendingOperation(opt);
 
+                if (App.IsConnected)
+                {
+                    data.Remove(Keys.FormName);
+                    data.Remove(Keys.FormSlug);
+                    BsonDocument doc = data.ToBsonDocument();
+                    collection.InsertOneAsync(doc).Wait();
+                }
+                
                 return new KeyValuePair<string, string>("Success", opt.OnOff);
             }
             catch (Exception e)

@@ -61,7 +61,7 @@ namespace TilesApp.Services
                     return false;
                 }
             }
-            catch (Exception e)
+            catch 
             {
                 // there was an error
                 return false;

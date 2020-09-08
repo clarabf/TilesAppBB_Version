@@ -78,11 +78,12 @@ namespace TilesApp.Models.DataModels
         public const string Type = "_tp";
         public const string User = "_us";
         public const string Version = "_vr";
-        public const string FormName = "_fn";
+        public const string FormName = "__fn";
+        public const string FormSlug = "__fs";
 
         public static bool ValidKey(string k)
         {
-            return (k != Phase && k != Type && k != User && k != Version && k != FormName);
+            return (k != Phase && k != Type && k != User && k != FormSlug);
         }
     }
     public class Form_Info

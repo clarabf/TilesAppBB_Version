@@ -136,7 +136,7 @@ namespace TilesApp.Views
                         if (result != "") App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
                         else App.Projects = new List<Web_Project>();
                     }
-                    catch (Exception e)
+                    catch 
                     {
                         App.Projects = new List<Web_Project>();
                     }
@@ -147,7 +147,7 @@ namespace TilesApp.Views
                         if (result != "") App.Phases = JsonConvert.DeserializeObject<Dictionary<string, Phase>>(result);
                         else App.Phases = new Dictionary<string, Phase>();
                     }
-                    catch (Exception e)
+                    catch
                     {
                         App.Phases = new Dictionary<string, Phase>();
                     }
@@ -158,7 +158,7 @@ namespace TilesApp.Views
                         if (result != "") App.PrimitiveTypes = JsonConvert.DeserializeObject<Dictionary<string, PrimitiveType>>(result);
                         else App.PrimitiveTypes = new Dictionary<string, PrimitiveType>();
                     }
-                    catch (Exception e)
+                    catch
                     {
                         App.PrimitiveTypes = new Dictionary<string, PrimitiveType>();
                     }

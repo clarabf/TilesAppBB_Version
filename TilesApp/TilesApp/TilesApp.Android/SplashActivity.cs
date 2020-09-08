@@ -43,7 +43,7 @@ namespace TilesApp.Droid
                 await task;
                 StartActivity(new Intent(Android.App.Application.Context, typeof(MainActivity)));
             }
-            catch (Exception e)
+            catch 
             {
                 StartActivity(typeof(Error));
             }
