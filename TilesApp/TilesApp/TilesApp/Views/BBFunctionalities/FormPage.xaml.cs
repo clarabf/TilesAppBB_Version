@@ -8,6 +8,7 @@ using System.Diagnostics;
 using TilesApp.Services;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Java.Lang;
 
 namespace TilesApp.Views
 {
@@ -228,12 +229,12 @@ namespace TilesApp.Views
 
             LoadingPopUp.IsVisible = true;
             loading.IsRunning = true;
-            bool success = await CheckFields();
+            CheckFields();
             LoadingPopUp.IsVisible = false;
             loading.IsRunning = false;
         }
 
-        private async Task<bool> CheckFields() 
+        private async void CheckFields() 
         {
             try
             {
@@ -268,7 +269,17 @@ namespace TilesApp.Views
                                     errors.Add("<" + field.LongName + "> exceeds in " + (entry.Text.Length - field.PrimitiveQuantity) + " characters (max. " + field.PrimitiveQuantity + ")");
                                     entry.Text = null;
                                 }
-                                else formInfo.Add(field.Name, entry.Text);
+                                else 
+                                {
+                                    PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
+                                    int num;
+                                    if (p.Csharp_name == "Integer")
+                                    {
+                                        if (int.TryParse(entry.Text, out num)) formInfo.Add(field.Name, num);
+                                        else errors.Add("<" + field.LongName + "> should be a numerical value.");
+                                    }
+                                    else formInfo.Add(field.Name, entry.Text);
+                                }
                             }
                             break;
                         case "Syncfusion.XForms.ComboBox.SfComboBox":
@@ -342,23 +353,27 @@ namespace TilesApp.Views
                 {
                     AddPrivateFields();
                     KeyValuePair<string, string> result = CosmosDBManager.InsertAndUpdateOneObject(formInfo);
-                    string mess = "";
+                    string messTitle = "";
+                    string messContent = "";
                     if (result.Key == "Success")
                     {
-                        if (result.Value == "Online") mess = "Your form has been correctly sent!";
-                        else mess = "You are offline. The form has been stored and will be sent when you are connected.";
+                        messTitle = "SUCCESS";
+                        if (result.Value == "Online") messContent = "Your form has been correctly sent!";
+                        else messContent = "You are offline. The form has been stored and will be sent when you are connected.";
                         CleanForm();
                         if (_pendingOperation != null) App.Database.DeletePendingOperation(_pendingOperation);
                     }
-                    else mess = "There was an error sending the form. Please, contact with IT...";
-                    await DisplayAlert("SENDING FORM", mess, "Ok");
+                    else
+                    {
+                        messTitle = "ERROR";
+                        messContent = "There was an error sending the form. Please, contact with IT...";
+                    }
+                    await DisplayAlert(messTitle, messContent, "Ok");
                 }
-                return true;
             }
-            catch (Exception e)
+            catch 
             {
-                Debug.WriteLine(e.Message);
-                return false;
+                await DisplayAlert("ERROR", "There was an error sending the form. Please, contact with IT...", "Ok");
             }
         }
 
