@@ -65,10 +65,9 @@ namespace TilesApp.Services
             return result;
         }
 
-        public async static Task<List<Web_Field>> GetFieldsList(string slug)
+        public async static Task<string> GetFieldsList(string slug)
         {
             string result = "";
-            List<Web_Field> fieldList = new List<Web_Field>();
             try
             {
                 if (App.IsConnected)
@@ -79,31 +78,6 @@ namespace TilesApp.Services
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
-                        Dictionary<string, object> keyField = JsonConvert.DeserializeObject<Dictionary<string, object>>(result);
-
-                        JArray ja = (JArray)keyField["protofamilyfields"];
-                        List<Dictionary<string, object>> fieldDataList = ja.ToObject<List<Dictionary<string, object>>>();
-
-                        foreach (Dictionary<string, object> fieldData in fieldDataList)
-                        {
-                            Web_Field field = new Web_Field();
-                            if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
-                            if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
-                            if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
-                            if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
-                            if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
-                            if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
-                            if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
-                            if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
-                            if (fieldData["name"] != null) field.Name = fieldData["name"].ToString();
-                            if (fieldData["long_name"] != null) field.LongName = fieldData["long_name"].ToString();
-                            if (fieldData["description"] != null) field.Description = fieldData["description"].ToString();
-                            if (fieldData["slug"] != null) field.Slug = fieldData["slug"].ToString();
-                            if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
-                            if (fieldData["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldData["value_is_unique"]) == 1 ? true : false;
-                            if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
-                            fieldList.Add(field);
-                        }
                     }
                 }
             }
@@ -111,7 +85,7 @@ namespace TilesApp.Services
             {
                 MessagingCenter.Send(Xamarin.Forms.Application.Current, "Error", e.Message);
             }
-            return fieldList;
+            return result;
         }
 
         public async static Task<string> GetPhases()
@@ -158,6 +132,43 @@ namespace TilesApp.Services
                 Debug.WriteLine(e.Message);
             }
             return result;
+        }
+
+        public static List<Web_Field> FormatFields(string jsonFields)
+        {
+
+            List<Web_Field> fieldList = new List<Web_Field>();
+
+            try
+            {
+                Dictionary<string, object> keyField = JsonConvert.DeserializeObject<Dictionary<string, object>>(jsonFields);
+
+                JArray ja = (JArray)keyField["protofamilyfields"];
+                List<Dictionary<string, object>> fieldDataList = ja.ToObject<List<Dictionary<string, object>>>();
+
+                foreach (Dictionary<string, object> fieldData in fieldDataList)
+                {
+                    Web_Field field = new Web_Field();
+                    if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
+                    if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
+                    if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
+                    if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
+                    if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
+                    if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
+                    if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
+                    if (fieldData["category"] != null) field.Category = Convert.ToInt32(fieldData["category"]);
+                    if (fieldData["name"] != null) field.Name = fieldData["name"].ToString();
+                    if (fieldData["long_name"] != null) field.LongName = fieldData["long_name"].ToString();
+                    if (fieldData["description"] != null) field.Description = fieldData["description"].ToString();
+                    if (fieldData["slug"] != null) field.Slug = fieldData["slug"].ToString();
+                    if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                    if (fieldData["value_is_unique"] != null) field.ValueIsUnique = Convert.ToInt32(fieldData["value_is_unique"]) == 1 ? true : false;
+                    if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
+                    fieldList.Add(field);
+                }
+            }
+            catch {}
+            return fieldList;
         }
     }
 }

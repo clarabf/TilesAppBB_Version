@@ -250,7 +250,7 @@ namespace TilesApp
                             if (!dict.ContainsKey("_ph")) dict.Add("_ph", 0);
                             
                             //Offline opt updated in DB as Online
-                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertAndUpdateOneObject(dict);
+                            KeyValuePair<string, string> isInserted = CosmosDBManager.InsertAndUpdateOneObject(dict, opt.JsonFields);
 
                             //Offline opt deleted from the BD
                             if (isInserted.Key == "Success")

@@ -42,25 +42,23 @@ namespace TilesApp.Views
                     {
                         if (await DisplayAlert("Form selected", message, "Edit", "Cancel"))
                         {
-                            if (App.IsConnected)
-                            {
-                                string currentName = fields[Keys.FormName].ToString();
-                                string currentId = fields[Keys.Type].ToString();
-                                string currentSlug = fields[Keys.FormSlug].ToString();
+                            
+                            string currentName = fields[Keys.FormName].ToString();
+                            string currentId = fields[Keys.Type].ToString();
+                            string currentSlug = fields[Keys.FormSlug].ToString();
 
-                                List<Web_Field> formFieldsList = new List<Web_Field>();
-                                List<Web_Field> allFields = await Api.GetFieldsList(currentSlug);
-                                formFieldsList = allFields.FindAll(delegate (Web_Field wf) { return wf.Category != 0; });
+                            List<Web_Field> formFieldsList = new List<Web_Field>();
+                            string jsonFields;
 
-                                if (formFieldsList.Count > 0)
-                                {
-                                    Navigation.PopModalAsync(true);
-                                    Navigation.PushModalAsync(new FormPage(currentName, currentId, currentSlug, formFieldsList, fields, po));
-                                }
-                            }
-                            else
+                            if (App.IsConnected) jsonFields = await Api.GetFieldsList(currentSlug);
+                            else jsonFields = po.JsonFields;
+
+                            formFieldsList = Api.FormatFields(jsonFields).FindAll(delegate (Web_Field wf) { return wf.Category != 0; });
+
+                            if (formFieldsList.Count > 0)
                             {
-                                await DisplayAlert("Error", "You are offline, so form fields cannot be recovered...", "Ok");
+                                Navigation.PopModalAsync(true);
+                                Navigation.PushModalAsync(new FormPage(currentName, currentId, currentSlug, jsonFields, formFieldsList, fields, po));
                             }
                         }
                     });

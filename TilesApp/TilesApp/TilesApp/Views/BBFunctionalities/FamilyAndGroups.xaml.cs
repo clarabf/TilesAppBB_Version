@@ -86,17 +86,16 @@ namespace TilesApp.Views
                 string currentSlug = (e.CurrentSelection.FirstOrDefault() as Web_ProtoFamily)?.Slug;
 
                 formFieldsList.Clear();
-                List<Web_Field> allFields = await Api.GetFieldsList(currentSlug);
-                formFieldsList = allFields.FindAll(delegate (Web_Field wf) { return wf.Category != 0; });
+                string jsonFields = await Api.GetFieldsList(currentSlug);
+                formFieldsList = Api.FormatFields(jsonFields).FindAll(delegate (Web_Field wf) { return wf.Category != 0; });
 
                 LoadingPopUp.IsVisible = false;
                 loading.IsRunning = false;
                 cView.SelectedItem = null;
-                if (formFieldsList.Count > 0 || currentName == "Fake-object")
+                if (formFieldsList.Count > 0)
                 {
-                    if (currentName == "Fake-object") fillTestFields();
                     Navigation.PopModalAsync(true);
-                    Navigation.PushModalAsync(new FormPage(currentName, currentId, currentSlug, formFieldsList, new Dictionary<string, object>(), null));
+                    Navigation.PushModalAsync(new FormPage(currentName, currentId, currentSlug, jsonFields, formFieldsList, new Dictionary<string, object>(), null));
                 }
                 else await DisplayAlert("Warning", "<" + currentName + "> has no fields...", "Ok");
             }

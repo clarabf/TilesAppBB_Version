@@ -65,11 +65,11 @@ namespace TilesApp.Views
             MessagingCenter.Subscribe<Application, string>(Application.Current, "Error", async (s, errorMessage) => {
                 await DisplayAlert("", errorMessage, "Ok");
             });
-            if (!App.IsConnected) DisplayAlert("WARNING: You are offline.", "The performed operations will be stored, and will be uploaded when internet is connected.", "Ok");
+            if (!App.IsConnected) DisplayAlert("WARNING: You are offline.", "The filled forms will be stored, and will be uploaded when internet is connected.", "Ok");
             else
             {
                 int count = App.Database.GetOfflineOperationsCount();
-                if (count > 0) DisplayAlert("WARNING: There are operations pending to store!", "They will be send when the application goes background.", "Ok");
+                if (count > 0) DisplayAlert("WARNING: There are forms pending to update!", "They will be updated when the application goes background.", "Ok");
             }
             
         }

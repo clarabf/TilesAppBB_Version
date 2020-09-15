@@ -1,6 +1,7 @@
 ﻿using SQLite;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TilesApp.Models;
@@ -184,7 +185,13 @@ namespace TilesApp.Services
         #region PENDING OPERATIONS METHODS
         public List<PendingOperation> GetPendingOperations()
         {
-            return _database.Table<PendingOperation>().ToList();
+            //Deleting forms after 90 days of creation.
+            List<PendingOperation> expiredOps = _database.Table<PendingOperation>().ToList().FindAll(delegate (PendingOperation po) { return (DateTime.Now - po.CreatedAt).TotalDays > 90; });
+            foreach (PendingOperation po in expiredOps) 
+            {
+                DeletePendingOperation(po);
+            }
+            return _database.Table<PendingOperation>().OrderByDescending(u => u.CreatedAt).ToList();
         }
 
         public PendingOperation GetPendingOperation(int id)

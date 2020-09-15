@@ -16,6 +16,7 @@ namespace TilesApp.Views
     {
 
         List<Web_Field> _formFields;
+        string _jsonFields;
         Dictionary<string, object> _oldFormInfo = new Dictionary<string, object>();
         Dictionary<string, object> formInfo = new Dictionary<string, object>();
         string __fn;
@@ -24,19 +25,22 @@ namespace TilesApp.Views
         PendingOperation _pendingOperation;
 
         public FormPage(string familyName, string familyType, string familySlug, 
+            string jsonFields,
             List<Web_Field> formFields, 
             Dictionary<string,object> oldFormInfo,
             PendingOperation pendingOperation)
         {
             InitializeComponent();
             NavigationPage.SetHasNavigationBar(this, false);
-            
-            _formFields = formFields;
-            _oldFormInfo = oldFormInfo;
+
             _tp = familyType;
             __fn = familyName;
             __fs = familySlug;
+            _jsonFields = jsonFields;
+            _formFields = formFields;
+            _oldFormInfo = oldFormInfo;
             _pendingOperation = pendingOperation;
+
             lblTitle.Text = familyName.ToUpper();
             int row = 0;
             string asterix;
@@ -352,7 +356,7 @@ namespace TilesApp.Views
                 else
                 {
                     AddPrivateFields();
-                    KeyValuePair<string, string> result = CosmosDBManager.InsertAndUpdateOneObject(formInfo);
+                    KeyValuePair<string, string> result = CosmosDBManager.InsertAndUpdateOneObject(formInfo, _jsonFields);
                     string messTitle = "";
                     string messContent = "";
                     if (result.Key == "Success")

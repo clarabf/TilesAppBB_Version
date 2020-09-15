@@ -14,6 +14,7 @@ namespace TilesApp.Models.DataModels
         public string UserId { get; set; }
         public string UserName { get; set; }
         public string Data { get; set; }
+        public string JsonFields { get; set; }
         public string OperationType { get; set; }
         public string Station { get; set; }
         public string OnOff { get; set; }

@@ -25,7 +25,7 @@ namespace TilesApp.Services
         private static IMongoDatabase database = mongoClient.GetDatabase(ConfigurationManager.AppSettings["MONGODB_DB"]);
         private static IMongoCollection<BsonDocument> collection = database.GetCollection<BsonDocument>(ConfigurationManager.AppSettings["MONGODB_COLLECTION"]);
 
-        public static KeyValuePair<string, string> InsertAndUpdateOneObject(Dictionary<string, object> data)
+        public static KeyValuePair<string, string> InsertAndUpdateOneObject(Dictionary<string, object> data, string _jsonFields)
         {
             try
             {
@@ -36,6 +36,7 @@ namespace TilesApp.Services
                     DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 };
                 opt.Data = JsonConvert.SerializeObject(data, microsoftDateFormatSettings);
+                opt.JsonFields = _jsonFields;
                 opt.UserId = App.User.MSID;
                 opt.OperationType = "Form";
                 opt.OnOff = App.IsConnected ? "Online" : "Offline";
