@@ -15,8 +15,8 @@ namespace TilesApp.Services
     public static class Api
     {
 
-        //private static string BlackBoxesUri = "https://blackboxestest.azurewebsites.net/"; //TEST
-        private static string BlackBoxesUri = "https://blackboxes.azurewebsites.net/";
+        private static string BlackBoxesUri = "https://blackboxestest.azurewebsites.net/"; //TEST
+        //private static string BlackBoxesUri = "https://blackboxes.azurewebsites.net/";
 
         public async static Task<string> GetProjectsList()
         {

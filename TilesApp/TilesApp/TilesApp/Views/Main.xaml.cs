@@ -155,14 +155,33 @@ namespace TilesApp.Views
                     try
                     {
                         string result = await Api.GetPrimitiveTypes();
-                        if (result != "") App.PrimitiveTypes = JsonConvert.DeserializeObject<Dictionary<string, PrimitiveType>>(result);
-                        else App.PrimitiveTypes = new Dictionary<string, PrimitiveType>();
+                        if (result != "")
+                        {
+                            App.PrimitiveTypes = JsonConvert.DeserializeObject<Dictionary<string, PrimitiveType>>(result);
+                            //Store primitives type for offline purposes
+                            App.Database.DeleteAllPrimitiveTypes();
+                            foreach (KeyValuePair<string, PrimitiveType> kv in App.PrimitiveTypes)
+                            {
+                                PrimitiveType pt = kv.Value;
+                                pt.Id = int.Parse(kv.Key);
+                                App.Database.SavePrimitiveType(pt);
+                            }
+                        }
+                        else
+                        {
+                            App.PrimitiveTypes = new Dictionary<string, PrimitiveType>();
+                            //Recover the stored primitive types
+                            List<PrimitiveType> ptList = App.Database.GetPrimitiveTypes();
+                            foreach (PrimitiveType pt in ptList) App.PrimitiveTypes.Add(pt.Id.ToString(), pt);
+                        }
                     }
                     catch
                     {
                         App.PrimitiveTypes = new Dictionary<string, PrimitiveType>();
+                        //Recover the stored primitive types
+                        List<PrimitiveType> ptList = App.Database.GetPrimitiveTypes();
+                        foreach (PrimitiveType pt in ptList) App.PrimitiveTypes.Add(pt.Id.ToString(), pt);
                     }
-
 
                     Device.BeginInvokeOnMainThread(() =>
                     {
