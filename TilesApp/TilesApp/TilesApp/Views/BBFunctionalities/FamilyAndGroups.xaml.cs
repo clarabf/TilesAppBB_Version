@@ -277,8 +277,8 @@ namespace TilesApp.Views
                 {
                     //CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
                 }
-                App.User.UserTokenExpiresAt = DateTime.Now;
-                int res = App.Database.SaveUser(App.User);
+                //App.User.UserTokenExpiresAt = DateTime.Now;
+                //int res = App.Database.SaveUser(App.User);
                 Device.BeginInvokeOnMainThread(() =>
                 {
                     App.User = new User();
@@ -325,8 +325,8 @@ namespace TilesApp.Views
                     {
                         //CosmosDBManager.InsertOneObject(new AppBasicOperation(AppBasicOperation.OperationType.Logout)); // Register the logout! 
                     }
-                    App.User.UserTokenExpiresAt = DateTime.Now;
-                    int res = App.Database.SaveUser(App.User);
+                    //App.User.UserTokenExpiresAt = DateTime.Now;
+                    //int res = App.Database.SaveUser(App.User);
                     Device.BeginInvokeOnMainThread(() =>
                     {
                         App.User = new User();

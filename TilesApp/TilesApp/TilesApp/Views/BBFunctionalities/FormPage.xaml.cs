@@ -63,7 +63,6 @@ namespace TilesApp.Views
                     };
                     elementsGrid.Children.Add(lblElement, 0, row);
                     row++;
-                    //CAREFUL: Error if the user connects offline...
                     PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
                     switch (p.Csharp_name)
                     {

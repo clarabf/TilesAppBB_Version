@@ -1,9 +1,12 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 
 namespace TilesApp.Services
 {
@@ -18,66 +21,109 @@ namespace TilesApp.Services
         #endregion
 
         #region PUBLIC METHODS
-        public static async Task<bool> Login(string username, string password) {
-            // GET USER ACCESS TOKEN
+        public static async Task<bool> Login(string username, string password) 
+        {
             try
             {
+                //If there is a valid OBOToken stored, we login with it
+                string oauthToken = await SecureStorage.GetAsync("oauth_token");
+                if (oauthToken != null && oauthToken != "")
+                {
+                    if (FillDataWithOBOToken(oauthToken)) return true;
+                }
+                // We get User Access Token if there is none or has expired
                 Dictionary<string, object> userToken = await LoginWithUsernameAndPassword(username, password);
                 if (userToken.ContainsKey("access_token"))
                 {
                     App.User.UserToken = (string)userToken["access_token"];
                     App.User.UserTokenExpiresAt = (DateTime)userToken["expires_at"];
-                    
-                    // GET USER INFO
+
+                    // User info
                     string content = await GetHttpContentWithTokenAsync((string)userToken["access_token"]);
                     JObject user = JObject.Parse(content);
-                   
+
                     App.User.Email = username;
                     App.User.DisplayName = user["displayName"].ToString();
                     App.User.GivenName = user["givenName"].ToString();
                     App.User.MSID = user["id"].ToString();
                     App.User.Surname = user["surname"].ToString();
                     App.User.UserPrincipalName = user["userPrincipalName"].ToString();
-                    // GET ON BEHALF OF USER ACCESS TOKEN
+                    
+                    // OBO Token
                     Dictionary<string, object> oBOToken = await GetOBOToken(username, password);
                     if (oBOToken.ContainsKey("access_token"))
                     {
-                        App.User.Password = SHAEncription.GenerateSHA256String(password);
                         App.User.OBOToken = (string)oBOToken["access_token"];
                         App.User.OBOTokenExpiresAt = (DateTime)oBOToken["expires_at"];
                         App.User.LastLogIn = DateTime.Now;
-                        App.Database.SaveUser(App.User);
+
+                        //Store the OBOToken in Key Store
+                        SecureStorage.Remove("oauth_token");
+                        await SecureStorage.SetAsync("oauth_token", App.User.OBOToken);
+
                         return true;
                     }
-                    else  
-                    {
-                        // there was an error
-                        return false;
-                    }
+                    else return false;
                 }
-                else
-                {
-                    // there was an error
-                    return false;
-                }
+                else return false;
             }
-            catch 
+            catch (Exception e)
             {
-                // there was an error
                 return false;
             }
         }
 
-        public static bool CheckIfTokenIsValid(){
-            if (App.User.UserToken == null)
+        public static bool FillDataWithOBOToken(string oboToken)
+        {
+            bool success = false;
+            
+            try
+            {
+                String body = oboToken.Split('.')[1];
+                int leng = body.Length;
+                //if (leng % 8 != 0) body += "=";
+                var encodedTextBytes = Convert.FromBase64String(body);
+                string plainText = Encoding.UTF8.GetString(encodedTextBytes);
+                Dictionary<string, object> tokenContent = JsonConvert.DeserializeObject<Dictionary<string, object>>(plainText);
+
+                DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+                App.User.OBOTokenExpiresAt = dtDateTime.AddSeconds(Convert.ToInt32(tokenContent["exp"])).ToLocalTime();
+                App.User.OBOToken = oboToken;
+
+                //Check it has not expired
+                if (CheckIfTokenIsValid())
+                {
+                    App.User.Email = tokenContent["email"].ToString();
+                    App.User.DisplayName = tokenContent["name"].ToString();
+                    App.User.GivenName = tokenContent["given_name"].ToString();
+                    App.User.MSID = tokenContent["oid"].ToString();
+                    App.User.Surname = tokenContent["family_name"].ToString();
+                    App.User.UserPrincipalName = tokenContent["preferred_username"].ToString();
+                    App.User.LastLogIn = DateTime.Now;
+                    success = true;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            return success;
+        }
+
+        #endregion
+
+        #region PRIVATE METHODS
+        private static bool CheckIfTokenIsValid()
+        {
+            if (App.User.OBOToken == null)
             {
                 return false;
             }
-            else 
+            else
             {
                 try
                 {
-                    int res = DateTime.Compare(App.User.UserTokenExpiresAt, DateTime.Now);
+                    int res = DateTime.Compare(App.User.OBOTokenExpiresAt, DateTime.Now);
                     if (res >= 0)
                     {
                         return true;
@@ -94,10 +140,6 @@ namespace TilesApp.Services
             }
 
         }
-
-        #endregion
-
-        #region PRIVATE METHODS
         private static async Task<Dictionary<string, object>> LoginWithUsernameAndPassword(string username, string password)
         {
             JObject content = await RequestToken(username, password, UserScope);

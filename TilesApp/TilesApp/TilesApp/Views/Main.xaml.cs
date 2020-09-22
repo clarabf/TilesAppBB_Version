@@ -26,32 +26,10 @@ namespace TilesApp.Views
             InitializeComponent();
             Setup();
             
-            // Get last user from data base
-            if (App.User.GivenName == null)
-            {
-                AsyncContext.Run(() => GetLastUserFromDB()); 
-            }
-
-            // Check if the user has a valid token
             NavigationPage.SetHasNavigationBar(this, false);
 
-            if (App.Current.Properties.ContainsKey("username"))
-            {
-                usernameEntry.Text = App.Current.Properties["username"] as string;
-            }
-            else
-            {
-                usernameEntry.Placeholder = "username";
-            }
-            if (App.Current.Properties.ContainsKey("password"))
-            {
-                passwordEntry.Text = App.Current.Properties["password"] as string;
-                LoginBtn.IsEnabled = true;
-            }
-            else
-            {
-                passwordEntry.Placeholder = "password";
-            }
+            AsyncContext.Run(() => SetUserAndPassword());
+
             if (App.Current.Properties.ContainsKey("current_project_name"))
             {
                 App.CurrentProjectName = App.Current.Properties["current_project_name"] as string;
@@ -74,10 +52,17 @@ namespace TilesApp.Views
             
         }
 
-        private void GetLastUserFromDB() {
-            // Get the last logeed in user
-            User tempUser = App.Database.GetLastLoggedInUser();
-            if (tempUser != null) App.User = tempUser;
+        private async void SetUserAndPassword()
+        {
+            string username = await SecureStorage.GetAsync("username");
+            string password = await SecureStorage.GetAsync("password");
+            if (username != null) usernameEntry.Text = username;
+            else usernameEntry.Placeholder = "username";
+
+            if (password != null) passwordEntry.Text = password;
+            else passwordEntry.Placeholder = "password";
+
+            LoginBtn.IsEnabled = (username != null && password != null) ? true : false;
         }
 
         protected override void OnAppearing()
@@ -88,7 +73,6 @@ namespace TilesApp.Views
         {
             base.OnDisappearing();
         }
-
         private async void LoginClicked(object sender, EventArgs args)
         {
             // Check the RememberUser flag to decide wether to store their data or not
@@ -96,12 +80,11 @@ namespace TilesApp.Views
             loading.IsRunning = true;
             if (rememberUser)
             {
-                if (Application.Current.Properties.ContainsKey("username")) Application.Current.Properties["username"] = usernameEntry.Text;
-                else Application.Current.Properties.Add("username", usernameEntry.Text);
-                if (Application.Current.Properties.ContainsKey("password")) Application.Current.Properties["password"] = passwordEntry.Text;
-                else Application.Current.Properties.Add("password", passwordEntry.Text);
-
-                await Application.Current.SavePropertiesAsync();
+                //Store the user credentials in Key Store
+                SecureStorage.Remove("username");
+                SecureStorage.Remove("password");
+                await SecureStorage.SetAsync("username", usernameEntry.Text);
+                await SecureStorage.SetAsync("password", passwordEntry.Text);
             }
     
             bool success = false;
@@ -118,11 +101,11 @@ namespace TilesApp.Views
             //OFFLINE
             else
             {
-                User tempUser = App.Database.GetUser(usernameEntry.Text, SHAEncription.GenerateSHA256String(passwordEntry.Text));
-                if (tempUser != null)
+                //Recovering info of OBOToken stored
+                string oauthToken = await SecureStorage.GetAsync("oauth_token");
+                if (oauthToken != null && oauthToken != "")
                 {
-                    App.User = tempUser;
-                    success = true;
+                    success = AuthHelper.FillDataWithOBOToken(oauthToken);
                 }
             }
             if (success)

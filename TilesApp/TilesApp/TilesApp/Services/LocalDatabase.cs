@@ -28,47 +28,6 @@ namespace TilesApp.Services
             }
         }
 
-        #region USER METHODS
-        public List<User> GetUsers()
-        {
-            return _database.Table<User>().ToList();
-        }
-        public User GetUser(int id)
-        {
-            return _database.Table<User>()
-                            .Where(i => i.Id == id)
-                            .FirstOrDefault();
-        }
-        public User GetUser(string email, string password)
-        {
-            return _database.Table<User>()
-                            .Where(i => i.Email == email && i.Password == password)
-                            .FirstOrDefault();
-        }
-        public User GetLastLoggedInUser()
-        {
-            return _database.Table<User>().OrderByDescending(u => u.LastLogIn).FirstOrDefault();
-        }
-        public int SaveUser(User User)
-        {
-            if (User.Id != 0)
-            {
-                return _database.Update(User);
-            }
-            else
-            {
-                return _database.Insert(User);
-            }
-        }
-        public int DeleteUser(User User)
-        {
-            return _database.Delete(User);
-        }
-        public int DeleteAllUsers() {
-            return _database.DeleteAll<User>();
-        }
-        #endregion
-
         #region PENDING OPERATIONS METHODS
         public List<PendingOperation> GetPendingOperations()
         {
@@ -133,7 +92,6 @@ namespace TilesApp.Services
         #region GENERAL
         public void DeleteDatabase()
         {
-            DeleteAllUsers();
             DeleteAllPendingOperations();
             DeleteAllPrimitiveTypes();
         }
