@@ -80,8 +80,14 @@ namespace TilesApp.Services
             try
             {
                 String body = oboToken.Split('.')[1];
-                int leng = body.Length;
-                //if (leng % 8 != 0) body += "=";
+                
+                //Fixing token length
+                int mod4 = body.Length % 4;
+                if (mod4 > 0)
+                {
+                    body += new string('=', 4 - mod4);
+                }
+
                 var encodedTextBytes = Convert.FromBase64String(body);
                 string plainText = Encoding.UTF8.GetString(encodedTextBytes);
                 Dictionary<string, object> tokenContent = JsonConvert.DeserializeObject<Dictionary<string, object>>(plainText);
@@ -90,8 +96,10 @@ namespace TilesApp.Services
                 App.User.OBOTokenExpiresAt = dtDateTime.AddSeconds(Convert.ToInt32(tokenContent["exp"])).ToLocalTime();
                 App.User.OBOToken = oboToken;
 
+                success = (App.IsConnected && CheckIfTokenIsValid()) || (!App.IsConnected) ? true : false;
+
                 //Check it has not expired
-                if (CheckIfTokenIsValid())
+                if (success)
                 {
                     App.User.Email = tokenContent["email"].ToString();
                     App.User.DisplayName = tokenContent["name"].ToString();
@@ -100,7 +108,6 @@ namespace TilesApp.Services
                     App.User.Surname = tokenContent["family_name"].ToString();
                     App.User.UserPrincipalName = tokenContent["preferred_username"].ToString();
                     App.User.LastLogIn = DateTime.Now;
-                    success = true;
                 }
             }
             catch (Exception e)

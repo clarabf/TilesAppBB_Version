@@ -274,10 +274,19 @@ namespace TilesApp
             // Handle when your app resumes
         }
 
-        void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        async void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             App.IsConnected = e.NetworkAccess == NetworkAccess.Internet;
-            if (App.IsConnected) CrossToastPopUp.Current.ShowToastMessage("Internet connection established!...Pending operations will be uploaded when app goes background.");
+            if (App.IsConnected)
+            {
+                string username = await SecureStorage.GetAsync("username");
+                string password = await SecureStorage.GetAsync("password");
+                App.ActiveSession = await AuthHelper.Login(username, password);
+                if (App.ActiveSession)
+                {
+                    CrossToastPopUp.Current.ShowToastMessage("Internet connection established!...Pending operations will be uploaded wh}en app goes background.");
+                }
+            }
             else CrossToastPopUp.Current.ShowToastMessage("Internet connection lost... Working offline mode from now on.");
         }
 

@@ -81,13 +81,21 @@ namespace TilesApp.Views
         private async void projectChosen_Command(object sender, Syncfusion.XForms.ComboBox.SelectionChangedEventArgs e)
         {
             SfComboBox comboBox = (SfComboBox)sender;
-            if (comboBox.SelectedItem.ToString() != "")
+            if (comboBox.SelectedItem.ToString() != "" && comboBox.SelectedItem.ToString() != App.CurrentProjectName)
             {
-                lblProject.Text = comboBox.SelectedItem.ToString();
-                Web_Project projectSelected = App.Projects.Find(delegate (Web_Project p) { return p.Name == lblProject.Text; });
-                App.CurrentProjectName = projectSelected.Name;
-                App.CurrentProjectSlug = projectSelected.Slug;
-                await DisplayAlert("Current project changed!", "You have selected the project <" + App.CurrentProjectName + "> to work on", "Ok");
+                if (await DisplayAlert("Warning!", "If you change project, you will lose all the stored forms. Are you sure you want to change it?", "Change", "Cancel"))
+                {
+                    lblProject.Text = comboBox.SelectedItem.ToString();
+                    Web_Project projectSelected = App.Projects.Find(delegate (Web_Project p) { return p.Name == lblProject.Text; });
+                    App.CurrentProjectName = projectSelected.Name;
+                    App.CurrentProjectSlug = projectSelected.Slug;
+                    App.Database.DeleteAllPendingOperations();
+                    await DisplayAlert("Current project changed!", "You have selected the project <" + App.CurrentProjectName + "> to work on.", "Ok");
+                }
+                else
+                {
+                    comboBox.SelectedItem = App.CurrentProjectName;
+                }
             }
         }
 
