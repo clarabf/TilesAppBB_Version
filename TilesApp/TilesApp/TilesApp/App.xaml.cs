@@ -236,7 +236,7 @@ namespace TilesApp
         {
             base.OnSleep();
             bool changes = false;
-            if (App.IsConnected)
+            if (App.IsConnected && App.ActiveSession)
             {
                 try
                 {
