@@ -232,151 +232,162 @@ namespace TilesApp.Views
 
             LoadingPopUp.IsVisible = true;
             loading.IsRunning = true;
-            CheckFields();
+            bool success = await CheckFields();
             LoadingPopUp.IsVisible = false;
             loading.IsRunning = false;
         }
 
-        private async void CheckFields() 
+        private async Task<bool> CheckFields() 
         {
             try
             {
-                List<string> errors = new List<string>();
-                formInfo.Clear();
-                LoadingPopUp.IsVisible = true;
-                loading.IsRunning = true;
-                for (int i = 0; i < _formFields.Count * 2; i++)
+                bool wantToSent = true;
+                if (_pendingOperation.OnOff == "Offline")
                 {
-                    string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
-                    switch (elementType)
+                    if (!await DisplayAlert("Warning!", "The previous introduced data will be overwritten! Are you sure you want to do that?", "Overwrite", "Cancel"))
                     {
-                        case "TilesApp.CustomEntry":
-                            CustomEntry entry = (CustomEntry)elementsGrid.Children.ElementAt(i);
-                            Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Slug == entry.ClassId; });
+                        wantToSent = false;
+                    }
+                }
+                if (wantToSent)
+                {
+                    List<string> errors = new List<string>();
+                    formInfo.Clear();
+                    for (int i = 0; i < _formFields.Count * 2; i++)
+                    {
+                        string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
+                        switch (elementType)
+                        {
+                            case "TilesApp.CustomEntry":
+                                CustomEntry entry = (CustomEntry)elementsGrid.Children.ElementAt(i);
+                                Web_Field field = _formFields.Find(delegate (Web_Field wf) { return wf.Slug == entry.ClassId; });
 
-                            Debug.WriteLine(entry.Placeholder + "..." + entry.Text);
-                            // If entry remains null, we do not store the info.
-                            if (entry.Text == null || entry.Text == "")
-                            {
-                                if (field.ValueIsRequired)
-                                {
-                                    entry.PlaceholderColor = Color.Red;
-                                    errors.Add("<" + field.LongName + "> cannot be empty.");
-                                }
-                            }
-                            else
-                            {
-                                if (entry.Text.Length > field.PrimitiveQuantity)
-                                {
-                                    entry.PlaceholderColor = Color.Red;
-                                    errors.Add("<" + field.LongName + "> exceeds in " + (entry.Text.Length - field.PrimitiveQuantity) + " characters (max. " + field.PrimitiveQuantity + ")");
-                                    entry.Text = null;
-                                }
-                                else 
-                                {
-                                    PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
-                                    int num;
-                                    if (p.Csharp_name == "Integer")
-                                    {
-                                        if (int.TryParse(entry.Text, out num)) formInfo.Add(field.Name, num);
-                                        else errors.Add("<" + field.LongName + "> should be a numerical value.");
-                                    }
-                                    else formInfo.Add(field.Name, entry.Text);
-                                }
-                            }
-                            break;
-                        case "Syncfusion.XForms.ComboBox.SfComboBox":
-                            SfComboBox comboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
-                            field = _formFields.Find(delegate (Web_Field wf) { return wf.Slug == comboBox.ClassId; });
-
-                            Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
-
-                            if ((bool)result["multi"])
-                            {
-                                List<int> indexList = (List<int>)comboBox.SelectedIndices;
-                                if (indexList == null)
+                                Debug.WriteLine(entry.Placeholder + "..." + entry.Text);
+                                // If entry remains null, we do not store the info.
+                                if (entry.Text == null || entry.Text == "")
                                 {
                                     if (field.ValueIsRequired)
                                     {
-                                        comboBox.BorderColor = Color.Red;
+                                        entry.PlaceholderColor = Color.Red;
                                         errors.Add("<" + field.LongName + "> cannot be empty.");
                                     }
                                 }
                                 else
                                 {
-                                    if (indexList.Count > 0)
+                                    if (entry.Text.Length > field.PrimitiveQuantity)
                                     {
-                                        List<string> items = (List<string>)result["options"];
-                                        List<object> selectedItems = new List<object>();
-
-                                        string options = "";
-
-                                        foreach (int ix in indexList)
-                                        {
-                                            options += items[ix] + ", ";
-                                            selectedItems.Add(items[ix]);
-                                        }
-                                        Debug.WriteLine(options);
-                                        formInfo.Add(field.Name, string.Join(",", selectedItems.ToArray()));
+                                        entry.PlaceholderColor = Color.Red;
+                                        errors.Add("<" + field.LongName + "> exceeds in " + (entry.Text.Length - field.PrimitiveQuantity) + " characters (max. " + field.PrimitiveQuantity + ")");
+                                        entry.Text = null;
                                     }
                                     else
                                     {
-                                        comboBox.BorderColor = Color.Red;
-                                        errors.Add("<" + field.LongName + "> cannot be empty.");
+                                        PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
+                                        int num;
+                                        if (p.Csharp_name == "Integer")
+                                        {
+                                            if (int.TryParse(entry.Text, out num)) formInfo.Add(field.Name, num);
+                                            else errors.Add("<" + field.LongName + "> should be a numerical value.");
+                                        }
+                                        else formInfo.Add(field.Name, entry.Text);
                                     }
-
                                 }
-                            }
-                            else
-                            {
-                                Debug.WriteLine(comboBox.Watermark + "..." + comboBox.SelectedItem);
-                                if (comboBox.SelectedItem == null)
+                                break;
+                            case "Syncfusion.XForms.ComboBox.SfComboBox":
+                                SfComboBox comboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
+                                field = _formFields.Find(delegate (Web_Field wf) { return wf.Slug == comboBox.ClassId; });
+
+                                Dictionary<string, object> result = FormatRegex(field.ValueRegEx);
+
+                                if ((bool)result["multi"])
                                 {
-                                    if (field.ValueIsRequired)
+                                    List<int> indexList = (List<int>)comboBox.SelectedIndices;
+                                    if (indexList == null)
                                     {
-                                        comboBox.BorderColor = Color.Red;
-                                        errors.Add("<" + field.LongName + "> cannot be empty.");
+                                        if (field.ValueIsRequired)
+                                        {
+                                            comboBox.BorderColor = Color.Red;
+                                            errors.Add("<" + field.LongName + "> cannot be empty.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (indexList.Count > 0)
+                                        {
+                                            List<string> items = (List<string>)result["options"];
+                                            List<object> selectedItems = new List<object>();
+
+                                            string options = "";
+
+                                            foreach (int ix in indexList)
+                                            {
+                                                options += items[ix] + ", ";
+                                                selectedItems.Add(items[ix]);
+                                            }
+                                            Debug.WriteLine(options);
+                                            formInfo.Add(field.Name, string.Join(",", selectedItems.ToArray()));
+                                        }
+                                        else
+                                        {
+                                            comboBox.BorderColor = Color.Red;
+                                            errors.Add("<" + field.LongName + "> cannot be empty.");
+                                        }
+
                                     }
                                 }
                                 else
                                 {
-                                    if (comboBox.SelectedItem != "") formInfo.Add(field.Name, comboBox.SelectedItem);
+                                    Debug.WriteLine(comboBox.Watermark + "..." + comboBox.SelectedItem);
+                                    if (comboBox.SelectedItem == null)
+                                    {
+                                        if (field.ValueIsRequired)
+                                        {
+                                            comboBox.BorderColor = Color.Red;
+                                            errors.Add("<" + field.LongName + "> cannot be empty.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (comboBox.SelectedItem != "") formInfo.Add(field.Name, comboBox.SelectedItem);
+                                    }
                                 }
-                            }
-                            break;
+                                break;
+                        }
                     }
-                }
-                string message = "";
-                if (errors.Count > 0)
-                {
-                    foreach (string eMessage in errors) message += eMessage + "\n";
-                    await DisplayAlert("Some fields missing...", message, "Ok");
-                }
-                else
-                {
-                    AddPrivateFields();
-                    KeyValuePair<string, string> result = CosmosDBManager.InsertAndUpdateOneObject(formInfo, _jsonFields);
-                    string messTitle = "";
-                    string messContent = "";
-                    if (result.Key == "Success")
+                    string message = "";
+                    if (errors.Count > 0)
                     {
-                        messTitle = "SUCCESS";
-                        if (result.Value == "Online") messContent = "Your form has been correctly sent!";
-                        else messContent = "You are offline. The form has been stored and will be sent when you are connected.";
-                        CleanForm();
-                        if (_pendingOperation != null) App.Database.DeletePendingOperation(_pendingOperation);
+                        foreach (string eMessage in errors) message += eMessage + "\n";
+                        await DisplayAlert("Some fields missing...", message, "Ok");
                     }
                     else
                     {
-                        messTitle = "ERROR";
-                        messContent = "There was an error sending the form. Please, contact with IT...";
+                        AddPrivateFields();
+                        KeyValuePair<string, string> result = CosmosDBManager.InsertAndUpdateOneObject(formInfo, _jsonFields);
+                        string messTitle = "";
+                        string messContent = "";
+                        if (result.Key == "Success")
+                        {
+                            messTitle = "SUCCESS";
+                            if (result.Value == "Online") messContent = "Your form has been correctly sent!";
+                            else messContent = "You are offline. The form has been stored and will be sent when you are connected.";
+                            CleanForm();
+                            if (_pendingOperation != null) App.Database.DeletePendingOperation(_pendingOperation);
+                        }
+                        else
+                        {
+                            messTitle = "ERROR";
+                            messContent = "There was an error sending the form. Please, contact with IT...";
+                        }
+                        await DisplayAlert(messTitle, messContent, "Ok");
                     }
-                    await DisplayAlert(messTitle, messContent, "Ok");
                 }
+                return true;
             }
             catch 
             {
                 await DisplayAlert("ERROR", "There was an error sending the form. Please, contact with IT...", "Ok");
+                return false;
             }
         }
 
@@ -387,8 +398,15 @@ namespace TilesApp.Views
             formInfo.Add(Keys.Phase, (long)1);
             formInfo.Add(Keys.FormName, __fn);
             formInfo.Add(Keys.FormSlug, __fs);
-            if (_oldFormInfo.Count == 0) formInfo.Add(Keys.Version, (long)1);
-            else formInfo.Add(Keys.Version, (long)int.Parse(_oldFormInfo[Keys.Version].ToString())+1);
+            if (_oldFormInfo.Count == 0) formInfo.Add(Keys.
+                Version, (long)1);
+            else
+            {
+                var version = (long)int.Parse(_oldFormInfo[Keys.Version].ToString());
+                //If online, we add one to the version
+                if (App.IsConnected) version += 1;
+                formInfo.Add(Keys.Version, version);
+            }
         }
 
         private void CleanForm()

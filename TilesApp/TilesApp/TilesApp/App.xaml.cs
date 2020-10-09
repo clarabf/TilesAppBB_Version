@@ -248,7 +248,8 @@ namespace TilesApp
                         {
                             Dictionary<string, object> dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(opt.Data);
                             if (!dict.ContainsKey("_ph")) dict.Add("_ph", 0);
-                            
+                            dict[Keys.Version] = (long)int.Parse(dict[Keys.Version].ToString()) + 1;
+
                             //Offline opt updated in DB as Online
                             KeyValuePair<string, string> isInserted = CosmosDBManager.InsertAndUpdateOneObject(dict, opt.JsonFields);
 
