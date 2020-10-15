@@ -115,8 +115,8 @@ namespace TilesApp.Views
                 {
                     try
                     {
-                        string result = await Api.GetProjectsList();
-                        if (result != "") App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(result);
+                        string projectsList = await Api.GetProjectsList();
+                        if (projectsList != "") App.Projects = JsonConvert.DeserializeObject<List<Web_Project>>(projectsList);
                         else App.Projects = new List<Web_Project>();
                     }
                     catch 
@@ -126,8 +126,8 @@ namespace TilesApp.Views
 
                     try
                     {
-                        string result = await Api.GetPhases();
-                        if (result != "") App.Phases = JsonConvert.DeserializeObject<Dictionary<string, Phase>>(result);
+                        string phases = await Api.GetPhases();
+                        if (phases != "") App.Phases = JsonConvert.DeserializeObject<Dictionary<string, Phase>>(phases);
                         else App.Phases = new Dictionary<string, Phase>();
                     }
                     catch
@@ -137,10 +137,10 @@ namespace TilesApp.Views
 
                     try
                     {
-                        string result = await Api.GetPrimitiveTypes();
-                        if (result != "")
+                        string pTypes = await Api.GetPrimitiveTypes();
+                        if (pTypes != "")
                         {
-                            App.PrimitiveTypes = JsonConvert.DeserializeObject<Dictionary<string, PrimitiveType>>(result);
+                            App.PrimitiveTypes = JsonConvert.DeserializeObject<Dictionary<string, PrimitiveType>>(pTypes);
                             //Store primitives type for offline purposes
                             App.Database.DeleteAllPrimitiveTypes();
                             foreach (KeyValuePair<string, PrimitiveType> kv in App.PrimitiveTypes)

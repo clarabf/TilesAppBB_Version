@@ -53,7 +53,7 @@ namespace TilesApp.Views
                             if (App.IsConnected) jsonFields = await Api.GetFieldsList(currentSlug);
                             else jsonFields = po.JsonFields;
 
-                            formFieldsList = Api.FormatFields(jsonFields).FindAll(delegate (Web_Field wf) { return wf.Category != 0; });
+                            formFieldsList = Api.FormatFields(jsonFields).FindAll(delegate (Web_Field wf) { return wf.Type != -1; });
 
                             if (formFieldsList.Count > 0)
                             {

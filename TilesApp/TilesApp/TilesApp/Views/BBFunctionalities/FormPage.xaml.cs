@@ -47,7 +47,7 @@ namespace TilesApp.Views
 
             foreach (Web_Field field in _formFields)
             {
-                if (field.Category != 0)
+                if (field.Type != -1)
                 {
                     asterix = "";
                     if (field.ValueIsRequired) asterix = " *";
@@ -66,43 +66,38 @@ namespace TilesApp.Views
                     PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
                     switch (p.Csharp_name)
                     {
-                        //integer
                         case "Boolean":
-                            if (field.PrimitiveQuantity == 1)
+                            TokenSettings tokenSettings = new TokenSettings
                             {
-                                TokenSettings tokenSettings = new TokenSettings
-                                {
-                                    BackgroundColor = Color.Black,
-                                    TextColor = Color.White,
-                                    IsCloseButtonVisible = false,
-                                };
-                                SfComboBox comboBox = new SfComboBox
-                                {
-                                    ClassId = field.Slug,
-                                    TextColor = Color.Black,
-                                    TextSize = 14,
-                                    VerticalOptions = LayoutOptions.StartAndExpand,
-                                    BackgroundColor = Color.Transparent,
-                                    ShowClearButton = true,
-                                    IsEditableMode = false,
-                                    EnableAutoSize = true,
-                                    IsSelectedItemsVisibleInDropDown = false,
-                                    TokensWrapMode = TokensWrapMode.None,
-                                    TokenSettings = tokenSettings,
-                                    Watermark = "Select one...",
-                                    MultiSelectMode = MultiSelectMode.None
-                                };
-                                comboBox.ComboBoxSource = new List<string>() { "true", "false" };
-                                comboBox.SelectionChanged += selectionChanged_command;
+                                BackgroundColor = Color.Black,
+                                TextColor = Color.White,
+                                IsCloseButtonVisible = false,
+                            };
+                            SfComboBox comboBox = new SfComboBox
+                            {
+                                ClassId = field.Slug,
+                                TextColor = Color.Black,
+                                TextSize = 14,
+                                VerticalOptions = LayoutOptions.StartAndExpand,
+                                BackgroundColor = Color.Transparent,
+                                ShowClearButton = true,
+                                IsEditableMode = false,
+                                EnableAutoSize = true,
+                                IsSelectedItemsVisibleInDropDown = false,
+                                TokensWrapMode = TokensWrapMode.None,
+                                TokenSettings = tokenSettings,
+                                Watermark = "Select one...",
+                                MultiSelectMode = MultiSelectMode.None
+                            };
+                            comboBox.ComboBoxSource = new List<string>() { "true", "false" };
+                            comboBox.SelectionChanged += selectionChanged_command;
 
-                                // Fill the field if we have a previous value
-                                if (_oldFormInfo.ContainsKey(field.Slug)) comboBox.SelectedItem = _oldFormInfo[field.Slug];
+                            // Fill the field if we have a previous value
+                            if (_oldFormInfo.ContainsKey(field.Slug)) comboBox.SelectedItem = _oldFormInfo[field.Slug];
 
-                                elementsGrid.Children.Add(comboBox, 0, row);
-                                row++;
-                            }
+                            elementsGrid.Children.Add(comboBox, 0, row);
+                            row++;
                             break;
-                        //string
                         case "String":
                             if (field.ValueRegEx != null)
                             {
@@ -110,14 +105,14 @@ namespace TilesApp.Views
 
                                 List<string> items = (List<string>)result["options"];
 
-                                TokenSettings tokenSettings = new TokenSettings
+                                tokenSettings = new TokenSettings
                                 {
                                     BackgroundColor = Color.Black,
                                     TextColor = Color.White,
                                     IsCloseButtonVisible = false,
                                 };
 
-                                SfComboBox comboBox = new SfComboBox
+                                comboBox = new SfComboBox
                                 {
                                     ClassId = field.Slug,
                                     TextColor = Color.Black,
@@ -242,11 +237,14 @@ namespace TilesApp.Views
             try
             {
                 bool wantToSent = true;
-                if (_pendingOperation.OnOff == "Offline")
+                if (_pendingOperation != null)
                 {
-                    if (!await DisplayAlert("Warning!", "The previous introduced data will be overwritten! Are you sure you want to do that?", "Overwrite", "Cancel"))
+                    if (_pendingOperation.OnOff == "Offline")
                     {
-                        wantToSent = false;
+                        if (!await DisplayAlert("Warning!", "The previous introduced data will be overwritten! Are you sure you want to do that?", "Overwrite", "Cancel"))
+                        {
+                            wantToSent = false;
+                        }
                     }
                 }
                 if (wantToSent)
@@ -398,8 +396,7 @@ namespace TilesApp.Views
             formInfo.Add(Keys.Phase, (long)1);
             formInfo.Add(Keys.FormName, __fn);
             formInfo.Add(Keys.FormSlug, __fs);
-            if (_oldFormInfo.Count == 0) formInfo.Add(Keys.
-                Version, (long)1);
+            if (_oldFormInfo.Count == 0) formInfo.Add(Keys.Version, (long)1);
             else
             {
                 var version = (long)int.Parse(_oldFormInfo[Keys.Version].ToString());
@@ -439,22 +436,28 @@ namespace TilesApp.Views
             Dictionary<string, object> result = new Dictionary<string, object>();
             string filteredRefEx = "";
 
-            //Single selection or multi selection
-            if (regEx.Contains("*\\]$"))
+            if (regEx != null)
             {
-                filteredRefEx = regEx.Replace(",?)*\\]$", "");
-                result.Add("multi", true);
+                //Single selection or multi selection
+                if (regEx.Contains("*\\]$"))
+                {
+                    filteredRefEx = regEx.Replace(",?)*\\]$", "");
+                    result.Add("multi", true);
+                }
+                else
+                {
+                    filteredRefEx = regEx.Replace(",?)\\]$", "");
+                    result.Add("multi", false);
+                }
+
+                filteredRefEx = filteredRefEx.Substring(4).Replace(",?", "").Replace("\"", "");
+                string[] options = filteredRefEx.Split('|');
+                result.Add("options", options.ToList());
             }
             else
             {
-                filteredRefEx = regEx.Replace(",?)\\]$", "");
                 result.Add("multi", false);
             }
-
-            filteredRefEx = filteredRefEx.Substring(4).Replace(",?", "").Replace("\"", "");
-            string[] options = filteredRefEx.Split('|');
-            result.Add("options", options.ToList());
-
             return result;
         }
     }

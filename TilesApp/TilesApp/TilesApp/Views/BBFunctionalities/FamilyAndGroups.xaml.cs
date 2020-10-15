@@ -54,6 +54,7 @@ namespace TilesApp.Views
         
         async void OnSearchPressed(object sender, EventArgs e)
         {
+            //string result = await Api.PostFormContent();
             FamGroupList.Clear();
             LoadingPopUp.IsVisible = true;
             loading.IsRunning = true;
@@ -87,7 +88,7 @@ namespace TilesApp.Views
 
                 formFieldsList.Clear();
                 string jsonFields = await Api.GetFieldsList(currentSlug);
-                formFieldsList = Api.FormatFields(jsonFields).FindAll(delegate (Web_Field wf) { return wf.Category != 0; });
+                formFieldsList = Api.FormatFields(jsonFields).FindAll(delegate (Web_Field wf) { return wf.Type != -1; });
 
                 LoadingPopUp.IsVisible = false;
                 loading.IsRunning = false;
