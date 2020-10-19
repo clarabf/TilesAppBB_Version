@@ -55,7 +55,9 @@ namespace TilesApp.Models.DataModels
         public int PrimitiveType { get; set; }
         public bool ValueIsUnique { get; set; }
         public bool ValueIsRequired { get; set; }
-        
+        public bool CanRead { get; set; }
+        public bool CanWrite { get; set; }
+
         //Extra attributes
         public string Parent { get; set; }
     }

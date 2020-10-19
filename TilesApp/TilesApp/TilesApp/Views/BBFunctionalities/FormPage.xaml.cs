@@ -47,7 +47,7 @@ namespace TilesApp.Views
 
             foreach (Web_Field field in _formFields)
             {
-                if (field.Type != -1)
+                if (field.CanRead)
                 {
                     asterix = "";
                     if (field.ValueIsRequired) asterix = " *";
@@ -94,6 +94,7 @@ namespace TilesApp.Views
 
                             // Fill the field if we have a previous value
                             if (_oldFormInfo.ContainsKey(field.Slug)) comboBox.SelectedItem = _oldFormInfo[field.Slug];
+                            if (!field.CanWrite) comboBox.IsEnabled = false;
 
                             elementsGrid.Children.Add(comboBox, 0, row);
                             row++;
@@ -144,6 +145,7 @@ namespace TilesApp.Views
 
                                 // Fill the field if we have a previous value
                                 if (_oldFormInfo.ContainsKey(field.Slug)) comboBox.SelectedItem = _oldFormInfo[field.Slug];
+                                if (!field.CanWrite) comboBox.IsEnabled = false;
 
                                 elementsGrid.Children.Add(comboBox, 0, row);
                                 row++;
@@ -163,6 +165,7 @@ namespace TilesApp.Views
 
                                 // Fill the field if we have a previous value
                                 if (_oldFormInfo.ContainsKey(field.Slug)) entry.Text = _oldFormInfo[field.Slug].ToString();
+                                if (!field.CanWrite) entry.IsEnabled = false;
 
                                 elementsGrid.Children.Add(entry, 0, row);
                                 row++;
@@ -182,6 +185,7 @@ namespace TilesApp.Views
 
                             // Fill the field if we have a previous value
                             if (_oldFormInfo.ContainsKey(field.Slug)) defEntry.Text = _oldFormInfo[field.Slug].ToString();
+                            if (!field.CanWrite) defEntry.IsEnabled = false;
 
                             elementsGrid.Children.Add(defEntry, 0, row);
                             row++;
@@ -282,10 +286,15 @@ namespace TilesApp.Views
                                     {
                                         PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
                                         int num;
-                                        if (p.Csharp_name == "Integer")
+                                        if (p.Csharp_name == "Int64")
                                         {
                                             if (int.TryParse(entry.Text, out num)) formInfo.Add(field.Name, num);
-                                            else errors.Add("<" + field.LongName + "> should be a numerical value.");
+                                            else
+                                            {
+                                                entry.PlaceholderColor = Color.Red;
+                                                errors.Add("<" + field.LongName + "> should be a numerical value.");
+                                                entry.Text = null;
+                                            }
                                         }
                                         else formInfo.Add(field.Name, entry.Text);
                                     }
@@ -415,14 +424,12 @@ namespace TilesApp.Views
                 {
                     case "TilesApp.CustomEntry":
                         CustomEntry entry = (CustomEntry)elementsGrid.Children.ElementAt(i);
+                        entry.PlaceholderColor = Color.Black;
                         entry.Text = null;
-                        break;
-                    case "Xamarin.Forms.Picker":
-                        Picker picker = (Picker)elementsGrid.Children.ElementAt(i);
-                        picker.SelectedItem = null;
                         break;
                     case "Syncfusion.XForms.ComboBox.SfComboBox":
                         SfComboBox comboBox = (SfComboBox)elementsGrid.Children.ElementAt(i);
+                        comboBox.BorderColor = Color.Black;
                         comboBox.Text = null;
                         comboBox.Clear();
                         break;

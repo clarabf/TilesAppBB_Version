@@ -191,7 +191,14 @@ namespace TilesApp.Services
                     if (fieldData["long_name"] != null) field.LongName = fieldData["long_name"].ToString();
                     if (fieldData["description"] != null) field.Description = fieldData["description"].ToString();
                     if (fieldData["slug"] != null) field.Slug = fieldData["slug"].ToString();
-                    if (fieldData["primitive_type"] != null) field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                    if (fieldData["primitive_type"] != null)
+                    {
+                        field.PrimitiveType = Convert.ToInt32(fieldData["primitive_type"]);
+                        PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
+                        field.PrimitiveQuantity = p.Length;
+                    }
+                    if (fieldData["canWrite"] != null) field.CanWrite = (bool)fieldData["canWrite"];
+                    if (fieldData["canRead"] != null) field.CanRead = (bool)fieldData["canRead"];
                     //if (fieldData["values_are_unique"] != null) field.ValueIsUnique = (bool)fieldData["value_is_unique"];
                     //if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
                     fieldList.Add(field);
