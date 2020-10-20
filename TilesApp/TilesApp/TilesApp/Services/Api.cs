@@ -3,8 +3,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using TilesApp.Models.DataModels;
 using Xamarin.Forms;
@@ -15,8 +18,8 @@ namespace TilesApp.Services
     public static class Api
     {
 
-        //private static string BlackBoxesUri = "https://blackboxestest.azurewebsites.net/"; //TEST
-        private static string BlackBoxesUri = "https://blackboxes.azurewebsites.net/";
+        private static string BlackBoxesUri = "https://blackboxestest.azurewebsites.net/"; //TEST
+        //private static string BlackBoxesUri = "https://blackboxes.azurewebsites.net/";
 
         public async static Task<string> GetProjectsList()
         {
@@ -27,7 +30,8 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + "_projects/__index");
+                    string Uri = BlackBoxesUri + "_projects/__index";
+                    HttpResponseMessage response = await client.GetAsync(Uri);
                     if (response.IsSuccessStatusCode)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -51,8 +55,8 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    //HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + App.CurrentProjectSlug + "/y/_families/__index");
-                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + App.CurrentProjectSlug + "/r/_forms/__index");
+                    string Uri = BlackBoxesUri + App.CurrentProjectSlug + "/r/_forms/__index";
+                    HttpResponseMessage response = await client.GetAsync(Uri);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -75,7 +79,8 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + App.CurrentProjectSlug + "/r/" + slug  + "/__show");
+                    string Uri = BlackBoxesUri + App.CurrentProjectSlug + "/r/" + slug + "/__show";
+                    HttpResponseMessage response = await client.GetAsync(Uri);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -98,7 +103,8 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + "_api/__getPhases");
+                    string Uri = BlackBoxesUri + "_api/__getPhases";
+                    HttpResponseMessage response = await client.GetAsync(Uri);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -121,7 +127,8 @@ namespace TilesApp.Services
                 {
                     HttpClient client = new HttpClient();
                     client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
-                    HttpResponseMessage response = await client.GetAsync(BlackBoxesUri + "_api/__getPrimitiveTypes");
+                    string Uri = BlackBoxesUri + "_api/__getPrimitiveTypes";
+                    HttpResponseMessage response = await client.GetAsync(Uri);
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -135,22 +142,48 @@ namespace TilesApp.Services
             return result;
         }
 
-        public async static Task<string> PostFormContent()
+        public async static Task<string> PostFormContent(string slug, string protofamily_id, Dictionary<string,object> form_info)
         {
             string result = "";
             try
             {
                 if (App.IsConnected)
                 {
-                    HttpClient client = new HttpClient();
-                    client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.User.OBOToken);
 
-                    var content = new FormUrlEncodedContent(new[]
-                    {
-                        new KeyValuePair<string, string>("test", "lala"),
-                        new KeyValuePair<string, string>("test2", "lala2")
-                    });
-                    HttpResponseMessage response = await client.PostAsync(BlackBoxesUri + "3/test_form/__elements/__add", content);
+                    HttpClient client = new HttpClient();
+                    string Uri = BlackBoxesUri + App.CurrentProjectSlug + "/e/_elements/__add";
+                    
+                    string contentRequest = String.Format(CultureInfo.InvariantCulture, Uri);
+                    HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Post, contentRequest);
+                    
+                    request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", App.User.OBOToken);
+                    
+                    // Data to send 
+                    List<object> payload_list = new List<object>();
+
+                    ///// TEST
+                    //var payload_content = new Dictionary<string, object>(){
+                    //    {"k11", "v11"},
+                    //    {"k12", "v12"},
+                    //};
+                    //payload_list.Add(payload_content);
+                    //payload_content = new Dictionary<string, object>(){
+                    //    {"k21", "v21"},
+                    //    {"k22", "v22"},
+                    //};
+                    //payload_list.Add(payload_content);
+
+                    payload_list.Add(form_info);
+                    
+                    var content = new Dictionary<string, object>(){
+                        {"protofamily_id", protofamily_id},
+                        {"payload", payload_list},
+                    };
+
+                    string ouputdata = JsonConvert.SerializeObject(content);
+                    request.Content = new StringContent(ouputdata, Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = client.SendAsync(request).Result;
+
                     if (response.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         result = await response.Content.ReadAsStringAsync();
@@ -179,12 +212,9 @@ namespace TilesApp.Services
                 foreach (Dictionary<string, object> fieldData in fieldDataList)
                 {
                     Web_Field field = new Web_Field();
-                    //if (fieldData.ContainsKey("category")) if (fieldData["category"]!= null) field.Category = Convert.ToInt32(fieldData["category"]);
                     if (fieldData["value_regex"] != null) field.ValueRegEx = fieldData["value_regex"].ToString();
                     if (fieldData["default"] != null) field.Default = fieldData["default"].ToString();
-                    //if (fieldData["primitive_quantity"] != null) field.PrimitiveQuantity = Convert.ToInt32(fieldData["primitive_quantity"]);
                     if (fieldData["entity_id"] != null) field.EntityId = fieldData["entity_id"].ToString();
-                    //if (fieldData["phases"] != null) field.Phases = fieldData["phases"].ToString();
                     if (fieldData["ui_index"] != null) field.UIindex = Convert.ToInt32(fieldData["ui_index"]);
                     if (fieldData["type"] != null) field.Type = Convert.ToInt32(fieldData["type"]);
                     if (fieldData["name"] != null) field.Name = fieldData["name"].ToString();
@@ -197,10 +227,11 @@ namespace TilesApp.Services
                         PrimitiveType p = App.PrimitiveTypes[field.PrimitiveType.ToString()];
                         field.PrimitiveQuantity = p.Length;
                     }
+                    if (fieldData["field_is_required"] != null) field.ValueIsRequired = (bool)fieldData["field_is_required"];
+                    if (fieldData.ContainsKey("values_are_unique")) field.ValueIsUnique = (bool)fieldData["values_are_unique"];
+                    if (fieldData.ContainsKey("value_is_unique")) field.ValueIsUnique = (bool)fieldData["value_is_unique"];
                     if (fieldData["canWrite"] != null) field.CanWrite = (bool)fieldData["canWrite"];
                     if (fieldData["canRead"] != null) field.CanRead = (bool)fieldData["canRead"];
-                    //if (fieldData["values_are_unique"] != null) field.ValueIsUnique = (bool)fieldData["value_is_unique"];
-                    //if (fieldData["value_is_required"] != null) field.ValueIsRequired = Convert.ToInt32(fieldData["value_is_required"]) == 1 ? true : false;
                     fieldList.Add(field);
                 }
             }

@@ -9,6 +9,7 @@ using TilesApp.Services;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Java.Lang;
+using Newtonsoft.Json;
 
 namespace TilesApp.Views
 {
@@ -255,7 +256,7 @@ namespace TilesApp.Views
                 {
                     List<string> errors = new List<string>();
                     formInfo.Clear();
-                    for (int i = 0; i < _formFields.Count * 2; i++)
+                    for (int i = 0; i < elementsGrid.Children.Count; i++)
                     {
                         string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
                         switch (elementType)
@@ -370,7 +371,10 @@ namespace TilesApp.Views
                     else
                     {
                         AddPrivateFields();
+                        string formInfo_string = JsonConvert.SerializeObject(formInfo);
+                        string result2 = await Api.PostFormContent(__fs, _tp, formInfo);
                         KeyValuePair<string, string> result = CosmosDBManager.InsertAndUpdateOneObject(formInfo, _jsonFields);
+
                         string messTitle = "";
                         string messContent = "";
                         if (result.Key == "Success")
@@ -391,7 +395,7 @@ namespace TilesApp.Views
                 }
                 return true;
             }
-            catch 
+            catch (System.Exception ex)
             {
                 await DisplayAlert("ERROR", "There was an error sending the form. Please, contact with IT...", "Ok");
                 return false;
@@ -417,14 +421,14 @@ namespace TilesApp.Views
 
         private void CleanForm()
         {
-            for (int i = 0; i < _formFields.Count * 2; i++)
+            for (int i = 0; i < elementsGrid.Children.Count; i++)
             {
                 string elementType = elementsGrid.Children.ElementAt(i).GetType().ToString();
                 switch (elementType)
                 {
                     case "TilesApp.CustomEntry":
                         CustomEntry entry = (CustomEntry)elementsGrid.Children.ElementAt(i);
-                        entry.PlaceholderColor = Color.Black;
+                        entry.PlaceholderColor = Color.Gray;
                         entry.Text = null;
                         break;
                     case "Syncfusion.XForms.ComboBox.SfComboBox":
